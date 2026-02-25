@@ -10,9 +10,9 @@ import shutil # Needed for lsof check on Linux/macOS
 
 # --- CONFIGURATION ---
 # Path to the directory containing the docker-compose.yml file
-VM_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "core", "gui"))
+VM_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "app", "gui"))
 # The main python command to run after setup (args added at runtime)
-PYTHON_APP_BASE_CMD = [sys.executable, "-m", "core.main"]
+PYTHON_APP_BASE_CMD = [sys.executable, "-m", "app.main"]
 # Service readiness check
 READY_HOST = "localhost"
 READY_PORT = 3001

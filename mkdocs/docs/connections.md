@@ -1,6 +1,6 @@
 # Connections
 
-White Collar Agent integrates with 9 external services. Each integration has two connection methods:
+CraftBot integrates with 9 external services. Each integration has two connection methods:
 
 - **Invite** (easy) — Add the CraftOS-hosted bot/app to your workspace. No API keys needed.
 - **Login** (advanced) — Bring your own bot token, API key, or OAuth credentials.

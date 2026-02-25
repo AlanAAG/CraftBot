@@ -13,8 +13,8 @@ import yaml
 from importlib import import_module
 from pathlib import Path
 
-from core.agent_base import AgentBase
-from core.logger import logger
+from app.agent_base import AgentBase
+from app.logger import logger
 
 
 class PersonalAssistantAgent(AgentBase):
@@ -29,7 +29,7 @@ class PersonalAssistantAgent(AgentBase):
         self._bundle_path = bundle_path
         self._cfg = cfg
         super().__init__(
-            data_dir=cfg.get("data_dir", "core/data"),
+            data_dir=cfg.get("data_dir", "app/data"),
             chroma_path=str(bundle_path / cfg.get("rag_dir", "rag_docs")),
         )
 

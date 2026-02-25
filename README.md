@@ -66,28 +66,6 @@ CraftBot awaits your orders, set up your own CraftBot now.
 
 ## 🧩 Architecture Overview
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    User Interface Layer                      │
-│  ┌──────────────────┐  ┌──────────────────────────────────┐ │
-│  │  TUI (Textual)   │  │  GUI Module (Docker + Gradio)    │ │
-│  └──────────────────┘  └──────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                      Agent Base                              │
-│           (Task orchestration & lifecycle management)        │
-└─────────────────────────────────────────────────────────────┘
-                              │
-        ┌─────────┬──────────┼──────────┬─────────┐
-        ▼         ▼          ▼          ▼         ▼
-   ┌─────────┐ ┌────────┐ ┌────────┐ ┌───────┐ ┌────────┐
-   │   LLM   │ │Context │ │ Action │ │ Event │ │ Memory │
-   │Interface│ │ Engine │ │  Mgmt  │ │Stream │ │  (RAG) │
-   └─────────┘ └────────┘ └────────┘ └───────┘ └────────┘
-```
-
 | Component | Description |
 |-----------|-------------|
 | **Agent Base** | Core orchestration layer that manages task lifecycle, coordinates between components, and handles the main agentic loop. |
@@ -119,56 +97,85 @@ CraftBot awaits your orders, set up your own CraftBot now.
 ## 🧰 Getting Started
 
 ### Prerequisites
-- Python **3.9+**
-- `git`, `conda`, and `pip`
-- An API key for your chosen LLM provider (e.g., OpenAI or Gemini)
+- Python **3.10+**
+- `git` and `conda` (or `pip`)
+- An API key for your chosen LLM provider (OpenAI, Gemini, or Anthropic)
 
-### Installation
+### Quick Install
+
 ```bash
+# Clone the repository
 git clone https://github.com/zfoong/CraftBot.git
 cd CraftBot
-conda env create -f environment.yml
+
+# Install dependencies
+python install.py
+
+# Run the agent
+python run.py
 ```
+
+That's it! The first run will guide you through setting up your API keys.
+
+### What you can do right after?
+- Talk to the agent naturally
+- Ask it to perform complex multi-step tasks
+- Type `/help` to see available commands
+- Connect to Google, Slack, Notion, and more
 
 ---
 
-## ⚡ Quick Start
+## 🖥️ GUI Mode (Optional)
 
-Export your API key:
+GUI mode enables screen automation - the agent can see and interact with a desktop environment.
+
 ```bash
-export OPENAI_API_KEY=<YOUR_KEY_HERE>
-or
-export GOOGLE_API_KEY=<YOUR_KEY_HERE>
-```
-Run:
-```bash
-python start.py
-```
+# Install with GUI support
+python install.py --gui
 
-This executes the built-in **CraftBot**, that you can communicate to:
-1. Talk to the agent  
-2. Ask it to perform complex series of tasks  
-3. Run command /help to seek help
-4. Get along with the AI agent
-5. Do advanced computer-use tasks with a dedicated but lightweight WebRTC Linux VM
-
-### Terminal Arguments
-| Argument | Description |
-| :--- | :--- |
-| `--only-cpu` | Run the agent on CPU mode |
-| `--fast` | Skip unecessary update checks and launch agent faster. <br> <u><b>NOTE:</b></u> You have to run without `--fast` the first time you launch |
-| `--no-omniparser` | Disable the use of microsoft omniparser to analyse UI - will greatly reduce GUI action accuracy. It is highly encouraged to use omniparser |
-| `--no-conda` | Installs all packages globally instead of inside a conda environment |
-| `--enable-gui` | Enable GUI mode (experimental). Allows the agent to switch to GUI mode for screen interaction tasks. This setting is persisted across restarts |
-| `--no-gui` | Disable GUI mode (default). The agent will run in CLI-only mode and cannot switch to GUI mode. This setting is persisted across restarts. OmniParser is also automatically disabled |
-
-**EXAMPLE**
-```bash
-python start.py --only-cpu --fast
+# Run with GUI mode
+python run.py --gui
 ```
 
-> [!HINT]
-> **Onboarding:** Launching CraftBot for the first time will trigger an onboarding sequence where you set up API keys, the agent's name, MCPs, and Skills. Then, chatting with your CraftBot for the first time will prompt an interview session so it can update its USER.md and AGENT.md for future reference.
+> [!NOTE]
+> GUI mode is experimental and requires additional dependencies (~4GB for model weights).
+
+---
+
+## 📋 Command Reference
+
+### install.py
+
+| Flag | Description |
+|------|-------------|
+| `--gui` | Install GUI components (OmniParser) |
+| `--no-conda` | Use global pip instead of conda |
+| `--cpu-only` | Install CPU-only PyTorch (with --gui) |
+
+### run.py
+
+| Flag | Description |
+|------|-------------|
+| `--gui` | Enable GUI mode (requires `install.py --gui` first) |
+| `--no-conda` | Use global pip instead of conda |
+
+**Examples:**
+```bash
+# Basic install and run
+python install.py
+python run.py
+
+# Install with GUI support
+python install.py --gui
+python run.py --gui
+
+# Use pip instead of conda
+python install.py --no-conda
+python run.py --no-conda
+```
+
+> [!TIP]
+> **First-time setup:** CraftBot will guide you through an onboarding sequence to configure API keys, the agent's name, MCPs, and Skills.
 
 ---
 
@@ -264,7 +271,7 @@ docker build -t craftbot .
 
 ### Run the container
 
-The image is configured to launch the agent with `python -m core.main` by default. To run it interactively:
+The image is configured to launch the agent with `python -m app.main` by default. To run it interactively:
 
 ```bash
 docker run --rm -it craftbot
@@ -288,7 +295,7 @@ GUI actions (mouse/keyboard events, screenshots) require an X11 server. You can 
   docker run --rm -it 
     -e DISPLAY=$DISPLAY \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
-    -v $(pwd)/data:/app/core/data \
+    -v $(pwd)/data:/app/app/data \
     craftbot
   ```
 
@@ -297,10 +304,10 @@ GUI actions (mouse/keyboard events, screenshots) require an X11 server. You can 
 * Run headlessly with a virtual display:
 
   ```bash
-	docker run --rm -it --env-file .env craftbot bash -lc "Xvfb :99 -screen 0 1920x1080x24 & export DISPLAY=:99 && exec python -m core.main"
+	docker run --rm -it --env-file .env craftbot bash -lc "Xvfb :99 -screen 0 1920x1080x24 & export DISPLAY=:99 && exec python -m app.main"
   ```
 
-By default the image uses Python 3.10 and bundles the Python dependencies from `environment.yml`/`requirements.txt`, so `python -m core.main` works out of the box.
+By default the image uses Python 3.10 and bundles the Python dependencies from `environment.yml`/`requirements.txt`, so `python -m app.main` works out of the box.
 
 ---
 
