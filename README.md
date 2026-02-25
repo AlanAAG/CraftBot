@@ -64,36 +64,6 @@ CraftBot awaits your orders, set up your own CraftBot now.
 
 ---
 
-## 🧩 Architecture Overview
-
-| Component | Description |
-|-----------|-------------|
-| **Agent Base** | Core orchestration layer that manages task lifecycle, coordinates between components, and handles the main agentic loop. |
-| **LLM Interface** | Unified interface supporting multiple LLM providers (OpenAI, Gemini, Anthropic, BytePlus, Ollama). |
-| **Context Engine** | Generates optimized prompts with KV-cache support. |
-| **Action Manager** | Retrieves and executes actions from the library. Custom action is easy to extend |
-| **Action Router** | Intelligently selects the best matching action based on task requirements and resolves input parameters via LLM when needed. |
-| **Event Stream** | Real-time event publishing system for task progress tracking, UI updates, and execution monitoring. |
-| **Memory Manager** | RAG-based semantic memory using ChromaDB. Handles memory chunking, embedding, retrieval, and incremental updates. |
-| **State Manager** | Global state management for tracking agent execution context, conversation history, and runtime configuration. |
-| **Task Manager** | Manages task definitions, enable simple and complex tasks bode, create todos, and multi-step workflow tracking. |
-| **Skill Manager** | Loads and injects pluggable skills into the agent context. |
-| **MCP Adapter** | Model Context Protocol integration that converts MCP tools into native actions. |
-| **TUI Interface** | Terminal user interface built with Textual framework for interactive command-line operation. |
-| **GUI Module** | Experimental GUI automation using Docker containers, OmniParser for UI element detection, and Gradio client. |
-
----
-
-## 🔜 Roadmap
-
-- [X] **Memory Module** — Done.
-- [ ] **External Tool integration** — Still adding more!
-- [X] **MCP Layer** — Done.
-- [X] **Skill Layer** — Done.
-- [ ] **Proactive Behaviour** — Pending
-
----
-
 ## 🧰 Getting Started
 
 ### Prerequisites
@@ -122,6 +92,36 @@ That's it! The first run will guide you through setting up your API keys.
 - Ask it to perform complex multi-step tasks
 - Type `/help` to see available commands
 - Connect to Google, Slack, Notion, and more
+
+---
+
+## 🧩 Architecture Overview
+
+| Component | Description |
+|-----------|-------------|
+| **Agent Base** | Core orchestration layer that manages task lifecycle, coordinates between components, and handles the main agentic loop. |
+| **LLM Interface** | Unified interface supporting multiple LLM providers (OpenAI, Gemini, Anthropic, BytePlus, Ollama). |
+| **Context Engine** | Generates optimized prompts with KV-cache support. |
+| **Action Manager** | Retrieves and executes actions from the library. Custom action is easy to extend |
+| **Action Router** | Intelligently selects the best matching action based on task requirements and resolves input parameters via LLM when needed. |
+| **Event Stream** | Real-time event publishing system for task progress tracking, UI updates, and execution monitoring. |
+| **Memory Manager** | RAG-based semantic memory using ChromaDB. Handles memory chunking, embedding, retrieval, and incremental updates. |
+| **State Manager** | Global state management for tracking agent execution context, conversation history, and runtime configuration. |
+| **Task Manager** | Manages task definitions, enable simple and complex tasks bode, create todos, and multi-step workflow tracking. |
+| **Skill Manager** | Loads and injects pluggable skills into the agent context. |
+| **MCP Adapter** | Model Context Protocol integration that converts MCP tools into native actions. |
+| **TUI Interface** | Terminal user interface built with Textual framework for interactive command-line operation. |
+| **GUI Module** | Experimental GUI automation using Docker containers, OmniParser for UI element detection, and Gradio client. |
+
+---
+
+## 🔜 Roadmap
+
+- [X] **Memory Module** — Done.
+- [ ] **External Tool integration** — Still adding more!
+- [X] **MCP Layer** — Done.
+- [X] **Skill Layer** — Done.
+- [ ] **Proactive Behaviour** — Pending
 
 ---
 

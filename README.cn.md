@@ -64,29 +64,38 @@ CraftBot 静候你的指令，现在就部署属于你的 CraftBot 吧。
 
 ---
 
-## 🧩 架构概览
+## 🧰 环境设置
 
+### 前置要求
+- Python **3.10+**
+- `git` 和 `conda`（或 `pip`）
+- 你所选 LLM 提供商的 API Key（OpenAI、Gemini 或 Anthropic）
+
+### 快速安装
+
+```bash
+# 克隆仓库
+git clone https://github.com/zfoong/CraftBot.git
+cd CraftBot
+
+# 安装依赖
+python install.py
+
+# 运行代理
+python run.py
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    用户界面层                                 │
-│  ┌──────────────────┐  ┌──────────────────────────────────┐ │
-│  │  TUI (Textual)   │  │  GUI 模块 (Docker + Gradio)       │ │
-│  └──────────────────┘  └──────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                      代理基础层                               │
-│           (任务编排与生命周期管理)                              │
-└─────────────────────────────────────────────────────────────┘
-                              │
-        ┌─────────┬──────────┼──────────┬─────────┐
-        ▼         ▼          ▼          ▼         ▼
-   ┌─────────┐ ┌────────┐ ┌────────┐ ┌───────┐ ┌────────┐
-   │   LLM   │ │ 上下文  │ │  动作  │ │ 事件  │ │  记忆  │
-   │  接口   │ │  引擎   │ │  管理  │ │  流   │ │ (RAG)  │
-   └─────────┘ └────────┘ └────────┘ └───────┘ └────────┘
-```
+
+就这样！首次运行会引导你设置 API Key。
+
+### 安装完成后你可以做什么？
+- 用自然语言与代理交流
+- 让它执行复杂的多步骤任务
+- 输入 `/help` 查看可用命令
+- 连接 Google、Slack、Notion 等服务
+
+---
+
+## 🧩 架构概览
 
 | 组件 | 说明 |
 |-----------|-------------|
@@ -116,59 +125,57 @@ CraftBot 静候你的指令，现在就部署属于你的 CraftBot 吧。
 
 ---
 
-## 🧰 环境设置
+## 🖥️ GUI 模式（可选）
 
-### 前置要求
-- Python **3.9+**
-- `git`、`conda`、`pip`
-- 你所选 LLM 提供商的 API Key（例如 OpenAI 或 Gemini）
+GUI 模式支持屏幕自动化 - 代理可以看到并与桌面环境交互。
 
-### 安装
 ```bash
-git clone https://github.com/zfoong/CraftBot.git
-cd CraftBot
-conda env create -f environment.yml
+# 安装 GUI 支持
+python install.py --gui
+
+# 以 GUI 模式运行
+python run.py --gui
 ```
+
+> [!NOTE]
+> GUI 模式是实验性功能，需要额外的依赖（约 4GB 模型权重）。
 
 ---
 
-## ⚡ 快速上手
+## 📋 命令参考
 
-导出你的 API Key：
-```bash
-export OPENAI_API_KEY=<YOUR_KEY_HERE>
-或
-export GOOGLE_API_KEY=<YOUR_KEY_HERE>
-```
-运行：
-```bash
-python start.py
-```
+### install.py
 
-这会启动内置的 **CraftBot**，你可以与它沟通：
-1. 与代理对话
-2. 让它执行复杂的任务序列
-3. 运行命令 /help 获取帮助
-4. 与 AI 代理协作
-5. 通过专用但轻量的 WebRTC Linux 虚拟机执行高级 computer-use 任务
-
-### 终端参数
 | 参数 | 说明 |
-| :--- | :--- |
-| `--only-cpu` | 以 CPU 模式运行代理 |
-| `--fast` | 跳过不必要的更新检查，更快启动代理。<br> <u><b>注意：</b></u> 首次启动时必须不使用 `--fast` |
-| `--no-omniparser` | 禁用 Microsoft OmniParser 分析 UI - 这会大幅降低 GUI 动作准确度。强烈建议使用 OmniParser |
-| `--no-conda` | 将所有包安装到全局环境而非 conda 环境中 |
-| `--enable-gui` | 启用 GUI 模式（实验性功能）。允许代理切换到 GUI 模式以执行屏幕交互任务。此设置在重启后仍然保留 |
-| `--no-gui` | 禁用 GUI 模式（默认）。代理将以纯 CLI 模式运行，无法切换到 GUI 模式。此设置在重启后仍然保留。OmniParser 也会自动禁用 |
+|------|-------------|
+| `--gui` | 安装 GUI 组件（OmniParser） |
+| `--no-conda` | 使用全局 pip 而非 conda |
+| `--cpu-only` | 安装仅 CPU 版本的 PyTorch（与 --gui 一起使用） |
 
-**示例**
+### run.py
+
+| 参数 | 说明 |
+|------|-------------|
+| `--gui` | 启用 GUI 模式（需先运行 `install.py --gui`） |
+| `--no-conda` | 使用全局 pip 而非 conda |
+
+**示例：**
 ```bash
-python start.py --only-cpu --fast
+# 基础安装和运行
+python install.py
+python run.py
+
+# 安装 GUI 支持
+python install.py --gui
+python run.py --gui
+
+# 使用 pip 而非 conda
+python install.py --no-conda
+python run.py --no-conda
 ```
 
-> [!HINT]
-> **首次引导：** 首次启动 CraftBot 会触发引导流程，你将设置 API Key、代理名称、MCP 和技能。然后，首次与 CraftBot 聊天会启动一个面试环节，以便它更新 USER.md 和 AGENT.md 供将来参考。
+> [!TIP]
+> **首次设置：** CraftBot 会引导你完成引导流程，配置 API Key、代理名称、MCP 和技能。
 
 ---
 
