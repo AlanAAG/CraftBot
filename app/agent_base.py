@@ -1475,6 +1475,7 @@ class AgentBase:
                 "whatsapp_web": "whatsapp",
                 "whatsapp_business": "whatsapp",
                 "telegram_bot": "telegram",
+                "telegram_user": "telegram",
                 "telegram_mtproto": "telegram",
                 "slack": "slack",
                 "discord": "discord",

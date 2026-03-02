@@ -55,7 +55,7 @@ INTEGRATION_REGISTRY: Dict[str, Dict[str, Any]] = {
     "telegram": {
         "name": "Telegram",
         "description": "Messaging platform",
-        "auth_type": "both",  # Has both invite and bot token login
+        "auth_type": "both_with_interactive",  # Bot token, invite bot, AND QR code user login
         "fields": [
             {"key": "bot_token", "label": "Bot Token", "placeholder": "From @BotFather", "password": True},
         ],
@@ -331,12 +331,12 @@ async def connect_integration_oauth(integration_id: str) -> Tuple[bool, str]:
 
     auth_type = INTEGRATION_REGISTRY.get(integration_id, {}).get("auth_type", "")
 
-    if auth_type not in ("oauth", "both"):
+    if auth_type not in ("oauth", "both", "both_with_interactive"):
         return False, f"OAuth not supported for {integration_id}"
 
     try:
         # For integrations with both OAuth and token, OAuth is via invite
-        if auth_type == "both" and hasattr(handler, "invite"):
+        if auth_type in ("both", "both_with_interactive") and hasattr(handler, "invite"):
             return await handler.invite([])
         else:
             return await handler.login([])
@@ -382,10 +382,13 @@ async def connect_integration_interactive(integration_id: str) -> Tuple[bool, st
 
     auth_type = INTEGRATION_REGISTRY.get(integration_id, {}).get("auth_type", "")
 
-    if auth_type != "interactive":
+    if auth_type not in ("interactive", "both_with_interactive"):
         return False, f"Interactive login not supported for {integration_id}"
 
     try:
+        # For platforms with both token and interactive, use the QR/interactive handler
+        if hasattr(handler, "handle"):
+            return await handler.handle("login-qr", [])
         return await handler.login([])
     except Exception as e:
         logger.error(f"Interactive login failed for {integration_id}: {e}")

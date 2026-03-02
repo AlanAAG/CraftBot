@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import base64
 import hashlib
+import logging
 import secrets
 import time
 import webbrowser
@@ -11,6 +12,8 @@ from typing import Tuple
 from urllib.parse import urlencode
 
 from app.external_comms.credentials import has_credential, load_credential, save_credential, remove_credential
+
+logger = logging.getLogger(__name__)
 
 LOCAL_USER_ID = "local"
 REDIRECT_URI = "http://localhost:8765"
@@ -470,10 +473,11 @@ class DiscordHandler(IntegrationHandler):
 class TelegramHandler(IntegrationHandler):
     @property
     def subcommands(self) -> list[str]:
-        return ["invite", "login", "login-user", "logout", "status"]
+        return ["invite", "login", "login-user", "login-qr", "logout", "status"]
 
     async def handle(self, sub, args):
         if sub == "login-user": return await self._login_user(args)
+        if sub == "login-qr": return await self._login_qr(args)
         return await super().handle(sub, args)
 
     async def invite(self, args):
@@ -618,6 +622,109 @@ class TelegramHandler(IntegrationHandler):
             f"  /telegram login-user {phone} <code>"
         )
 
+    async def _login_qr(self, args):
+        """Login to Telegram user account by scanning a QR code."""
+        logger.info("[Telegram QR] Starting QR login flow")
+        from app.config import TELEGRAM_API_ID, TELEGRAM_API_HASH
+        if not TELEGRAM_API_ID or not TELEGRAM_API_HASH:
+            logger.warning("[Telegram QR] Missing TELEGRAM_API_ID or TELEGRAM_API_HASH env vars")
+            return False, (
+                "Not configured. Set TELEGRAM_API_ID and TELEGRAM_API_HASH env vars.\n"
+                "Get them from https://my.telegram.org → API development tools."
+            )
+
+        try:
+            api_id = int(TELEGRAM_API_ID)
+        except ValueError:
+            return False, "TELEGRAM_API_ID must be a number."
+
+        try:
+            from app.external_comms.platforms.telegram_mtproto_helpers import qr_login
+        except ImportError:
+            logger.error("[Telegram QR] Telethon not installed")
+            return False, "Telethon not installed. Run: pip install telethon"
+
+        # Verify qrcode package is available before starting the flow
+        try:
+            import qrcode as _qrcode_check  # noqa: F401
+        except ImportError:
+            logger.error("[Telegram QR] qrcode package not installed")
+            return False, "qrcode package not installed. Run: pip install qrcode[pil]"
+
+        import tempfile, os
+
+        qr_file_path = None
+        qr_error = None
+
+        def on_qr_url(url: str):
+            """Generate QR code image and open it for the user to scan."""
+            nonlocal qr_file_path, qr_error
+            try:
+                import qrcode
+                qr = qrcode.QRCode(version=1, box_size=10, border=4)
+                qr.add_data(url)
+                qr.make(fit=True)
+                img = qr.make_image(fill_color="black", back_color="white")
+
+                qr_file_path = os.path.join(tempfile.gettempdir(), "telegram_qr_login.png")
+                img.save(qr_file_path)
+                logger.info(f"[Telegram QR] QR code saved to {qr_file_path}")
+
+                # Open the QR code image (prefer os.startfile on Windows)
+                import sys
+                if sys.platform == "win32":
+                    os.startfile(qr_file_path)
+                else:
+                    webbrowser.open(f"file://{qr_file_path}")
+                logger.info("[Telegram QR] QR code opened")
+            except Exception as e:
+                qr_error = str(e)
+                logger.error(f"[Telegram QR] Failed to generate/open QR code: {e}")
+
+        logger.info("[Telegram QR] Calling qr_login...")
+        result = await qr_login(
+            api_id=api_id,
+            api_hash=TELEGRAM_API_HASH,
+            on_qr_url=on_qr_url,
+            timeout=120,
+        )
+        logger.info(f"[Telegram QR] qr_login returned: {'ok' if 'ok' in result else 'error'}")
+
+        # Clean up QR image
+        if qr_file_path and os.path.exists(qr_file_path):
+            try:
+                os.remove(qr_file_path)
+            except Exception:
+                pass
+
+        if "error" in result:
+            details = result.get("details", {})
+            if details.get("status") == "2fa_required":
+                # Save pending session for 2FA completion
+                session_str = details.get("session_string", "")
+                if session_str:
+                    _pending_telegram_auth["__qr_2fa__"] = {"session_string": session_str}
+                return False, (
+                    "QR scan succeeded but 2FA is enabled.\n"
+                    "Complete login with: /telegram login-user <phone> <code> <2fa_password>\n"
+                    "Or disable 2FA in Telegram settings and try again."
+                )
+            return False, f"QR login failed: {result['error']}"
+
+        # Success — store credential
+        auth = result["result"]
+        from app.external_comms.platforms.telegram_user import TelegramUserCredential
+        save_credential("telegram_user.json", TelegramUserCredential(
+            session_string=auth["session_string"],
+            api_id=str(api_id),
+            api_hash=TELEGRAM_API_HASH,
+            phone_number=auth.get("phone", ""),
+        ))
+
+        account_name = f"{auth.get('first_name', '')} {auth.get('last_name', '')}".strip()
+        username = f" (@{auth['username']})" if auth.get("username") else ""
+        return True, f"Telegram user linked: {account_name}{username}"
+
     async def logout(self, args):
         bot_exists = has_credential("telegram_bot.json")
         user_exists = has_credential("telegram_user.json")
@@ -637,19 +744,17 @@ class TelegramHandler(IntegrationHandler):
                     remove_credential("telegram_user.json")
                     return True, "Removed Telegram user credential."
                 return False, "No Telegram user credential found."
-            # If target is a specific value, try removing both
-            if bot_exists: remove_credential("telegram_bot.json")
-            if user_exists: remove_credential("telegram_user.json")
-            return True, f"Removed Telegram credentials."
+            elif target == "all":
+                if bot_exists: remove_credential("telegram_bot.json")
+                if user_exists: remove_credential("telegram_user.json")
+                return True, "Removed all Telegram credentials."
+            else:
+                return False, f"Unknown Telegram credential target: {target}. Use 'bot' or 'user'."
 
-        # No args — remove first found
-        if bot_exists:
-            remove_credential("telegram_bot.json")
-            return True, "Removed Telegram bot credential."
-        if user_exists:
-            remove_credential("telegram_user.json")
-            return True, "Removed Telegram user credential."
-        return False, "No Telegram credentials found."
+        # No args — remove all
+        if bot_exists: remove_credential("telegram_bot.json")
+        if user_exists: remove_credential("telegram_user.json")
+        return True, "Removed all Telegram credentials."
 
     async def status(self):
         bot_exists = has_credential("telegram_bot.json")
@@ -662,13 +767,13 @@ class TelegramHandler(IntegrationHandler):
         if bot_exists:
             from app.external_comms.platforms.telegram_bot import TelegramBotCredential
             cred = load_credential("telegram_bot.json", TelegramBotCredential)
-            lines.append(f"  Bots:")
-            lines.append(f"    - @{cred.bot_username}" if cred and cred.bot_username else "    - Bot configured")
+            bot_label = f"@{cred.bot_username}" if cred and cred.bot_username else "Bot configured"
+            lines.append(f"  - {bot_label} (bot)")
         if user_exists:
             from app.external_comms.platforms.telegram_user import TelegramUserCredential
             cred = load_credential("telegram_user.json", TelegramUserCredential)
-            lines.append(f"  Users:")
-            lines.append(f"    - {cred.phone_number}" if cred and cred.phone_number else "    - User configured")
+            user_label = cred.phone_number if cred and cred.phone_number else "User configured"
+            lines.append(f"  - {user_label} (user)")
 
         return True, "Telegram: Connected\n" + "\n".join(lines)
 

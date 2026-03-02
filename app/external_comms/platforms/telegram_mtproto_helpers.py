@@ -87,6 +87,104 @@ async def start_auth(
         }
 
 
+async def qr_login(
+    api_id: int,
+    api_hash: str,
+    on_qr_url: Optional[Any] = None,
+    timeout: int = 120,
+) -> Dict[str, Any]:
+    """
+    Login to Telegram by scanning a QR code with the phone app.
+
+    Uses Telethon's built-in ``client.qr_login()`` which handles the full
+    ExportLoginToken → AcceptLoginToken → ImportLoginToken flow.
+
+    Args:
+        api_id: Telegram API ID from my.telegram.org
+        api_hash: Telegram API hash from my.telegram.org
+        on_qr_url: Optional callback(url: str) called with the ``tg://login?token=...``
+                    URL so the caller can render it as a QR code.
+        timeout: Seconds to wait for the user to scan (default 120).
+
+    Returns:
+        Dict with session_string and user info on success, or error details.
+    """
+    client = None
+    try:
+        client = TelegramClient(StringSession(), api_id, api_hash)
+        await client.connect()
+
+        qr = await client.qr_login()
+
+        # Notify caller so it can display the QR code
+        if on_qr_url:
+            on_qr_url(qr.url)
+
+        # Wait for the user to scan the QR code
+        # If the token expires (every ~30s) Telethon auto-refreshes,
+        # but we need to re-notify the caller with the new URL.
+        try:
+            user = await asyncio.wait_for(qr.wait(timeout), timeout=timeout)
+        except asyncio.TimeoutError:
+            await client.disconnect()
+            return {
+                "error": "QR login timed out. Please try again.",
+                "details": {"status": "timeout"},
+            }
+
+    except SessionPasswordNeededError:
+        # 2FA is enabled — need password to finish.
+        # Save session so handler can call sign_in(password=...) later.
+        session_string = client.session.save()
+        await client.disconnect()
+        return {
+            "error": "Two-factor authentication is enabled. Please provide your 2FA password.",
+            "details": {
+                "status": "2fa_required",
+                "session_string": session_string,
+            },
+        }
+    except Exception as e:
+        if client:
+            try:
+                await client.disconnect()
+            except Exception:
+                pass
+        return {
+            "error": f"QR login failed: {str(e)}",
+            "details": {"exception": type(e).__name__},
+        }
+
+    # Success — extract user info and session string
+    try:
+        me = await client.get_me()
+        session_string = client.session.save()
+        await client.disconnect()
+
+        return {
+            "ok": True,
+            "result": {
+                "session_string": session_string,
+                "user_id": me.id,
+                "first_name": me.first_name or "",
+                "last_name": me.last_name or "",
+                "username": me.username or "",
+                "phone": me.phone or "",
+                "status": "authenticated",
+            },
+        }
+    except Exception as e:
+        if client:
+            try:
+                await client.disconnect()
+            except Exception:
+                pass
+        return {
+            "error": f"QR login succeeded but failed to get user info: {str(e)}",
+            "details": {"exception": type(e).__name__},
+        }
+
+
 async def complete_auth(
     api_id: int,
     api_hash: str,

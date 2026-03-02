@@ -80,17 +80,23 @@ class ExternalCommsManager:
         from app.external_comms.registry import get_all_clients
 
         started = []
-        for platform_id, client in get_all_clients().items():
+        all_clients = get_all_clients()
+        logger.info(f"[EXTERNAL_COMMS] Registered platforms: {list(all_clients.keys())}")
+        for platform_id, client in all_clients.items():
             if not client.supports_listening:
                 continue
             if not client.has_credentials():
+                logger.info(f"[EXTERNAL_COMMS] {platform_id} supports listening but has no credentials, skipping")
                 continue
 
             try:
                 await client.start_listening(self._handle_platform_message)
-                self._active_clients[platform_id] = client
-                started.append(platform_id)
-                logger.info(f"[EXTERNAL_COMMS] Started listening on {platform_id}")
+                if client.is_listening:
+                    self._active_clients[platform_id] = client
+                    started.append(platform_id)
+                    logger.info(f"[EXTERNAL_COMMS] Started listening on {platform_id}")
+                else:
+                    logger.warning(f"[EXTERNAL_COMMS] {platform_id} start_listening returned but not actually listening")
             except Exception as e:
                 logger.warning(f"[EXTERNAL_COMMS] Failed to start {platform_id}: {e}")
 
@@ -134,9 +140,13 @@ class ExternalCommsManager:
 
         try:
             await client.start_listening(self._handle_platform_message)
-            self._active_clients[platform_id] = client
-            logger.info(f"[EXTERNAL_COMMS] Started listening on {platform_id} (post-connect)")
-            return True
+            if client.is_listening:
+                self._active_clients[platform_id] = client
+                logger.info(f"[EXTERNAL_COMMS] Started listening on {platform_id} (post-connect)")
+                return True
+            else:
+                logger.warning(f"[EXTERNAL_COMMS] {platform_id} start_listening returned but not actually listening")
+                return False
         except Exception as e:
             logger.warning(f"[EXTERNAL_COMMS] Failed to start {platform_id}: {e}")
             return False

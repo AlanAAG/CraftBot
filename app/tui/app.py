@@ -1822,9 +1822,23 @@ class CraftApp(App):
                 ),
                 id="integ-connect-modal",
             )
-        elif auth_type == "both":
-            # Has both OAuth and token: show choice or token input
-            field_inputs = []
+        elif auth_type in ("both", "both_with_interactive"):
+            # Has both OAuth/token and optionally interactive (QR) login
+            # Build 3 clear connection method sections
+            is_bot_platform = integration_id in ("telegram", "discord")
+
+            # Section 1: Invite/OAuth our shared bot (most common)
+            invite_section = [
+                Horizontal(
+                    Button("Invite Bot" if is_bot_platform else "Use OAuth", id="integ-modal-oauth", classes="integ-modal-btn -primary"),
+                    id="integ-modal-invite-actions",
+                ),
+            ]
+
+            # Section 2: Manual bot token entry
+            field_inputs = [
+                Static("— or enter your own bot token —", classes="integ-modal-separator"),
+            ]
             for field in fields:
                 field_inputs.append(Static(field["label"], classes="integ-field-label"))
                 field_inputs.append(
@@ -1835,14 +1849,28 @@ class CraftApp(App):
                         classes="integ-field-input",
                     )
                 )
+            field_inputs.append(
+                Horizontal(
+                    Button("Save", id="integ-modal-save", classes="integ-modal-btn -primary"),
+                    id="integ-modal-save-actions",
+                )
+            )
+
+            # Section 3: Interactive login (QR scan) for user account
+            link_section = []
+            if auth_type == "both_with_interactive":
+                link_section = [
+                    Static("— or link your personal account —", classes="integ-modal-separator"),
+                    Horizontal(
+                        Button("Link Account (QR)", id="integ-modal-interactive-connect", classes="integ-modal-btn -primary"),
+                        id="integ-modal-link-actions",
+                    ),
+                ]
 
             modal_content = Container(
                 Static(f"Connect {info['name']}", id="integ-modal-title"),
-                Static("Enter credentials or use OAuth:", classes="integ-modal-desc"),
-                Vertical(*field_inputs, id="integ-modal-fields"),
+                VerticalScroll(*invite_section, *field_inputs, *link_section, id="integ-modal-fields"),
                 Horizontal(
-                    Button("Save", id="integ-modal-save", classes="integ-modal-btn -primary"),
-                    Button("Use OAuth", id="integ-modal-oauth", classes="integ-modal-btn"),
                     Button("Cancel", id="integ-modal-cancel", classes="integ-modal-btn"),
                     id="integ-modal-actions",
                 ),
@@ -1883,13 +1911,15 @@ class CraftApp(App):
             manager = get_external_comms_manager()
             if manager:
                 # Map integration IDs to platform IDs used in the registry
+                # Some integrations map to multiple platforms (e.g. telegram has bot + user)
                 platform_map = {
-                    "whatsapp": "whatsapp_web",
-                    "telegram": "telegram_bot",
-                    "google": "google_workspace",
+                    "whatsapp": ["whatsapp_web"],
+                    "telegram": ["telegram_bot", "telegram_user"],
+                    "google": ["google_workspace"],
                 }
-                platform_id = platform_map.get(integration_id, integration_id)
-                await manager.start_platform(platform_id)
+                platform_ids = platform_map.get(integration_id, [integration_id])
+                for platform_id in platform_ids:
+                    await manager.start_platform(platform_id)
         except Exception as e:
             logger.warning(f"[TUI] Failed to start listener for {integration_id}: {e}")
 
@@ -1938,19 +1968,18 @@ class CraftApp(App):
         import asyncio
         import concurrent.futures
 
-        # Run the blocking OAuth flow in a thread pool to not block the UI
+        logger.info(f"[TUI] _start_oauth_connect_async: starting for {integration_id}")
         loop = asyncio.get_event_loop()
         executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
 
         try:
-            # Run the blocking OAuth call in a thread
             success, message = await loop.run_in_executor(
                 executor,
                 self._run_oauth_sync,
                 integration_id
             )
+            logger.info(f"[TUI] OAuth connect result: success={success}, message={message[:100]}")
 
-            # Check if cancelled
             if hasattr(self, "_oauth_cancelled") and self._oauth_cancelled:
                 self._oauth_cancelled = False
                 return
@@ -1960,11 +1989,12 @@ class CraftApp(App):
                 self._refresh_integration_list()
                 await self._start_platform_listener(integration_id)
             else:
-                self.notify(message, severity="error", timeout=4)
+                self.notify(message, severity="error", timeout=6)
         except concurrent.futures.CancelledError:
             self.notify("OAuth cancelled", severity="information", timeout=2)
         except Exception as e:
-            self.notify(f"OAuth failed: {e}", severity="error", timeout=4)
+            logger.error(f"[TUI] OAuth connect exception: {e}", exc_info=True)
+            self.notify(f"OAuth failed: {e}", severity="error", timeout=6)
         finally:
             executor.shutdown(wait=False)
             self._close_oauth_waiting_modal()
@@ -1984,9 +2014,11 @@ class CraftApp(App):
     def _start_oauth_connect(self) -> None:
         """Start OAuth flow for the current integration."""
         if not hasattr(self, "_integ_connect_current_id"):
+            logger.warning("[TUI] _start_oauth_connect: no _integ_connect_current_id")
             return
 
         integration_id = self._integ_connect_current_id
+        logger.info(f"[TUI] Starting OAuth connect for {integration_id}")
 
         # Close the connect modal
         self._close_integration_connect_modal()
@@ -2001,9 +2033,11 @@ class CraftApp(App):
     def _start_interactive_connect(self) -> None:
         """Start interactive connection flow (e.g. WhatsApp QR code scan)."""
         if not hasattr(self, "_integ_connect_current_id"):
+            logger.warning("[TUI] _start_interactive_connect: no _integ_connect_current_id")
             return
 
         integration_id = self._integ_connect_current_id
+        logger.info(f"[TUI] Starting interactive connect for {integration_id}")
 
         # Close the connect modal
         self._close_integration_connect_modal()
@@ -2044,6 +2078,7 @@ class CraftApp(App):
         import asyncio
         import concurrent.futures
 
+        logger.info(f"[TUI] _start_interactive_connect_async: starting for {integration_id}")
         loop = asyncio.get_event_loop()
         executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
 
@@ -2053,6 +2088,7 @@ class CraftApp(App):
                 self._run_interactive_sync,
                 integration_id
             )
+            logger.info(f"[TUI] Interactive connect result: success={success}, message={message[:100]}")
 
             if hasattr(self, "_oauth_cancelled") and self._oauth_cancelled:
                 self._oauth_cancelled = False
@@ -2063,11 +2099,12 @@ class CraftApp(App):
                 self._refresh_integration_list()
                 await self._start_platform_listener(integration_id)
             else:
-                self.notify(message, severity="error", timeout=4)
+                self.notify(message, severity="error", timeout=6)
         except concurrent.futures.CancelledError:
             self.notify("Connection cancelled", severity="information", timeout=2)
         except Exception as e:
-            self.notify(f"Connection failed: {e}", severity="error", timeout=4)
+            logger.error(f"[TUI] Interactive connect exception: {e}", exc_info=True)
+            self.notify(f"Connection failed: {e}", severity="error", timeout=6)
         finally:
             executor.shutdown(wait=False)
             self._close_oauth_waiting_modal()

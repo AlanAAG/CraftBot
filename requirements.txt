@@ -5,6 +5,7 @@ nest-asyncio
 pymongo
 tzlocal
 pillow
+qrcode
 pytesseract
 aiohttp
 beautifulsoup4

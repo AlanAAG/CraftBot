@@ -3,11 +3,13 @@
 
 from __future__ import annotations
 
+import asyncio
 import logging
 from dataclasses import dataclass
+from datetime import timezone
 from typing import Any, Dict, List, Optional, Union
 
-from app.external_comms.base import BasePlatformClient
+from app.external_comms.base import BasePlatformClient, PlatformMessage, MessageCallback
 from app.external_comms.credentials import has_credential, load_credential, save_credential, remove_credential
 from app.external_comms.registry import register_client
 
@@ -37,6 +39,8 @@ class TelegramUserClient(BasePlatformClient):
     def __init__(self):
         super().__init__()
         self._cred: Optional[TelegramUserCredential] = None
+        self._live_client = None          # persistent TelegramClient for listening
+        self._my_user_id: Optional[int] = None
 
     # ------------------------------------------------------------------
     # Credential helpers
@@ -66,6 +70,107 @@ class TelegramUserClient(BasePlatformClient):
     async def connect(self) -> None:
         self._load()
         self._connected = True
+
+    # ------------------------------------------------------------------
+    # Listening (Telethon event handler)
+    # ------------------------------------------------------------------
+
+    @property
+    def supports_listening(self) -> bool:
+        return True
+
+    async def start_listening(self, callback: MessageCallback) -> None:
+        """Start listening for incoming messages via MTProto.
+
+        Captures:
+        - Saved Messages (self-messages) → is_self_message = True
+        - Incoming messages from others → is_self_message = False
+        - Outgoing messages to others are ignored.
+        """
+        if self._listening:
+            return
+
+        self._message_callback = callback
+
+        try:
+            from telethon import TelegramClient, events
+        except ImportError:
+            raise RuntimeError("telethon is not installed")
+
+        session, api_id, api_hash = self._session_params()
+        client = TelegramClient(session, api_id, api_hash)
+        await client.connect()
+
+        if not await client.is_user_authorized():
+            await client.disconnect()
+            raise RuntimeError("Telegram user session expired or revoked. Please re-authenticate.")
+
+        me = await client.get_me()
+        self._my_user_id = me.id
+        self._live_client = client
+
+        @client.on(events.NewMessage)
+        async def _on_new_message(event):
+            try:
+                await self._handle_event(event)
+            except Exception as e:
+                logger.error(f"[TELEGRAM_USER] Error handling message event: {e}")
+
+        self._listening = True
+        logger.info(
+            f"[TELEGRAM_USER] Listener started for user {me.first_name or ''} "
+            f"(@{me.username or 'N/A'}, id={me.id})"
+        )
+
+    async def stop_listening(self) -> None:
+        """Stop listening and disconnect the persistent client."""
+        if not self._listening:
+            return
+
+        self._listening = False
+
+        if self._live_client:
+            try:
+                await self._live_client.disconnect()
+            except Exception:
+                pass
+            self._live_client = None
+
+        logger.info("[TELEGRAM_USER] Listener stopped")
+
+    async def _handle_event(self, event) -> None:
+        """Process a Telethon NewMessage event."""
+        msg = event.message
+        if not msg or not msg.text:
+            return
+
+        chat_id = event.chat_id
+        is_saved_messages = (chat_id == self._my_user_id)
+
+        # Outgoing message to someone else → ignore
+        if msg.out and not is_saved_messages:
+            return
+
+        sender = await event.get_sender()
+        chat = await event.get_chat()
+
+        sender_name = _get_display_name(sender) if sender else "Unknown"
+        channel_name = _get_display_name(chat) if chat else ""
+
+        platform_msg = PlatformMessage(
+            platform="telegram_user",
+            sender_id=str(sender.id if sender else self._my_user_id),
+            sender_name=sender_name,
+            text=msg.text,
+            channel_id=str(chat_id),
+            channel_name=channel_name if not is_saved_messages else "Saved Messages",
+            message_id=str(msg.id),
+            timestamp=msg.date.astimezone(timezone.utc) if msg.date else None,
+            raw={"is_self_message": is_saved_messages},
+        )
+
+        if self._message_callback:
+            await self._message_callback(platform_msg)
 
     async def send_message(self, recipient: str, text: str, **kwargs) -> Dict[str, Any]:
         """Send a text message to a chat as the user account.

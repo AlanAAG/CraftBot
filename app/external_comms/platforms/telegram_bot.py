@@ -46,13 +46,28 @@ class TelegramBotClient(BasePlatformClient):
         self._poll_task: Optional[asyncio.Task] = None
         self._poll_offset: int = 0
         self._bot_info: Optional[Dict[str, Any]] = None
+        self._catchup_done: bool = False
 
     # ------------------------------------------------------------------
     # Credential helpers
     # ------------------------------------------------------------------
 
     def has_credentials(self) -> bool:
-        return has_credential(CREDENTIAL_FILE)
+        if has_credential(CREDENTIAL_FILE):
+            return True
+        # Auto-save shared bot credentials from env vars if available
+        try:
+            from app.config import TELEGRAM_SHARED_BOT_TOKEN, TELEGRAM_SHARED_BOT_USERNAME
+            if TELEGRAM_SHARED_BOT_TOKEN:
+                save_credential(CREDENTIAL_FILE, TelegramBotCredential(
+                    bot_token=TELEGRAM_SHARED_BOT_TOKEN,
+                    bot_username=TELEGRAM_SHARED_BOT_USERNAME or "",
+                ))
+                logger.info("[TELEGRAM_BOT] Auto-saved shared bot credentials from env vars")
+                return True
+        except Exception:
+            pass
+        return False
 
     def _load(self) -> TelegramBotCredential:
         if self._cred is None:
@@ -134,7 +149,7 @@ class TelegramBotClient(BasePlatformClient):
         info = await self.get_me()
         if "error" in info:
             logger.error(f"[TELEGRAM_BOT] Invalid bot token: {info}")
-            return
+            raise RuntimeError(f"Invalid bot token: {info.get('error', 'unknown error')}")
         self._bot_info = info.get("result", {})
 
         self._listening = True
@@ -161,7 +176,22 @@ class TelegramBotClient(BasePlatformClient):
         logger.info("[TELEGRAM_BOT] Poller stopped")
 
     async def _poll_loop(self) -> None:
-        """Main long-polling loop."""
+        """Main long-polling loop with initial catchup."""
+        # Catchup: consume all pending updates without dispatching
+        logger.info("[TELEGRAM_BOT] Running initial catchup...")
+        try:
+            catchup_resp = await self._poll_updates()
+            catchup_updates = catchup_resp.get("result", [])
+            for update in catchup_updates:
+                # Just advance the offset without dispatching
+                update_id = update.get("update_id", 0)
+                self._poll_offset = update_id + 1
+            self._catchup_done = True
+            logger.info(f"[TELEGRAM_BOT] Catchup complete — {len(catchup_updates)} pending update(s) skipped")
+        except Exception as e:
+            logger.error(f"[TELEGRAM_BOT] Catchup error: {e}")
+            self._catchup_done = True  # proceed anyway
+
         while self._listening:
             try:
                 updates_resp = await self._poll_updates()
