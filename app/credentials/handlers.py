@@ -16,7 +16,7 @@ from app.external_comms.credentials import has_credential, load_credential, save
 logger = logging.getLogger(__name__)
 
 LOCAL_USER_ID = "local"
-REDIRECT_URI = "http://localhost:8765"
+REDIRECT_URI = "https://localhost:8765"
 
 # Pending Telegram MTProto auth state: {phone_number: {phone_code_hash, session_string, api_id, api_hash}}
 _pending_telegram_auth: dict[str, dict] = {}
@@ -134,7 +134,7 @@ class SlackHandler(IntegrationHandler):
         if not SLACK_SHARED_CLIENT_ID or not SLACK_SHARED_CLIENT_SECRET:
             return False, "CraftOS Slack app not configured. Set SLACK_SHARED_CLIENT_ID and SLACK_SHARED_CLIENT_SECRET env vars.\nAlternatively, use /slack login <bot_token> with your own Slack app."
 
-        scopes = "chat:write,channels:read,channels:history,groups:read,groups:history,users:read,search:read,files:write,im:read,im:write,im:history"
+        scopes = "chat:write,channels:read,channels:history,groups:read,groups:history,users:read,files:write,im:read,im:write,im:history"
         params = {"client_id": SLACK_SHARED_CLIENT_ID, "scope": scopes, "redirect_uri": REDIRECT_URI, "state": secrets.token_urlsafe(32)}
         from agent_core import run_oauth_flow
         code, error = run_oauth_flow(f"https://slack.com/oauth/v2/authorize?{urlencode(params)}")
