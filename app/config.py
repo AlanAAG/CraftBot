@@ -43,6 +43,8 @@ GOOGLE_CLIENT_SECRET: str = os.environ.get("GOOGLE_CLIENT_SECRET", "")
 LINKEDIN_CLIENT_ID: str = get_credential("linkedin", "client_id", "LINKEDIN_CLIENT_ID")
 LINKEDIN_CLIENT_SECRET: str = get_credential("linkedin", "client_secret", "LINKEDIN_CLIENT_SECRET")
 
+# Outlook / Microsoft (PKCE - only client_id required)
+OUTLOOK_CLIENT_ID: str = get_credential("outlook", "client_id", "OUTLOOK_CLIENT_ID")
 
 # Discord (token-based, not OAuth)
 DISCORD_SHARED_BOT_TOKEN: str = os.environ.get("DISCORD_SHARED_BOT_TOKEN", "")

@@ -60,14 +60,11 @@ INTEGRATION_REGISTRY: Dict[str, Dict[str, Any]] = {
         "auth_type": "interactive",  # Requires QR code scan
         "fields": [],
     },
-"outlook": {
+    "outlook": {
         "name": "Outlook",
-        "description": "Email (IMAP/SMTP)",
-        "auth_type": "token",
-        "fields": [
-            {"key": "email_address", "label": "Email Address", "placeholder": "you@outlook.com", "password": False},
-            {"key": "password", "label": "App Password", "placeholder": "App password (not account password)", "password": True},
-        ],
+        "description": "Email via Microsoft Graph",
+        "auth_type": "oauth",
+        "fields": [],
     },
     "whatsapp_business": {
         "name": "WhatsApp Business",
@@ -253,13 +250,6 @@ async def connect_integration_token(integration_id: str, credentials: Dict[str, 
         if not bot_token:
             return False, "Bot token is required"
         args = [bot_token]
-
-    elif integration_id == "outlook":
-        email_address = credentials.get("email_address", "")
-        password = credentials.get("password", "")
-        if not email_address or not password:
-            return False, "Email address and app password are required"
-        args = [email_address, password]
 
     elif integration_id == "whatsapp_business":
         access_token = credentials.get("access_token", "")

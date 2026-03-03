@@ -811,23 +811,72 @@ class WhatsAppHandler(IntegrationHandler):
 # ═══════════════════════════════════════════════════════════════════
 
 class OutlookHandler(IntegrationHandler):
-    async def login(self, args):
-        if len(args) < 2: return False, "Usage: /outlook login <email_address> <app_password>"
-        email_address, password = args[0], args[1]
+    SCOPES = "Mail.Read Mail.Send Mail.ReadWrite User.Read offline_access"
 
-        # Validate by attempting IMAP connection
-        import imaplib
-        try:
-            with imaplib.IMAP4_SSL("outlook.office365.com", 993) as imap:
-                imap.login(email_address, password)
-        except imaplib.IMAP4.error as e:
-            return False, f"Outlook login failed: {e}"
-        except Exception as e:
-            return False, f"Connection failed: {e}"
+    async def login(self, args):
+        from app.config import OUTLOOK_CLIENT_ID
+        if not OUTLOOK_CLIENT_ID:
+            return False, "Not configured. Set OUTLOOK_CLIENT_ID env var (or use embedded credentials)."
+
+        # Generate PKCE code_verifier and code_challenge (RFC 7636)
+        code_verifier = secrets.token_urlsafe(64)[:128]
+        code_challenge = base64.urlsafe_b64encode(
+            hashlib.sha256(code_verifier.encode()).digest()
+        ).decode().rstrip("=")
+
+        params = {
+            "client_id": OUTLOOK_CLIENT_ID,
+            "redirect_uri": REDIRECT_URI,
+            "response_type": "code",
+            "scope": self.SCOPES,
+            "response_mode": "query",
+            "state": secrets.token_urlsafe(32),
+            "code_challenge": code_challenge,
+            "code_challenge_method": "S256",
+        }
+        from agent_core import run_oauth_flow
+        code, error = run_oauth_flow(
+            f"https://login.microsoftonline.com/common/oauth2/v2.0/authorize?{urlencode(params)}"
+        )
+        if error:
+            return False, f"Outlook OAuth failed: {error}"
+
+        import aiohttp
+        async with aiohttp.ClientSession() as s:
+            async with s.post(
+                "https://login.microsoftonline.com/common/oauth2/v2.0/token",
+                data={
+                    "client_id": OUTLOOK_CLIENT_ID,
+                    "code": code,
+                    "redirect_uri": REDIRECT_URI,
+                    "grant_type": "authorization_code",
+                    "code_verifier": code_verifier,
+                    "scope": self.SCOPES,
+                },
+            ) as r:
+                if r.status != 200:
+                    return False, f"Token exchange failed: {await r.text()}"
+                tokens = await r.json()
+
+            async with s.get(
+                "https://graph.microsoft.com/v1.0/me",
+                headers={"Authorization": f"Bearer {tokens['access_token']}"},
+            ) as r:
+                if r.status != 200:
+                    return False, "Failed to fetch user info."
+                info = await r.json()
+
+        user_email = info.get("mail") or info.get("userPrincipalName", "")
 
         from app.external_comms.platforms.outlook import OutlookCredential
-        save_credential("outlook.json", OutlookCredential(email_address=email_address, password=password))
-        return True, f"Outlook connected as {email_address}"
+        save_credential("outlook.json", OutlookCredential(
+            access_token=tokens["access_token"],
+            refresh_token=tokens.get("refresh_token", ""),
+            token_expiry=time.time() + tokens.get("expires_in", 3600),
+            client_id=OUTLOOK_CLIENT_ID,
+            email=user_email,
+        ))
+        return True, f"Outlook connected as {user_email}"
 
     async def logout(self, args):
         if not has_credential("outlook.json"):
@@ -840,7 +889,7 @@ class OutlookHandler(IntegrationHandler):
             return True, "Outlook: Not connected"
         from app.external_comms.platforms.outlook import OutlookCredential
         cred = load_credential("outlook.json", OutlookCredential)
-        email = cred.email_address if cred else "unknown"
+        email = cred.email if cred else "unknown"
         return True, f"Outlook: Connected\n  - {email}"
 
 
