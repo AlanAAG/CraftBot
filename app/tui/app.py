@@ -2226,7 +2226,7 @@ class CraftApp(App):
                 Static(info["description"], id="integ-detail-desc"),
                 VerticalScroll(*account_items, id="integ-detail-accounts"),
                 Horizontal(
-                    Button("Add Another", id="integ-detail-add", classes="integ-detail-btn"),
+                    Button("Reconnect", id="integ-detail-add", classes="integ-detail-btn"),
                     Button("Close", id="integ-detail-close", classes="integ-detail-btn"),
                     id="integ-detail-actions",
                 ),
