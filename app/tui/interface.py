@@ -140,6 +140,7 @@ class TUIInterface:
         # Flat storage of all action items (tasks and actions)
         self._action_items: Dict[str, ActionItem] = {}  # id -> ActionItem
         self._action_order: List[str] = []              # Display order by id
+        self._cached_streams: Dict[str, any] = {}       # Cache stream references to handle race condition
         self._loading_frame_index: int = 0              # Current frame of loading animation
 
         # Agent state tracking
@@ -894,6 +895,7 @@ Skills are also automatically selected during task creation based on the task de
         # Clear action panel state
         self._action_items.clear()
         self._action_order.clear()
+        self._cached_streams.clear()
         self._selected_task_id = None
         self._clear_display_logs()
         await self.status_updates.put(self._status_message)
@@ -941,17 +943,28 @@ Skills are also automatically selected during task creation based on the task de
 
         Watches all event streams (main + all task streams) to support concurrent tasks.
         Each stream is associated with a task_id so events can be correctly grouped.
+
+        Uses cached stream references to handle race condition where stream is removed
+        from manager before TUI processes task_end event.
         """
         try:
             while self._running and self._agent.is_running:
-                # Get all streams with their task IDs to support concurrent tasks
-                streams_with_ids = self._agent.event_stream_manager.get_all_streams_with_ids()
-                if not streams_with_ids:
+                # Get current streams and ADD new ones to cache (don't replace)
+                # This handles the race condition where stream is removed before we process task_end
+                current_streams = self._agent.event_stream_manager.get_all_streams_with_ids()
+                for stream_task_id, stream in current_streams:
+                    if stream_task_id not in self._cached_streams:
+                        self._cached_streams[stream_task_id] = stream
+
+                if not self._cached_streams:
                     await asyncio.sleep(0.05)
                     continue
 
-                # Process events from all streams
-                for stream_task_id, stream in streams_with_ids:
+                # Track streams to remove after processing task_end
+                streams_to_remove: set = set()
+
+                # Process events from ALL cached streams
+                for stream_task_id, stream in list(self._cached_streams.items()):
                     for event in stream.as_list():
                         key = (event.iso_ts, event.kind, event.message)
                         if key in self._seen_events:
@@ -963,7 +976,8 @@ Skills are also automatically selected during task creation based on the task de
 
                         # Skip user messages - they're displayed immediately in submit_user_message()
                         # to provide instant visual feedback while routing happens in background
-                        if event.kind == "user message":
+                        # Use startswith to catch both "user message" and "user message from platform: X"
+                        if event.kind.startswith("user message"):
                             continue
 
                         style = self._style_for_event(event.kind, event.severity)
@@ -977,6 +991,9 @@ Skills are also automatically selected during task creation based on the task de
                                 style=style,
                                 stream_task_id=stream_task_id,
                             )
+                            # Track task_end events for cache cleanup
+                            if event.kind in {"task_end", "task_ended"} and stream_task_id:
+                                streams_to_remove.add(stream_task_id)
                             continue
 
                         if style not in {"agent", "system", "user", "error", "info"}:
@@ -994,6 +1011,10 @@ Skills are also automatically selected during task creation based on the task de
                                 if status != self._status_message:
                                     self._status_message = status
                                     await self.status_updates.put(status)
+
+                # Remove streams from cache AFTER processing task_end
+                for sid in streams_to_remove:
+                    self._cached_streams.pop(sid, None)
 
                 # Check for GUI mode transitions
                 current_gui_mode = STATE.gui_mode
@@ -1086,11 +1107,7 @@ Skills are also automatically selected during task creation based on the task de
                 found_task_id = stream_task_id
 
             # Method 2: Extract task name from message and find by display_name
-            # Only try this if stream_task_id was NOT provided (empty).
-            # If stream_task_id was provided but not found in _action_items,
-            # we should NOT fall back to name matching as it might mark the
-            # wrong task as completed in parallel task scenarios.
-            if not found_task_id and not stream_task_id:
+            if not found_task_id:
                 task_name = message
                 if message.startswith("Task ended: "):
                     task_name = message[12:]
@@ -1347,9 +1364,11 @@ Skills are also automatically selected during task creation based on the task de
             return "action"
         if kind in {"screen", "info", "note"}:
             return "info"
-        if kind in {"user", "user message"}:
+        # Match user messages with or without platform info
+        if kind in {"user", "user message"} or kind.startswith("user message"):
             return "user"
-        if kind in {"agent", "agent message"}:
+        # Match agent messages with or without platform info
+        if kind in {"agent", "agent message"} or kind.startswith("agent message"):
             return "agent"
         return "agent"
 

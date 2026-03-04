@@ -118,18 +118,12 @@ class ActionRouter:
                     "output_schema": act.output_schema
                 })
 
-        # Get message source context for external platform messages
-        message_source_block = ""
-        if hasattr(self.context_engine, 'get_message_source_block'):
-            message_source_block = self.context_engine.get_message_source_block()
-
         # Build the instruction prompt for the LLM
         prompt = SELECT_ACTION_PROMPT.format(
             event_stream=self.context_engine.get_event_stream(),
             memory_context=self.context_engine.get_memory_context(query),
             query=query,
             action_candidates=self._format_candidates(action_candidates),
-            message_source_block=message_source_block,
         )
 
         max_retries = 3

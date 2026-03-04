@@ -63,8 +63,9 @@ async def start_task(input_data: dict) -> dict:
     simulated_mode = input_data.get("simulated_mode", False)
     # Extract session_id injected by ActionManager for stream isolation
     session_id = input_data.get("_session_id")
-    # Extract original user query for logging to the new task's event stream
+    # Extract original user query and platform for logging to the new task's event stream
     original_query = input_data.get("_original_query")
+    original_platform = input_data.get("_original_platform")
 
     if not task_name:
         return {
@@ -103,6 +104,7 @@ async def start_task(input_data: dict) -> dict:
             task_name, task_description, task_mode,
             session_id=session_id,
             original_query=original_query,
+            original_platform=original_platform,
         )
         return {
             "status": "success",

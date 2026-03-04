@@ -95,6 +95,7 @@ class TriggerData:
     parent_id: str | None
     session_id: str | None = None
     user_message: str | None = None  # Original user message without routing prefix
+    platform: str | None = None  # Source platform (e.g., "CraftBot TUI", "Telegram", "Whatsapp")
 
 class AgentBase:
     """
@@ -360,7 +361,13 @@ class AgentBase:
             user_message = self._extract_user_message_from_trigger(trigger)
             if user_message:
                 logger.info(f"[REACT] Recording routed user message: {user_message[:50]}...")
-                self.state_manager.record_user_message(user_message)
+                # Extract platform from trigger payload for event stream display
+                trigger_platform = trigger.payload.get("platform", "") if trigger.payload else ""
+                if trigger_platform:
+                    display_platform = trigger_platform.capitalize()
+                else:
+                    display_platform = "CraftBot TUI"
+                self.state_manager.record_user_message(user_message, platform=display_platform)
 
             # Debug: Log state after session initialization
             logger.debug(
@@ -515,12 +522,17 @@ class AgentBase:
 
     def _extract_trigger_data(self, trigger: Trigger) -> TriggerData:
         """Extract and structure data from trigger."""
+        # Format platform for display (capitalize or use "CraftBot TUI" as default)
+        raw_platform = trigger.payload.get("platform", "") if trigger.payload else ""
+        display_platform = raw_platform.capitalize() if raw_platform else "CraftBot TUI"
+
         return TriggerData(
             query=trigger.next_action_description,
             gui_mode=trigger.payload.get("gui_mode"),
             parent_id=trigger.payload.get("parent_action_id"),
             session_id=trigger.session_id,
             user_message=trigger.payload.get("user_message"),
+            platform=display_platform,
         )
 
     def _extract_user_message_from_trigger(self, trigger: Trigger) -> Optional[str]:
@@ -951,12 +963,13 @@ class AgentBase:
         # Build list of (action, input_data) tuples
         actions_with_input = [(action, params) for action, params, _ in prepared_actions]
 
-        # Inject original user message for task_start actions
+        # Inject original user message and platform for task_start actions
         # Use user_message from payload (original message) if available,
         # otherwise fall back to query (may include routing prefix)
         for action, params in actions_with_input:
             if action.name == "task_start":
                 params["_original_query"] = trigger_data.user_message or trigger_data.query
+                params["_original_platform"] = trigger_data.platform
 
         action_names = [a[0].name for a in actions_with_input]
         logger.info(f"[ACTION] Ready to run {len(actions_with_input)} action(s): {action_names}")
@@ -1372,12 +1385,17 @@ class AgentBase:
             # Extract platform from payload (e.g., "cli", "gui", "tui")
             source_platform = "gui" if gui_mode else "cli"
 
-            # For non-external messages (TUI/CLI), clear any stale message context
-            # External messages already have context set via _handle_external_event
+            # Check if this is an external message (from Telegram, WhatsApp, etc.)
             is_external = payload.get("external_event", False)
-            if not is_external:
-                if hasattr(self, 'context_engine') and self.context_engine:
-                    self.context_engine.clear_message_context()
+
+            # Determine the display platform name for event stream logging
+            if is_external:
+                # For external messages, use the platform from payload (e.g., "telegram", "whatsapp")
+                # Capitalize for display
+                display_platform = payload.get("platform", "External").capitalize()
+            else:
+                # For TUI/CLI messages
+                display_platform = "CraftBot TUI"
 
             # Check active tasks — route message to matching session if possible
             # Use active_task_ids from state_manager (not just triggers in queue) to ensure
@@ -1417,7 +1435,7 @@ class AgentBase:
 
             # No existing triggers matched or action == "new" — create a fresh session
             await self.state_manager.start_session(gui_mode)
-            self.state_manager.record_user_message(chat_content)
+            self.state_manager.record_user_message(chat_content, platform=display_platform)
 
             # skip_merge=True because we already did routing above
             await self.triggers.put(
@@ -1496,8 +1514,7 @@ class AgentBase:
             }
             source_platform = platform_map.get(integration_type, source.lower())
 
-            # Build message context for the context engine
-            # This allows the agent to know where the message came from and make routing decisions
+            # Build message context for payload (useful for downstream processing)
             message_context = {
                 "platform": source_platform,
                 "integration_type": integration_type,
@@ -1507,10 +1524,6 @@ class AgentBase:
                 "channel_name": channel_name,
                 "is_self_message": is_self_message,
             }
-
-            # Inject message context into context engine for prompt inclusion
-            if hasattr(self, 'context_engine') and self.context_engine:
-                self.context_engine.set_message_context(message_context)
 
             # Build a location string (channel/server context)
             location_parts = []

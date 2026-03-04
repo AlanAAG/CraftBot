@@ -211,6 +211,7 @@ class TaskManager:
         selected_skills: Optional[List[str]] = None,
         session_id: Optional[str] = None,
         original_query: Optional[str] = None,
+        original_platform: Optional[str] = None,
     ) -> str:
         """
         Create a new task without LLM planning.
@@ -228,6 +229,8 @@ class TaskManager:
             original_query: Optional original user message to log to the task's
                            event stream. If provided, logs as "user message"
                            before the task_start event.
+            original_platform: Optional platform where the original message came from
+                              (e.g., "CraftBot TUI", "Telegram", "Whatsapp").
 
         Returns:
             The unique task identifier.
@@ -285,8 +288,13 @@ class TaskManager:
         # This ensures the task's event stream contains the original user message
         # before the task_start event, providing full context for the task.
         if original_query:
+            # Format event label with platform info (matches state_manager.record_user_message format)
+            if original_platform:
+                event_label = f"user message from platform: {original_platform}"
+            else:
+                event_label = "user message"
             self.event_stream_manager.log(
-                "user message",
+                event_label,
                 original_query,
                 display_message=original_query,
                 task_id=task_id,
