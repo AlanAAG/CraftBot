@@ -228,7 +228,21 @@ class ContextEngine:
                         If provided, reads DIRECTLY from EventStreamManager's task-specific stream.
                         This is CRITICAL for concurrent task execution - reading from
                         StateSession.event_stream would return a stale snapshot, not live events.
+
+        Returns:
+            Formatted string containing:
+            1. Conversation history (recent user/agent messages from before this task)
+            2. Current task's event stream (real-time events for this task)
         """
+        sections = []
+
+        # Get conversation history (recent messages from BEFORE this task)
+        # This provides context without injecting into the actual event stream
+        conversation_history = self._format_conversation_history()
+        if conversation_history:
+            sections.append(conversation_history)
+
+        # Get current task's event stream
         event_stream = None
 
         # CRITICAL: Read directly from EventStreamManager's task-specific stream
@@ -248,13 +262,59 @@ class ContextEngine:
             event_stream = get_state().event_stream
 
         if event_stream:
-            return (
+            sections.append(
                 "<event_stream>\n"
                 "Use the event stream to understand the current situation and past agent actions:\n"
                 f"{event_stream}\n"
                 "</event_stream>"
             )
-        return "<event_stream>\n(no events yet)\n</event_stream>"
+        else:
+            sections.append("<event_stream>\n(no events yet)\n</event_stream>")
+
+        return "\n\n".join(sections)
+
+    def _format_conversation_history(self, limit: int = 20) -> str:
+        """Format recent conversation messages for inclusion in prompts.
+
+        This retrieves messages from EventStreamManager's conversation history
+        (stored separately from event streams) and formats them as a preamble.
+        These are messages from BEFORE the current task was created.
+
+        Args:
+            limit: Maximum number of messages to include. Defaults to 20.
+
+        Returns:
+            Formatted conversation history section, or empty string if no history.
+        """
+        try:
+            event_stream_manager = self.state_manager.event_stream_manager
+            if not event_stream_manager:
+                return ""
+
+            recent_messages = event_stream_manager.get_recent_conversation_messages(limit)
+            if not recent_messages:
+                return ""
+
+            lines = [
+                "<conversation_history>",
+                "Recent conversation context (messages from before this task):",
+                "",
+            ]
+
+            for event in recent_messages:
+                # Format: [kind]: message
+                # kind already includes platform info (e.g., "user message from platform: Telegram")
+                lines.append(f"[{event.kind}]: {event.message}")
+
+            lines.append("")
+            lines.append("Note: This is historical context. The current task's events are in <event_stream> below.")
+            lines.append("</conversation_history>")
+
+            return "\n".join(lines)
+
+        except Exception as e:
+            logger.warning(f"[CONTEXT] Failed to format conversation history: {e}")
+            return ""
 
     def get_event_stream_delta(self, call_type: str, session_id: Optional[str] = None) -> tuple[str, bool]:
         """Get only new events since the last session sync.

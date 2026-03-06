@@ -9,7 +9,7 @@ from agent_core import action
 - Use web_fetch action to read full page content from specific URLs""",
     default=True,
     mode="CLI",
-    action_sets=["web_research"],
+    action_sets=["core"],
     input_schema={
         "query": {
             "type": "string",

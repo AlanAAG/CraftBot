@@ -4,7 +4,7 @@ from agent_core import action
         name="http_request",
         description="Sends HTTP requests (GET, POST, PUT, PATCH, DELETE) with optional headers, params, and body.",
         mode="CLI",
-        action_sets=["web_research"],
+        action_sets=["core"],
         input_schema={
                 "method": {
                         "type": "string",

@@ -444,8 +444,8 @@ class CraftApp(App):
         # Store mapping from sanitized ID to original server name for handlers
         self._mcp_id_to_name: dict[str, str] = {}
 
-        # Show all templates from MCP_SERVER_TEMPLATES
-        for template_name, template_info in MCP_SERVER_TEMPLATES.items():
+        # Show all templates from MCP_SERVER_TEMPLATES (sorted alphabetically)
+        for template_name, template_info in sorted(MCP_SERVER_TEMPLATES.items(), key=lambda x: x[1].get("name", x[0]).lower()):
             name = template_info.get("name", template_name)
             # Sanitize name for use in widget IDs
             safe_id = self._sanitize_id(name)
@@ -491,8 +491,8 @@ class CraftApp(App):
                 ]
                 items.append(Horizontal(*row_widgets, classes="mcp-server-row -unconfigured"))
 
-        # Also show any custom configured servers not in templates
-        for name, server in configured_servers.items():
+        # Also show any custom configured servers not in templates (sorted alphabetically)
+        for name, server in sorted(configured_servers.items(), key=lambda x: x[0].lower()):
             if name not in MCP_SERVER_TEMPLATES:
                 # Sanitize name for use in widget IDs
                 safe_id = self._sanitize_id(name)
@@ -552,7 +552,8 @@ class CraftApp(App):
         if not skills:
             items.append(Static("No skills discovered", classes="skill-empty"))
         else:
-            for skill in skills:
+            # Sort skills alphabetically by name
+            for skill in sorted(skills, key=lambda s: s["name"].lower()):
                 status = "[+]" if skill["enabled"] else "[ ]"
                 name = skill["name"]
                 # Sanitize name for use in widget IDs

@@ -4,7 +4,7 @@ from agent_core import action
     name="clipboard_read",
     description="Read the current content from the system clipboard.",
     mode="GUI",
-    action_sets=["file_operations"],
+    action_sets=["core"],
     input_schema={},
     output_schema={
         "status": {

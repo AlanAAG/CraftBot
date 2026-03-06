@@ -4,7 +4,7 @@ from agent_core import action
     name="read_file",
     description="Reads a file and returns its contents with line numbers. By default reads up to 2000 lines from the beginning. Use offset and limit parameters to read specific sections of large files. For searching within files, use grep_files instead.",
     mode="CLI",
-    action_sets=["file_operations"],
+    action_sets=["core"],
     input_schema={
         "file_path": {
             "type": "string",

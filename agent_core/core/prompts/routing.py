@@ -17,7 +17,6 @@ You are a session routing system. Determine which task session an incoming messa
 Type: {item_type}
 Content: {item_content}
 Source Platform: {source_platform}
-Conversation ID: {conversation_id}
 </incoming_item>
 
 <existing_sessions>
