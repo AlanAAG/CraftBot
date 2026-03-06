@@ -3,14 +3,16 @@
 CraftBot Installation Script
 
 Usage:
-    python install.py           # Install core dependencies only
-    python install.py --gui     # Install with GUI mode support (OmniParser)
+    python install.py              # Install core dependencies with global pip
+    python install.py --conda      # Install with conda environment
+    python install.py --gui        # Install with GUI mode support (requires --conda)
+    python install.py --gui --conda # Install with GUI and conda environment
 
 Options:
     --gui           Install GUI components (OmniParser for screen automation)
-    --no-conda      Use global pip instead of conda environments
+    --conda         Use conda environment (required for --gui)
     --cpu-only      Install CPU-only PyTorch (for OmniParser, requires --gui)
-    --mamba         Use mamba instead of conda (faster but may have issues)
+    --mamba         Use mamba instead of conda (faster, optional with --conda)
 """
 import multiprocessing
 import os
@@ -186,11 +188,16 @@ def setup_omniparser(force_cpu: bool, use_conda: bool):
     print(" Installing GUI Components (OmniParser)")
     print("="*50)
 
-    mode_str = f"Conda Env '{OMNIPARSER_ENV_NAME}'" if use_conda else "Global Python"
+    if not use_conda:
+        print("Error: OmniParser installation requires --conda flag.")
+        sys.exit(1)
+
+    mode_str = f"Conda Env '{OMNIPARSER_ENV_NAME}'"
     print(f"Mode: {mode_str}")
 
     if not shutil.which("git"):
-        print("Error: 'git' is required. Please install git first.")
+        print("Error: 'git' is required to install OmniParser.")
+        print("Please install git: https://git-scm.com/downloads")
         sys.exit(1)
 
     # Get repo path from config or use default
@@ -203,25 +210,10 @@ def setup_omniparser(force_cpu: bool, use_conda: bool):
         repo_path = os.path.abspath(repo_path)
 
     def run_omni_cmd(cmd_list: list[str], work_dir: str = repo_path, capture_output: bool = False, env_extras: Dict[str, str] = None):
-        if use_conda:
-            full_cmd = ["conda", "run", "-n", OMNIPARSER_ENV_NAME] + cmd_list
-            run_command(full_cmd, cwd=work_dir, capture=capture_output, env_extras=env_extras)
-        else:
-            final_cmd = []
-            if cmd_list[0] == "python":
-                final_cmd = [sys.executable] + cmd_list[1:]
-            elif cmd_list[0] == "pip":
-                final_cmd = [sys.executable, "-m", "pip"] + cmd_list[1:]
-            else:
-                final_cmd = cmd_list
-
-            local_env = env_extras.copy() if env_extras else {}
-            if sys.platform != "win32":
-                user_base = subprocess.run([sys.executable, "-m", "site", "--user-base"], capture_output=True, text=True).stdout.strip()
-                local_bin = os.path.join(user_base, 'bin')
-                local_env["PATH"] = f"{local_bin}{os.pathsep}{os.environ.get('PATH', '')}"
-
-            run_command(final_cmd, cwd=work_dir, capture=capture_output, env_extras=local_env)
+        """Execute command in OmniParser conda environment."""
+        full_cmd = ["conda", "run", "-n", OMNIPARSER_ENV_NAME] + cmd_list
+        local_env = env_extras.copy() if env_extras else {}
+        run_command(full_cmd, cwd=work_dir, capture=capture_output, env_extras=local_env)
 
     # Step 1: Clone/update repository
     print(f"\n[1/6] Repository setup...")
@@ -239,28 +231,20 @@ def setup_omniparser(force_cpu: bool, use_conda: bool):
         print("Skipping to model weights check...")
     else:
         # Step 2: Create environment (conda only)
-        if use_conda:
-            print(f"\n[2/6] Creating conda environment '{OMNIPARSER_ENV_NAME}'...")
-            try:
-                run_command(["conda", "create", "-n", OMNIPARSER_ENV_NAME, "python=3.10", "-y"], capture=True)
-            except:
-                print(f"Environment '{OMNIPARSER_ENV_NAME}' already exists.")
-        else:
-            print(f"\n[2/6] Using global Python: {sys.executable}")
-            run_omni_cmd(["pip", "install", "--upgrade", "pip"])
+        print(f"\n[2/6] Creating conda environment '{OMNIPARSER_ENV_NAME}'...")
+        try:
+            run_command(["conda", "create", "-n", OMNIPARSER_ENV_NAME, "python=3.10", "-y"], capture=True)
+        except subprocess.CalledProcessError:
+            print(f"Environment '{OMNIPARSER_ENV_NAME}' already exists or creation error.")
+        
+        run_omni_cmd(["pip", "install", "--upgrade", "pip"])
 
         # Step 3: Install PyTorch
         print(f"\n[3/6] Installing PyTorch...")
-        if use_conda:
-            if force_cpu:
-                run_omni_cmd(["conda", "install", "pytorch", "torchvision", "torchaudio", "cpuonly", "-c", "pytorch", "-y"])
-            else:
-                run_omni_cmd(["conda", "install", "pytorch", "torchvision", "torchaudio", "pytorch-cuda=12.1", "-c", "pytorch", "-c", "nvidia", "-y"])
+        if force_cpu:
+            run_omni_cmd(["conda", "install", "pytorch", "torchvision", "torchaudio", "cpuonly", "-c", "pytorch", "-y"])
         else:
-            if force_cpu:
-                run_omni_cmd(["pip", "install", "torch", "torchvision", "torchaudio", "--extra-index-url", "https://download.pytorch.org/whl/cpu"])
-            else:
-                run_omni_cmd(["pip", "install", "torch", "torchvision", "torchaudio", "--extra-index-url", "https://download.pytorch.org/whl/cu121"])
+            run_omni_cmd(["conda", "install", "pytorch", "torchvision", "torchaudio", "pytorch-cuda=12.1", "-c", "pytorch", "-c", "nvidia", "-y"])
 
         # Step 4: Install other dependencies
         print(f"\n[4/6] Installing dependencies...")
@@ -322,16 +306,22 @@ if __name__ == "__main__":
 
     # Parse flags
     install_gui = "--gui" in args
-    use_conda = "--no-conda" not in args
+    use_conda = "--conda" in args
     force_cpu = "--cpu-only" in args
+
+    # Validate flags
+    if install_gui and not use_conda:
+        print("Error: --gui requires --conda flag.")
+        print("Use: python install.py --gui --conda")
+        sys.exit(1)
 
     # Save GUI mode preference
     save_config_value("gui_mode_enabled", install_gui)
     os.environ["USE_CONDA"] = str(use_conda)
 
     print(f"\nInstallation mode:")
-    print(f"  - GUI support: {'Yes' if install_gui else 'No (use --gui to enable)'}")
-    print(f"  - Using conda: {'Yes' if use_conda else 'No (global pip)'}")
+    print(f"  - GUI support: {'Yes' if install_gui else 'No (use --gui --conda to enable)'}")
+    print(f"  - Using conda: {'Yes' if use_conda else 'No (global pip only)'}")
     if install_gui and force_cpu:
         print(f"  - PyTorch: CPU only")
 
@@ -344,7 +334,9 @@ if __name__ == "__main__":
         is_installed, reason, conda_base = is_conda_installed()
         if not is_installed:
             print(f"Error: Conda not found ({reason})")
-            print("Install conda or use --no-conda flag.")
+            print("Options:")
+            print("  1. Install Anaconda or Miniconda")
+            print("  2. Or use global pip: python install.py")
             sys.exit(1)
 
         print(f"Conda: {reason}")
@@ -373,4 +365,4 @@ if __name__ == "__main__":
     print("  python run.py")
     if not install_gui:
         print("\nTo add GUI support later, run:")
-        print("  python install.py --gui")
+        print("  python install.py --gui --conda")

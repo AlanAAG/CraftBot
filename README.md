@@ -161,6 +161,9 @@ python run.py --gui
 
 **Examples:**
 ```bash
+
+
+'''
 # Basic install and run
 python install.py
 python run.py
@@ -172,6 +175,12 @@ python run.py --gui
 # Use pip instead of conda
 python install.py --no-conda
 python run.py --no-conda
+*/
+'''
+python install.py              # Global pip (fastest, minimal deps)
+python install.py --conda      # Conda environment
+python install.py --gui --conda # Full installation with GUI components
+
 ```
 
 > [!TIP]
