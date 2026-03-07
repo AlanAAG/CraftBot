@@ -3,10 +3,14 @@
 CraftBot Run Script
 
 Usage:
-    python run.py           # Run the agent (CLI mode)
-    python run.py --gui     # Run with GUI mode enabled
+    python run.py             # Run the agent (TUI mode)
+    python run.py --cli       # Run in CLI mode
+    python run.py --browser   # Run with browser interface
+    python run.py --gui       # Run with GUI mode enabled
 
 Options:
+    --cli           Run in CLI mode instead of TUI
+    --browser       Run with browser interface (WebSocket server on port 8080)
     --gui           Enable GUI mode (requires: python install.py --gui)
     --no-conda      Use global pip instead of conda
 """
@@ -208,7 +212,7 @@ def launch_agent(env_name: Optional[str], conda_base: Optional[str], use_conda: 
         print(f"Error: {main_script} not found.")
         sys.exit(1)
 
-    # Filter flags
+    # Filter flags (--browser and --cli pass through to agent)
     skip_flags = {"--gui", "--no-conda"}
     pass_args = [a for a in sys.argv[1:] if a not in skip_flags]
 
@@ -253,6 +257,7 @@ if __name__ == "__main__":
 
     # Parse flags
     gui_mode = "--gui" in args
+    browser_mode = "--browser" in args
     use_conda = "--no-conda" not in args
 
     # Load saved config
@@ -264,7 +269,8 @@ if __name__ == "__main__":
     os.environ["GUI_MODE_ENABLED"] = str(gui_mode)
     os.environ["USE_OMNIPARSER"] = str(gui_mode)
 
-    print(f"\nMode: {'GUI' if gui_mode else 'CLI'}")
+    mode_str = "GUI" if gui_mode else ("Browser" if browser_mode else "TUI")
+    print(f"\nMode: {mode_str}")
 
     # Check conda
     conda_base = None
