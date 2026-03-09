@@ -267,6 +267,24 @@ def is_conda_installed() -> Tuple[bool, str, Optional[str]]:
         return True, f"Found at {conda_exe}", conda_base_path
 
     if sys.platform == "win32":
+        # Check common Miniconda/Anaconda installation paths
+        common_paths = [
+            os.path.join(os.path.expanduser("~"), "miniconda3"),
+            os.path.join(os.path.expanduser("~"), "Miniconda3"),
+            os.path.join(os.path.expanduser("~"), "anaconda3"),
+            os.path.join(os.path.expanduser("~"), "Anaconda3"),
+            "C:\\miniconda3",
+            "C:\\Miniconda3",
+            "C:\\anaconda3",
+            "C:\\Anaconda3",
+        ]
+        
+        for base_path in common_paths:
+            conda_bat = os.path.join(base_path, "condabin", "conda.bat")
+            if os.path.exists(conda_bat):
+                return True, f"Found at {base_path}", base_path
+        
+        # Also check current Python directory
         current_python_dir = os.path.dirname(sys.executable)
         potential_base_paths = [
             os.path.dirname(current_python_dir),
@@ -359,12 +377,37 @@ def install_miniconda():
         return False
 
 def get_conda_command() -> str:
-    """Return conda command. Use --mamba flag to use mamba instead."""
+    """Return conda command. Use full path on Windows if conda not in PATH."""
     # Mamba can have compatibility issues, so use conda by default
     # Users can pass --mamba flag if they want to use mamba
     if "--mamba" in sys.argv:
         if shutil.which("mamba"):
             return "mamba"
+    
+    # First try to find conda in PATH
+    conda_exe = shutil.which("conda")
+    if conda_exe:
+        return conda_exe
+    
+    # On Windows, check common installation paths
+    if sys.platform == "win32":
+        common_paths = [
+            os.path.join(os.path.expanduser("~"), "miniconda3"),
+            os.path.join(os.path.expanduser("~"), "Miniconda3"),
+            os.path.join(os.path.expanduser("~"), "anaconda3"),
+            os.path.join(os.path.expanduser("~"), "Anaconda3"),
+            "C:\\miniconda3",
+            "C:\\Miniconda3",
+            "C:\\anaconda3",
+            "C:\\Anaconda3",
+        ]
+        
+        for base_path in common_paths:
+            conda_bat = os.path.join(base_path, "condabin", "conda.bat")
+            if os.path.exists(conda_bat):
+                return conda_bat
+    
+    # Fallback to just "conda" (will work if it's in PATH)
     return "conda"
 
 def setup_conda_environment(env_name: str, yml_path: str = YML_FILE):
@@ -385,7 +428,8 @@ def setup_conda_environment(env_name: str, yml_path: str = YML_FILE):
 
 def verify_conda_env(env_name: str) -> bool:
     try:
-        verification_cmd = ["conda", "run", "-n", env_name, "python", "-c", "print('OK')"]
+        conda_cmd = get_conda_command()
+        verification_cmd = [conda_cmd, "run", "-n", env_name, "python", "-c", "print('OK')"]
         result = run_command(verification_cmd, capture=True, quiet=True, check=False, show_error=False)
         return result and hasattr(result, 'returncode') and result.returncode == 0
     except Exception as e:
@@ -429,7 +473,8 @@ def setup_omniparser(force_cpu: bool, use_conda: bool):
 
     def run_omni_cmd(cmd_list: list[str], work_dir: str = repo_path, capture_output: bool = False, env_extras: Dict[str, str] = None):
         """Execute command in OmniParser conda environment."""
-        full_cmd = ["conda", "run", "-n", OMNIPARSER_ENV_NAME] + cmd_list
+        conda_cmd = get_conda_command()
+        full_cmd = [conda_cmd, "run", "-n", OMNIPARSER_ENV_NAME] + cmd_list
         local_env = env_extras.copy() if env_extras else {}
         run_command(full_cmd, cwd=work_dir, capture=capture_output, env_extras=local_env, quiet=capture_output)
 
@@ -448,8 +493,9 @@ def setup_omniparser(force_cpu: bool, use_conda: bool):
     marker_path = os.path.join(repo_path, OMNIPARSER_MARKER_FILE)
     if not os.path.exists(marker_path):
         # Step 2: Create environment
+        conda_cmd = get_conda_command()
         print("🔧 Creating conda environment...")
-        result = run_command(["conda", "create", "-n", OMNIPARSER_ENV_NAME, "python=3.10", "-y"], capture=True, check=False)
+        result = run_command([conda_cmd, "create", "-n", OMNIPARSER_ENV_NAME, "python=3.10", "-y"], capture=True, check=False)
         if result.returncode != 0:
             print(f"\n✗ Error creating conda environment 'omni'")
             sys.exit(1)
@@ -463,16 +509,16 @@ def setup_omniparser(force_cpu: bool, use_conda: bool):
         
         if force_cpu:
             print("   (CPU-only mode)")
-            result = run_command(["conda", "run", "-n", OMNIPARSER_ENV_NAME, "conda", "install", "pytorch", "torchvision", "torchaudio", "cpuonly", "-c", "pytorch", "-y"], capture=True, check=False)
+            result = run_command([conda_cmd, "run", "-n", OMNIPARSER_ENV_NAME, "conda", "install", "pytorch", "torchvision", "torchaudio", "cpuonly", "-c", "pytorch", "-y"], capture=True, check=False)
             pytorch_installed = result.returncode == 0
         else:
             # Try GPU version first
             print("   (Attempting CUDA 12.1 GPU version)")
-            result = run_command(["conda", "run", "-n", OMNIPARSER_ENV_NAME, "conda", "install", "pytorch", "torchvision", "torchaudio", "pytorch-cuda=12.1", "-c", "pytorch", "-c", "nvidia", "-y"], capture=True, check=False)
+            result = run_command([conda_cmd, "run", "-n", OMNIPARSER_ENV_NAME, "conda", "install", "pytorch", "torchvision", "torchaudio", "pytorch-cuda=12.1", "-c", "pytorch", "-c", "nvidia", "-y"], capture=True, check=False)
             
             if result.returncode != 0:
                 print("   ⚠ GPU version failed. Falling back to CPU-only mode...")
-                result = run_command(["conda", "run", "-n", OMNIPARSER_ENV_NAME, "conda", "install", "pytorch", "torchvision", "torchaudio", "cpuonly", "-c", "pytorch", "-y"], capture=True, check=False)
+                result = run_command([conda_cmd, "run", "-n", OMNIPARSER_ENV_NAME, "conda", "install", "pytorch", "torchvision", "torchaudio", "cpuonly", "-c", "pytorch", "-y"], capture=True, check=False)
                 pytorch_installed = result.returncode == 0
                 if pytorch_installed:
                     print("   ✓ CPU-only PyTorch installed successfully")
@@ -492,13 +538,13 @@ def setup_omniparser(force_cpu: bool, use_conda: bool):
         # Step 4: Install dependencies
         print("🔧 Installing dependencies...")
         deps = ["mkl==2024.0", "sympy==1.13.1", "transformers==4.51.0", "huggingface_hub[cli]", "hf_transfer"]
-        result = run_command(["conda", "run", "-n", OMNIPARSER_ENV_NAME, "pip", "install"] + deps, capture=True, check=False)
+        result = run_command([conda_cmd, "run", "-n", OMNIPARSER_ENV_NAME, "pip", "install"] + deps, capture=True, check=False)
         if result.returncode != 0:
             print("⚠ Warning: Some dependencies may have failed to install")
 
         req_txt = os.path.join(repo_path, "requirements.txt")
         if os.path.exists(req_txt):
-            result = run_command(["conda", "run", "-n", OMNIPARSER_ENV_NAME, "pip", "install", "-r", "requirements.txt"], cwd=repo_path, capture=True, check=False)
+            result = run_command([conda_cmd, "run", "-n", OMNIPARSER_ENV_NAME, "pip", "install", "-r", "requirements.txt"], cwd=repo_path, capture=True, check=False)
             if result.returncode != 0:
                 print("⚠ Warning: Some requirements may have failed to install")
 
@@ -525,11 +571,12 @@ def setup_omniparser(force_cpu: bool, use_conda: bool):
 
     hf_env = {"HF_HUB_ENABLE_HF_TRANSFER": "1"}
     failed_downloads = []
+    conda_cmd = get_conda_command()
     for i, file_info in enumerate(files_to_download, 1):
         local_dest = os.path.join(weights_dir, file_info['local_path'])
         if not os.path.exists(local_dest):
             print(f"  📦 ({i}/{len(files_to_download)}) Downloading: {file_info['local_path']}...")
-            result = run_command(["conda", "run", "-n", OMNIPARSER_ENV_NAME, "hf", "download", "microsoft/OmniParser-v2.0", file_info['file'], "--local-dir", "weights"],
+            result = run_command([conda_cmd, "run", "-n", OMNIPARSER_ENV_NAME, "hf", "download", "microsoft/OmniParser-v2.0", file_info['file'], "--local-dir", "weights"],
                         cwd=repo_path, capture=True, check=False, env_extras=hf_env)
             if result.returncode != 0:
                 failed_downloads.append(file_info['local_path'])
@@ -578,8 +625,9 @@ def launch_agent_after_install(install_gui: bool, use_conda: bool):
     print("="*60 + "\n")
     
     if use_conda:
+        conda_cmd = get_conda_command()
         env_name = get_env_name_from_yml()
-        cmd = ["conda", "run", "-n", env_name, "python", "-u", main_script] + args
+        cmd = [conda_cmd, "run", "-n", env_name, "python", "-u", main_script] + args
     else:
         cmd = [sys.executable, "-u", main_script] + args
     
@@ -596,7 +644,8 @@ def launch_agent_after_install(install_gui: bool, use_conda: bool):
         print("\nTo launch manually, run:")
         if use_conda:
             env_name = get_env_name_from_yml()
-            print(f"  conda run -n {env_name} python run.py {' '.join(args)}\n")
+            conda_cmd = get_conda_command()
+            print(f"  {conda_cmd} run -n {env_name} python run.py {' '.join(args)}\n")
         else:
             print(f"  python run.py {' '.join(args)}\n")
         sys.exit(1)

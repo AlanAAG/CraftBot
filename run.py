@@ -146,6 +146,24 @@ def is_conda_installed() -> Tuple[bool, str, Optional[str]]:
         return True, conda_exe, os.path.dirname(os.path.dirname(conda_exe))
 
     if sys.platform == "win32":
+        # Check common Miniconda/Anaconda installation paths
+        common_paths = [
+            os.path.join(os.path.expanduser("~"), "miniconda3"),
+            os.path.join(os.path.expanduser("~"), "Miniconda3"),
+            os.path.join(os.path.expanduser("~"), "anaconda3"),
+            os.path.join(os.path.expanduser("~"), "Anaconda3"),
+            "C:\\miniconda3",
+            "C:\\Miniconda3",
+            "C:\\anaconda3",
+            "C:\\Anaconda3",
+        ]
+        
+        for base_path in common_paths:
+            conda_bat = os.path.join(base_path, "condabin", "conda.bat")
+            if os.path.exists(conda_bat):
+                return True, conda_bat, base_path
+        
+        # Also check current Python directory
         for base in [os.path.dirname(os.path.dirname(sys.executable))]:
             if os.path.exists(os.path.join(base, "condabin", "conda.bat")):
                 return True, base, base
@@ -162,9 +180,38 @@ def get_env_name_from_yml() -> str:
         pass
     return "craftbot"
 
+def get_conda_command() -> str:
+    """Return conda command. Use full path on Windows if conda not in PATH."""
+    # First try to find conda in PATH
+    conda_exe = shutil.which("conda")
+    if conda_exe:
+        return conda_exe
+    
+    # On Windows, check common installation paths
+    if sys.platform == "win32":
+        common_paths = [
+            os.path.join(os.path.expanduser("~"), "miniconda3"),
+            os.path.join(os.path.expanduser("~"), "Miniconda3"),
+            os.path.join(os.path.expanduser("~"), "anaconda3"),
+            os.path.join(os.path.expanduser("~"), "Anaconda3"),
+            "C:\\miniconda3",
+            "C:\\Miniconda3",
+            "C:\\anaconda3",
+            "C:\\Anaconda3",
+        ]
+        
+        for base_path in common_paths:
+            conda_bat = os.path.join(base_path, "condabin", "conda.bat")
+            if os.path.exists(conda_bat):
+                return conda_bat
+    
+    # Fallback to just "conda" (will work if it's in PATH)
+    return "conda"
+
 def verify_env(env_name: str) -> bool:
     try:
-        cmd = ["conda", "run", "-n", env_name, "python", "-c", "print('ok')"]
+        conda_cmd = get_conda_command()
+        cmd = [conda_cmd, "run", "-n", env_name, "python", "-c", "print('ok')"]
         run_command(cmd, capture=True)
         return True
     except:
@@ -186,7 +233,8 @@ def launch_omniparser(use_conda: bool) -> bool:
         return False
 
     if use_conda:
-        cmd = ["conda", "run", "-n", OMNIPARSER_ENV_NAME, "python", "-u", "-m", "gradio_demo"]
+        conda_cmd = get_conda_command()
+        cmd = [conda_cmd, "run", "-n", OMNIPARSER_ENV_NAME, "python", "-u", "-m", "gradio_demo"]
     else:
         cmd = [sys.executable, "-u", "-m", "gradio_demo"]
 
@@ -217,14 +265,7 @@ def launch_agent(env_name: Optional[str], conda_base: Optional[str], use_conda: 
 
     # Build command
     if use_conda and env_name:
-        # Find conda executable
-        if conda_base:
-            conda_exe = os.path.join(conda_base, "condabin", "conda.bat")
-            if not os.path.exists(conda_exe):
-                conda_exe = shutil.which("conda") or "conda"
-        else:
-            conda_exe = shutil.which("conda") or "conda"
-
+        conda_exe = get_conda_command()
         cmd = [conda_exe, "run", "--no-capture-output", "-n", env_name, "python", "-u", main_script] + pass_args
 
         # On Windows, wrap .bat files with cmd.exe
