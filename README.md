@@ -198,11 +198,14 @@ python install.py --gui --conda --cpu-only
 If conda is not detected when using `--conda` flag, the installer will offer to automatically download and install Miniconda. This is the easiest way to get started!
 
 **Launching CraftBot:**
+
+After installation, CraftBot launches automatically! To launch it manually later:
+
 ```bash
 # Run with conda environment
 conda run -n craftbot python run.py
 
-# Run with GUI mode (if installed with --gui)
+# Run with GUI mode (if installed with `python install.py --gui --conda`)
 conda run -n craftbot python run.py --gui
 
 # Or if using pip (no conda)
