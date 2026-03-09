@@ -133,12 +133,16 @@ def run_command_with_progress(cmd_list: list[str], message: str = "Processing", 
         # Simulate progress updates while process runs
         import threading
         def update_progress():
-            steps = [10, 25, 40, 55, 70, 85, 95]
-            for step in steps:
-                if process.poll() is not None:
-                    break
-                progress.update(step)
-                time.sleep(0.5)
+            steps = [5, 10, 15, 25, 35, 45, 55, 65, 75, 85, 92, 98]
+            step_idx = 0
+            while process.poll() is None and step_idx < len(steps):
+                progress.update(steps[step_idx])
+                step_idx += 1
+                time.sleep(0.1)  # Faster updates
+            
+            # Continue updating until process finishes
+            while process.poll() is None:
+                time.sleep(0.05)
         
         # Start progress thread
         progress_thread = threading.Thread(target=update_progress, daemon=True)
