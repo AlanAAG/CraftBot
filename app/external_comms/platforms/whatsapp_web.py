@@ -236,6 +236,10 @@ class WhatsAppWebClient(BasePlatformClient):
         if self._listening:
             return
 
+        # Invalidate cached credential so we pick up the latest session ID
+        # (e.g. after a fresh interactive connect replaced the old session).
+        self._cred = None
+
         # Ensure we have an active Playwright session on *this* event loop.
         # The login flow creates the session on a background thread whose event
         # loop is closed afterwards, making the Playwright page unusable.
