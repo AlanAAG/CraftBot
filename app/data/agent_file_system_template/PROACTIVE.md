@@ -1,6 +1,6 @@
 ---
 version: "1.0"
-last_updated: {{TIMESTAMP}}  # Auto-updated by system (format: YYYY-MM-DDTHH:MM:SSZ)
+last_updated: null  # Auto-updated by system (format: YYYY-MM-DDTHH:MM:SSZ)
 ---
 
 # Proactive Tasks
@@ -18,11 +18,9 @@ as they are used by the parser to locate sections.
 ================================================================================
 -->
 
-## How Proactive Tasks Work
+---
 
-You can operate proactively based on scheduled activations. Schedules can be hourly (every X hours), daily (at a specific time), weekly (on a specific day), or monthly (on a specific date).
-
-When a schedule fires, you execute a proactive check workflow. First, read PROACTIVE.md to understand configured proactive tasks and their conditions. Then research the agent file system for relevant context - user preferences, project status, organizational priorities.
+# Proactive Management
 
 ---
 

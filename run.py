@@ -9,16 +9,9 @@ Usage:
     python run.py --gui       # Run with GUI mode enabled
 
 Options:
-<<<<<<< HEAD
     --gui           Enable GUI mode (optional, requires: python install.py --gui)
 
 Note: The installation method (conda/pip) is saved from install.py and reused here.
-=======
-    --cli           Run in CLI mode instead of TUI
-    --browser       Run with browser interface (WebSocket server on port 8080)
-    --gui           Enable GUI mode (requires: python install.py --gui)
-    --no-conda      Use global pip instead of conda
->>>>>>> fe11d10 (Initial browser interface update)
 """
 import multiprocessing
 import os
@@ -300,16 +293,9 @@ if __name__ == "__main__":
 
     # Parse flags
     gui_mode = "--gui" in args
-<<<<<<< HEAD
     no_conda_flag = "--no-conda" in args
     
     # Load saved config to check what was actually installed
-=======
-    browser_mode = "--browser" in args
-    use_conda = "--no-conda" not in args
-
-    # Load saved config
->>>>>>> fe11d10 (Initial browser interface update)
     config = load_config()
     use_conda = config.get("use_conda", False)  # Use config instead of defaulting to True
     
