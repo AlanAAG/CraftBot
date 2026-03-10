@@ -154,7 +154,7 @@ async def reset_agent_state(controller) -> Dict[str, Any]:
         controller.state_store.reset()
 
         # Reset agent state
-        await controller.agent.reset_state()
+        await controller.agent.reset_agent_state()
 
         return {
             "success": True,

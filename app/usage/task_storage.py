@@ -271,6 +271,22 @@ class TaskStorage:
                 "latest_task": row[1] if row[1] else None,
             }
 
+    def clear_tasks(self) -> int:
+        """
+        Clear all task events.
+
+        Returns:
+            Number of tasks deleted.
+        """
+        with sqlite3.connect(self._db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT COUNT(*) FROM task_events")
+            count = cursor.fetchone()[0]
+            cursor.execute("DELETE FROM task_events")
+            conn.commit()
+            logger.info(f"[TaskStorage] Cleared {count} task events")
+            return count
+
 
 # Global storage instance
 _task_storage: Optional[TaskStorage] = None

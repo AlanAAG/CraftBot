@@ -1,6 +1,6 @@
 ---
 version: "1.0"
-last_updated: {{TIMESTAMP}}  # Auto-updated by system (format: YYYY-MM-DDTHH:MM:SSZ)
+last_updated: null
 ---
 
 # Proactive Tasks

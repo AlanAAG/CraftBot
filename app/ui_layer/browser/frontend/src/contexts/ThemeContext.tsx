@@ -26,6 +26,24 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     localStorage.setItem(STORAGE_KEY, theme)
   }, [theme])
 
+  // Listen for localStorage changes from Settings page
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === STORAGE_KEY && e.newValue) {
+        // Resolve 'system' to actual theme
+        if (e.newValue === 'system') {
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+          setThemeState(prefersDark ? 'dark' : 'light')
+        } else if (e.newValue === 'dark' || e.newValue === 'light') {
+          setThemeState(e.newValue)
+        }
+      }
+    }
+
+    window.addEventListener('storage', handleStorageChange)
+    return () => window.removeEventListener('storage', handleStorageChange)
+  }, [])
+
   const setTheme = useCallback((newTheme: Theme) => {
     setThemeState(newTheme)
   }, [])

@@ -1,5 +1,5 @@
 ---
-name: google-sheets
+name: google-sheet
 description: Read, write, append, and manage Google Sheets via the Google Sheets API (Node.js SDK). Use when you need to interact with spreadsheets — reading data, writing/updating cells, appending rows, clearing ranges, formatting cells, managing sheets. Requires a Google Cloud service account with Sheets API enabled.
 ---
 

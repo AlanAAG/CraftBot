@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import remarkBreaks from 'remark-breaks'
 import styles from './MarkdownContent.module.css'
 
 interface MarkdownContentProps {
@@ -11,7 +12,7 @@ interface MarkdownContentProps {
 export function MarkdownContent({ content, className = '' }: MarkdownContentProps) {
   return (
     <div className={`${styles.markdown} ${className}`}>
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+      <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
         {content}
       </ReactMarkdown>
     </div>

@@ -535,6 +535,22 @@ class UsageStorage:
                 "latest_event": row[1] if row[1] else None,
             }
 
+    def clear_events(self) -> int:
+        """
+        Clear all usage events.
+
+        Returns:
+            Number of events deleted.
+        """
+        with sqlite3.connect(self._db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT COUNT(*) FROM usage_events")
+            count = cursor.fetchone()[0]
+            cursor.execute("DELETE FROM usage_events")
+            conn.commit()
+            logger.info(f"[UsageStorage] Cleared {count} usage events")
+            return count
+
 
 # Global storage instance
 _usage_storage: Optional[UsageStorage] = None

@@ -1706,7 +1706,46 @@ class AgentBase:
         if hasattr(self, 'memory_file_watcher'):
             self.memory_file_watcher.start()
 
+        # 6. Clear usage data (chat, actions, tasks, usage)
+        await self._clear_usage_data()
+
         return "Agent state reset. Agent file system reinitialized."
+
+    async def _clear_usage_data(self) -> None:
+        """
+        Clear all usage data from storage.
+        Clears chat messages, action items, task events, and usage events.
+        """
+        from app.usage import (
+            get_chat_storage,
+            get_action_storage,
+            get_task_storage,
+            get_usage_storage,
+        )
+
+        try:
+            # Clear chat messages
+            chat_storage = get_chat_storage()
+            chat_count = chat_storage.clear_messages()
+            logger.info(f"[RESET] Cleared {chat_count} chat messages")
+
+            # Clear action items
+            action_storage = get_action_storage()
+            action_count = action_storage.clear_items()
+            logger.info(f"[RESET] Cleared {action_count} action items")
+
+            # Clear task events
+            task_storage = get_task_storage()
+            task_count = task_storage.clear_tasks()
+            logger.info(f"[RESET] Cleared {task_count} task events")
+
+            # Clear usage events
+            usage_storage = get_usage_storage()
+            usage_count = usage_storage.clear_events()
+            logger.info(f"[RESET] Cleared {usage_count} usage events")
+
+        except Exception as e:
+            logger.error(f"[RESET] Error clearing usage data: {e}")
 
     async def _reset_agent_file_system(self) -> None:
         """
