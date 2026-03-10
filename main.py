@@ -24,24 +24,25 @@ CLEANUP_PORT = 7861
 
 # --- HELPER FUNCTIONS ---
 
-def run_command(cmd: list, cwd: str = None, check: bool = True, capture: bool = False) -> subprocess.CompletedProcess:
+def run_command(cmd: list, cwd: str = None, check: bool = True, capture: bool = False, quiet: bool = False) -> subprocess.CompletedProcess:
     """Helper to run subprocess commands robustly."""
     try:
         use_shell = (platform.system() == "Windows")
-        print(f"[*] Executing: {' '.join(cmd)}")
+        # Always capture output when quiet mode is enabled
+        should_capture = capture or quiet
         result = subprocess.run(
             cmd,
             cwd=cwd,
             check=check,
             shell=use_shell,
-            stdout=subprocess.PIPE if capture else sys.stdout,
-            stderr=subprocess.PIPE if capture else sys.stderr,
-            text=True if capture else False
+            stdout=subprocess.PIPE if should_capture else sys.stdout,
+            stderr=subprocess.PIPE if should_capture else sys.stderr,
+            text=True if should_capture else False
         )
         return result
     except subprocess.CalledProcessError as e:
-        print(f"\n[ERROR] Command failed with exit code {e.returncode}: {' '.join(cmd)}")
-        if capture:
+        print(f"\n[ERROR] Command failed: {' '.join(cmd)}")
+        if capture or quiet:
             print(f"STDOUT:\n{e.stdout}\nSTDERR:\n{e.stderr}")
         raise
     except FileNotFoundError:
@@ -108,6 +109,39 @@ def kill_process_on_port(port: int):
     except Exception as e:
         print(f"[!] Warning: Failed to clean up port {port}: {e}")
 
+def kill_process_on_port_quiet(port: int):
+    """Quietly kill any process listening on the specified TCP port."""
+    current_os = platform.system()
+    port_str = str(port)
+
+    try:
+        if current_os == "Windows":
+            find_cmd = f"netstat -ano | findstr TCP | findstr :{port_str}"
+            try:
+                output = subprocess.check_output(find_cmd, shell=True, text=True, stderr=subprocess.DEVNULL)
+                pids_to_kill = set()
+                for line in output.strip().split('\n'):
+                    parts = line.strip().split()
+                    if len(parts) >= 5 and parts[-2] == "LISTENING":
+                        pid = parts[-1]
+                        if pid.isdigit() and int(pid) > 0: pids_to_kill.add(pid)
+                for pid in pids_to_kill:
+                    subprocess.run(f"taskkill /F /T /PID {pid}", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            except subprocess.CalledProcessError:
+                pass
+        else:
+            find_cmd = ["lsof", "-t", "-i", f"TCP:{port_str}"]
+            if shutil.which("lsof"):
+                try:
+                    output = subprocess.check_output(find_cmd, text=True, stderr=subprocess.DEVNULL)
+                    pids = [p for p in output.strip().split('\n') if p.isdigit() and int(p) > 0]
+                    for pid in pids:
+                        subprocess.run(["kill", "-9", pid], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                except subprocess.CalledProcessError:
+                    pass
+    except Exception:
+        pass
+
 # --- MAIN LOGIC ---
 
 def main():
@@ -160,28 +194,20 @@ def main():
 
         # Run the main Python app in the foreground.
         # This call BLOCKS until the app exits.
-        # Because we are ignoring signals, this wrapper will just sit here
-        # until the child process decides to exit on its own.
-        # Pass through command-line arguments (e.g., --cli, --provider)
         python_app_cmd = PYTHON_APP_BASE_CMD + sys.argv[1:]
         result = subprocess.run(
             python_app_cmd,
             stdin=sys.stdin,
             stdout=sys.stdout,
             stderr=sys.stderr,
-            check=False # We handle exit code manually
+            check=False
         )
         final_exit_code = result.returncode
-        print(f"\n[i] Agent exited with code: {final_exit_code}")
 
-    # Note: KeyboardInterrupt except block removed as it will never be caught.
-
-    except (subprocess.CalledProcessError, TimeoutError, FileNotFoundError) as e:
-        print(f"\n[!] Launch sequence aborted due to error.")
+    except (subprocess.CalledProcessError, TimeoutError, FileNotFoundError):
         final_exit_code = 1
-        
-    except Exception as e:
-        print(f"\n[ERROR] An unexpected error occurred: {e}")
+
+    except Exception:
         final_exit_code = 1
 
 
@@ -203,7 +229,6 @@ def main():
         else:
             print("[*] Skipping Docker cleanup (not started in CLI mode).")
 
-        print("Shutdown complete.")
         sys.exit(final_exit_code)
 
 if __name__ == "__main__":

@@ -200,41 +200,96 @@ class StateManager:
         except Exception as e:
             logger.warning(f"[STATE] Failed to append to conversation history: {e}")
 
-    def record_user_message(self, content: str, session_id: Optional[str] = None) -> None:
+    def record_user_message(
+        self,
+        content: str,
+        session_id: Optional[str] = None,
+        platform: Optional[str] = None,
+    ) -> None:
         """Record a user message to the event stream and conversation history.
 
         Args:
             content: The message content.
             session_id: Optional task/session ID for multi-task isolation.
                        If not provided, falls back to current task's ID.
+            platform: Optional platform identifier (e.g., "Telegram", "WhatsApp", "CraftBot TUI").
+                     If provided, the event label becomes "user message from platform: X".
         """
         # Get task_id for proper event stream isolation in multi-task scenarios
         task_id = session_id or (self.task.id if self.task else None)
+
+        # Include platform info in the event label if provided
+        if platform:
+            event_label = f"user message from platform: {platform}"
+        else:
+            event_label = "user message"
+
         self.event_stream_manager.log(
-            "user message",
+            event_label,
             content,
             display_message=content,
             task_id=task_id,
         )
+
+        # Record to conversation history for context injection into future tasks
+        self.event_stream_manager.record_conversation_message(
+            event_label,
+            content,
+            display_message=content,
+        )
+
         self.bump_event_stream()
         self._append_to_conversation_history("user", content)
 
-    def record_agent_message(self, content: str, session_id: Optional[str] = None) -> None:
+    def record_agent_message(
+        self,
+        content: str,
+        session_id: Optional[str] = None,
+        platform: Optional[str] = None,
+    ) -> None:
         """Record an agent message to the event stream and conversation history.
 
         Args:
             content: The message content.
             session_id: Optional task/session ID for multi-task isolation.
                        If not provided, falls back to current task's ID.
+            platform: Optional platform identifier (e.g., "Telegram", "WhatsApp", "CraftBot TUI").
+                     If provided, the event label becomes "agent message to platform: X".
         """
         # Get task_id for proper event stream isolation in multi-task scenarios
         task_id = session_id or (self.task.id if self.task else None)
-        self.event_stream_manager.log(
-            "agent message",
+
+        # Include platform info in the event label if provided
+        if platform:
+            event_label = f"agent message to platform: {platform}"
+        else:
+            event_label = "agent message"
+
+        # Log to task-specific stream if within a task
+        if task_id:
+            self.event_stream_manager.log(
+                event_label,
+                content,
+                display_message=content,
+                task_id=task_id,
+            )
+
+        # Also log to main event stream (for conversation-level context)
+        # This ensures agent messages appear in the main event stream alongside user messages
+        main_stream = self.event_stream_manager.get_main_stream()
+        main_stream.log(
+            event_label,
             content,
             display_message=content,
-            task_id=task_id,
         )
+
+        # Record to conversation history for context injection into future tasks
+        self.event_stream_manager.record_conversation_message(
+            event_label,
+            content,
+            display_message=content,
+        )
+
         self.bump_event_stream()
         self._append_to_conversation_history("agent", content)
 

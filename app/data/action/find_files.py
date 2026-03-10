@@ -5,7 +5,7 @@ from agent_core import action
     description="Finds files by name or pattern across the system. Supports wildcards, relative paths, and recursive search.",
     mode="CLI",
     platforms=["linux", "darwin"],
-    action_sets=["file_operations"],
+    action_sets=["core"],
     input_schema={
         "pattern": {
             "type": "string",

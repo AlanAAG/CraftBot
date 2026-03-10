@@ -12,7 +12,7 @@ from agent_core import action
 IMPORTANT: This action may fail for authenticated or private URLs. For sites requiring
 authentication (Google Docs, Confluence, Jira, etc.), use specialized authenticated tools.""",
     mode="CLI",
-    action_sets=["web_research"],
+    action_sets=["core"],
     input_schema={
         "url": {
             "type": "string",

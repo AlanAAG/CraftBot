@@ -822,7 +822,7 @@ TextLog {
     max-width: 90%;
     border: solid #ff4f18;
     background: #0a0a0a;
-    padding: 2 3;
+    padding: 1 2;
 }
 
 #integ-modal-title {
@@ -842,13 +842,21 @@ TextLog {
 }
 
 #integ-modal-fields {
+    max-height: 16;
     height: auto;
-    margin: 1 0;
+    margin: 0;
+}
+
+.integ-modal-separator {
+    color: #606060;
+    text-align: center;
+    margin-top: 1;
+    margin-bottom: 0;
 }
 
 .integ-field-label {
     color: #ff4f18;
-    margin-top: 1;
+    margin-top: 0;
 }
 
 .integ-field-input {

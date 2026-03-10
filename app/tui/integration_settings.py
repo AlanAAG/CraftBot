@@ -38,16 +38,10 @@ INTEGRATION_REGISTRY: Dict[str, Dict[str, Any]] = {
         "auth_type": "oauth",
         "fields": [],
     },
-    "zoom": {
-        "name": "Zoom",
-        "description": "Video meetings",
-        "auth_type": "oauth",
-        "fields": [],
-    },
-    "discord": {
+"discord": {
         "name": "Discord",
         "description": "Community chat",
-        "auth_type": "both",  # Has both invite and bot token login
+        "auth_type": "token",
         "fields": [
             {"key": "bot_token", "label": "Bot Token", "placeholder": "Enter bot token", "password": True},
         ],
@@ -55,7 +49,7 @@ INTEGRATION_REGISTRY: Dict[str, Dict[str, Any]] = {
     "telegram": {
         "name": "Telegram",
         "description": "Messaging platform",
-        "auth_type": "both",  # Has both invite and bot token login
+        "auth_type": "token_with_interactive",  # Bot token AND QR code user login
         "fields": [
             {"key": "bot_token", "label": "Bot Token", "placeholder": "From @BotFather", "password": True},
         ],
@@ -66,13 +60,13 @@ INTEGRATION_REGISTRY: Dict[str, Dict[str, Any]] = {
         "auth_type": "interactive",  # Requires QR code scan
         "fields": [],
     },
-    "recall": {
-        "name": "Recall.ai",
-        "description": "Meeting transcription",
+"whatsapp_business": {
+        "name": "WhatsApp Business",
+        "description": "WhatsApp Cloud API",
         "auth_type": "token",
         "fields": [
-            {"key": "api_key", "label": "API Key", "placeholder": "Enter API key", "password": True},
-            {"key": "region", "label": "Region", "placeholder": "us or eu", "password": False},
+            {"key": "access_token", "label": "Access Token", "placeholder": "Enter access token", "password": True},
+            {"key": "phone_number_id", "label": "Phone Number ID", "placeholder": "Enter phone number ID", "password": False},
         ],
     },
 }
@@ -123,7 +117,7 @@ def list_integrations() -> List[Dict[str, Any]]:
     - id: Integration ID
     - name: Display name
     - description: Short description
-    - auth_type: oauth, token, both, or interactive
+    - auth_type: oauth, token, both, interactive, or token_with_interactive
     - connected: bool
     - accounts: list of connected accounts
     - fields: list of input field definitions for token auth
@@ -251,14 +245,12 @@ async def connect_integration_token(integration_id: str, credentials: Dict[str, 
             return False, "Bot token is required"
         args = [bot_token]
 
-    elif integration_id == "recall":
-        api_key = credentials.get("api_key", "")
-        if not api_key:
-            return False, "API key is required"
-        args = [api_key]
-        region = credentials.get("region", "us")
-        if region:
-            args.append(region)
+    elif integration_id == "whatsapp_business":
+        access_token = credentials.get("access_token", "")
+        phone_number_id = credentials.get("phone_number_id", "")
+        if not access_token or not phone_number_id:
+            return False, "Access token and phone number ID are required"
+        args = [access_token, phone_number_id]
 
     else:
         return False, f"Token-based login not supported for {integration_id}"
@@ -319,6 +311,36 @@ async def disconnect_integration(integration_id: str, account_id: Optional[str] 
     except Exception as e:
         logger.error(f"Failed to disconnect {integration_id}: {e}")
         return False, f"Disconnect failed: {str(e)}"
+
+
+async def connect_integration_interactive(integration_id: str) -> Tuple[bool, str]:
+    """Start interactive connection flow (e.g. WhatsApp QR code scan).
+
+    Args:
+        integration_id: The integration to connect
+
+    Returns:
+        (success, message) tuple
+    """
+    handler = _get_handler(integration_id)
+    if not handler:
+        return False, f"Unknown integration: {integration_id}"
+
+    auth_type = INTEGRATION_REGISTRY.get(integration_id, {}).get("auth_type", "")
+
+    if auth_type not in ("interactive", "token_with_interactive"):
+        return False, f"Interactive login not supported for {integration_id}"
+
+    try:
+        if hasattr(handler, "handle"):
+            # Prefer "login-qr" for handlers that support it, fall back to "login"
+            subs = getattr(handler, "subcommands", [])
+            sub = "login-qr" if "login-qr" in subs else "login"
+            return await handler.handle(sub, [])
+        return await handler.login([])
+    except Exception as e:
+        logger.error(f"Interactive login failed for {integration_id}: {e}")
+        return False, f"Connection failed: {str(e)}"
 
 
 def get_integration_auth_type(integration_id: str) -> str:

@@ -89,7 +89,22 @@ class ActionRouter:
             List[Dict[str, Any]]: List of decision payloads, each with ``action_name``,
             ``parameters``, and ``reasoning`` for execution.
         """
-        conversation_mode_actions = ["send_message", "task_start", "ignore"]
+        # Base conversation mode actions
+        base_actions = ["send_message", "task_start", "ignore"]
+
+        # Dynamically add messaging actions for connected platforms
+        try:
+            from app.external_comms.integration_discovery import (
+                get_connected_messaging_platforms,
+                get_messaging_actions_for_platforms,
+            )
+            connected_platforms = get_connected_messaging_platforms()
+            messaging_actions = get_messaging_actions_for_platforms(connected_platforms)
+            conversation_mode_actions = base_actions + messaging_actions
+        except Exception as e:
+            logger.debug(f"[ACTION] Could not discover messaging actions: {e}")
+            conversation_mode_actions = base_actions
+
         action_candidates = []
 
         for action in conversation_mode_actions:
@@ -415,10 +430,11 @@ class ActionRouter:
             current_task_id = ""
 
         for attempt in range(max_retries):
-            # KV CACHING: System prompt is now STATIC only
+            # KV CACHING: System prompt is STATIC only (no dynamic content)
+            # agent_info is included for all modes to provide consistent agent context
             system_prompt, _ = self.context_engine.make_prompt(
                 user_flags={"query": False, "expected_output": False},
-                system_flags={"agent_info": not is_task, "policy": False},
+                system_flags={"agent_info": True, "policy": False},
             )
 
             raw_response = None

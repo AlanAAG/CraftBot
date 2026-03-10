@@ -287,10 +287,6 @@ def launch_agent(env_name: Optional[str], conda_base: Optional[str], use_conda: 
 # MAIN
 # ==========================================
 if __name__ == "__main__":
-    print("="*50)
-    print(" CraftBot")
-    print("="*50)
-
     args = set(sys.argv[1:])
 
     # Parse flags

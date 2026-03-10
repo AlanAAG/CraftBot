@@ -4,7 +4,7 @@ from agent_core import action
     name="write_file",
     description="Write or overwrite a text file with the provided content. Creates parent directories if they don't exist.",
     mode="CLI",
-    action_sets=["file_operations"],
+    action_sets=["core"],
     parallelizable=False,
     input_schema={
         "file_path": {

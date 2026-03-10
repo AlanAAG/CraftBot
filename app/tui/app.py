@@ -48,6 +48,7 @@ from app.tui.integration_settings import (
     get_integration_auth_type,
     connect_integration_token,
     connect_integration_oauth,
+    connect_integration_interactive,
     disconnect_integration,
     INTEGRATION_REGISTRY,
 )
@@ -443,8 +444,8 @@ class CraftApp(App):
         # Store mapping from sanitized ID to original server name for handlers
         self._mcp_id_to_name: dict[str, str] = {}
 
-        # Show all templates from MCP_SERVER_TEMPLATES
-        for template_name, template_info in MCP_SERVER_TEMPLATES.items():
+        # Show all templates from MCP_SERVER_TEMPLATES (sorted alphabetically)
+        for template_name, template_info in sorted(MCP_SERVER_TEMPLATES.items(), key=lambda x: x[1].get("name", x[0]).lower()):
             name = template_info.get("name", template_name)
             # Sanitize name for use in widget IDs
             safe_id = self._sanitize_id(name)
@@ -490,8 +491,8 @@ class CraftApp(App):
                 ]
                 items.append(Horizontal(*row_widgets, classes="mcp-server-row -unconfigured"))
 
-        # Also show any custom configured servers not in templates
-        for name, server in configured_servers.items():
+        # Also show any custom configured servers not in templates (sorted alphabetically)
+        for name, server in sorted(configured_servers.items(), key=lambda x: x[0].lower()):
             if name not in MCP_SERVER_TEMPLATES:
                 # Sanitize name for use in widget IDs
                 safe_id = self._sanitize_id(name)
@@ -551,7 +552,8 @@ class CraftApp(App):
         if not skills:
             items.append(Static("No skills discovered", classes="skill-empty"))
         else:
-            for skill in skills:
+            # Sort skills alphabetically by name
+            for skill in sorted(skills, key=lambda s: s["name"].lower()):
                 status = "[+]" if skill["enabled"] else "[ ]"
                 name = skill["name"]
                 # Sanitize name for use in widget IDs
@@ -1429,6 +1431,8 @@ class CraftApp(App):
             self._close_integration_connect_modal()
         elif button_id == "integ-modal-oauth":
             self._start_oauth_connect()
+        elif button_id == "integ-modal-interactive-connect":
+            self._start_interactive_connect()
         elif button_id == "oauth-waiting-cancel":
             self._cancel_oauth_connect()
 
@@ -1808,19 +1812,62 @@ class CraftApp(App):
                 id="integ-connect-modal",
             )
         elif auth_type == "interactive":
-            # Interactive (like WhatsApp): show instructions
+            # Interactive (like WhatsApp): show connect button that starts login flow
             modal_content = Container(
                 Static(f"Connect {info['name']}", id="integ-modal-title"),
-                Static(f"Use the /{integration_id} login command to connect.", classes="integ-modal-desc"),
-                Static("This integration requires an interactive session.", classes="integ-modal-hint"),
+                Static("A browser window will open for you to scan the QR code.", classes="integ-modal-desc"),
                 Horizontal(
-                    Button("Close", id="integ-modal-cancel", classes="integ-modal-btn"),
+                    Button("Connect", id="integ-modal-interactive-connect", classes="integ-modal-btn -primary"),
+                    Button("Cancel", id="integ-modal-cancel", classes="integ-modal-btn"),
                     id="integ-modal-actions",
                 ),
                 id="integ-connect-modal",
             )
         elif auth_type == "both":
-            # Has both OAuth and token: show choice or token input
+            # Has both OAuth (invite) and token entry
+            is_bot_platform = integration_id in ("telegram", "discord")
+
+            # Section 1: Invite/OAuth our shared bot (most common)
+            invite_section = [
+                Horizontal(
+                    Button("Invite Bot" if is_bot_platform else "Use OAuth", id="integ-modal-oauth", classes="integ-modal-btn -primary"),
+                    id="integ-modal-invite-actions",
+                ),
+            ]
+
+            # Section 2: Manual bot token entry
+            field_inputs = [
+                Static("— or enter your own bot token —", classes="integ-modal-separator"),
+            ]
+            for field in fields:
+                field_inputs.append(Static(field["label"], classes="integ-field-label"))
+                field_inputs.append(
+                    PasteableInput(
+                        placeholder=field.get("placeholder", f"Enter {field['label']}"),
+                        password=field.get("password", False),
+                        id=f"integ-field-{field['key']}",
+                        classes="integ-field-input",
+                    )
+                )
+            field_inputs.append(
+                Horizontal(
+                    Button("Save", id="integ-modal-save", classes="integ-modal-btn -primary"),
+                    id="integ-modal-save-actions",
+                )
+            )
+
+            modal_content = Container(
+                Static(f"Connect {info['name']}", id="integ-modal-title"),
+                VerticalScroll(*invite_section, *field_inputs, id="integ-modal-fields"),
+                Horizontal(
+                    Button("Cancel", id="integ-modal-cancel", classes="integ-modal-btn"),
+                    id="integ-modal-actions",
+                ),
+                id="integ-connect-modal",
+            )
+        elif auth_type == "token_with_interactive":
+            # Has both token entry and interactive (QR) login
+            # Section 1: Manual bot token entry
             field_inputs = []
             for field in fields:
                 field_inputs.append(Static(field["label"], classes="integ-field-label"))
@@ -1832,14 +1879,26 @@ class CraftApp(App):
                         classes="integ-field-input",
                     )
                 )
+            field_inputs.append(
+                Horizontal(
+                    Button("Save", id="integ-modal-save", classes="integ-modal-btn -primary"),
+                    id="integ-modal-save-actions",
+                )
+            )
+
+            # Section 2: Interactive login (QR scan) for user account
+            link_section = [
+                Static("— or link your personal account —", classes="integ-modal-separator"),
+                Horizontal(
+                    Button("Link Account (QR)", id="integ-modal-interactive-connect", classes="integ-modal-btn -primary"),
+                    id="integ-modal-link-actions",
+                ),
+            ]
 
             modal_content = Container(
                 Static(f"Connect {info['name']}", id="integ-modal-title"),
-                Static("Enter credentials or use OAuth:", classes="integ-modal-desc"),
-                Vertical(*field_inputs, id="integ-modal-fields"),
+                VerticalScroll(*field_inputs, *link_section, id="integ-modal-fields"),
                 Horizontal(
-                    Button("Save", id="integ-modal-save", classes="integ-modal-btn -primary"),
-                    Button("Use OAuth", id="integ-modal-oauth", classes="integ-modal-btn"),
                     Button("Cancel", id="integ-modal-cancel", classes="integ-modal-btn"),
                     id="integ-modal-actions",
                 ),
@@ -1873,6 +1932,25 @@ class CraftApp(App):
         overlay = Container(modal_content, id="integ-connect-overlay")
         self.mount(overlay)
 
+    async def _start_platform_listener(self, integration_id: str) -> None:
+        """Start the external comms listener for a newly connected platform."""
+        try:
+            from app.external_comms.manager import get_external_comms_manager
+            manager = get_external_comms_manager()
+            if manager:
+                # Map integration IDs to platform IDs used in the registry
+                # Some integrations map to multiple platforms (e.g. telegram has bot + user)
+                platform_map = {
+                    "whatsapp": ["whatsapp_web"],
+                    "telegram": ["telegram_bot", "telegram_user"],
+                    "google": ["google_workspace"],
+                }
+                platform_ids = platform_map.get(integration_id, [integration_id])
+                for platform_id in platform_ids:
+                    await manager.start_platform(platform_id)
+        except Exception as e:
+            logger.warning(f"[TUI] Failed to start listener for {integration_id}: {e}")
+
     async def _save_integration_connect_async(self, integration_id: str, credentials: dict) -> None:
         """Async helper to save integration credentials."""
         try:
@@ -1881,6 +1959,7 @@ class CraftApp(App):
                 self.notify(message, severity="information", timeout=3)
                 self._close_integration_connect_modal()
                 self._refresh_integration_list()
+                await self._start_platform_listener(integration_id)
             else:
                 self.notify(message, severity="error", timeout=4)
         except Exception as e:
@@ -1917,19 +1996,18 @@ class CraftApp(App):
         import asyncio
         import concurrent.futures
 
-        # Run the blocking OAuth flow in a thread pool to not block the UI
+        logger.info(f"[TUI] _start_oauth_connect_async: starting for {integration_id}")
         loop = asyncio.get_event_loop()
         executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
 
         try:
-            # Run the blocking OAuth call in a thread
             success, message = await loop.run_in_executor(
                 executor,
                 self._run_oauth_sync,
                 integration_id
             )
+            logger.info(f"[TUI] OAuth connect result: success={success}, message={message[:100]}")
 
-            # Check if cancelled
             if hasattr(self, "_oauth_cancelled") and self._oauth_cancelled:
                 self._oauth_cancelled = False
                 return
@@ -1937,12 +2015,14 @@ class CraftApp(App):
             if success:
                 self.notify(message, severity="information", timeout=3)
                 self._refresh_integration_list()
+                await self._start_platform_listener(integration_id)
             else:
-                self.notify(message, severity="error", timeout=4)
+                self.notify(message, severity="error", timeout=6)
         except concurrent.futures.CancelledError:
             self.notify("OAuth cancelled", severity="information", timeout=2)
         except Exception as e:
-            self.notify(f"OAuth failed: {e}", severity="error", timeout=4)
+            logger.error(f"[TUI] OAuth connect exception: {e}", exc_info=True)
+            self.notify(f"OAuth failed: {e}", severity="error", timeout=6)
         finally:
             executor.shutdown(wait=False)
             self._close_oauth_waiting_modal()
@@ -1962,9 +2042,11 @@ class CraftApp(App):
     def _start_oauth_connect(self) -> None:
         """Start OAuth flow for the current integration."""
         if not hasattr(self, "_integ_connect_current_id"):
+            logger.warning("[TUI] _start_oauth_connect: no _integ_connect_current_id")
             return
 
         integration_id = self._integ_connect_current_id
+        logger.info(f"[TUI] Starting OAuth connect for {integration_id}")
 
         # Close the connect modal
         self._close_integration_connect_modal()
@@ -1975,6 +2057,96 @@ class CraftApp(App):
         # Run OAuth asynchronously in background thread
         self._oauth_cancelled = False
         create_task(self._start_oauth_connect_async(integration_id))
+
+    def _start_interactive_connect(self) -> None:
+        """Start interactive connection flow (e.g. WhatsApp QR code scan)."""
+        if not hasattr(self, "_integ_connect_current_id"):
+            logger.warning("[TUI] _start_interactive_connect: no _integ_connect_current_id")
+            return
+
+        integration_id = self._integ_connect_current_id
+        logger.info(f"[TUI] Starting interactive connect for {integration_id}")
+
+        # Close the connect modal
+        self._close_integration_connect_modal()
+
+        # Show a waiting modal with QR scan instructions
+        self._show_interactive_waiting_modal(integration_id)
+
+        # Run login asynchronously in background thread
+        self._oauth_cancelled = False
+        create_task(self._start_interactive_connect_async(integration_id))
+
+    def _show_interactive_waiting_modal(self, integration_id: str) -> None:
+        """Show a modal while interactive login is in progress."""
+        # Remove any existing waiting modal
+        for overlay in self.query("#oauth-waiting-overlay"):
+            overlay.remove()
+
+        info = get_integration_info(integration_id)
+        name = info["name"] if info else integration_id
+
+        modal = Container(
+            Container(
+                Static(f"Connecting to {name}...", id="oauth-waiting-title"),
+                Static("Scan the QR code that opened (check browser or terminal).", classes="oauth-waiting-desc"),
+                Static("This window will update automatically when done.", classes="oauth-waiting-hint"),
+                Horizontal(
+                    Button("Cancel", id="oauth-waiting-cancel", classes="oauth-waiting-btn"),
+                    id="oauth-waiting-actions",
+                ),
+                id="oauth-waiting-modal",
+            ),
+            id="oauth-waiting-overlay",
+        )
+        self.mount(modal)
+
+    async def _start_interactive_connect_async(self, integration_id: str) -> None:
+        """Async helper to start interactive login in a background thread."""
+        import asyncio
+        import concurrent.futures
+
+        logger.info(f"[TUI] _start_interactive_connect_async: starting for {integration_id}")
+        loop = asyncio.get_event_loop()
+        executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+
+        try:
+            success, message = await loop.run_in_executor(
+                executor,
+                self._run_interactive_sync,
+                integration_id
+            )
+            logger.info(f"[TUI] Interactive connect result: success={success}, message={message[:100]}")
+
+            if hasattr(self, "_oauth_cancelled") and self._oauth_cancelled:
+                self._oauth_cancelled = False
+                return
+
+            if success:
+                self.notify(message, severity="information", timeout=3)
+                self._refresh_integration_list()
+                await self._start_platform_listener(integration_id)
+            else:
+                self.notify(message, severity="error", timeout=6)
+        except concurrent.futures.CancelledError:
+            self.notify("Connection cancelled", severity="information", timeout=2)
+        except Exception as e:
+            logger.error(f"[TUI] Interactive connect exception: {e}", exc_info=True)
+            self.notify(f"Connection failed: {e}", severity="error", timeout=6)
+        finally:
+            executor.shutdown(wait=False)
+            self._close_oauth_waiting_modal()
+
+    def _run_interactive_sync(self, integration_id: str):
+        """Synchronous wrapper to run interactive login in a thread."""
+        import asyncio
+
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            return loop.run_until_complete(connect_integration_interactive(integration_id))
+        finally:
+            loop.close()
 
     def _show_oauth_waiting_modal(self, integration_id: str) -> None:
         """Show a modal while OAuth is in progress with cancel option."""
@@ -2082,7 +2254,7 @@ class CraftApp(App):
                 Static(info["description"], id="integ-detail-desc"),
                 VerticalScroll(*account_items, id="integ-detail-accounts"),
                 Horizontal(
-                    Button("Add Another", id="integ-detail-add", classes="integ-detail-btn"),
+                    Button("Reconnect", id="integ-detail-add", classes="integ-detail-btn"),
                     Button("Close", id="integ-detail-close", classes="integ-detail-btn"),
                     id="integ-detail-actions",
                 ),

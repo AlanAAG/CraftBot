@@ -142,11 +142,16 @@ class InternalActionInterface:
         return {"description": description, "file_path": img_path}
 
     @staticmethod
-    async def do_chat(message: str) -> None:
-        """Record an agent-authored chat message to the event stream."""
+    async def do_chat(message: str, platform: str = "CraftBot TUI") -> None:
+        """Record an agent-authored chat message to the event stream.
+
+        Args:
+            message: The message content to record.
+            platform: The platform the message is sent to (default: "CraftBot TUI").
+        """
         if InternalActionInterface.state_manager is None:
             raise RuntimeError("InternalActionInterface not initialized with StateManager.")
-        InternalActionInterface.state_manager.record_agent_message(message)
+        InternalActionInterface.state_manager.record_agent_message(message, platform=platform)
 
     @staticmethod
     def do_ignore():
@@ -204,6 +209,7 @@ class InternalActionInterface:
         task_mode: str = "complex",
         session_id: Optional[str] = None,
         original_query: Optional[str] = None,
+        original_platform: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
         Create a new task with automatic skill and action set selection.
@@ -219,6 +225,8 @@ class InternalActionInterface:
                        ensures session_id == task_id for event stream isolation.
             original_query: Optional original user message to log to the task's
                            event stream before the task_start event.
+            original_platform: Optional platform where the original message came from
+                              (e.g., "CraftBot TUI", "Telegram", "Whatsapp").
 
         Returns:
             Dictionary with task_id, action_sets, action_count, and selected_skills.
@@ -233,7 +241,7 @@ class InternalActionInterface:
         # Select skills and action sets in a single LLM call (optimized)
         # Skills are selected first, then action sets with knowledge of skill recommendations
         selected_skills, all_action_sets = await cls._select_skills_and_action_sets_via_llm(
-            task_name, task_description
+            task_name, task_description, source_platform=original_platform
         )
         logger.info(f"[TASK] Auto-selected skills for '{task_name}': {selected_skills}")
         logger.info(f"[TASK] Final action sets: {all_action_sets}")
@@ -250,6 +258,7 @@ class InternalActionInterface:
             selected_skills=selected_skills,
             session_id=session_id,
             original_query=original_query,
+            original_platform=original_platform,
         )
         # Use get_task_by_id instead of get_task() to handle parallel task creation
         # get_task() returns the global active task which can be overwritten by concurrent tasks
@@ -469,7 +478,7 @@ class InternalActionInterface:
 
     @classmethod
     async def _select_skills_and_action_sets_via_llm(
-        cls, task_name: str, task_description: str
+        cls, task_name: str, task_description: str, source_platform: Optional[str] = None
     ) -> tuple[List[str], List[str]]:
         """
         Select skills and action sets in a single LLM call.
@@ -481,6 +490,8 @@ class InternalActionInterface:
         Args:
             task_name: Short name for the task.
             task_description: Detailed description of the task.
+            source_platform: Platform where the message originated (e.g., "Telegram", "Whatsapp").
+                            Used to guide action set selection for reply capability.
 
         Returns:
             Tuple of (selected_skills, selected_action_sets).
@@ -535,6 +546,7 @@ class InternalActionInterface:
             prompt = SKILLS_AND_ACTION_SETS_SELECTION_PROMPT.format(
                 task_name=task_name,
                 task_description=task_description,
+                source_platform=source_platform or "CraftBot TUI",
                 available_skills=skills_text,
                 available_sets=sets_text
             )

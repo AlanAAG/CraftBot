@@ -46,7 +46,6 @@ from app.config import (
     PROCESS_MEMORY_AT_STARTUP,
 )
 
-from app.tui import TUIInterface
 from app.internal_action_interface import InternalActionInterface
 from app.llm import LLMInterface, LLMCallType
 from app.vlm_interface import VLMInterface
@@ -96,6 +95,10 @@ class TriggerData:
     parent_id: str | None
     session_id: str | None = None
     user_message: str | None = None  # Original user message without routing prefix
+    platform: str | None = None  # Source platform (e.g., "CraftBot TUI", "Telegram", "Whatsapp")
+    is_self_message: bool = False  # True when the user sent themselves a message
+    contact_id: str | None = None  # Sender/chat ID from external platform
+    channel_id: str | None = None  # Channel/group ID from external platform
 
 class AgentBase:
     """
@@ -361,7 +364,8 @@ class AgentBase:
             user_message = self._extract_user_message_from_trigger(trigger)
             if user_message:
                 logger.info(f"[REACT] Recording routed user message: {user_message[:50]}...")
-                self.state_manager.record_user_message(user_message)
+                # Use platform from trigger_data (already formatted by _extract_trigger_data)
+                self.state_manager.record_user_message(user_message, platform=trigger_data.platform)
 
             # Debug: Log state after session initialization
             logger.debug(
@@ -516,12 +520,22 @@ class AgentBase:
 
     def _extract_trigger_data(self, trigger: Trigger) -> TriggerData:
         """Extract and structure data from trigger."""
+        # Extract platform from payload (already formatted by _handle_chat_message)
+        # Default to "CraftBot TUI" for local messages without platform info
+        payload = trigger.payload or {}
+        raw_platform = payload.get("platform", "")
+        platform = raw_platform if raw_platform else "CraftBot TUI"
+
         return TriggerData(
             query=trigger.next_action_description,
-            gui_mode=trigger.payload.get("gui_mode"),
-            parent_id=trigger.payload.get("parent_action_id"),
+            gui_mode=payload.get("gui_mode"),
+            parent_id=payload.get("parent_action_id"),
             session_id=trigger.session_id,
-            user_message=trigger.payload.get("user_message"),
+            user_message=payload.get("user_message"),
+            platform=platform,
+            is_self_message=payload.get("is_self_message", False),
+            contact_id=payload.get("contact_id", ""),
+            channel_id=payload.get("channel_id", ""),
         )
 
     def _extract_user_message_from_trigger(self, trigger: Trigger) -> Optional[str]:
@@ -622,6 +636,8 @@ class AgentBase:
 
     async def _handle_proactive_heartbeat(self, frequency: str) -> bool:
         """Create heartbeat processing task for the given frequency."""
+        import time
+
         # Check if there are any tasks for this frequency
         tasks = self.proactive_manager.get_tasks(frequency=frequency, enabled_only=True)
         if not tasks:
@@ -638,10 +654,24 @@ class AgentBase:
             selected_skills=["heartbeat-processor"],
         )
         logger.info(f"[PROACTIVE] Created heartbeat task: {task_id} for {frequency}")
+
+        # Queue trigger to start the task (matching user-profile-interview pattern)
+        trigger = Trigger(
+            fire_at=time.time(),
+            priority=50,
+            next_action_description=f"Execute {frequency} proactive tasks",
+            session_id=task_id,
+            payload={"type": "proactive_heartbeat", "frequency": frequency},
+        )
+        await self.triggers.put(trigger)
+        logger.info(f"[PROACTIVE] Queued trigger for heartbeat task: {task_id}")
+
         return True
 
     async def _handle_proactive_planner(self, scope: str) -> bool:
         """Create planner task for the given scope (day, week, month)."""
+        import time
+
         skill_name = f"{scope}-planner"
 
         task_id = self.task_manager.create_task(
@@ -653,6 +683,18 @@ class AgentBase:
             selected_skills=[skill_name],
         )
         logger.info(f"[PROACTIVE] Created planner task: {task_id} for {scope}")
+
+        # Queue trigger to start the task (matching user-profile-interview pattern)
+        trigger = Trigger(
+            fire_at=time.time(),
+            priority=50,
+            next_action_description=f"Execute {scope} planner task",
+            session_id=task_id,
+            payload={"type": "proactive_planner", "scope": scope},
+        )
+        await self.triggers.put(trigger)
+        logger.info(f"[PROACTIVE] Queued trigger for planner task: {task_id}")
+
         return True
 
     async def _handle_conversation_workflow(self, trigger_data: TriggerData, session_id: str) -> None:
@@ -952,12 +994,13 @@ class AgentBase:
         # Build list of (action, input_data) tuples
         actions_with_input = [(action, params) for action, params, _ in prepared_actions]
 
-        # Inject original user message for task_start actions
+        # Inject original user message and platform for task_start actions
         # Use user_message from payload (original message) if available,
         # otherwise fall back to query (may include routing prefix)
         for action, params in actions_with_input:
             if action.name == "task_start":
                 params["_original_query"] = trigger_data.user_message or trigger_data.query
+                params["_original_platform"] = trigger_data.platform
 
         action_names = [a[0].name for a in actions_with_input]
         logger.info(f"[ACTION] Ready to run {len(actions_with_input)} action(s): {action_names}")
@@ -1339,7 +1382,6 @@ class AgentBase:
             item_type=item_type,
             item_content=item_content,
             source_platform=source_platform,
-            conversation_id="N/A",  # CraftBot doesn't use conversation_id
             existing_sessions=existing_sessions,
         )
 
@@ -1370,8 +1412,16 @@ class AgentBase:
             chat_content = user_input
             logger.info(f"[CHAT RECEIVED] {chat_content}")
             gui_mode = payload.get("gui_mode")
-            # Extract platform from payload (e.g., "cli", "gui", "tui")
-            source_platform = "gui" if gui_mode else "cli"
+
+            # Determine platform - use payload's platform if available, otherwise default
+            # External messages (WhatsApp, Telegram, etc.) have platform set by _handle_external_event
+            # TUI/CLI messages don't have platform in payload, so use "CraftBot TUI"
+            if payload.get("platform"):
+                # External message - capitalize for display (e.g., "whatsapp" -> "Whatsapp")
+                platform = payload["platform"].capitalize()
+            else:
+                # Local TUI/CLI message
+                platform = "CraftBot TUI"
 
             # Check active tasks — route message to matching session if possible
             # Use active_task_ids from state_manager (not just triggers in queue) to ensure
@@ -1386,7 +1436,7 @@ class AgentBase:
                     item_type="message",
                     item_content=chat_content,
                     existing_sessions=existing_sessions,
-                    source_platform=source_platform,
+                    source_platform=platform,
                 )
 
                 action = routing_result.get("action", "new")
@@ -1411,23 +1461,37 @@ class AgentBase:
 
             # No existing triggers matched or action == "new" — create a fresh session
             await self.state_manager.start_session(gui_mode)
-            self.state_manager.record_user_message(chat_content)
+            self.state_manager.record_user_message(chat_content, platform=platform)
 
             # skip_merge=True because we already did routing above
+            trigger_payload = {
+                "gui_mode": gui_mode,
+                "platform": platform,
+                "user_message": chat_content,  # Original user message for task event stream
+            }
+            # Carry external message context for platform-aware routing
+            if payload.get("external_event"):
+                trigger_payload["is_self_message"] = payload.get("is_self_message", False)
+                trigger_payload["contact_id"] = payload.get("contact_id", "")
+                trigger_payload["channel_id"] = payload.get("channel_id", "")
+
+            # Include platform in the action description so the LLM picks
+            # the correct platform-specific send action for replies.
+            # Must be directive (not just informational) for weaker LLMs.
+            platform_hint = ""
+            if platform and platform.lower() != "craftbot tui":
+                platform_hint = f" from {platform} (reply on {platform}, NOT send_message)"
+
             await self.triggers.put(
                 Trigger(
                     fire_at=time.time(),
                     priority=1,
                     next_action_description=(
                         "Please perform action that best suit this user chat "
-                        f"you just received: {chat_content}"
+                        f"you just received{platform_hint}: {chat_content}"
                     ),
                     session_id=str(uuid.uuid4()),  # Generate unique session ID
-                    payload={
-                        "gui_mode": gui_mode,
-                        "platform": source_platform,
-                        "user_message": chat_content,  # Original user message for task event stream
-                    },
+                    payload=trigger_payload,
                 ),
                 skip_merge=True,
             )
@@ -1439,8 +1503,9 @@ class AgentBase:
         """
         Handle an incoming external tool event (WhatsApp, Telegram, etc.).
 
-        Routes the external message through the same flow as _handle_chat_message
-        so it can be routed to an existing session or create a new one.
+        Self-messages (user messaging themselves) are treated as direct user
+        input to the agent.  Messages from other people are wrapped as
+        notifications so the agent asks the user what to do.
 
         Args:
             payload: Event payload with standardized fields:
@@ -1449,6 +1514,7 @@ class AgentBase:
                 - contactId: Contact/chat ID
                 - contactName: Contact name
                 - messageBody: Message text
+                - is_self_message: True when the user sent themselves a message
         """
         try:
             source = payload.get("source", "Unknown")
@@ -1456,14 +1522,19 @@ class AgentBase:
             contact_name = payload.get("contactName") or contact_id
             message_body = payload.get("messageBody", "")
             integration_type = payload.get("integrationType", "").lower()
+            is_self_message = payload.get("is_self_message", False)
 
             if not message_body:
                 logger.warning(f"[EXTERNAL] Empty message body from {source}, ignoring.")
                 return
 
+            channel_id = payload.get("channelId", "")
+            channel_name = payload.get("channelName", "")
+
             logger.info(
                 f"[EXTERNAL] Received from {source} ({integration_type}): "
-                f"{contact_name}: {message_body[:100]}..."
+                f"{contact_name}: {message_body[:100]}... "
+                f"(channel={channel_name or channel_id}, self={is_self_message})"
             )
 
             # Map integration type to platform for routing
@@ -1471,26 +1542,64 @@ class AgentBase:
                 "whatsapp_web": "whatsapp",
                 "whatsapp_business": "whatsapp",
                 "telegram_bot": "telegram",
+                "telegram_user": "telegram",
                 "telegram_mtproto": "telegram",
+                "slack": "slack",
+                "discord": "discord",
+                "linkedin": "linkedin",
+                "notion": "notion",
+                "outlook": "outlook",
+                "google_workspace": "google",
+                "gmail": "google",
             }
             source_platform = platform_map.get(integration_type, source.lower())
 
-            # Format event as message content for the agent
-            event_content = (
-                f"[External {source} message from {contact_name} ({contact_id})]: "
-                f"{message_body}"
-            )
+            # Build message context for payload (useful for downstream processing)
+            message_context = {
+                "platform": source_platform,
+                "integration_type": integration_type,
+                "contact_id": contact_id,
+                "contact_name": contact_name,
+                "channel_id": channel_id,
+                "channel_name": channel_name,
+                "is_self_message": is_self_message,
+            }
+
+            # Build a location string (channel/server context)
+            location_parts = []
+            if channel_name:
+                location_parts.append(channel_name)
+            elif channel_id:
+                location_parts.append(f"channel {channel_id}")
+            location_str = f" in {' / '.join(location_parts)}" if location_parts else ""
+
+            if is_self_message:
+                # Self-message = user is directly talking to the agent.
+                # Pass message body as-is (like a normal chat input).
+                event_content = message_body
+            else:
+                # Someone else sent a message — notify the agent so it can
+                # ask the user what to do about it.
+                event_content = (
+                    f"[Incoming {source} message from {contact_name} ({contact_id}){location_str}]: "
+                    f"\"{message_body}\"\n\n"
+                    f"A new message was received on {source} from {contact_name}{location_str}. "
+                    f"Ask the user what they would like to do about this message. "
+                    f"Present the message content and wait for instructions."
+                )
 
             # Route through the existing chat message handler
-            # This allows external messages to be routed to existing sessions
-            # or create new tasks just like user messages
             await self._handle_chat_message({
                 "text": event_content,
                 "gui_mode": False,
                 "platform": source_platform,
                 "external_event": True,
+                "is_self_message": is_self_message,
                 "contact_id": contact_id,
                 "contact_name": contact_name,
+                "channel_id": channel_id,
+                "channel_name": channel_name,
+                "message_context": message_context,
             })
 
         except Exception as e:
@@ -1854,31 +1963,13 @@ class AgentBase:
     # =====================================
 
     async def _initialize_external_libraries(self) -> None:
-        """Initialize all external app libraries."""
+        """Import all platform modules so their @register_client decorators fire."""
         try:
-            from agent_core.external_libraries.notion.external_app_library import NotionAppLibrary
-            from agent_core.external_libraries.whatsapp.external_app_library import WhatsAppAppLibrary
-            from agent_core.external_libraries.slack.external_app_library import SlackAppLibrary
-            from agent_core.external_libraries.telegram.external_app_library import TelegramAppLibrary
-            from agent_core.external_libraries.linkedin.external_app_library import LinkedInAppLibrary
-            from agent_core.external_libraries.zoom.external_app_library import ZoomAppLibrary
-            from agent_core.external_libraries.discord.external_app_library import DiscordAppLibrary
-            from agent_core.external_libraries.recall.external_app_library import RecallAppLibrary
-            from agent_core.external_libraries.google_workspace.external_app_library import GoogleWorkspaceAppLibrary
-
-            NotionAppLibrary.initialize()
-            WhatsAppAppLibrary.initialize()
-            SlackAppLibrary.initialize()
-            TelegramAppLibrary.initialize()
-            LinkedInAppLibrary.initialize()
-            ZoomAppLibrary.initialize()
-            DiscordAppLibrary.initialize()
-            RecallAppLibrary.initialize()
-            GoogleWorkspaceAppLibrary.initialize()
-            
-            logger.info("[EXT LIBS] External libraries initialized")
+            from app.external_comms.manager import _import_all_platforms
+            _import_all_platforms()
+            logger.info("[EXT LIBS] External platform modules loaded")
         except Exception as e:
-            logger.warning(f"[EXT LIBS] Failed to initialize external libraries: {e}")
+            logger.warning(f"[EXT LIBS] Failed to load platform modules: {e}")
 
     # =====================================
     # Lifecycle
@@ -1901,10 +1992,15 @@ class AgentBase:
             api_key: Optional API key presented in the interface for convenience.
             interface_mode: "tui" for Textual interface, "cli" for command line.
         """
+        # Startup progress messages
+        print("[3/8] Initializing agent...")
+
         # Initialize MCP client and register tools
+        print("[4/8] Connecting to MCP servers...")
         await self._initialize_mcp()
 
         # Initialize skills system
+        print("[5/8] Loading skills...")
         await self._initialize_skills()
 
         # Start usage reporter background flush
@@ -1913,6 +2009,7 @@ class AgentBase:
         self._usage_reporter.start_background_flush()
 
         # Initialize external app libraries
+        print("[6/8] Loading libraries...")
         await self._initialize_external_libraries()
 
         # Process unprocessed events into memory at startup (if enabled)
@@ -1920,6 +2017,7 @@ class AgentBase:
             await self._process_memory_at_startup()
 
         # Initialize and start the scheduler (handles memory processing and other periodic tasks)
+        print("[7/8] Starting scheduler...")
         from app.config import PROJECT_ROOT
         scheduler_config_path = PROJECT_ROOT / "app" / "config" / "scheduler_config.json"
         await self.scheduler.initialize(
@@ -1936,9 +2034,19 @@ class AgentBase:
             await self.trigger_soft_onboarding()
 
         # Initialize external communications (WhatsApp, Telegram)
+        print("[8/8] Starting communications...")
         from app.external_comms import ExternalCommsManager
-        self._external_comms = ExternalCommsManager(self)
+        from app.external_comms.manager import initialize_manager
+        self._external_comms = initialize_manager(self)
         await self._external_comms.start()
+
+        # Startup complete
+        print("\n[OK] Ready!\n", flush=True)
+
+        # Flush stdout/stderr to ensure clean output before TUI starts
+        import sys
+        sys.stdout.flush()
+        sys.stderr.flush()
 
         try:
             # Select interface based on mode
@@ -1950,6 +2058,8 @@ class AgentBase:
                     default_api_key=api_key,
                 )
             else:
+                # Import TUI lazily to avoid terminal capability queries at startup
+                from app.tui import TUIInterface
                 interface = TUIInterface(
                     self,
                     default_provider=provider or self.llm.provider,

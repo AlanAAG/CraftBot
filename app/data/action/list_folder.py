@@ -4,7 +4,7 @@ from agent_core import action
         name="list_folder",
         description="Lists the contents of a specified folder/directory.",
         mode="CLI",
-        action_sets=["file_operations"],
+        action_sets=["core"],
         input_schema={
                 "path": {
                         "type": "string",

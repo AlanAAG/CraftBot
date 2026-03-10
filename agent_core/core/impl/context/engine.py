@@ -67,6 +67,9 @@ class ContextEngine:
         self.state_manager = state_manager
         self._memory_manager = None
 
+        # Message source context for external platform messages
+        self._current_message_context: Optional[Dict[str, Any]] = None
+
         # Hooks for WCA-specific context (default to empty string)
         self._get_conversation_history = get_conversation_history_hook or (lambda: "")
         self._get_chat_target_info = get_chat_target_info_hook or (lambda: "")
@@ -75,6 +78,69 @@ class ContextEngine:
     def set_memory_manager(self, memory_manager) -> None:
         """Set the memory manager for context retrieval."""
         self._memory_manager = memory_manager
+
+    # ─────────────── MESSAGE SOURCE CONTEXT ───────────────
+
+    def set_message_context(self, context: Optional[Dict[str, Any]]) -> None:
+        """Set the current message source context for external platform messages.
+
+        Args:
+            context: Dict containing message metadata:
+                - platform: Source platform (telegram, whatsapp, discord, slack, tui, cli)
+                - contact_id: Contact/sender ID
+                - contact_name: Human-readable contact name
+                - channel_id: Channel/group ID (if applicable)
+                - channel_name: Channel/group name (if applicable)
+                - is_self_message: True if user messaged themselves
+                - integration_type: Full integration type (telegram_bot, whatsapp_web, etc.)
+        """
+        self._current_message_context = context
+
+    def clear_message_context(self) -> None:
+        """Clear the current message context after processing."""
+        self._current_message_context = None
+
+    def get_message_source_block(self) -> str:
+        """Get formatted message source context for inclusion in prompts.
+
+        Returns:
+            Formatted XML block with message source info, or empty string if no context.
+        """
+        if not self._current_message_context:
+            return ""
+
+        platform = self._current_message_context.get("platform", "tui")
+        integration_type = self._current_message_context.get("integration_type", "")
+        contact_name = self._current_message_context.get("contact_name", "")
+        contact_id = self._current_message_context.get("contact_id", "")
+        channel_name = self._current_message_context.get("channel_name", "")
+        channel_id = self._current_message_context.get("channel_id", "")
+        is_self_message = self._current_message_context.get("is_self_message", True)
+
+        lines = [
+            "<message_source>",
+            f"Platform: {platform}",
+        ]
+
+        if integration_type:
+            lines.append(f"Integration Type: {integration_type}")
+
+        if is_self_message:
+            lines.append("Message Type: Self-message (user talking to agent directly)")
+        else:
+            lines.append("Message Type: Third-party message (someone else sent this)")
+            if contact_name:
+                lines.append(f"Sender: {contact_name}")
+            if contact_id:
+                lines.append(f"Sender ID: {contact_id}")
+
+        if channel_name:
+            lines.append(f"Channel: {channel_name}")
+        elif channel_id:
+            lines.append(f"Channel ID: {channel_id}")
+
+        lines.append("</message_source>")
+        return "\n".join(lines)
 
     # ─────────────── SYSTEM MESSAGE COMPONENTS (STATIC ONLY) ───────────────
 
@@ -162,7 +228,21 @@ class ContextEngine:
                         If provided, reads DIRECTLY from EventStreamManager's task-specific stream.
                         This is CRITICAL for concurrent task execution - reading from
                         StateSession.event_stream would return a stale snapshot, not live events.
+
+        Returns:
+            Formatted string containing:
+            1. Conversation history (recent user/agent messages from before this task)
+            2. Current task's event stream (real-time events for this task)
         """
+        sections = []
+
+        # Get conversation history (recent messages from BEFORE this task)
+        # This provides context without injecting into the actual event stream
+        conversation_history = self._format_conversation_history()
+        if conversation_history:
+            sections.append(conversation_history)
+
+        # Get current task's event stream
         event_stream = None
 
         # CRITICAL: Read directly from EventStreamManager's task-specific stream
@@ -182,13 +262,59 @@ class ContextEngine:
             event_stream = get_state().event_stream
 
         if event_stream:
-            return (
+            sections.append(
                 "<event_stream>\n"
                 "Use the event stream to understand the current situation and past agent actions:\n"
                 f"{event_stream}\n"
                 "</event_stream>"
             )
-        return "<event_stream>\n(no events yet)\n</event_stream>"
+        else:
+            sections.append("<event_stream>\n(no events yet)\n</event_stream>")
+
+        return "\n\n".join(sections)
+
+    def _format_conversation_history(self, limit: int = 20) -> str:
+        """Format recent conversation messages for inclusion in prompts.
+
+        This retrieves messages from EventStreamManager's conversation history
+        (stored separately from event streams) and formats them as a preamble.
+        These are messages from BEFORE the current task was created.
+
+        Args:
+            limit: Maximum number of messages to include. Defaults to 20.
+
+        Returns:
+            Formatted conversation history section, or empty string if no history.
+        """
+        try:
+            event_stream_manager = self.state_manager.event_stream_manager
+            if not event_stream_manager:
+                return ""
+
+            recent_messages = event_stream_manager.get_recent_conversation_messages(limit)
+            if not recent_messages:
+                return ""
+
+            lines = [
+                "<conversation_history>",
+                "Recent conversation context (messages from before this task):",
+                "",
+            ]
+
+            for event in recent_messages:
+                # Format: [kind]: message
+                # kind already includes platform info (e.g., "user message from platform: Telegram")
+                lines.append(f"[{event.kind}]: {event.message}")
+
+            lines.append("")
+            lines.append("Note: This is historical context. The current task's events are in <event_stream> below.")
+            lines.append("</conversation_history>")
+
+            return "\n".join(lines)
+
+        except Exception as e:
+            logger.warning(f"[CONTEXT] Failed to format conversation history: {e}")
+            return ""
 
     def get_event_stream_delta(self, call_type: str, session_id: Optional[str] = None) -> tuple[str, bool]:
         """Get only new events since the last session sync.

@@ -4,7 +4,7 @@ from agent_core import action
     name="clipboard_write",
     description="Write text content to the system clipboard.",
     mode="GUI",
-    action_sets=["file_operations"],
+    action_sets=["core"],
     parallelizable=False,
     input_schema={
         "content": {

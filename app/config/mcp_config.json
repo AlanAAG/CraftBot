@@ -1,19 +1,6 @@
 {
   "mcp_servers": [
     {
-      "name": "filesystem",
-      "description": "Read, write, and manage files and directories",
-      "transport": "stdio",
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-filesystem",
-        "."
-      ],
-      "env": {},
-      "enabled": true
-    },
-    {
       "name": "github",
       "description": "GitHub API integration for repositories, issues, and PRs",
       "transport": "stdio",

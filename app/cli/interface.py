@@ -327,13 +327,15 @@ class CLIInterface:
             return
 
         # Handle chat events - ensure exactly one blank line before
-        if kind in {"user", "user message"}:
+        # Match user messages with or without platform info (e.g., "user message from platform: X")
+        if kind in {"user", "user message"} or kind.startswith("user message"):
             self._ensure_blank_line_before()
             print(CLIFormatter.format_chat("You", message, "user"))
             self._last_output_type = "chat"
             return
 
-        if kind in {"agent", "agent message"}:
+        # Match agent messages with or without platform info (e.g., "agent message to platform: X")
+        if kind in {"agent", "agent message"} or kind.startswith("agent message"):
             from app.onboarding import onboarding_manager
             agent_name = onboarding_manager.state.agent_name or "Agent"
             self._ensure_blank_line_before()
@@ -394,10 +396,12 @@ class CLIInterface:
             return True
 
         # Handle per-integration commands (/google, /slack, /telegram, etc.)
-        integration_name = command.lstrip("/")
-        if integration_name in INTEGRATION_HANDLERS:
-            await self._handle_integration_command(integration_name, parts[1:])
-            return True
+        # Only check for integration commands if the input starts with "/"
+        if command.startswith("/"):
+            integration_name = command.lstrip("/")
+            if integration_name in INTEGRATION_HANDLERS:
+                await self._handle_integration_command(integration_name, parts[1:])
+                return True
 
         # Built-in commands
         handler = self._command_handlers.get(command)

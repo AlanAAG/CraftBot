@@ -5,6 +5,7 @@ nest-asyncio
 pymongo
 tzlocal
 pillow
+qrcode
 pytesseract
 aiohttp
 beautifulsoup4
@@ -42,3 +43,4 @@ scikit-learn
 watchdog
 telethon
 croniter>=2.0.0        # Cron expression parsing for scheduler
+playwright             # WhatsApp Web browser automation
