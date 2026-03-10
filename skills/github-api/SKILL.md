@@ -1,5 +1,5 @@
 ---
-name: github
+name: github-api
 description: |
   GitHub API integration with managed OAuth. Access repositories, issues, pull requests, commits, branches, and users.
   Use this skill when users want to interact with GitHub repositories, manage issues and PRs, search code, or automate workflows.

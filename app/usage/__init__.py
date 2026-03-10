@@ -24,6 +24,18 @@ from app.usage.task_storage import (
     get_task_storage,
 )
 
+from app.usage.chat_storage import (
+    StoredChatMessage,
+    ChatStorage,
+    get_chat_storage,
+)
+
+from app.usage.action_storage import (
+    StoredActionItem,
+    ActionStorage,
+    get_action_storage,
+)
+
 __all__ = [
     # Storage
     "UsageEvent",
@@ -37,4 +49,12 @@ __all__ = [
     "TaskEvent",
     "TaskStorage",
     "get_task_storage",
+    # Chat Storage
+    "StoredChatMessage",
+    "ChatStorage",
+    "get_chat_storage",
+    # Action Storage
+    "StoredActionItem",
+    "ActionStorage",
+    "get_action_storage",
 ]

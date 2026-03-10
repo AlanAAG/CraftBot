@@ -21,7 +21,7 @@ const navItems: NavItem[] = [
   { id: 'chat', label: 'Chat', icon: <MessageSquare size={16} />, path: '/' },
   { id: 'tasks', label: 'Tasks', icon: <ListTodo size={16} />, path: '/tasks' },
   { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={16} />, path: '/dashboard' },
-  { id: 'screen', label: 'Screen', icon: <Monitor size={16} />, path: '/screen' },
+  // { id: 'screen', label: 'Screen', icon: <Monitor size={16} />, path: '/screen' },
   { id: 'workspace', label: 'Workspace', icon: <FolderOpen size={16} />, path: '/workspace' },
   { id: 'settings', label: 'Settings', icon: <Settings size={16} />, path: '/settings' },
 ]

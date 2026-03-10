@@ -1,3 +1,8 @@
+---
+name: debug-pro
+description: "Advanced debugging assistance and error analysis. Use this skill when the user encounters bugs, errors, crashes, or unexpected behavior in their code. Covers systematic 7-step debugging methodology, language-specific debugging tools (JS/TS, Python, Swift, CSS, Network), git bisect, common error patterns, and quick diagnostic commands."
+---
+
 # debug-pro
 
 Systematic debugging methodology and language-specific debugging commands.

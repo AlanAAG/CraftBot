@@ -1,5 +1,5 @@
 ---
-name: frontend-design
+name: superdesign
 description: Expert frontend design guidelines for creating beautiful, modern UIs. Use when building landing pages, dashboards, or any user interface.
 metadata: {"clawdbot":{"emoji":"🎨"}}
 ---

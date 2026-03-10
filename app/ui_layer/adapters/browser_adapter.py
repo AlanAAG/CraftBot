@@ -171,10 +171,73 @@ class BrowserChatComponent(ChatComponentProtocol):
     def __init__(self, adapter: "BrowserAdapter") -> None:
         self._adapter = adapter
         self._messages: List[ChatMessage] = []
+        self._storage = None
+        self._init_storage()
+
+    def _init_storage(self) -> None:
+        """Initialize storage and load persisted messages."""
+        try:
+            from app.usage.chat_storage import get_chat_storage, StoredChatMessage
+            self._storage = get_chat_storage()
+
+            # Load recent messages from storage
+            stored_messages = self._storage.get_recent_messages(limit=200)
+            for stored in stored_messages:
+                attachments = None
+                if stored.attachments:
+                    attachments = [
+                        Attachment(
+                            name=att.get("name", ""),
+                            path=att.get("path", ""),
+                            type=att.get("type", ""),
+                            size=att.get("size", 0),
+                            url=att.get("url", ""),
+                        )
+                        for att in stored.attachments
+                    ]
+                self._messages.append(ChatMessage(
+                    sender=stored.sender,
+                    content=stored.content,
+                    style=stored.style,
+                    timestamp=stored.timestamp,
+                    message_id=stored.message_id,
+                    attachments=attachments,
+                ))
+        except Exception:
+            # Storage may not be available, continue without persistence
+            pass
 
     async def append_message(self, message: ChatMessage) -> None:
         """Append message and broadcast to clients."""
         self._messages.append(message)
+
+        # Persist to storage
+        if self._storage:
+            try:
+                from app.usage.chat_storage import StoredChatMessage
+                attachments_data = None
+                if message.attachments:
+                    attachments_data = [
+                        {
+                            "name": att.name,
+                            "path": att.path,
+                            "type": att.type,
+                            "size": att.size,
+                            "url": att.url,
+                        }
+                        for att in message.attachments
+                    ]
+                stored = StoredChatMessage(
+                    message_id=message.message_id or f"{message.sender}:{message.timestamp}",
+                    sender=message.sender,
+                    content=message.content,
+                    style=message.style,
+                    timestamp=message.timestamp,
+                    attachments=attachments_data,
+                )
+                self._storage.insert_message(stored)
+            except Exception:
+                pass
 
         # Build message data with optional attachments
         message_data: Dict[str, Any] = {
@@ -206,6 +269,14 @@ class BrowserChatComponent(ChatComponentProtocol):
     async def clear(self) -> None:
         """Clear messages and notify clients."""
         self._messages.clear()
+
+        # Clear from storage
+        if self._storage:
+            try:
+                self._storage.clear_messages()
+            except Exception:
+                pass
+
         await self._adapter._broadcast({
             "type": "chat_clear",
         })
@@ -225,6 +296,57 @@ class BrowserActionPanelComponent(ActionPanelProtocol):
     def __init__(self, adapter: "BrowserAdapter") -> None:
         self._adapter = adapter
         self._items: List[ActionItem] = []
+        self._storage = None
+        self._init_storage()
+
+    def _init_storage(self) -> None:
+        """Initialize storage and load persisted actions."""
+        try:
+            from app.usage.action_storage import get_action_storage, StoredActionItem
+            self._storage = get_action_storage()
+
+            # Mark any stale running items as cancelled from previous session
+            self._storage.mark_running_as_cancelled()
+
+            # Load recent actions from storage
+            stored_items = self._storage.get_recent_items(limit=200)
+            for stored in stored_items:
+                self._items.append(ActionItem(
+                    id=stored.id,
+                    name=stored.name,
+                    status=stored.status,
+                    item_type=stored.item_type,
+                    parent_id=stored.parent_id,
+                    created_at=stored.created_at,
+                    completed_at=stored.completed_at,
+                    input_data=stored.input_data,
+                    output_data=stored.output_data,
+                    error_message=stored.error_message,
+                ))
+        except Exception:
+            # Storage may not be available, continue without persistence
+            pass
+
+    def _persist_item(self, item: ActionItem) -> None:
+        """Persist an action item to storage."""
+        if self._storage:
+            try:
+                from app.usage.action_storage import StoredActionItem
+                stored = StoredActionItem(
+                    id=item.id,
+                    name=item.name,
+                    status=item.status,
+                    item_type=item.item_type,
+                    parent_id=item.parent_id,
+                    created_at=item.created_at,
+                    completed_at=item.completed_at,
+                    input_data=item.input_data,
+                    output_data=item.output_data,
+                    error_message=item.error_message,
+                )
+                self._storage.insert_item(stored)
+            except Exception:
+                pass
 
     async def add_item(self, item: ActionItem) -> None:
         """Add item and broadcast. Prevents duplicates by ID."""
@@ -237,6 +359,10 @@ class BrowserActionPanelComponent(ActionPanelProtocol):
                 return
 
         self._items.append(item)
+
+        # Persist to storage
+        self._persist_item(item)
+
         await self._adapter._broadcast({
             "type": "action_add",
             "data": {
@@ -266,6 +392,9 @@ class BrowserActionPanelComponent(ActionPanelProtocol):
                 break
 
         if matched_item:
+            # Persist update to storage
+            self._persist_item(matched_item)
+
             await self._adapter._broadcast({
                 "type": "action_update",
                 "data": {
@@ -329,6 +458,10 @@ class BrowserActionPanelComponent(ActionPanelProtocol):
                 matched_item.output_data = output
             if error is not None:
                 matched_item.error_message = error
+
+            # Persist update to storage
+            self._persist_item(matched_item)
+
             await self._adapter._broadcast({
                 "type": "action_update",
                 "data": {
@@ -358,6 +491,9 @@ class BrowserActionPanelComponent(ActionPanelProtocol):
                 break
 
         if matched_item:
+            # Persist update to storage
+            self._persist_item(matched_item)
+
             await self._adapter._broadcast({
                 "type": "action_update",
                 "data": {
@@ -372,6 +508,14 @@ class BrowserActionPanelComponent(ActionPanelProtocol):
     async def remove_item(self, item_id: str) -> None:
         """Remove item and broadcast."""
         self._items = [i for i in self._items if i.id != item_id]
+
+        # Remove from storage
+        if self._storage:
+            try:
+                self._storage.delete_item(item_id)
+            except Exception:
+                pass
+
         await self._adapter._broadcast({
             "type": "action_remove",
             "data": {"id": item_id},
@@ -380,6 +524,14 @@ class BrowserActionPanelComponent(ActionPanelProtocol):
     async def clear(self) -> None:
         """Clear all items and broadcast."""
         self._items.clear()
+
+        # Clear from storage
+        if self._storage:
+            try:
+                self._storage.clear_items()
+            except Exception:
+                pass
+
         await self._adapter._broadcast({
             "type": "action_clear",
         })

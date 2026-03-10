@@ -293,7 +293,7 @@
   flex-direction: column;
   gap: var(--space-2);
   margin-bottom: var(--space-4);
-  max-height: 500px;
+  max-height: 600px;
   overflow-y: auto;
 }
 
@@ -1293,6 +1293,8 @@
   flex-direction: column;
   gap: var(--space-2);
   margin-bottom: var(--space-4);
+  max-height: 600px;
+  overflow-y: auto;
 }
 
 .mcpItem {
@@ -1436,7 +1438,7 @@
   flex-direction: column;
   gap: var(--space-2);
   margin-bottom: var(--space-4);
-  max-height: 500px;
+  max-height: 600px;
   overflow-y: auto;
 }
 

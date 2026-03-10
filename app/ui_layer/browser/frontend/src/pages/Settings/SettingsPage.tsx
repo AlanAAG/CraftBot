@@ -20,8 +20,10 @@ import {
   Power,
   Wrench
 } from 'lucide-react'
-import { Button, Badge } from '../../components/ui'
+import { Button, Badge, ConfirmModal } from '../../components/ui'
 import { useToast } from '../../contexts/ToastContext'
+import { useTheme } from '../../contexts/ThemeContext'
+import { useConfirmModal } from '../../hooks'
 import styles from './SettingsPage.module.css'
 
 type SettingsCategory =
@@ -283,6 +285,7 @@ function formatCronExpression(cron: string): string {
 
 function GeneralSettings() {
   const { send, onMessage, isConnected } = useSettingsWebSocket()
+  const { theme: globalTheme, setTheme: setGlobalTheme } = useTheme()
   const [agentName, setAgentName] = useState(getInitialAgentName)
   const [initialAgentName, setInitialAgentName] = useState(getInitialAgentName)
   const [theme, setTheme] = useState(getInitialTheme)
@@ -312,26 +315,39 @@ function GeneralSettings() {
   const [agentMdSaveStatus, setAgentMdSaveStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const [showAdvanced, setShowAdvanced] = useState(false)
 
+  // Confirm modal
+  const { modalProps: confirmModalProps, confirm } = useConfirmModal()
+
   // Computed dirty states
   const isUserMdDirty = userMdContent !== originalUserMdContent
   const isAgentMdDirty = agentMdContent !== originalAgentMdContent
   const isGeneralSettingsDirty = agentName !== initialAgentName || theme !== initialTheme
 
-  // Apply theme on mount and when it changes
+  // Sync local theme when global theme changes (e.g., from TopBar button)
   useEffect(() => {
-    applyTheme(theme)
-  }, [theme])
+    // Only sync if current theme is not 'system' (system theme should stay as 'system')
+    if (initialTheme !== 'system' && globalTheme !== initialTheme) {
+      setTheme(globalTheme)
+      setInitialTheme(globalTheme)
+      applyTheme(globalTheme)
+    }
+  }, [globalTheme, initialTheme])
+
+  // Apply theme on mount and when saved (initialTheme changes after save)
+  useEffect(() => {
+    applyTheme(initialTheme)
+  }, [initialTheme])
 
   // Listen for system theme changes when using 'system' theme
   useEffect(() => {
-    if (theme !== 'system') return
+    if (initialTheme !== 'system') return
 
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
     const handleChange = () => applyTheme('system')
 
     mediaQuery.addEventListener('change', handleChange)
     return () => mediaQuery.removeEventListener('change', handleChange)
-  }, [theme])
+  }, [initialTheme])
 
   // Load initial settings and files
   useEffect(() => {
@@ -439,8 +455,19 @@ function GeneralSettings() {
     // Persist agent name to localStorage
     localStorage.setItem('craftbot-agent-name', agentName)
 
-    // Theme is already applied and persisted via applyTheme()
-    // Just update the initial values to mark as not dirty
+    // Apply and persist the theme
+    applyTheme(theme)
+
+    // Sync the global theme context (for TopBar)
+    // Resolve 'system' to actual theme for the context
+    if (theme === 'system') {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+      setGlobalTheme(prefersDark ? 'dark' : 'light')
+    } else {
+      setGlobalTheme(theme as 'dark' | 'light')
+    }
+
+    // Update the initial values to mark as not dirty
     setInitialAgentName(agentName)
     setInitialTheme(theme)
 
@@ -454,10 +481,15 @@ function GeneralSettings() {
   }
 
   const handleReset = () => {
-    if (window.confirm('Are you sure you want to reset the agent? This will clear all current tasks, conversation history, and restore the agent file system to its default state.')) {
+    confirm({
+      title: 'Reset Agent',
+      message: 'Are you sure you want to reset the agent? This will clear all current tasks, conversation history, and restore the agent file system to its default state.',
+      confirmText: 'Reset',
+      variant: 'danger',
+    }, () => {
       setIsResetting(true)
       send('reset')
-    }
+    })
   }
 
   const handleSaveUserMd = () => {
@@ -471,17 +503,27 @@ function GeneralSettings() {
   }
 
   const handleRestoreUserMd = () => {
-    if (window.confirm('Are you sure you want to restore USER.md to its default template? This will overwrite your current customizations.')) {
+    confirm({
+      title: 'Restore USER.md',
+      message: 'Are you sure you want to restore USER.md to its default template? This will overwrite your current customizations.',
+      confirmText: 'Restore',
+      variant: 'danger',
+    }, () => {
       setIsRestoringUserMd(true)
       send('agent_file_restore', { filename: 'USER.md' })
-    }
+    })
   }
 
   const handleRestoreAgentMd = () => {
-    if (window.confirm('Are you sure you want to restore AGENT.md to its default template? This will overwrite your current customizations.')) {
+    confirm({
+      title: 'Restore AGENT.md',
+      message: 'Are you sure you want to restore AGENT.md to its default template? This will overwrite your current customizations.',
+      confirmText: 'Restore',
+      variant: 'danger',
+    }, () => {
       setIsRestoringAgentMd(true)
       send('agent_file_restore', { filename: 'AGENT.md' })
-    }
+    })
   }
 
   return (
@@ -711,6 +753,9 @@ function GeneralSettings() {
           </div>
         )}
       </div>
+
+      {/* Confirm Modal */}
+      <ConfirmModal {...confirmModalProps} />
     </div>
   )
 }
@@ -758,6 +803,9 @@ function ProactiveSettings() {
   const [editingTask, setEditingTask] = useState<ProactiveTask | null>(null)
   const [isResettingTasks, setIsResettingTasks] = useState(false)
   const [saveStatus, setSaveStatus] = useState<'idle' | 'success' | 'error'>('idle')
+
+  // Confirm modal
+  const { modalProps: confirmModalProps, confirm } = useConfirmModal()
 
   // Load data when connected
   useEffect(() => {
@@ -863,17 +911,27 @@ function ProactiveSettings() {
 
   // Handle task deletion
   const handleDeleteTask = (taskId: string) => {
-    if (window.confirm('Are you sure you want to delete this task?')) {
+    confirm({
+      title: 'Delete Task',
+      message: 'Are you sure you want to delete this task?',
+      confirmText: 'Delete',
+      variant: 'danger',
+    }, () => {
       send('proactive_task_remove', { taskId })
-    }
+    })
   }
 
   // Handle reset all tasks
   const handleResetTasks = () => {
-    if (window.confirm('Are you sure you want to reset all proactive tasks? This will restore the default PROACTIVE.md from template.')) {
+    confirm({
+      title: 'Reset Tasks',
+      message: 'Are you sure you want to reset all proactive tasks? This will restore the default PROACTIVE.md from template.',
+      confirmText: 'Reset',
+      variant: 'danger',
+    }, () => {
       setIsResettingTasks(true)
       send('proactive_tasks_reset')
-    }
+    })
   }
 
   // Group tasks by frequency
@@ -1118,6 +1176,9 @@ function ProactiveSettings() {
           }}
         />
       )}
+
+      {/* Confirm Modal */}
+      <ConfirmModal {...confirmModalProps} />
     </div>
   )
 }
@@ -1343,6 +1404,9 @@ function MemorySettings() {
   // Sort state
   const [sortOrder, setSortOrder] = useState<'latest' | 'oldest'>('latest')
 
+  // Confirm modal
+  const { modalProps: confirmModalProps, confirm } = useConfirmModal()
+
   // Load data when connected
   useEffect(() => {
     if (!isConnected) return
@@ -1450,25 +1514,40 @@ function MemorySettings() {
 
   // Handle deleting a memory item
   const handleDeleteItem = (itemId: string) => {
-    if (window.confirm('Are you sure you want to delete this memory item?')) {
+    confirm({
+      title: 'Delete Memory Item',
+      message: 'Are you sure you want to delete this memory item?',
+      confirmText: 'Delete',
+      variant: 'danger',
+    }, () => {
       send('memory_item_remove', { itemId })
-    }
+    })
   }
 
   // Handle manual memory processing
   const handleProcessMemory = () => {
-    if (window.confirm('This will process all unprocessed events into long-term memory. Continue?')) {
+    confirm({
+      title: 'Process Memory',
+      message: 'This will process all unprocessed events into long-term memory. Continue?',
+      confirmText: 'Process',
+      variant: 'default',
+    }, () => {
       setIsProcessing(true)
       send('memory_process_trigger')
-    }
+    })
   }
 
   // Handle reset memory
   const handleResetMemory = () => {
-    if (window.confirm('Are you sure you want to reset all memory? This will clear all memory items and unprocessed events. This action cannot be undone.')) {
+    confirm({
+      title: 'Reset Memory',
+      message: 'Are you sure you want to reset all memory? This will clear all memory items and unprocessed events. This action cannot be undone.',
+      confirmText: 'Reset',
+      variant: 'danger',
+    }, () => {
       setIsResetting(true)
       send('memory_reset')
-    }
+    })
   }
 
   // Sort items by timestamp
@@ -1631,6 +1710,9 @@ function MemorySettings() {
           }}
         />
       )}
+
+      {/* Confirm Modal */}
+      <ConfirmModal {...confirmModalProps} />
     </div>
   )
 }
@@ -2031,6 +2113,9 @@ function MCPSettings() {
   const [envValues, setEnvValues] = useState<Record<string, string>>({})
   const [isSavingEnv, setIsSavingEnv] = useState(false)
 
+  // Confirm modal
+  const { modalProps: confirmModalProps, confirm } = useConfirmModal()
+
   // Load data when connected
   useEffect(() => {
     if (!isConnected) return
@@ -2151,11 +2236,16 @@ function MCPSettings() {
   }
 
   const handleRemoveServer = (name: string) => {
-    if (window.confirm(`Remove "${name}" from configured servers?`)) {
+    confirm({
+      title: 'Remove Server',
+      message: `Remove "${name}" from configured servers?`,
+      confirmText: 'Remove',
+      variant: 'danger',
+    }, () => {
       send('mcp_remove', { name })
       // Optimistic update
       setServers(prev => prev.filter(s => s.name !== name))
-    }
+    })
   }
 
   const handleConfigureServer = (server: MCPServerConfig) => {
@@ -2403,6 +2493,9 @@ function MCPSettings() {
           </div>
         </div>
       )}
+
+      {/* Confirm Modal */}
+      <ConfirmModal {...confirmModalProps} />
     </div>
   )
 }
@@ -2455,6 +2548,9 @@ function SkillsSettings() {
 
   // Reload state
   const [isReloading, setIsReloading] = useState(false)
+
+  // Confirm modal
+  const { modalProps: confirmModalProps, confirm } = useConfirmModal()
 
   // Load data when connected
   useEffect(() => {
@@ -2562,12 +2658,17 @@ function SkillsSettings() {
   }
 
   const handleRemoveSkill = (name: string) => {
-    if (window.confirm(`Remove skill "${name}"? This will delete it from the skills folder.`)) {
+    confirm({
+      title: 'Remove Skill',
+      message: `Remove skill "${name}"? This will delete it from the skills folder.`,
+      confirmText: 'Remove',
+      variant: 'danger',
+    }, () => {
       send('skill_remove', { name })
       // Optimistic update
       setSkills(prev => prev.filter(s => s.name !== name))
       setTotalSkills(prev => prev - 1)
-    }
+    })
   }
 
   const handleViewSkill = (name: string) => {
@@ -2939,6 +3040,9 @@ function SkillsSettings() {
           </div>
         </div>
       )}
+
+      {/* Confirm Modal */}
+      <ConfirmModal {...confirmModalProps} />
     </div>
   )
 }
@@ -3060,6 +3164,9 @@ function IntegrationsSettings() {
   const [whatsappStatus, setWhatsappStatus] = useState<'idle' | 'loading' | 'qr_ready' | 'connected' | 'error'>('idle')
   const [whatsappError, setWhatsappError] = useState<string | null>(null)
   const whatsappPollRef = React.useRef<ReturnType<typeof setInterval> | null>(null)
+
+  // Confirm modal
+  const { modalProps: confirmModalProps, confirm } = useConfirmModal()
 
   // Load data when connected
   useEffect(() => {
@@ -3324,8 +3431,8 @@ function IntegrationsSettings() {
           size="sm"
           onClick={handleReload}
           disabled={isReloading}
+          icon={<RotateCcw size={14} className={isReloading ? styles.spinning : ''} />}
         >
-          <RotateCcw size={16} className={isReloading ? styles.spinning : ''} />
           Reload
         </Button>
       </div>
@@ -3374,9 +3481,14 @@ function IntegrationsSettings() {
                       variant="ghost"
                       size="sm"
                       onClick={() => {
-                        if (window.confirm(`Disconnect all accounts from ${integration.name}?`)) {
+                        confirm({
+                          title: 'Disconnect Integration',
+                          message: `Disconnect all accounts from ${integration.name}?`,
+                          confirmText: 'Disconnect',
+                          variant: 'danger',
+                        }, () => {
                           send('integration_disconnect', { id: integration.id })
-                        }
+                        })
                       }}
                       icon={<Power size={14} />}
                       title="Disconnect"
@@ -3608,8 +3720,7 @@ function IntegrationsSettings() {
                 </div>
               )}
               <div className={styles.modalActions}>
-                <Button variant="secondary" onClick={handleAddAnother}>
-                  <Plus size={16} />
+                <Button variant="secondary" onClick={handleAddAnother} icon={<Plus size={14} />}>
                   Add Another Account
                 </Button>
               </div>
@@ -3617,6 +3728,9 @@ function IntegrationsSettings() {
           </div>
         </div>
       )}
+
+      {/* Confirm Modal */}
+      <ConfirmModal {...confirmModalProps} />
     </div>
   )
 }

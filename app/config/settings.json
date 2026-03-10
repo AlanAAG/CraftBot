@@ -7,5 +7,9 @@
   },
   "memory": {
     "enabled": true
+  },
+  "model": {
+    "llm_provider": "gemini",
+    "vlm_provider": "gemini"
   }
 }
