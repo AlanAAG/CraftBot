@@ -15,15 +15,6 @@ function DiscordIcon() {
   )
 }
 
-// CraftBot Logo
-function CraftBotLogo() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
-      <rect width="32" height="32" rx="6" fill="var(--color-primary)"/>
-      <path d="M8 12h16M8 16h12M8 20h8" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-    </svg>
-  )
-}
 
 export function TopBar() {
   const { theme, toggleTheme } = useTheme()
@@ -33,8 +24,11 @@ export function TopBar() {
     <header className={styles.topBar}>
       <div className={styles.left}>
         <div className={styles.logo}>
-          <CraftBotLogo />
-          <span className={styles.appName}>CraftBot</span>
+          <img
+            src={theme === 'dark' ? '/craftbot_logo_text_no_border_dark.png' : '/craftbot_logo_text_no_border_light.png'}
+            alt="CraftBot"
+            className={styles.logoImage}
+          />
         </div>
         <div className={styles.status}>
           <StatusIndicator
@@ -59,13 +53,13 @@ export function TopBar() {
           icon={<Github />}
           size="sm"
           tooltip="GitHub"
-          onClick={() => window.open('https://github.com', '_blank')}
+          onClick={() => window.open('https://github.com/zfoong/CraftBot', '_blank')}
         />
         <IconButton
           icon={<DiscordIcon />}
           size="sm"
           tooltip="Discord"
-          onClick={() => window.open('https://discord.com', '_blank')}
+          onClick={() => window.open('https://discord.gg/bSdZf9HSgq', '_blank')}
         />
       </div>
     </header>

@@ -29,6 +29,11 @@
   color: var(--text-primary);
 }
 
+.logoImage {
+  height: 24px;
+  width: auto;
+}
+
 .status {
   display: flex;
   align-items: center;
