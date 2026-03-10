@@ -329,3 +329,203 @@ def get_integration_auth_type(integration_id: str) -> str:
 def get_integration_fields(integration_id: str) -> List[Dict[str, Any]]:
     """Get the input fields for token-based auth."""
     return INTEGRATION_REGISTRY.get(integration_id, {}).get("fields", [])
+
+
+# =====================
+# WhatsApp QR Code Flow
+# =====================
+
+# Store active WhatsApp sessions for QR code flow
+_whatsapp_sessions: Dict[str, Any] = {}
+
+
+async def start_whatsapp_qr_session() -> Dict[str, Any]:
+    """Start a WhatsApp Web session and return QR code data.
+
+    Returns dict with:
+    - success: bool
+    - session_id: str (if success)
+    - qr_code: str (base64 image data, if available)
+    - status: str (qr_ready, connected, error, etc.)
+    - message: str (error or status message)
+    """
+    global _whatsapp_sessions
+
+    try:
+        from agent_core.external_libraries.whatsapp.helpers.whatsapp_web_helpers import start_whatsapp_web_session
+    except ImportError:
+        return {
+            "success": False,
+            "status": "error",
+            "message": "Playwright not installed. Run: pip install playwright && playwright install chromium",
+        }
+
+    try:
+        # Use a fixed user ID for local sessions
+        LOCAL_USER_ID = "local"
+        session = await start_whatsapp_web_session(user_id=LOCAL_USER_ID)
+
+        if session.status == "error":
+            return {
+                "success": False,
+                "status": "error",
+                "message": "Failed to start WhatsApp Web session. Is Playwright installed?",
+            }
+
+        # Wait for QR code (up to 30s)
+        for _ in range(30):
+            if session.status == "qr_ready" and session.qr_code:
+                break
+            if session.status == "connected":
+                break
+            if session.status == "error":
+                return {
+                    "success": False,
+                    "status": "error",
+                    "message": "WhatsApp Web session failed to initialize.",
+                }
+            await asyncio.sleep(1)
+        else:
+            return {
+                "success": False,
+                "status": "error",
+                "message": "Timed out waiting for QR code.",
+            }
+
+        # Store session for later status checks
+        session_id = session.session_id
+        _whatsapp_sessions[session_id] = session
+
+        # Return QR code data
+        qr_data = session.qr_code or ""
+        # Ensure it's a proper data URL
+        if qr_data and not qr_data.startswith("data:"):
+            qr_data = f"data:image/png;base64,{qr_data}"
+
+        return {
+            "success": True,
+            "session_id": session_id,
+            "qr_code": qr_data,
+            "status": session.status,
+            "message": "Scan the QR code with your WhatsApp mobile app",
+        }
+
+    except Exception as e:
+        logger.error(f"Failed to start WhatsApp session: {e}")
+        return {
+            "success": False,
+            "status": "error",
+            "message": f"Failed to start session: {str(e)}",
+        }
+
+
+async def check_whatsapp_session_status(session_id: str) -> Dict[str, Any]:
+    """Check the status of a WhatsApp QR session.
+
+    Returns dict with:
+    - success: bool
+    - status: str (qr_ready, connected, error, disconnected)
+    - connected: bool
+    - message: str
+    """
+    global _whatsapp_sessions
+
+    session = _whatsapp_sessions.get(session_id)
+    if not session:
+        return {
+            "success": False,
+            "status": "error",
+            "connected": False,
+            "message": "Session not found. Please start a new session.",
+        }
+
+    try:
+        status = session.status
+
+        if status == "connected":
+            # Store credential and clean up session
+            try:
+                from agent_core.external_libraries.whatsapp.external_app_library import WhatsAppAppLibrary
+                from agent_core.external_libraries.whatsapp.credentials import WhatsAppCredential
+
+                LOCAL_USER_ID = "local"
+                WhatsAppAppLibrary.initialize()
+
+                display_phone = session.phone_number or session.session_id
+                WhatsAppAppLibrary.get_credential_store().add(WhatsAppCredential(
+                    user_id=LOCAL_USER_ID,
+                    phone_number_id=session.session_id,
+                    session_id=session.session_id,
+                    jid=session.jid or "",
+                    display_phone_number=display_phone,
+                ))
+
+                # Clean up stored session
+                del _whatsapp_sessions[session_id]
+
+                return {
+                    "success": True,
+                    "status": "connected",
+                    "connected": True,
+                    "message": f"WhatsApp connected: {display_phone}",
+                }
+            except Exception as e:
+                logger.error(f"Failed to store WhatsApp credential: {e}")
+                return {
+                    "success": False,
+                    "status": "error",
+                    "connected": False,
+                    "message": f"Connected but failed to save: {str(e)}",
+                }
+
+        elif status in ("error", "disconnected"):
+            # Clean up failed session
+            if session_id in _whatsapp_sessions:
+                del _whatsapp_sessions[session_id]
+            return {
+                "success": False,
+                "status": status,
+                "connected": False,
+                "message": "Session failed or disconnected. Please try again.",
+            }
+
+        else:
+            # Still waiting (qr_ready or other)
+            return {
+                "success": True,
+                "status": status,
+                "connected": False,
+                "message": "Waiting for QR code scan...",
+            }
+
+    except Exception as e:
+        logger.error(f"Failed to check WhatsApp session status: {e}")
+        return {
+            "success": False,
+            "status": "error",
+            "connected": False,
+            "message": f"Status check failed: {str(e)}",
+        }
+
+
+def cancel_whatsapp_session(session_id: str) -> Dict[str, Any]:
+    """Cancel a WhatsApp QR session.
+
+    Returns dict with:
+    - success: bool
+    - message: str
+    """
+    global _whatsapp_sessions
+
+    if session_id in _whatsapp_sessions:
+        # Clean up session
+        del _whatsapp_sessions[session_id]
+        return {
+            "success": True,
+            "message": "Session cancelled.",
+        }
+
+    return {
+        "success": True,
+        "message": "Session not found or already cancelled.",
+    }

@@ -41,6 +41,10 @@ from app.tui.integration_settings import (
     disconnect_integration,
     get_integration_auth_type,
     get_integration_fields,
+    # WhatsApp QR code flow
+    start_whatsapp_qr_session,
+    check_whatsapp_session_status,
+    cancel_whatsapp_session,
 )
 
 # General settings
@@ -130,6 +134,10 @@ __all__ = [
     "disconnect_integration",
     "get_integration_auth_type",
     "get_integration_fields",
+    # WhatsApp QR code flow
+    "start_whatsapp_qr_session",
+    "check_whatsapp_session_status",
+    "cancel_whatsapp_session",
     # General settings
     "read_agent_file",
     "write_agent_file",

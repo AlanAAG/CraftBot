@@ -76,6 +76,10 @@ from app.ui_layer.settings import (
     connect_integration_token,
     connect_integration_oauth,
     disconnect_integration,
+    # WhatsApp QR code flow
+    start_whatsapp_qr_session,
+    check_whatsapp_session_status,
+    cancel_whatsapp_session,
 )
 from app.ui_layer.themes.base import ThemeAdapter, StyleType
 from app.ui_layer.themes.theme import BaseTheme
@@ -933,6 +937,18 @@ class BrowserAdapter(InterfaceAdapter):
             integration_id = data.get("id", "")
             account_id = data.get("account_id")
             await self._handle_integration_disconnect(integration_id, account_id)
+
+        # WhatsApp QR code flow handlers
+        elif msg_type == "whatsapp_start_qr":
+            await self._handle_whatsapp_start_qr()
+
+        elif msg_type == "whatsapp_check_status":
+            session_id = data.get("session_id", "")
+            await self._handle_whatsapp_check_status(session_id)
+
+        elif msg_type == "whatsapp_cancel":
+            session_id = data.get("session_id", "")
+            await self._handle_whatsapp_cancel(session_id)
 
     async def _handle_task_cancel(self, task_id: str) -> None:
         """Cancel a running task."""
@@ -2390,6 +2406,67 @@ class BrowserAdapter(InterfaceAdapter):
                     "success": False,
                     "error": str(e),
                     "id": integration_id,
+                },
+            })
+
+    # =====================
+    # WhatsApp QR Code Flow
+    # =====================
+
+    async def _handle_whatsapp_start_qr(self) -> None:
+        """Start WhatsApp Web session and return QR code."""
+        try:
+            result = await start_whatsapp_qr_session()
+            await self._broadcast({
+                "type": "whatsapp_qr_result",
+                "data": result,
+            })
+        except Exception as e:
+            await self._broadcast({
+                "type": "whatsapp_qr_result",
+                "data": {
+                    "success": False,
+                    "status": "error",
+                    "message": str(e),
+                },
+            })
+
+    async def _handle_whatsapp_check_status(self, session_id: str) -> None:
+        """Check WhatsApp session status."""
+        try:
+            result = await check_whatsapp_session_status(session_id)
+            await self._broadcast({
+                "type": "whatsapp_status_result",
+                "data": result,
+            })
+            # If connected, refresh the integrations list
+            if result.get("connected"):
+                await self._handle_integration_list()
+        except Exception as e:
+            await self._broadcast({
+                "type": "whatsapp_status_result",
+                "data": {
+                    "success": False,
+                    "status": "error",
+                    "connected": False,
+                    "message": str(e),
+                },
+            })
+
+    async def _handle_whatsapp_cancel(self, session_id: str) -> None:
+        """Cancel WhatsApp session."""
+        try:
+            result = cancel_whatsapp_session(session_id)
+            await self._broadcast({
+                "type": "whatsapp_cancel_result",
+                "data": result,
+            })
+        except Exception as e:
+            await self._broadcast({
+                "type": "whatsapp_cancel_result",
+                "data": {
+                    "success": False,
+                    "message": str(e),
                 },
             })
 
