@@ -13,6 +13,9 @@ Options:
     --conda         Use conda environment (optional)
     --cpu-only      Install CPU-only PyTorch (for OmniParser, with --gui)
     --mamba         Use mamba instead of conda (faster, optional with --conda)
+
+After installation completes, CraftBot will automatically launch in browser mode.
+To use TUI mode instead, run: python run.py --tui
 """
 import multiprocessing
 import os
@@ -694,7 +697,7 @@ def launch_agent_after_install(install_gui: bool, use_conda: bool):
 
     # Show launch message
     print("\n" + "="*60)
-    print(" 🚀 Launching CraftBot...")
+    print(" 🚀 Launching CraftBot (Browser Interface)...")
     print("="*60 + "\n")
     
     if use_conda:
@@ -718,9 +721,11 @@ def launch_agent_after_install(install_gui: bool, use_conda: bool):
         if use_conda:
             env_name = get_env_name_from_yml()
             conda_cmd = get_conda_command()
-            print(f"  {conda_cmd} run -n {env_name} python run.py {' '.join(args)}\n")
+            cmd_args = ' '.join(args) if args else ''
+            print(f"  {conda_cmd} run -n {env_name} python run.py {cmd_args}".rstrip() + "\n")
         else:
-            print(f"  python run.py {' '.join(args)}\n")
+            cmd_args = ' '.join(args) if args else ''
+            print(f"  python run.py {cmd_args}".rstrip() + "\n")
         sys.exit(1)
 
 
@@ -840,10 +845,10 @@ if __name__ == "__main__":
         print("="*60 + "\n")
         setup_omniparser(force_cpu=force_cpu, use_conda=use_conda)
 
-    # Done - silently launch the agent
+    # Done - launch the agent in browser mode (default)
     print("="*60)
     print(" ✅ Installation Complete!")
     print("="*60)
-    print("\n🚀 Launching CraftBot...\n")
+    print("\n🚀 Starting CraftBot Browser Interface...\n")
     launch_agent_after_install(install_gui, use_conda)
 

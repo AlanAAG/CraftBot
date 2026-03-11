@@ -3,14 +3,15 @@
 CraftBot Run Script
 
 Usage:
-    python run.py             # Run the agent (TUI mode)
+    python run.py             # Run the agent (browser interface - default)
+    python run.py --tui       # Run in TUI mode
     python run.py --cli       # Run in CLI mode
-    python run.py --browser   # Run with browser interface (starts frontend + opens browser)
-    python run.py --gui       # Run with GUI mode enabled
+    python run.py --gui       # Run with GUI mode enabled (AI can control VM)
 
 Options:
     --gui           Enable GUI mode (optional, requires: python install.py --gui)
-    --browser       Start browser interface (frontend dev server + opens browser)
+    --tui           Use TUI (terminal UI) interface instead of browser
+    --cli           Use CLI (command line) interface
 
 Note: The installation method (conda/pip) is saved from install.py and reused here.
 """
@@ -346,8 +347,12 @@ def launch_agent_background(env_name: Optional[str], use_conda: bool, silent: bo
         return None
 
     # Filter flags (--browser passes through to agent)
-    skip_flags = {"--gui", "--no-conda"}
+    skip_flags = {"--gui", "--no-conda", "--tui"}
     pass_args = [a for a in sys.argv[1:] if a not in skip_flags]
+
+    # Ensure --browser is in args (for default mode when no flags given)
+    if "--browser" not in pass_args:
+        pass_args.append("--browser")
 
     # Set environment variable for browser startup UI formatting
     agent_env = os.environ.copy()
@@ -499,8 +504,8 @@ def launch_agent(env_name: Optional[str], conda_base: Optional[str], use_conda: 
         print(f"Error: {main_script} not found.")
         sys.exit(1)
 
-    # Filter flags (--browser and --cli pass through to agent)
-    skip_flags = {"--gui", "--no-conda"}
+    # Filter flags (--cli and --tui pass through to agent)
+    skip_flags = {"--gui", "--no-conda", "--browser"}
     pass_args = [a for a in sys.argv[1:] if a not in skip_flags]
 
     print(f"Starting CraftBot...\n")
@@ -533,8 +538,12 @@ if __name__ == "__main__":
 
     # Parse flags
     gui_mode = "--gui" in args
-    browser_mode = "--browser" in args
+    tui_mode = "--tui" in args
+    cli_mode = "--cli" in args
     no_conda_flag = "--no-conda" in args
+
+    # Browser mode is default (unless --tui or --cli specified)
+    browser_mode = not tui_mode and not cli_mode
 
     # Load saved config to check what was actually installed
     config = load_config()
@@ -553,8 +562,10 @@ if __name__ == "__main__":
 
     # Determine mode string for display (only print for non-browser modes)
     if not browser_mode:
-        if gui_mode:
-            mode_str = "GUI"
+        if cli_mode:
+            mode_str = "CLI"
+        elif gui_mode:
+            mode_str = "GUI + TUI"
         else:
             mode_str = "TUI"
         print(f"\nMode: {mode_str}")

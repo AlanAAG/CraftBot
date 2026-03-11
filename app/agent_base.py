@@ -679,13 +679,13 @@ class AgentBase:
         )
         logger.info(f"[PROACTIVE] Created heartbeat task: {task_id} for {frequency}")
 
-        # Queue trigger to start the task (matching user-profile-interview pattern)
+        # Queue trigger to start the task
         trigger = Trigger(
             fire_at=time.time(),
             priority=50,
             next_action_description=f"Execute {frequency} proactive tasks",
             session_id=task_id,
-            payload={"type": "proactive_heartbeat", "frequency": frequency},
+            payload={},
         )
         await self.triggers.put(trigger)
         logger.info(f"[PROACTIVE] Queued trigger for heartbeat task: {task_id}")
@@ -708,13 +708,13 @@ class AgentBase:
         )
         logger.info(f"[PROACTIVE] Created planner task: {task_id} for {scope}")
 
-        # Queue trigger to start the task (matching user-profile-interview pattern)
+        # Queue trigger to start the task
         trigger = Trigger(
             fire_at=time.time(),
             priority=50,
             next_action_description=f"Execute {scope} planner task",
             session_id=task_id,
-            payload={"type": "proactive_planner", "scope": scope},
+            payload={},
         )
         await self.triggers.put(trigger)
         logger.info(f"[PROACTIVE] Queued trigger for planner task: {task_id}")
