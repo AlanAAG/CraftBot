@@ -189,7 +189,10 @@ def launch_frontend(silent: bool = False) -> Optional[subprocess.Popen]:
     if not os.path.exists(node_modules):
         if not silent:
             print("Error: Frontend dependencies not installed.")
-            print("Run 'python install.py' first to install all dependencies.")
+            print("\nTo fix this, run: python install.py")
+            print("\nOr manually install with:")
+            print("  cd app/ui_layer/browser/frontend")
+            print("  npm install")
         return None
 
     # Find npm command
@@ -197,7 +200,40 @@ def launch_frontend(silent: bool = False) -> Optional[subprocess.Popen]:
     if not npm_cmd:
         if not silent:
             print("Error: npm not found in PATH")
+            print("\nNode.js is required for browser mode.")
+            print("Install from: https://nodejs.org/ (choose LTS version)")
+            print("\nAfter installation:")
+            print("  1. Restart your terminal")
+            print("  2. Run: python run.py")
+        return None
+
+    # Build command for npm run dev
+    if sys.platform == "win32":
+        # On Windows, use cmd.exe to run npm
+        cmd = ["cmd.exe", "/c", "npm", "run", "dev"]
+    else:
+        cmd = [npm_cmd, "run", "dev"]
+
+    try:
+        # Start frontend in background
+        process = subprocess.Popen(
+            cmd,
+            cwd=FRONTEND_DIR,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            env=os.environ.copy(),
+        )
+        _background_processes.append(process)
+        return process
+    except FileNotFoundError:
+        if not silent:
+            print("Error: npm command not found")
             print("Install Node.js from: https://nodejs.org/")
+        return None
+    except Exception as e:
+        if not silent:
+            print(f"Error starting frontend: {e}")
+        return None
         return None
 
     # Build command for npm run dev
@@ -615,7 +651,20 @@ if __name__ == "__main__":
         if not frontend_process:
             print(" ✗")
             print("\nError: Failed to start browser frontend.")
-            print("Run 'python install.py' to install dependencies.")
+            print("\n" + "="*52)
+            print("TROUBLESHOOTING:")
+            print("="*52)
+            print("\n1. Make sure Node.js is installed:")
+            print("   → Download from: https://nodejs.org/ (LTS version)")
+            print("   → Verify: node --version && npm --version")
+            print("\n2. Install frontend dependencies:")
+            print("   → Run: python install.py")
+            print("\n3. Manually install (if above doesn't work):")
+            print("   → cd app/ui_layer/browser/frontend")
+            print("   → npm install")
+            print("\n4. Try running again:")
+            print("   → python run.py")
+            print("="*52 + "\n")
             sys.exit(1)
         print_step_done()
 

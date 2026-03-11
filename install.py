@@ -452,18 +452,34 @@ def install_playwright_browser():
     """Install Playwright Chromium browser for WhatsApp Web support."""
     print("\nInstalling Playwright Chromium browser...")
     try:
-        run_command([sys.executable, "-m", "playwright", "install", "chromium"])
-        print("Playwright Chromium installed.")
+        result = run_command([sys.executable, "-m", "playwright", "install", "chromium"], check=False, capture=True, show_error=False)
+        if result and hasattr(result, 'returncode') and result.returncode == 0:
+            print("✓ Playwright Chromium installed")
+            return True
+        else:
+            # Playwright installation failed, but this is not critical for browser mode
+            print("⚠ Warning: Playwright browser installation failed")
+            if result and hasattr(result, 'stderr') and result.stderr:
+                # Only show first 300 chars of error
+                error_msg = result.stderr[:300].strip()
+                if error_msg:
+                    print(f"  Error details: {error_msg}")
+            print("  WhatsApp Web integration may not work")
+            print("  You can manually install later with: playwright install chromium")
+            return False
     except Exception as e:
-        print(f"Warning: Failed to install Playwright browser: {e}")
-        print("WhatsApp Web integration will not work until you run: playwright install chromium")
+        print(f"⚠ Warning: Failed to install Playwright browser: {e}")
+        print("  WhatsApp Web integration may not work")
+        print("  You can manually install later with: playwright install chromium")
+        return False
 
 def install_browser_frontend():
     """Install npm dependencies for the browser frontend."""
     frontend_dir = os.path.join(BASE_DIR, "app", "ui_layer", "browser", "frontend")
 
     if not os.path.exists(frontend_dir):
-        print(f"Warning: Browser frontend directory not found at {frontend_dir}")
+        print(f"\n⚠ Warning: Browser frontend directory not found at {frontend_dir}")
+        print("   Browser interface will not work")
         return False
 
     # Check if npm is available
@@ -471,18 +487,44 @@ def install_browser_frontend():
     if not npm_cmd:
         print("\n⚠ Warning: npm not found in PATH")
         print("   Browser interface requires Node.js and npm.")
-        print("   Install from: https://nodejs.org/")
-        print("   Then run: npm install (in app/ui_layer/browser/frontend)")
+        print("\n   📥 Install Node.js from: https://nodejs.org/")
+        print("      (Choose LTS version)")
+        print("\n   After installation:")
+        print("   1. Restart your terminal")
+        print("   2. Run: python install.py")
+        print("\n   Or manually install frontend:")
+        print("      cd app/ui_layer/browser/frontend")
+        print("      npm install")
         return False
 
+    # Check if node_modules already exists
+    node_modules = os.path.join(frontend_dir, "node_modules")
+    if os.path.exists(node_modules):
+        print("\n✓ Browser frontend dependencies already installed")
+        return True
+
+    # Try to install
     print("\n🔧 Installing browser frontend dependencies...")
     try:
-        run_command_with_progress([npm_cmd, "install"], message="Installing npm packages", cwd=frontend_dir)
-        print("✓ Browser frontend dependencies installed")
-        return True
+        result = run_command_with_progress([npm_cmd, "install"], message="Installing npm packages", cwd=frontend_dir, check=False)
+        if result and hasattr(result, 'returncode') and result.returncode == 0:
+            print("✓ Browser frontend dependencies installed")
+            return True
+        else:
+            print("\n⚠ Warning: npm install command failed")
+            print("\n   Troubleshooting:")
+            print("   1. Make sure Node.js is installed: node --version")
+            print("   2. Check npm version: npm --version")
+            print("   3. Try manually: cd app/ui_layer/browser/frontend && npm install")
+            print("\n   If you still need help:")
+            print("   - Check Node.js/npm documentation: https://nodejs.org/")
+            print("   - Ensure internet connection is working")
+            return False
     except Exception as e:
         print(f"\n⚠ Warning: Failed to install browser frontend: {e}")
-        print("   You can manually run: cd app/ui_layer/browser/frontend && npm install")
+        print("\n   You can manually install with:")
+        print("   cd app/ui_layer/browser/frontend")
+        print("   npm install")
         return False
 
 def setup_pip_environment(requirements_file: str = REQUIREMENTS_FILE):
