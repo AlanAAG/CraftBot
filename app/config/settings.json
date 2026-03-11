@@ -1,0 +1,15 @@
+{
+  "proactive": {
+    "enabled": true
+  },
+  "general": {
+    "agent_name": "CraftBot"
+  },
+  "memory": {
+    "enabled": true
+  },
+  "model": {
+    "llm_provider": "byteplus",
+    "vlm_provider": "byteplus"
+  }
+}

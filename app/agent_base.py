@@ -64,6 +64,7 @@ from app.gui.gui_module import GUIModule
 from app.gui.handler import GUIHandler
 from app.scheduler import SchedulerManager
 from app.proactive import initialize_proactive_manager, get_proactive_manager
+from app.ui_layer.settings.memory_settings import is_memory_enabled
 from agent_core import profile, profile_loop, OperationCategory
 from agent_core import (
     # Registries for dependency injection
@@ -255,6 +256,7 @@ class AgentBase:
 
         # ── misc ──
         self.is_running: bool = True
+        self._interface_mode: str = "tui"  # Will be updated in run() based on selected interface
         self._extra_system_prompt: str = self._load_extra_system_prompt()
 
         # Scheduler for periodic tasks (memory processing, proactive checks, etc.)
@@ -401,7 +403,7 @@ class AgentBase:
     # Memory Processing
     # =====================================
 
-    def create_process_memory_task(self) -> str:
+    def create_process_memory_task(self) -> Optional[str]:
         """
         Create a task to process unprocessed events and move them to memory.
 
@@ -414,8 +416,13 @@ class AgentBase:
         5. Clear processed events from EVENT_UNPROCESSED.md
 
         Returns:
-            The task ID of the created task.
+            The task ID of the created task, or None if memory is disabled.
         """
+        # Check if memory is enabled
+        if not is_memory_enabled():
+            logger.info("[MEMORY] Memory is disabled, skipping process memory task")
+            return None
+
         logger.info("[MEMORY] Creating process memory task")
 
         # Enable skip_unprocessed_logging to prevent infinite loops
@@ -438,6 +445,11 @@ class AgentBase:
         processing flow which creates the task and executes it.
         """
         import time
+
+        # Check if memory is enabled
+        if not is_memory_enabled():
+            logger.info("[MEMORY] Memory is disabled, skipping startup processing")
+            return
 
         try:
             unprocessed_file = AGENT_FILE_SYSTEM_PATH / "EVENT_UNPROCESSED.md"
@@ -490,6 +502,12 @@ class AgentBase:
             False if no task was created and react() should return.
         """
         logger.info("[MEMORY] Memory processing trigger fired")
+
+        # Check if memory is enabled
+        if not is_memory_enabled():
+            logger.info("[MEMORY] Memory is disabled, skipping memory processing trigger")
+            return False
+
         task_created = False
 
         try:
@@ -618,6 +636,12 @@ class AgentBase:
             True if a task was created and processing should continue,
             False if no task was created.
         """
+        # Check if proactive mode is enabled
+        from app.ui_layer.settings.proactive_settings import is_proactive_enabled
+        if not is_proactive_enabled():
+            logger.info("[PROACTIVE] Proactive mode is disabled, skipping trigger")
+            return False
+
         trigger_type = trigger.payload.get("type")
         frequency = trigger.payload.get("frequency", "")
         scope = trigger.payload.get("scope", "")
@@ -1616,12 +1640,29 @@ class AgentBase:
         """
         return ""
     
+    def _get_interface_capabilities_prompt(self) -> str:
+        """
+        Return interface-specific capabilities prompt.
+        This is automatically included in the role info for subclasses to use.
+        """
+        if self._interface_mode == "browser":
+            return (
+                "\n\n## File Sharing\n"
+                "You can send files to the user using the `send_message_with_attachment` action. "
+                "Use this when the user asks you to share, send, or provide a file from the workspace."
+            )
+        return ""
+
     def _generate_role_info_prompt(self) -> str:
         """
         Subclasses override this to return role-specific system instructions
         (responsibilities, behaviour constraints, expected domain tasks, etc).
+
+        Note: Call `self._get_interface_capabilities_prompt()` and append it to include
+        interface-specific capabilities (e.g., file attachment support in browser mode).
         """
-        return "You are a general computer-use AI agent that can switch between CLI/GUI mode."
+        base_prompt = "You are a general computer-use AI agent that can switch between CLI/GUI mode."
+        return base_prompt + self._get_interface_capabilities_prompt()
 
     def _build_db_interface(self, *, data_dir: str, chroma_path: str):
         """A tiny wrapper so a subclass can point to another DB/collection."""
@@ -1665,7 +1706,46 @@ class AgentBase:
         if hasattr(self, 'memory_file_watcher'):
             self.memory_file_watcher.start()
 
+        # 6. Clear usage data (chat, actions, tasks, usage)
+        await self._clear_usage_data()
+
         return "Agent state reset. Agent file system reinitialized."
+
+    async def _clear_usage_data(self) -> None:
+        """
+        Clear all usage data from storage.
+        Clears chat messages, action items, task events, and usage events.
+        """
+        from app.usage import (
+            get_chat_storage,
+            get_action_storage,
+            get_task_storage,
+            get_usage_storage,
+        )
+
+        try:
+            # Clear chat messages
+            chat_storage = get_chat_storage()
+            chat_count = chat_storage.clear_messages()
+            logger.info(f"[RESET] Cleared {chat_count} chat messages")
+
+            # Clear action items
+            action_storage = get_action_storage()
+            action_count = action_storage.clear_items()
+            logger.info(f"[RESET] Cleared {action_count} action items")
+
+            # Clear task events
+            task_storage = get_task_storage()
+            task_count = task_storage.clear_tasks()
+            logger.info(f"[RESET] Cleared {task_count} task events")
+
+            # Clear usage events
+            usage_storage = get_usage_storage()
+            usage_count = usage_storage.clear_events()
+            logger.info(f"[RESET] Cleared {usage_count} usage events")
+
+        except Exception as e:
+            logger.error(f"[RESET] Error clearing usage data: {e}")
 
     async def _reset_agent_file_system(self) -> None:
         """
@@ -1992,15 +2072,30 @@ class AgentBase:
             api_key: Optional API key presented in the interface for convenience.
             interface_mode: "tui" for Textual interface, "cli" for command line.
         """
+        # Check if browser startup UI is active
+        browser_ui = os.getenv("BROWSER_STARTUP_UI", "0") == "1"
+
+        def print_startup_step(step: int, total: int, message: str):
+            """Print a startup step in the appropriate format."""
+            if browser_ui:
+                # Browser mode: formatted with alignment and checkmark
+                prefix = f"  [{step:>2}/{total}]"
+                step_width = 45
+                padded_msg = f"{message}...".ljust(step_width - len(prefix))
+                print(f"{prefix} {padded_msg}✓", flush=True)
+            else:
+                # CLI mode: simple format
+                print(f"[{step}/{total}] {message}...")
+
         # Startup progress messages
-        print("[3/8] Initializing agent...")
+        print_startup_step(3, 8, "Initializing agent")
 
         # Initialize MCP client and register tools
-        print("[4/8] Connecting to MCP servers...")
+        print_startup_step(4, 8, "Connecting to MCP servers")
         await self._initialize_mcp()
 
         # Initialize skills system
-        print("[5/8] Loading skills...")
+        print_startup_step(5, 8, "Loading skills")
         await self._initialize_skills()
 
         # Start usage reporter background flush
@@ -2009,7 +2104,7 @@ class AgentBase:
         self._usage_reporter.start_background_flush()
 
         # Initialize external app libraries
-        print("[6/8] Loading libraries...")
+        print_startup_step(6, 8, "Loading libraries")
         await self._initialize_external_libraries()
 
         # Process unprocessed events into memory at startup (if enabled)
@@ -2017,7 +2112,7 @@ class AgentBase:
             await self._process_memory_at_startup()
 
         # Initialize and start the scheduler (handles memory processing and other periodic tasks)
-        print("[7/8] Starting scheduler...")
+        print_startup_step(7, 8, "Starting scheduler")
         from app.config import PROJECT_ROOT
         scheduler_config_path = PROJECT_ROOT / "app" / "config" / "scheduler_config.json"
         await self.scheduler.initialize(
@@ -2034,23 +2129,33 @@ class AgentBase:
             await self.trigger_soft_onboarding()
 
         # Initialize external communications (WhatsApp, Telegram)
-        print("[8/8] Starting communications...")
+        print_startup_step(8, 8, "Starting communications")
         from app.external_comms import ExternalCommsManager
         from app.external_comms.manager import initialize_manager
         self._external_comms = initialize_manager(self)
         await self._external_comms.start()
 
-        # Startup complete
-        print("\n[OK] Ready!\n", flush=True)
+        # Startup complete (only print in CLI mode, browser mode handles this in run.py)
+        if not browser_ui:
+            print("\n[OK] Ready!\n", flush=True)
 
         # Flush stdout/stderr to ensure clean output before TUI starts
         import sys
         sys.stdout.flush()
         sys.stderr.flush()
+        # Store interface mode for context-aware prompts
+        self._interface_mode = interface_mode
 
         try:
             # Select interface based on mode
-            if interface_mode == "cli":
+            if interface_mode == "browser":
+                from app.browser import BrowserInterface
+                interface = BrowserInterface(
+                    self,
+                    default_provider=provider or self.llm.provider,
+                    default_api_key=api_key,
+                )
+            elif interface_mode == "cli":
                 from app.cli import CLIInterface
                 interface = CLIInterface(
                     self,

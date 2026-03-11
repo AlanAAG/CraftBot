@@ -1,6 +1,6 @@
 ---
 version: "1.0"
-last_updated: {{TIMESTAMP}}  # Auto-updated by system (format: YYYY-MM-DDTHH:MM:SSZ)
+last_updated: null  # Auto-updated by system (format: YYYY-MM-DDTHH:MM:SSZ)
 ---
 
 # Proactive Tasks
@@ -17,6 +17,8 @@ IMPORTANT: Do NOT remove the HTML comment markers (PROACTIVE_TASKS_START, etc.)
 as they are used by the parser to locate sections.
 ================================================================================
 -->
+
+---
 
 ## How Proactive Tasks Work
 
@@ -47,19 +49,16 @@ Evaluate each potential proactive task using a five-dimension rubric. Score each
 
 ## Permission Tiers
 
-Before acting on any proactive task, follow the tiered permission model:
+Each task has a permission tier that controls how it interacts with the user:
 
-| Tier | Name         | Actions                                              | Behavior                    |
-|------|--------------|------------------------------------------------------|-----------------------------|
-| 0    | Silent Read  | Searching, analyzing, drafting internally            | Proceed without asking      |
-| 1    | Suggest      | Notifying user of findings or recommendations        | Wait for acknowledgment     |
-| 2    | Low-Risk     | Creating tickets, scheduling reminders, drafting PRs | Inform and proceed unless objected |
-| 3    | High-Risk    | Emailing external parties, changing configs, finances | Explicit approval required  |
-| 4    | Prohibited   | Actions disallowed by policy or irreversible harm    | Never proceed               |
+| Tier | Level | Description | User Interaction |
+|------|-------|-------------|------------------|
+| 0 | Silent | Searching, analyzing, drafting, internal operations | Proceed without notifying the user |
+| 1 | Notify | Inform user of task execution and findings | Inform and proceed without waiting |
+| 2 | Approval | Actions that modify state or create artifacts | Ask for approval before proceeding |
+| 3 | High-risk | Email external parties, change configs, sensitive ops | Explicit detailed approval required |
 
-When requesting permission for proactive tasks, prefix your message with the star emoji to indicate it is a proactive request.
-
-After executing proactive tasks, update PROACTIVE.md with what was done, when, and the outcome.
+**Note:** Tier 0 and 1 are typically used for user-created proactive tasks. Tiers 2-3 are reserved for system-level or high-impact tasks that require user oversight.
 
 ---
 
