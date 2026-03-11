@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, KeyboardEvent, useCallback, ChangeEvent, useMemo } from 'react'
+import React, { useState, useRef, useEffect, useLayoutEffect, KeyboardEvent, useCallback, ChangeEvent, useMemo } from 'react'
 import { Send, Paperclip, X, Loader2, File, AlertCircle } from 'lucide-react'
 import { useWebSocket } from '../../contexts/WebSocketContext'
 import { Button, IconButton, StatusIndicator, MarkdownContent, AttachmentDisplay } from '../../components/ui'
@@ -69,6 +69,22 @@ export function ChatPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
+  // Auto-resize textarea based on content
+  const adjustTextareaHeight = useCallback(() => {
+    const textarea = inputRef.current
+    if (textarea) {
+      // Reset height to auto to get accurate scrollHeight
+      textarea.style.height = 'auto'
+      // Set height to scrollHeight (CSS max-height will clamp it)
+      textarea.style.height = `${textarea.scrollHeight}px`
+    }
+  }, [])
+
+  // Adjust textarea height when input changes (useLayoutEffect for synchronous DOM updates)
+  useLayoutEffect(() => {
+    adjustTextareaHeight()
+  }, [input, adjustTextareaHeight])
+
   // Handle resize drag
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     e.preventDefault()
@@ -110,6 +126,10 @@ export function ChatPage() {
       setInput('')
       setPendingAttachments([])
       setAttachmentError(null)
+      // Reset textarea height after clearing input
+      if (inputRef.current) {
+        inputRef.current.style.height = 'auto'
+      }
       inputRef.current?.focus()
     }
   }

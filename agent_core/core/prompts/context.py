@@ -228,12 +228,6 @@ POLICY_PROMPT = """
 </agent_policy>
 """
 
-AGENT_STATE_PROMPT = """
-<agent_state>
-- Active Task ID: {current_task_id}
-</agent_state>
-"""
-
 USER_PROFILE_PROMPT = """
 <user_profile>
 This is the user you are interacting with. Personalize your communication based on their preferences:
@@ -284,7 +278,6 @@ __all__ = [
     "AGENT_ROLE_PROMPT",
     "AGENT_INFO_PROMPT",
     "POLICY_PROMPT",
-    "AGENT_STATE_PROMPT",
     "USER_PROFILE_PROMPT",
     "ENVIRONMENTAL_CONTEXT_PROMPT",
     "AGENT_FILE_SYSTEM_CONTEXT_PROMPT",

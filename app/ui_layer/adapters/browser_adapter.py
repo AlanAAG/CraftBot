@@ -3480,7 +3480,7 @@ class BrowserAdapter(InterfaceAdapter):
         self,
         message: str,
         file_path: str,
-        sender: str = "agent",
+        sender: Optional[str] = None,
         style: str = "agent",
     ) -> Dict[str, Any]:
         """
@@ -3491,7 +3491,7 @@ class BrowserAdapter(InterfaceAdapter):
         Args:
             message: The message content
             file_path: Absolute path or path relative to workspace
-            sender: Message sender (default: "agent")
+            sender: Message sender (default: uses agent name from onboarding)
             style: Message style (default: "agent")
 
         Returns:
@@ -3503,7 +3503,7 @@ class BrowserAdapter(InterfaceAdapter):
         self,
         message: str,
         file_paths: list,
-        sender: str = "agent",
+        sender: Optional[str] = None,
         style: str = "agent",
     ) -> Dict[str, Any]:
         """
@@ -3515,13 +3515,19 @@ class BrowserAdapter(InterfaceAdapter):
         Args:
             message: The message content
             file_paths: List of absolute paths or paths relative to workspace
-            sender: Message sender (default: "agent")
+            sender: Message sender (default: uses agent name from onboarding)
             style: Message style (default: "agent")
 
         Returns:
             Dict with 'success' (bool), 'files_sent' (int), and optionally 'errors' (list of str)
         """
         try:
+            # Get agent name from onboarding state if sender not provided
+            # (same as _handle_agent_message in base adapter)
+            if sender is None:
+                from app.onboarding import onboarding_manager
+                sender = onboarding_manager.state.agent_name or "Agent"
+
             attachments = []
             errors = []
 

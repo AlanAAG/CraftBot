@@ -12,6 +12,8 @@ Options:
     --gui           Enable GUI mode (optional, requires: python install.py --gui)
     --tui           Use TUI (terminal UI) interface instead of browser
     --cli           Use CLI (command line) interface
+    --conda         Use conda environment (overrides config setting)
+    --no-conda      Don't use conda (overrides config setting)
 
 Note: The installation method (conda/pip) is saved from install.py and reused here.
 """
@@ -202,11 +204,12 @@ def launch_frontend(silent: bool = False) -> Optional[subprocess.Popen]:
 
     try:
         # Start frontend in background
+        # Redirect output to DEVNULL to prevent blocking when buffer fills
         process = subprocess.Popen(
             cmd,
             cwd=FRONTEND_DIR,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
             env=os.environ.copy(),
         )
         _background_processes.append(process)
@@ -347,7 +350,7 @@ def launch_agent_background(env_name: Optional[str], use_conda: bool, silent: bo
         return None
 
     # Filter flags (--browser passes through to agent)
-    skip_flags = {"--gui", "--no-conda", "--tui"}
+    skip_flags = {"--gui", "--conda", "--no-conda", "--tui"}
     pass_args = [a for a in sys.argv[1:] if a not in skip_flags]
 
     # Ensure --browser is in args (for default mode when no flags given)
@@ -505,7 +508,7 @@ def launch_agent(env_name: Optional[str], conda_base: Optional[str], use_conda: 
         sys.exit(1)
 
     # Filter flags (--cli and --tui pass through to agent)
-    skip_flags = {"--gui", "--no-conda", "--browser"}
+    skip_flags = {"--gui", "--conda", "--no-conda", "--browser"}
     pass_args = [a for a in sys.argv[1:] if a not in skip_flags]
 
     print(f"Starting CraftBot...\n")
@@ -540,6 +543,7 @@ if __name__ == "__main__":
     gui_mode = "--gui" in args
     tui_mode = "--tui" in args
     cli_mode = "--cli" in args
+    conda_flag = "--conda" in args
     no_conda_flag = "--no-conda" in args
 
     # Browser mode is default (unless --tui or --cli specified)
@@ -549,8 +553,10 @@ if __name__ == "__main__":
     config = load_config()
     use_conda = config.get("use_conda", False)  # Use config instead of defaulting to True
 
-    # Override with command-line flag if provided
-    if no_conda_flag:
+    # Override with command-line flags if provided
+    if conda_flag:
+        use_conda = True
+    elif no_conda_flag:
         use_conda = False
 
     gui_installed = config.get("gui_mode_enabled", False)
@@ -625,10 +631,27 @@ if __name__ == "__main__":
         frontend_ready = wait_for_frontend_silent(timeout=30)
         backend_ready = wait_for_backend_silent(timeout=60)
 
+        # Small delay to ensure agent's stdout is flushed before we print
+        # The agent prints steps 3-8, and we want them to appear before the ready banner
+        time.sleep(0.3)
+
+        # Check if processes are still running
+        frontend_alive = frontend_process and frontend_process.poll() is None
+        backend_alive = agent_process and agent_process.poll() is None
+
         # Print ready banner and open browser
         if frontend_ready and backend_ready:
             print_ready_banner(FRONTEND_URL)
             webbrowser.open(FRONTEND_URL)
+        elif not frontend_alive:
+            print("\n⚠ Error: Frontend server crashed")
+            print("   Check if Node.js and npm are properly installed")
+            print("   Try running: cd app/ui_layer/browser/frontend && npm run dev")
+        elif not backend_alive:
+            print("\n⚠ Error: Agent backend crashed")
+            print("   Check the error messages above for details")
+            if use_conda:
+                print(f"   Try running: conda activate {env_name} && python main.py --browser")
         elif frontend_ready:
             print("\n⚠ Warning: Backend may not be fully ready")
             print_ready_banner(FRONTEND_URL)

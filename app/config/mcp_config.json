@@ -946,7 +946,7 @@
         "ACTUAL_PASSWORD": "",
         "ACTUAL_BUDGET_ID": ""
       },
-      "enabled": false
+      "enabled": true
     },
     {
       "name": "lunchmoney-mcp",
@@ -1044,7 +1044,7 @@
         "HA_URL": "http://homeassistant.local:8123",
         "HA_TOKEN": ""
       },
-      "enabled": false
+      "enabled": true
     },
     {
       "name": "iot-mcp",
