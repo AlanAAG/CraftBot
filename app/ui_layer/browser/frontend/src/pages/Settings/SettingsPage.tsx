@@ -455,9 +455,6 @@ function GeneralSettings() {
     // Persist agent name to localStorage
     localStorage.setItem('craftbot-agent-name', agentName)
 
-    // Apply and persist the theme
-    applyTheme(theme)
-
     // Sync the global theme context (for TopBar)
     // Resolve 'system' to actual theme for the context
     if (theme === 'system') {
@@ -468,6 +465,7 @@ function GeneralSettings() {
     }
 
     // Update the initial values to mark as not dirty
+    // This triggers the useEffect that applies the theme
     setInitialAgentName(agentName)
     setInitialTheme(theme)
 

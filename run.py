@@ -317,6 +317,13 @@ def print_step_done():
     """Print checkmark for current step."""
     print("✓", flush=True)
 
+def print_progress_bar(percent: int, width: int = 40):
+    """Print a progress bar from 0-100%."""
+    filled = int(width * percent / 100)
+    bar = "█" * filled + "░" * (width - filled)
+    sys.stdout.write(f"\r  [{bar}] {percent:3d}%")
+    sys.stdout.flush()
+
 def print_ready_banner(url: str):
     """Print the final ready banner."""
     print("\n" + "━" * 52)
@@ -397,9 +404,10 @@ def launch_agent_background(env_name: Optional[str], use_conda: bool, silent: bo
     if "--browser" not in pass_args:
         pass_args.append("--browser")
 
-    # Set environment variable for browser startup UI formatting
+    # Set environment variable for browser startup UI formatting and warning suppression
     agent_env = os.environ.copy()
     agent_env["BROWSER_STARTUP_UI"] = "1"
+    agent_env["PYTHONWARNINGS"] = "ignore"
 
     # Build command
     if use_conda and env_name:
@@ -645,7 +653,7 @@ if __name__ == "__main__":
         # Print browser mode header
         print_browser_header()
 
-        # Step 1: Start frontend server
+        # Step 1: Start frontend server (0% -> 15%)
         print_step(1, 8, "Starting frontend server")
         frontend_process = launch_frontend(silent=True)
         if not frontend_process:
@@ -667,8 +675,9 @@ if __name__ == "__main__":
             print("="*52 + "\n")
             sys.exit(1)
         print_step_done()
+        print_progress_bar(15)
 
-        # Step 2: Start agent backend (agent will print steps 3-8)
+        # Step 2: Start agent backend (15% -> 30%)
         print_step(2, 8, "Starting agent backend")
         agent_process = launch_agent_background(env_name, use_conda, silent=True)
         if not agent_process:
@@ -676,10 +685,53 @@ if __name__ == "__main__":
             print("\nError: Failed to start agent backend.")
             sys.exit(1)
         print_step_done()
+        print_progress_bar(30)
 
-        # Wait for frontend and backend to be ready (silent)
-        frontend_ready = wait_for_frontend_silent(timeout=30)
-        backend_ready = wait_for_backend_silent(timeout=60)
+        # Wait for services (30% -> 100%)
+        print("\n  Initializing services")
+        print_progress_bar(30)
+        
+        # Wait for frontend and backend to be ready (update progress)
+        frontend_ready = False
+        backend_ready = False
+        
+        frontend_start = time.time()
+        while time.time() - frontend_start < 30:
+            try:
+                with urllib.request.urlopen(FRONTEND_URL, timeout=2) as r:
+                    if r.status < 400:
+                        frontend_ready = True
+                        break
+            except urllib.error.HTTPError as e:
+                if e.code < 500:
+                    frontend_ready = True
+                    break
+            except:
+                pass
+            print_progress_bar(30 + int((time.time() - frontend_start) / 30 * 20))
+            time.sleep(0.5)
+        
+        if not frontend_ready:
+            print_progress_bar(50)
+        
+        backend_start = time.time()
+        while time.time() - backend_start < 60:
+            try:
+                with urllib.request.urlopen(BACKEND_URL, timeout=2) as r:
+                    if r.status < 400:
+                        backend_ready = True
+                        break
+            except urllib.error.HTTPError as e:
+                if e.code < 500:
+                    backend_ready = True
+                    break
+            except:
+                pass
+            print_progress_bar(50 + int((time.time() - backend_start) / 60 * 50))
+            time.sleep(0.5)
+        
+        print_progress_bar(100)
+        print()  # New line after progress bar
 
         # Print ready banner and open browser
         if frontend_ready and backend_ready:
