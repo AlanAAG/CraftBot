@@ -618,17 +618,38 @@ class ActionRouter:
             logger.error(f"LLM returned empty response")
             return None, "LLM returned an empty response. This may indicate an API error or the model failed to generate output."
         
+        # Normalize Windows/encoding artifacts (BOM, CRLF, etc.)
+        # This handles Windows CRLF line endings and encoding issues
+        normalized = raw
+        
+        # Remove BOM if present (Windows encoding artifact)
+        if normalized.startswith('\ufeff'):
+            normalized = normalized[1:]
+        
+        # Normalize line endings to LF (convert CRLF to LF)
+        normalized = normalized.replace('\r\n', '\n')
+        
+        # Remove any remaining carriage returns
+        normalized = normalized.replace('\r', '')
+        
+        # Strip all leading/trailing whitespace
+        normalized = normalized.strip()
+        
+        if not normalized:
+            logger.error(f"Response was empty after normalization. Original: {repr(raw)}")
+            return None, "LLM response was empty or only contained whitespace after normalization."
+        
         try:
-            parsed = json.loads(raw)
+            parsed = json.loads(normalized)
         except json.JSONDecodeError as json_error:
             try:
-                parsed = ast.literal_eval(raw)
+                parsed = ast.literal_eval(normalized)
             except Exception as eval_error:
-                logger.error(f"Unable to parse action decision: {raw}")
+                logger.error(f"Unable to parse action decision: {repr(normalized)}")
                 return None, f"json error: {json_error}; literal_eval error: {eval_error}"
 
         if not isinstance(parsed, dict):
-            logger.error(f"Parsed action decision is not a dict: {raw}")
+            logger.error(f"Parsed action decision is not a dict: {repr(normalized)}")
             return None, "parsed value is not a dictionary"
 
         return parsed, None

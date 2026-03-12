@@ -803,17 +803,27 @@ class BrowserAdapter(InterfaceAdapter):
     async def _websocket_handler(self, request: "web.Request") -> "web.WebSocketResponse":
         """Handle WebSocket connections."""
         from aiohttp import web, WSMsgType
+        import asyncio
 
         # Increase max message size to 100MB to allow multiple large attachments
-        ws = web.WebSocketResponse(max_msg_size=100 * 1024 * 1024)
+        ws = web.WebSocketResponse(
+            max_msg_size=100 * 1024 * 1024,
+            heartbeat=30.0,  # Send heartbeat every 30 seconds to keep connection alive (Windows fix)
+            timeout=60.0,    # Allow 60 seconds before timeout
+        )
         await ws.prepare(request)
         self._ws_clients.add(ws)
 
         # Send initial state
-        await ws.send_json({
-            "type": "init",
-            "data": self._get_initial_state(),
-        })
+        try:
+            await ws.send_json({
+                "type": "init",
+                "data": self._get_initial_state(),
+            })
+        except Exception as e:
+            print(f"[BROWSER ADAPTER] Error sending initial state: {e}")
+            self._ws_clients.discard(ws)
+            return ws
 
         try:
             async for msg in ws:
@@ -829,7 +839,17 @@ class BrowserAdapter(InterfaceAdapter):
                         print(f"[BROWSER ADAPTER] Error handling WS message: {e}")
                         traceback.print_exc()
                 elif msg.type == WSMsgType.ERROR:
+                    print(f"[BROWSER ADAPTER] WebSocket error detected, closing connection")
                     break
+                elif msg.type == WSMsgType.CLOSE:
+                    print(f"[BROWSER ADAPTER] Client closed connection gracefully")
+                    break
+        except asyncio.CancelledError:
+            print(f"[BROWSER ADAPTER] WebSocket handler cancelled")
+        except Exception as e:
+            print(f"[BROWSER ADAPTER] WebSocket unexpected error: {e}")
+            import traceback
+            traceback.print_exc()
         finally:
             self._ws_clients.discard(ws)
 
