@@ -805,53 +805,67 @@ class BrowserAdapter(InterfaceAdapter):
         from aiohttp import web, WSMsgType
         import asyncio
 
-        # Increase max message size to 100MB to allow multiple large attachments
+        # Simple WebSocket configuration - no heartbeat (client handles reconnect)
         ws = web.WebSocketResponse(
             max_msg_size=100 * 1024 * 1024,
-            heartbeat=30.0,  # Send heartbeat every 30 seconds to keep connection alive (Windows fix)
-            timeout=60.0,    # Allow 60 seconds before timeout
+            timeout=None,  # No timeout - let messages flow naturally
         )
-        await ws.prepare(request)
+        
+        try:
+            await ws.prepare(request)
+        except Exception as e:
+            print(f"[BROWSER ADAPTER] Failed to prepare WebSocket: {e}")
+            return ws
+        
         self._ws_clients.add(ws)
+        print(f"[BROWSER ADAPTER] WebSocket client connected. Total clients: {len(self._ws_clients)}")
 
         # Send initial state
         try:
+            initial_state = self._get_initial_state()
+            print(f"[BROWSER ADAPTER] Sending initial state")
             await ws.send_json({
                 "type": "init",
-                "data": self._get_initial_state(),
+                "data": initial_state,
             })
+            print(f"[BROWSER ADAPTER] Initial state sent successfully")
         except Exception as e:
             print(f"[BROWSER ADAPTER] Error sending initial state: {e}")
+            import traceback
+            traceback.print_exc()
             self._ws_clients.discard(ws)
             return ws
 
+        # Message loop
         try:
             async for msg in ws:
-                if msg.type == WSMsgType.TEXT:
-                    try:
+                try:
+                    if msg.type == WSMsgType.TEXT:
                         data = json.loads(msg.data)
                         await self._handle_ws_message(data)
-                    except json.JSONDecodeError:
-                        pass
-                    except Exception as e:
-                        # Log error but don't break the connection
-                        import traceback
-                        print(f"[BROWSER ADAPTER] Error handling WS message: {e}")
-                        traceback.print_exc()
-                elif msg.type == WSMsgType.ERROR:
-                    print(f"[BROWSER ADAPTER] WebSocket error detected, closing connection")
-                    break
-                elif msg.type == WSMsgType.CLOSE:
-                    print(f"[BROWSER ADAPTER] Client closed connection gracefully")
-                    break
+                    elif msg.type == WSMsgType.ERROR:
+                        print(f"[BROWSER ADAPTER] WebSocket error: {ws.exception()}")
+                        break
+                    elif msg.type == WSMsgType.CLOSE:
+                        print(f"[BROWSER ADAPTER] Client initiated close")
+                        break
+                except json.JSONDecodeError as e:
+                    print(f"[BROWSER ADAPTER] JSON parse error: {e}")
+                    # Continue on JSON errors, don't close connection
+                except Exception as e:
+                    print(f"[BROWSER ADAPTER] Error handling message: {e}")
+                    import traceback
+                    traceback.print_exc()
+                    # Continue on message errors, don't close connection
         except asyncio.CancelledError:
-            print(f"[BROWSER ADAPTER] WebSocket handler cancelled")
+            print(f"[BROWSER ADAPTER] WebSocket cancelled")
         except Exception as e:
-            print(f"[BROWSER ADAPTER] WebSocket unexpected error: {e}")
+            print(f"[BROWSER ADAPTER] WebSocket loop error: {e}")
             import traceback
             traceback.print_exc()
         finally:
             self._ws_clients.discard(ws)
+            print(f"[BROWSER ADAPTER] WebSocket client disconnected. Total clients: {len(self._ws_clients)}")
 
         return ws
 

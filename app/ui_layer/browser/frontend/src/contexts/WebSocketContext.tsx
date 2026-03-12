@@ -106,7 +106,7 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
       }
 
       ws.onclose = () => {
-        console.log('[WS] Disconnected')
+        console.log('[WS] Disconnected, reconnectCount =', reconnectCountRef.current)
         isConnectingRef.current = false
         setState(prev => ({
           ...prev,
@@ -114,8 +114,12 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
           status: { ...prev.status, message: 'Disconnected. Reconnecting...' },
         }))
 
-        // Exponential backoff reconnection (Windows fix)
-        const reconnectDelay = Math.min(1000 * Math.pow(1.5, reconnectCountRef.current), 30000)
+        // Immediate first retry, then exponential backoff
+        let reconnectDelay = 500
+        if (reconnectCountRef.current > 0) {
+          // Exponential backoff after first disconnect
+          reconnectDelay = Math.min(1000 * Math.pow(1.5, reconnectCountRef.current - 1), 30000)
+        }
         reconnectCountRef.current += 1
 
         if (reconnectCountRef.current <= maxReconnectAttemptsRef.current) {
