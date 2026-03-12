@@ -63,6 +63,7 @@ class TriggerQueue:
             event_stream_manager: Optional event stream manager for accessing recent events.
         """
         self._heap: List[Trigger] = []
+        self._active: Dict[str, Trigger] = {}  # Triggers being processed (session_id -> trigger)
         self._cv = asyncio.Condition()
         self.llm = llm
         self._route_to_session_prompt = route_to_session_prompt
@@ -385,6 +386,10 @@ class TriggerQueue:
                     for t in merged_ready:
                         heapq.heappush(self._heap, t)
 
+                    # Track as active so fire() can find it while processing
+                    if trig.session_id:
+                        self._active[trig.session_id] = trig
+
                     self._print_queue("QUEUE AFTER GET (POST-MERGE)")
                     return trig
 
@@ -427,24 +432,35 @@ class TriggerQueue:
     # =================================================================
     # FIRE NOW
     # =================================================================
-    async def fire(self, session_id: str, *, message: str | None = None) -> bool:
+    async def fire(
+        self,
+        session_id: str,
+        *,
+        message: str | None = None,
+        platform: str | None = None,
+    ) -> bool:
         """
         Mark a trigger for a given session as ready to fire immediately.
 
         The ``fire_at`` timestamp for matching triggers is updated to the
-        current time, and waiting consumers are notified.
+        current time, and waiting consumers are notified. Also checks active
+        triggers (currently being processed) to attach messages.
 
         Args:
             session_id: Identifier of the session whose trigger should fire
                 now.
             message: Optional new user message to append to the trigger's
                 description so the reasoning step sees it.
+            platform: Optional platform identifier (e.g., "Telegram", "WhatsApp")
+                to preserve message source information.
 
         Returns:
-            ``True`` if at least one trigger was updated, otherwise ``False``.
+            ``True`` if a trigger was found (queued or active), otherwise ``False``.
         """
         async with self._cv:
             found = False
+
+            # Check queued triggers first
             for t in self._heap:
                 if t.session_id == session_id:
                     t.fire_at = time.time()
@@ -452,11 +468,28 @@ class TriggerQueue:
                         t.next_action_description += (
                             f"\n\n[NEW USER MESSAGE]: {message}"
                         )
+                        if platform:
+                            t.payload["pending_platform"] = platform
                     found = True
+
             if found:
                 heapq.heapify(self._heap)  # restore heap invariant after fire_at change
                 self._cv.notify()
-            return found
+                return True
+
+            # Check active triggers (being processed)
+            if session_id in self._active:
+                t = self._active[session_id]
+                if message:
+                    t.next_action_description += (
+                        f"\n\n[NEW USER MESSAGE]: {message}"
+                    )
+                    if platform:
+                        t.payload["pending_platform"] = platform
+                logger.debug(f"[FIRE] Attached message to active trigger for session {session_id}")
+                return True
+
+            return False
 
     # =================================================================
     # REMOVE SESSIONS
@@ -473,8 +506,60 @@ class TriggerQueue:
             return
         async with self._cv:
             self._heap = [t for t in self._heap if t.session_id not in session_ids]
+            # Also remove from active triggers
+            for sid in session_ids:
+                self._active.pop(sid, None)
             heapq.heapify(self._heap)
             self._cv.notify_all()
+
+    def mark_session_inactive(self, session_id: str) -> None:
+        """
+        Remove a session from active tracking when processing completes.
+
+        This should be called when a task/session ends to clean up the
+        _active dict.
+
+        Args:
+            session_id: The session that finished processing.
+        """
+        self._active.pop(session_id, None)
+
+    def pop_pending_user_message(self, session_id: str) -> tuple[str | None, str | None]:
+        """
+        Extract and remove any pending user message from an active trigger.
+
+        When fire() attaches a message to an active trigger via
+        '[NEW USER MESSAGE]: ...', this method extracts that message
+        so it can be carried forward to the next trigger.
+
+        Args:
+            session_id: The session to check for pending messages.
+
+        Returns:
+            Tuple of (message, platform). Both are None if no pending message.
+        """
+        if session_id not in self._active:
+            return None, None
+
+        trigger = self._active[session_id]
+        marker = "\n\n[NEW USER MESSAGE]:"
+        desc = trigger.next_action_description
+
+        if marker not in desc:
+            return None, None
+
+        # Extract the message
+        idx = desc.index(marker)
+        message = desc[idx + len(marker):].strip()
+
+        # Extract and remove the platform from payload
+        platform = trigger.payload.pop("pending_platform", None)
+
+        # Remove the message from the trigger to avoid duplication
+        trigger.next_action_description = desc[:idx]
+
+        logger.debug(f"[TRIGGER] Extracted pending user message for session {session_id}: {message[:50]}...")
+        return message, platform
 
     # =================================================================
     # MERGE HELPERS

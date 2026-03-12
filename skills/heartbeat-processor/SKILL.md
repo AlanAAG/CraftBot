@@ -21,6 +21,20 @@ You receive a heartbeat trigger with:
 
 ---
 
+## CRITICAL: Silent Execution (Override Standard Task Rules)
+
+**This skill overrides standard task completion rules.** Unlike regular tasks:
+
+- **NO acknowledgement**: Do NOT acknowledge task receipt to user
+- **NO confirmation**: Do NOT wait for user confirmation before ending
+- **MUST end silently**: Use `task_end` immediately after processing, without user interaction
+- **Can send messages**: You can use `send_message` for tier 1 notifications, but set `wait_for_user_reply=false`
+- **NEVER block on user**: Do not wait for user reply at any point
+
+**Why?** Heartbeat tasks run automatically at regular intervals. Waiting for user confirmation would cause tasks to pile up indefinitely.
+
+---
+
 ## CRITICAL: Two Execution Types
 
 When executing proactive tasks, you MUST choose between two execution types:
@@ -65,38 +79,19 @@ schedule_task(
 
 ## Tiered Permission Model
 
-Use this model to determine if you need user permission to initiate a task:
+All recurring proactive tasks use tier 0 or tier 1. Tasks requiring user approval should not be added as recurring tasks.
 
 ```
-Tier 0 - Silent Read (No Approval Required):
+Tier 0 - Silent (No Notification):
   - Search and summarize information
   - Detect anomalies and patterns
   - Draft recommendations internally
   - Read files and analyze data
 
-Tier 1 - Notify Then Execute (No Approval Required):
+Tier 1 - Notify Then Execute:
   - Notify user with star prefix, then execute immediately
   - Send a proposed plan or draft to user
   - Share analysis results or recommendations
-
-Tier 2 - Act on Low-Risk Tools (Pre-Approved):
-  - Create tickets or issues
-  - Schedule reminders
-  - Open PR drafts
-  - Prepare campaign drafts
-  - Update internal documents
-
-Tier 3 - High-Risk Actions (Explicit Approval Every Time):
-  - Emailing customers or external parties
-  - Changing configurations
-  - Touching money or financial systems
-  - Production deployments
-  - Modifying critical systems
-
-Tier 4 - Prohibited:
-  - Anything disallowed by policy
-  - Actions that could cause irreversible harm
-  - Unauthorized access or modifications
 ```
 
 ## Evaluation Rubric
@@ -189,31 +184,9 @@ recurring_update_task(
 )
 ```
 
-### Step 3: Check for Pending Permissions (CRITICAL)
+### Step 3: Evaluate Each Task
 
-Before evaluating tasks, check each task's `outcome_history` for pending permission requests.
-
-**A task is "pending permission" if:**
-- The most recent outcome contains `"permission_pending": true`
-
-**If a task is pending permission:**
-- **SKIP** that task entirely - do NOT ask for permission again
-- Do NOT execute it
-- Move on to the next task
-
-**Example check:**
-```
-For task "weekly_report":
-  outcome_history: [
-    {"timestamp": "2024-01-15T10:00:00", "result": "Awaiting user permission", "permission_pending": true}
-  ]
-
-  → Most recent outcome has permission_pending=true, SKIP this task
-```
-
-### Step 4: Evaluate Each Task
-
-For each task that is NOT pending permission:
+For each task:
 
 1. **Check Conditions**: If the task has conditions, evaluate them:
    - `market_hours_only`: Skip if outside 9:30 AM - 4:00 PM on weekdays
@@ -224,30 +197,27 @@ For each task that is NOT pending permission:
 
 3. **Decision**:
    - Score >= 18: Execute the task
-   - Score 13-17: Consider executing, may need user input
+   - Score 13-17: Consider executing
    - Score < 13: Skip for this heartbeat
 
-### Step 5: Choose Execution Type (INLINE or SCHEDULED)
+### Step 4: Choose Execution Type (INLINE or SCHEDULED)
 
 For each task that passes evaluation, determine HOW to execute it:
 
 | Criteria | INLINE | SCHEDULED |
 |----------|--------|-----------|
-| Permission tier | 0 or 1 | Any |
 | Complexity | Simple, single-step | Multi-step, complex |
 | Action sets needed | Available in heartbeat | Requires different sets |
 | Duration | Quick | Extended |
 | Sub-tasks needed | No | Yes |
 
-### Step 6: Execute Tasks
+### Step 5: Execute Tasks
 
 #### For INLINE Execution:
 
 1. **Check Permission Tier**:
    - **Tier 0 (silent)**: Execute without notification
-   - **Tier 1 (notify)**: Notify user with star prefix, then execute immediately (no approval needed)
-   - **Tier 2/3 (needs approval)**: See "Requesting Permission" below
-   - **Tier 4 (prohibited)**: Never execute
+   - **Tier 1 (notify)**: Notify user with star prefix, then execute immediately
 
 2. **Execute the Task**: Follow the task's instruction using available actions
 
@@ -258,28 +228,6 @@ For each task that passes evaluation, determine HOW to execute it:
      add_outcome={"result": "Description of what was done", "success": true}
    )
    ```
-
-#### Requesting Permission (Tier 2/3):
-
-When a task requires user permission:
-
-1. **First, record that permission is being requested:**
-   ```
-   recurring_update_task(
-     task_id="task_id",
-     add_outcome={
-       "result": "Awaiting user permission to execute",
-       "success": true,
-       "permission_pending": true
-     }
-   )
-   ```
-
-2. **Then ask the user for permission** using `send_message`
-
-3. **If user approves:** Execute the task and record success outcome
-4. **If user rejects:** Record rejection outcome with `permission_pending: false`
-5. **If no response:** The next heartbeat will see `permission_pending: true` and SKIP (see Step 2)
 
 #### For SCHEDULED Execution:
 
@@ -304,31 +252,30 @@ When a task requires user permission:
    )
    ```
 
-### Step 7: Complete
+### Step 6: Complete
 
 After processing all tasks, end the task silently.
 
 ## Rules
 
+- **END SILENTLY** - Always end with `task_end` without waiting for user confirmation
+- **NEVER wait for user** - When sending messages, always set `wait_for_user_reply=false`
 - **NEVER spam users** - Batch notifications when possible
-- **Respect permission tiers strictly** - Higher tiers require explicit consent
 - **Star emoji prefix** - Use for proactive notifications to user
 - **Silent on no tasks** - If no tasks match the frequency, end silently
 - **Log outcomes** - Always record what happened for each executed task
 - **Handle failures gracefully** - If a task fails, log error and continue to next
 - **Prefer INLINE execution** - Only use SCHEDULED when truly necessary
 - **Always include outcome recording in scheduled task instructions**
-- **NEVER re-ask for permission** - If a task is pending permission (check outcome_history), SKIP it
 
 ## Permission Tier Reference
+
+All recurring proactive tasks use tier 0 or tier 1:
 
 | Tier | Name | Behavior |
 |------|------|----------|
 | 0 | Silent | Execute without notification |
 | 1 | Notify | Notify user then execute immediately |
-| 2 | Low-risk | Ask permission, proceed if approved |
-| 3 | High-risk | Require explicit approval every time |
-| 4 | Prohibited | Never execute |
 
 ## Example Flows
 
@@ -347,7 +294,7 @@ After processing all tasks, end the task silently.
 ### Example 2: SCHEDULED Execution (Complex Analysis)
 
 1. Read tasks: `recurring_read(frequency="weekly")`
-2. Find: `weekly_code_review` (tier 2, enabled, requires complex analysis)
+2. Find: `weekly_code_review` (tier 1, enabled, requires complex analysis)
 3. Score: Impact=4, Risk=5, Cost=3, Urgency=2, Confidence=4 = 18 (execute)
 4. Execution type: **SCHEDULED** (complex multi-step analysis, needs code_analysis action set)
 5. Schedule:

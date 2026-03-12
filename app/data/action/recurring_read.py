@@ -89,8 +89,7 @@ def recurring_read(input_data: dict) -> dict:
                     {
                         "timestamp": o.timestamp.isoformat(),
                         "result": o.result,
-                        "success": o.success,
-                        **({"permission_pending": True} if o.permission_pending else {})
+                        "success": o.success
                     }
                     for o in task.outcome_history[-3:]  # Last 3 outcomes
                 ]

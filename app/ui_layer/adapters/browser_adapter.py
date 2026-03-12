@@ -11,6 +11,7 @@ import time
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set
 
+from agent_core.utils.logger import logger
 from app.config import AGENT_WORKSPACE_ROOT
 from app.ui_layer.adapters.base import InterfaceAdapter
 from app.ui_layer.settings import (
@@ -796,7 +797,7 @@ class BrowserAdapter(InterfaceAdapter):
                 pass
 
         # Close all WebSocket connections
-        for ws in self._ws_clients:
+        for ws in self._ws_clients.copy():
             await ws.close()
         self._ws_clients.clear()
 
@@ -1446,7 +1447,30 @@ class BrowserAdapter(InterfaceAdapter):
                 # Update runtime scheduler if available
                 agent = self._controller.agent
                 if hasattr(agent, 'scheduler') and agent.scheduler:
-                    # Toggle schedules at runtime
+                    # If global enabled flag is toggled, toggle all proactive schedules
+                    if "enabled" in updates:
+                        proactive_schedules = [
+                            "hourly-heartbeat",
+                            "daily-heartbeat",
+                            "weekly-heartbeat",
+                            "monthly-heartbeat",
+                            "day-planner",
+                            "week-planner",
+                            "month-planner",
+                        ]
+                        enabled = updates["enabled"]
+                        for schedule_id in proactive_schedules:
+                            try:
+                                if enabled:
+                                    agent.scheduler.enable_schedule(schedule_id)
+                                else:
+                                    agent.scheduler.disable_schedule(schedule_id)
+                            except Exception as e:
+                                logger.warning(
+                                    f"[BROWSER] Failed to toggle schedule {schedule_id}: {e}"
+                                )
+
+                    # Toggle individual schedules at runtime
                     if "schedules" in updates:
                         for schedule_update in updates["schedules"]:
                             schedule_id = schedule_update.get("id")
@@ -1916,6 +1940,20 @@ class BrowserAdapter(InterfaceAdapter):
             # Check if there's a create_process_memory_task method
             if hasattr(agent, 'create_process_memory_task'):
                 task_id = agent.create_process_memory_task()
+
+                if task_id:
+                    # Queue trigger to start the task (same as _handle_memory_processing_trigger)
+                    import time
+                    from app.trigger import Trigger
+                    trigger = Trigger(
+                        fire_at=time.time(),
+                        priority=60,
+                        next_action_description="Process unprocessed events into long-term memory",
+                        session_id=task_id,
+                        payload={},
+                    )
+                    await agent.triggers.put(trigger)
+
                 await self._broadcast({
                     "type": "memory_process_trigger",
                     "data": {
@@ -2705,7 +2743,7 @@ class BrowserAdapter(InterfaceAdapter):
         json_msg = json.dumps(message)
         disconnected = set()
 
-        for ws in self._ws_clients:
+        for ws in self._ws_clients.copy():
             try:
                 await ws.send_str(json_msg)
             except Exception:

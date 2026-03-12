@@ -983,160 +983,163 @@ function ProactiveSettings() {
         </div>
       </div>
 
-      {/* Heartbeat Schedules */}
-      <div className={styles.subsection}>
-        <h4 className={styles.subsectionTitle}>Heartbeat Schedules</h4>
-        <p className={styles.subsectionDesc}>
-          Heartbeats periodically check and execute proactive tasks based on their frequency
-        </p>
-        <div className={styles.scheduleList}>
-          {heartbeatSchedules.map(item => {
-            const schedule = getSchedule(item.id)
-            return (
-              <div key={item.id} className={styles.scheduleCard}>
-                <div className={styles.scheduleInfo}>
-                  <span className={styles.scheduleName}>{item.label}</span>
-                  <span className={styles.scheduleDesc}>{item.desc}</span>
-                  {schedule && (
-                    <span className={styles.scheduleTime}>{formatCronExpression(schedule.schedule)}</span>
-                  )}
-                </div>
-                <input
-                  type="checkbox"
-                  className={styles.toggle}
-                  checked={schedule?.enabled ?? false}
-                  onChange={(e) => handleToggleSchedule(item.id, e.target.checked)}
-                  disabled={isLoadingScheduler || !schedulerEnabled}
-                />
-              </div>
-            )
-          })}
-        </div>
-      </div>
-
-      {/* Planners */}
-      <div className={styles.subsection}>
-        <h4 className={styles.subsectionTitle}>Planners</h4>
-        <p className={styles.subsectionDesc}>
-          Planners review recent interactions and plan proactive activities
-        </p>
-        <div className={styles.scheduleList}>
-          {plannerSchedules.map(item => {
-            const schedule = getSchedule(item.id)
-            return (
-              <div key={item.id} className={styles.scheduleCard}>
-                <div className={styles.scheduleInfo}>
-                  <span className={styles.scheduleName}>{item.label}</span>
-                  <span className={styles.scheduleDesc}>{item.desc}</span>
-                  {schedule && (
-                    <span className={styles.scheduleTime}>{formatCronExpression(schedule.schedule)}</span>
-                  )}
-                </div>
-                <input
-                  type="checkbox"
-                  className={styles.toggle}
-                  checked={schedule?.enabled ?? false}
-                  onChange={(e) => handleToggleSchedule(item.id, e.target.checked)}
-                  disabled={isLoadingScheduler || !schedulerEnabled}
-                />
-              </div>
-            )
-          })}
-        </div>
-      </div>
-
-      {/* Proactive Tasks */}
-      <div className={styles.subsection}>
-        <div className={styles.subsectionHeader}>
-          <div>
-            <h4 className={styles.subsectionTitle}>Proactive Tasks</h4>
-            <p className={styles.subsectionDesc}>
-              Tasks defined in PROACTIVE.md that the agent executes during heartbeats
-            </p>
-          </div>
-          <Button variant="primary" size="sm" onClick={handleAddTask} icon={<Plus size={14} />}>
-            Add Task
-          </Button>
-        </div>
-
-        {isLoadingTasks ? (
-          <div className={styles.loadingState}>
-            <Loader2 size={20} className={styles.spinning} />
-            <span>Loading tasks...</span>
-          </div>
-        ) : tasks.length === 0 ? (
-          <div className={styles.emptyState}>
-            <p>No proactive tasks defined yet.</p>
-            <Button variant="secondary" size="sm" onClick={handleAddTask}>
-              Create your first task
-            </Button>
-          </div>
-        ) : (
-          <div className={styles.taskGroups}>
-            {(['hourly', 'daily', 'weekly', 'monthly'] as const).map(frequency => {
-              const freqTasks = tasksByFrequency[frequency]
-              if (freqTasks.length === 0) return null
-
+      {/* Toggleable Content - greyed out when proactive mode is disabled */}
+      <div className={`${styles.toggleableContent} ${!schedulerEnabled ? styles.disabledContent : ''}`}>
+        {/* Heartbeat Schedules */}
+        <div className={styles.subsection}>
+          <h4 className={styles.subsectionTitle}>Heartbeat Schedules</h4>
+          <p className={styles.subsectionDesc}>
+            Heartbeats periodically check and execute proactive tasks based on their frequency
+          </p>
+          <div className={styles.scheduleList}>
+            {heartbeatSchedules.map(item => {
+              const schedule = getSchedule(item.id)
               return (
-                <div key={frequency} className={styles.taskGroup}>
-                  <div className={styles.taskGroupHeader}>
-                    <Badge variant="default">{frequency}</Badge>
-                    <span className={styles.taskCount}>{freqTasks.length} task{freqTasks.length !== 1 ? 's' : ''}</span>
+                <div key={item.id} className={styles.scheduleCard}>
+                  <div className={styles.scheduleInfo}>
+                    <span className={styles.scheduleName}>{item.label}</span>
+                    <span className={styles.scheduleDesc}>{item.desc}</span>
+                    {schedule && (
+                      <span className={styles.scheduleTime}>{formatCronExpression(schedule.schedule)}</span>
+                    )}
                   </div>
-                  <div className={styles.taskList}>
-                    {freqTasks.map(task => (
-                      <div key={task.id} className={`${styles.taskCard} ${!task.enabled ? styles.taskDisabled : ''}`}>
-                        <div className={styles.taskMain}>
-                          <div className={styles.taskHeader}>
-                            <span className={styles.taskName}>{task.name}</span>
-                            <div className={styles.taskBadges}>
-                              <Badge variant={task.enabled ? 'success' : 'default'}>
-                                {task.enabled ? 'Active' : 'Disabled'}
-                              </Badge>
-                              <Badge variant="info">{getPriorityLabel(task.priority)}</Badge>
-                              <Badge variant={task.permissionTier >= 1 ? 'warning' : 'default'}>
-                                {getNotificationLabel(task.permissionTier)}
-                              </Badge>
-                            </div>
-                          </div>
-                          <p className={styles.taskInstruction}>{task.instruction}</p>
-                          <div className={styles.taskMeta}>
-                            {task.time && <span>Time: {task.time}</span>}
-                            {task.day && <span>Day: {task.day}</span>}
-                            <span>Runs: {task.runCount}</span>
-                            {task.lastRun && (
-                              <span>Last: {new Date(task.lastRun).toLocaleDateString()}</span>
-                            )}
-                          </div>
-                        </div>
-                        <div className={styles.taskActions}>
-                          <input
-                            type="checkbox"
-                            className={styles.toggle}
-                            checked={task.enabled}
-                            onChange={(e) => handleToggleTask(task.id, e.target.checked)}
-                          />
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleEditTask(task)}
-                            icon={<Edit2 size={14} />}
-                          />
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDeleteTask(task.id)}
-                            icon={<Trash2 size={14} />}
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                  <input
+                    type="checkbox"
+                    className={styles.toggle}
+                    checked={schedule?.enabled ?? false}
+                    onChange={(e) => handleToggleSchedule(item.id, e.target.checked)}
+                    disabled={isLoadingScheduler || !schedulerEnabled}
+                  />
                 </div>
               )
             })}
           </div>
-        )}
+        </div>
+
+        {/* Planners */}
+        <div className={styles.subsection}>
+          <h4 className={styles.subsectionTitle}>Planners</h4>
+          <p className={styles.subsectionDesc}>
+            Planners review recent interactions and plan proactive activities
+          </p>
+          <div className={styles.scheduleList}>
+            {plannerSchedules.map(item => {
+              const schedule = getSchedule(item.id)
+              return (
+                <div key={item.id} className={styles.scheduleCard}>
+                  <div className={styles.scheduleInfo}>
+                    <span className={styles.scheduleName}>{item.label}</span>
+                    <span className={styles.scheduleDesc}>{item.desc}</span>
+                    {schedule && (
+                      <span className={styles.scheduleTime}>{formatCronExpression(schedule.schedule)}</span>
+                    )}
+                  </div>
+                  <input
+                    type="checkbox"
+                    className={styles.toggle}
+                    checked={schedule?.enabled ?? false}
+                    onChange={(e) => handleToggleSchedule(item.id, e.target.checked)}
+                    disabled={isLoadingScheduler || !schedulerEnabled}
+                  />
+                </div>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Proactive Tasks */}
+        <div className={styles.subsection}>
+          <div className={styles.subsectionHeader}>
+            <div>
+              <h4 className={styles.subsectionTitle}>Proactive Tasks</h4>
+              <p className={styles.subsectionDesc}>
+                Tasks defined in PROACTIVE.md that the agent executes during heartbeats
+              </p>
+            </div>
+            <Button variant="primary" size="sm" onClick={handleAddTask} icon={<Plus size={14} />} disabled={!schedulerEnabled}>
+              Add Task
+            </Button>
+          </div>
+
+          {isLoadingTasks ? (
+            <div className={styles.loadingState}>
+              <Loader2 size={20} className={styles.spinning} />
+              <span>Loading tasks...</span>
+            </div>
+          ) : tasks.length === 0 ? (
+            <div className={styles.emptyState}>
+              <p>No proactive tasks defined yet.</p>
+              <Button variant="secondary" size="sm" onClick={handleAddTask} disabled={!schedulerEnabled}>
+                Create your first task
+              </Button>
+            </div>
+          ) : (
+            <div className={styles.taskGroups}>
+              {(['hourly', 'daily', 'weekly', 'monthly'] as const).map(frequency => {
+                const freqTasks = tasksByFrequency[frequency]
+                if (freqTasks.length === 0) return null
+
+                return (
+                  <div key={frequency} className={styles.taskGroup}>
+                    <div className={styles.taskGroupHeader}>
+                      <Badge variant="default">{frequency}</Badge>
+                      <span className={styles.taskCount}>{freqTasks.length} task{freqTasks.length !== 1 ? 's' : ''}</span>
+                    </div>
+                    <div className={styles.taskList}>
+                      {freqTasks.map(task => (
+                        <div key={task.id} className={`${styles.taskCard} ${!task.enabled ? styles.taskDisabled : ''}`}>
+                          <div className={styles.taskMain}>
+                            <div className={styles.taskHeader}>
+                              <span className={styles.taskName}>{task.name}</span>
+                              <div className={styles.taskBadges}>
+                                <Badge variant={task.enabled ? 'success' : 'default'}>
+                                  {task.enabled ? 'Active' : 'Disabled'}
+                                </Badge>
+                                <Badge variant="info">{getPriorityLabel(task.priority)}</Badge>
+                                <Badge variant={task.permissionTier >= 1 ? 'warning' : 'default'}>
+                                  {getNotificationLabel(task.permissionTier)}
+                                </Badge>
+                              </div>
+                            </div>
+                            <p className={styles.taskInstruction}>{task.instruction}</p>
+                            <div className={styles.taskMeta}>
+                              {task.time && <span>Time: {task.time}</span>}
+                              {task.day && <span>Day: {task.day}</span>}
+                              <span>Runs: {task.runCount}</span>
+                              {task.lastRun && (
+                                <span>Last: {new Date(task.lastRun).toLocaleDateString()}</span>
+                              )}
+                            </div>
+                          </div>
+                          <div className={styles.taskActions}>
+                            <input
+                              type="checkbox"
+                              className={styles.toggle}
+                              checked={task.enabled}
+                              onChange={(e) => handleToggleTask(task.id, e.target.checked)}
+                            />
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleEditTask(task)}
+                              icon={<Edit2 size={14} />}
+                            />
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleDeleteTask(task.id)}
+                              icon={<Trash2 size={14} />}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Reset Tasks */}
@@ -1584,93 +1587,96 @@ function MemorySettings() {
         </div>
       </div>
 
-      {/* Memory Items */}
-      <div className={styles.subsection}>
-        <div className={styles.subsectionHeader}>
-          <h4 className={styles.subsectionTitle}>Memory Items</h4>
-          <div className={styles.headerActions}>
-            <select
-              className={styles.filterSelect}
-              value={sortOrder}
-              onChange={(e) => setSortOrder(e.target.value as 'latest' | 'oldest')}
-            >
-              <option value="latest">Newest first</option>
-              <option value="oldest">Oldest first</option>
-            </select>
-            <Button variant="primary" size="sm" onClick={handleAddItem} icon={<Plus size={14} />}>
-              Add Memory
-            </Button>
+      {/* Toggleable Content - greyed out when memory is disabled */}
+      <div className={`${styles.toggleableContent} ${!memoryEnabled ? styles.disabledContent : ''}`}>
+        {/* Memory Items */}
+        <div className={styles.subsection}>
+          <div className={styles.subsectionHeader}>
+            <h4 className={styles.subsectionTitle}>Memory Items</h4>
+            <div className={styles.headerActions}>
+              <select
+                className={styles.filterSelect}
+                value={sortOrder}
+                onChange={(e) => setSortOrder(e.target.value as 'latest' | 'oldest')}
+              >
+                <option value="latest">Newest first</option>
+                <option value="oldest">Oldest first</option>
+              </select>
+              <Button variant="primary" size="sm" onClick={handleAddItem} icon={<Plus size={14} />} disabled={!memoryEnabled}>
+                Add Memory
+              </Button>
+            </div>
           </div>
-        </div>
-        <p className={styles.subsectionDesc}>
-          Long-term memories stored in MEMORY.md. These are facts the agent has learned from interactions.
-        </p>
+          <p className={styles.subsectionDesc}>
+            Long-term memories stored in MEMORY.md. These are facts the agent has learned from interactions.
+          </p>
 
-        {isLoadingItems ? (
-          <div className={styles.loadingState}>
-            <Loader2 size={20} className={styles.spinning} />
-            <span>Loading memory items...</span>
-          </div>
-        ) : items.length === 0 ? (
-          <div className={styles.emptyState}>
-            <Database size={32} className={styles.emptyIcon} />
-            <p>No memory items yet.</p>
-            <p className={styles.emptyHint}>
-              Memory items are created when the agent processes events or when you add them manually.
-            </p>
-            <Button variant="secondary" size="sm" onClick={handleAddItem}>
-              Add your first memory
-            </Button>
-          </div>
-        ) : (
-          <div className={styles.memoryList}>
-            {sortedItems.map(item => (
-              <div key={item.id} className={styles.memoryCard}>
-                <div className={styles.memoryMain}>
-                  <div className={styles.memoryHeader}>
-                    <Badge variant="info">{item.category}</Badge>
-                    <span className={styles.memoryTimestamp}>{item.timestamp}</span>
+          {isLoadingItems ? (
+            <div className={styles.loadingState}>
+              <Loader2 size={20} className={styles.spinning} />
+              <span>Loading memory items...</span>
+            </div>
+          ) : items.length === 0 ? (
+            <div className={styles.emptyState}>
+              <Database size={32} className={styles.emptyIcon} />
+              <p>No memory items yet.</p>
+              <p className={styles.emptyHint}>
+                Memory items are created when the agent processes events or when you add them manually.
+              </p>
+              <Button variant="secondary" size="sm" onClick={handleAddItem} disabled={!memoryEnabled}>
+                Add your first memory
+              </Button>
+            </div>
+          ) : (
+            <div className={styles.memoryList}>
+              {sortedItems.map(item => (
+                <div key={item.id} className={styles.memoryCard}>
+                  <div className={styles.memoryMain}>
+                    <div className={styles.memoryHeader}>
+                      <Badge variant="info">{item.category}</Badge>
+                      <span className={styles.memoryTimestamp}>{item.timestamp}</span>
+                    </div>
+                    <p className={styles.memoryContent}>{item.content}</p>
                   </div>
-                  <p className={styles.memoryContent}>{item.content}</p>
+                  <div className={styles.memoryActions}>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleEditItem(item)}
+                      icon={<Edit2 size={14} />}
+                    />
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleDeleteItem(item.id)}
+                      icon={<Trash2 size={14} />}
+                    />
+                  </div>
                 </div>
-                <div className={styles.memoryActions}>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleEditItem(item)}
-                    icon={<Edit2 size={14} />}
-                  />
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleDeleteItem(item.id)}
-                    icon={<Trash2 size={14} />}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+              ))}
+            </div>
+          )}
+        </div>
 
-      {/* Memory Processing */}
-      <div className={styles.subsection}>
-        <h4 className={styles.subsectionTitle}>Memory Processing</h4>
-        <p className={styles.subsectionDesc}>
-          Memory processing analyzes unprocessed events and extracts important facts into long-term memory.
-          This normally runs automatically at 3 AM daily.
-        </p>
-        <Button
-          variant="secondary"
-          onClick={handleProcessMemory}
-          disabled={isProcessing || !memoryEnabled}
-          icon={isProcessing ? <Loader2 size={14} className={styles.spinning} /> : <Brain size={14} />}
-        >
-          {isProcessing ? 'Processing...' : 'Process Memory Now'}
-        </Button>
-        {!memoryEnabled && (
-          <span className={styles.hint}>Enable memory to use this feature</span>
-        )}
+        {/* Memory Processing */}
+        <div className={styles.subsection}>
+          <h4 className={styles.subsectionTitle}>Memory Processing</h4>
+          <p className={styles.subsectionDesc}>
+            Memory processing analyzes unprocessed events and extracts important facts into long-term memory.
+            This normally runs automatically at 3 AM daily.
+          </p>
+          <Button
+            variant="secondary"
+            onClick={handleProcessMemory}
+            disabled={isProcessing || !memoryEnabled}
+            icon={isProcessing ? <Loader2 size={14} className={styles.spinning} /> : <Brain size={14} />}
+          >
+            {isProcessing ? 'Processing...' : 'Process Memory Now'}
+          </Button>
+          {!memoryEnabled && (
+            <span className={styles.hint}>Enable memory to use this feature</span>
+          )}
+        </div>
       </div>
 
       {/* Reset Memory */}

@@ -18,8 +18,8 @@ from agent_core import action
         },
         "add_outcome": {
             "type": "object",
-            "description": "Optional outcome to add to task history. Include 'result' (string), optionally 'success' (boolean, default true), and 'permission_pending' (boolean, default false) to track pending permission requests",
-            "example": {"result": "Awaiting user permission", "success": True, "permission_pending": True}
+            "description": "Optional outcome to add to task history. Include 'result' (string) and optionally 'success' (boolean, default true)",
+            "example": {"result": "Task completed successfully", "success": True}
         }
     },
     output_schema={

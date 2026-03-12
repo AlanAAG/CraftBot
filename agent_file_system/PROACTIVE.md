@@ -132,6 +132,19 @@ GOOD INSTRUCTION (detailed):
 ================================================================================
 -->
 
+<!--
+================================================================================
+HOW TO ADD A NEW RECURRING PROACTIVE TASK
+================================================================================
+1. Add a new section between PROACTIVE_TASKS_START and PROACTIVE_TASKS_END
+2. Use the format: ### [FREQUENCY] Task Name
+3. Include a YAML code block with all required fields
+4. Write detailed, step-by-step instructions (see WRITING EFFECTIVE INSTRUCTIONS)
+5. Set enabled: true when ready to activate
+6. The agent will pick up the task on the next heartbeat
+================================================================================
+-->
+
 <!-- PROACTIVE_TASKS_START -->
 
 <!-- Add your proactive tasks here following the format above -->
@@ -177,15 +190,3 @@ None defined.
 
 ---
 
-<!--
-================================================================================
-HOW TO ADD A NEW TASK
-================================================================================
-1. Add a new section between PROACTIVE_TASKS_START and PROACTIVE_TASKS_END
-2. Use the format: ### [FREQUENCY] Task Name
-3. Include a YAML code block with all required fields
-4. Write detailed, step-by-step instructions (see WRITING EFFECTIVE INSTRUCTIONS)
-5. Set enabled: true when ready to activate
-6. The agent will pick up the task on the next heartbeat
-================================================================================
--->

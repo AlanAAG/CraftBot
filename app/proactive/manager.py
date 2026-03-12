@@ -238,8 +238,7 @@ class ProactiveManager:
         if add_outcome:
             task.add_outcome(
                 result=add_outcome.get("result", ""),
-                success=add_outcome.get("success", True),
-                permission_pending=add_outcome.get("permission_pending", False)
+                success=add_outcome.get("success", True)
             )
 
         self.save()

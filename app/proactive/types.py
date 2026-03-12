@@ -43,25 +43,18 @@ class RecurringOutcome:
         timestamp: When the task was executed
         result: Description of the outcome
         success: Whether the execution was successful
-        permission_pending: Whether this outcome represents a pending permission request.
-                           If True, heartbeat processor should skip re-asking for permission.
-                           Expires after 24 hours.
     """
     timestamp: datetime
     result: str
     success: bool = True
-    permission_pending: bool = False
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for serialization."""
-        data = {
+        return {
             "timestamp": self.timestamp.isoformat(),
             "result": self.result,
             "success": self.success
         }
-        if self.permission_pending:
-            data["permission_pending"] = True
-        return data
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "RecurringOutcome":
@@ -75,8 +68,7 @@ class RecurringOutcome:
         return cls(
             timestamp=timestamp,
             result=data.get("result", ""),
-            success=data.get("success", True),
-            permission_pending=data.get("permission_pending", False)
+            success=data.get("success", True)
         )
 
 
@@ -136,21 +128,18 @@ class RecurringTask:
     def add_outcome(
         self,
         result: str,
-        success: bool = True,
-        permission_pending: bool = False
+        success: bool = True
     ) -> None:
         """Add an execution outcome to history.
 
         Args:
             result: Description of the outcome
             success: Whether execution was successful
-            permission_pending: Whether this represents a pending permission request
         """
         outcome = RecurringOutcome(
             timestamp=datetime.now(),
             result=result,
-            success=success,
-            permission_pending=permission_pending
+            success=success
         )
         self.outcome_history.append(outcome)
 

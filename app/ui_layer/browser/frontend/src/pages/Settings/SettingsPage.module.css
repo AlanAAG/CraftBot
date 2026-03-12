@@ -734,6 +734,28 @@
   border-top: 1px solid var(--border-primary);
 }
 
+/* Disabled Content Container */
+.disabledContent {
+  opacity: 0.5;
+  pointer-events: none;
+  user-select: none;
+}
+
+.disabledContent .toggle {
+  cursor: not-allowed;
+}
+
+.disabledContent .scheduleCard,
+.disabledContent .taskCard,
+.disabledContent .memoryCard {
+  background: var(--bg-tertiary);
+}
+
+/* Container for content that can be disabled */
+.toggleableContent {
+  transition: opacity var(--transition-fast);
+}
+
 .subsectionTitle {
   font-size: var(--text-base);
   font-weight: var(--font-semibold);
