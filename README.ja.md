@@ -3,10 +3,6 @@
     <img src="assets/craftbot_readme_banner.png" alt="CraftBot Banner" width="1280"/>
 </div>
 <br>
-<div align="center">
-    <img src="assets/craftbot_logo_text_small.png" alt="CraftBot Logo" width="480"/>
-</div>
-<br>
 
 <div align="center">
   <img src="https://img.shields.io/badge/OS-Windows-blue?logo=windows&logoColor=white" alt="Windows">
