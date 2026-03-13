@@ -29,6 +29,12 @@ from agent_core.utils.logger import logger
 from agent_core.decorators import profiler, OperationCategory
 import threading
 import tiktoken
+# Ensure tiktoken extension encodings (cl100k_base, etc.) are registered.
+# Required for tiktoken >= 0.12 and PyInstaller frozen builds.
+try:
+    import tiktoken_ext.openai_public  # noqa: F401
+except ImportError:
+    pass
 
 SEVERITIES = ("DEBUG", "INFO", "WARN", "ERROR")
 MAX_EVENT_INLINE_CHARS = 200000
@@ -40,7 +46,11 @@ def _get_tokenizer():
     """Get or create the tiktoken tokenizer (cached for performance)."""
     global _tokenizer
     if _tokenizer is None:
-        _tokenizer = tiktoken.get_encoding("cl100k_base")
+        try:
+            _tokenizer = tiktoken.get_encoding("cl100k_base")
+        except Exception:
+            # Fallback: use o200k_base if cl100k_base is unavailable
+            _tokenizer = tiktoken.get_encoding("o200k_base")
     return _tokenizer
 
 def count_tokens(text: str) -> int:
