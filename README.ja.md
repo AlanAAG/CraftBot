@@ -38,6 +38,10 @@ MCP、スキル、外部アプリとの連携をサポートしています。
 
 CraftBotはあなたの命令を待っています。今すぐあなた専用のCraftBotをセットアップしましょう。
 
+<div align="center">
+    <img src="assets/craftbot_overview.png" alt="CraftBot Overview" width="1280"/>
+</div>
+
 ---
 
 ## ✨ 特徴
