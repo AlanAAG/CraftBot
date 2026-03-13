@@ -189,56 +189,16 @@ class InternalActionInterface:
         Returns:
             Dict with 'success' (bool), 'files_sent' (int), and optionally 'errors' (list of str)
         """
+        from app.onboarding import onboarding_manager
+
         ui_adapter = InternalActionInterface.ui_adapter
+
+        # Get the actual agent name from onboarding state
+        agent_name = onboarding_manager.state.agent_name or "Agent"
 
         # Check if UI adapter supports attachments (browser adapter)
         if ui_adapter and hasattr(ui_adapter, 'send_message_with_attachments'):
-            return await ui_adapter.send_message_with_attachments(message, file_paths)
-        else:
-            # Fallback: send message with attachment notes for non-browser adapters
-            if InternalActionInterface.state_manager is None:
-                raise RuntimeError("InternalActionInterface not initialized with StateManager.")
-
-            attachment_notes = "\n".join([f"[Attachment: {fp}]" for fp in file_paths])
-            InternalActionInterface.state_manager.record_agent_message(
-                f"{message}\n\n{attachment_notes}"
-            )
-            # For non-browser adapters, we can't verify files exist, so assume success
-            return {"success": True, "files_sent": len(file_paths), "errors": None}
-
-    @staticmethod
-    async def do_chat_with_attachment(message: str, file_path: str) -> Dict[str, Any]:
-        """
-        Send a chat message with a single attachment to the user.
-
-        Deprecated: Use do_chat_with_attachments for new code.
-
-        Args:
-            message: The message content
-            file_path: Path to the file (absolute or relative to workspace)
-
-        Returns:
-            Dict with 'success', 'files_sent', and optionally 'errors'
-        """
-        return await InternalActionInterface.do_chat_with_attachments(message, [file_path])
-
-    @staticmethod
-    async def do_chat_with_attachments(message: str, file_paths: List[str]) -> Dict[str, Any]:
-        """
-        Send a chat message with one or more attachments to the user.
-
-        Args:
-            message: The message content
-            file_paths: List of paths to the files (absolute or relative to workspace)
-
-        Returns:
-            Dict with 'success' (bool), 'files_sent' (int), and optionally 'errors' (list of str)
-        """
-        ui_adapter = InternalActionInterface.ui_adapter
-
-        # Check if UI adapter supports attachments (browser adapter)
-        if ui_adapter and hasattr(ui_adapter, 'send_message_with_attachments'):
-            return await ui_adapter.send_message_with_attachments(message, file_paths)
+            return await ui_adapter.send_message_with_attachments(message, file_paths, sender=agent_name)
         else:
             # Fallback: send message with attachment notes for non-browser adapters
             if InternalActionInterface.state_manager is None:

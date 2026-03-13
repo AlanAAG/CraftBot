@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Data types for proactive task management.
+Data types for recurring task management.
 
-This module defines dataclasses for proactive tasks, conditions, and outcomes.
+This module defines dataclasses for recurring tasks, conditions, and outcomes.
 """
 
 from dataclasses import dataclass, field
@@ -11,8 +11,8 @@ from typing import Any, Dict, List, Optional
 
 
 @dataclass
-class ProactiveCondition:
-    """Condition for proactive task execution.
+class RecurringCondition:
+    """Condition for recurring task execution.
 
     Attributes:
         type: Condition type (e.g., "market_hours_only", "user_available")
@@ -29,15 +29,15 @@ class ProactiveCondition:
         }
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "ProactiveCondition":
+    def from_dict(cls, data: Dict[str, Any]) -> "RecurringCondition":
         """Create from dictionary."""
         condition_type = data.pop("type", "unknown")
         return cls(type=condition_type, params=data)
 
 
 @dataclass
-class ProactiveOutcome:
-    """Record of a proactive task execution.
+class RecurringOutcome:
+    """Record of a recurring task execution.
 
     Attributes:
         timestamp: When the task was executed
@@ -57,7 +57,7 @@ class ProactiveOutcome:
         }
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "ProactiveOutcome":
+    def from_dict(cls, data: Dict[str, Any]) -> "RecurringOutcome":
         """Create from dictionary."""
         timestamp = data.get("timestamp")
         if isinstance(timestamp, str):
@@ -73,8 +73,8 @@ class ProactiveOutcome:
 
 
 @dataclass
-class ProactiveTask:
-    """Definition of a proactive task.
+class RecurringTask:
+    """Definition of a recurring task.
 
     Attributes:
         id: Unique identifier for the task
@@ -101,11 +101,11 @@ class ProactiveTask:
     permission_tier: int = 0
     time: Optional[str] = None  # HH:MM for daily+
     day: Optional[str] = None  # For weekly (e.g., "sunday")
-    conditions: List[ProactiveCondition] = field(default_factory=list)
+    conditions: List[RecurringCondition] = field(default_factory=list)
     last_run: Optional[datetime] = None
     next_run: Optional[datetime] = None
     run_count: int = 0
-    outcome_history: List[ProactiveOutcome] = field(default_factory=list)
+    outcome_history: List[RecurringOutcome] = field(default_factory=list)
 
     MAX_OUTCOME_HISTORY = 5
 
@@ -125,14 +125,18 @@ class ProactiveTask:
         # Conditions are checked by the heartbeat processor
         return True
 
-    def add_outcome(self, result: str, success: bool = True) -> None:
+    def add_outcome(
+        self,
+        result: str,
+        success: bool = True
+    ) -> None:
         """Add an execution outcome to history.
 
         Args:
             result: Description of the outcome
             success: Whether execution was successful
         """
-        outcome = ProactiveOutcome(
+        outcome = RecurringOutcome(
             timestamp=datetime.now(),
             result=result,
             success=success
@@ -179,7 +183,7 @@ class ProactiveTask:
         return data
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any], name: str = "") -> "ProactiveTask":
+    def from_dict(cls, data: Dict[str, Any], name: str = "") -> "RecurringTask":
         """Create from dictionary (parsed from YAML).
 
         Args:
@@ -187,7 +191,7 @@ class ProactiveTask:
             name: Task name (from section header)
 
         Returns:
-            ProactiveTask instance
+            RecurringTask instance
         """
         # Parse datetime fields
         last_run = data.get("last_run")
@@ -202,13 +206,13 @@ class ProactiveTask:
         conditions = []
         for c in data.get("conditions", []):
             if isinstance(c, dict):
-                conditions.append(ProactiveCondition.from_dict(c.copy()))
+                conditions.append(RecurringCondition.from_dict(c.copy()))
 
         # Parse outcome history
         outcomes = []
         for o in data.get("outcome_history", []):
             if isinstance(o, dict):
-                outcomes.append(ProactiveOutcome.from_dict(o))
+                outcomes.append(RecurringOutcome.from_dict(o))
 
         return cls(
             id=data.get("id", ""),
@@ -229,21 +233,22 @@ class ProactiveTask:
 
 
 @dataclass
-class ProactiveData:
-    """Container for all proactive data from PROACTIVE.md.
+class RecurringData:
+    """Container for all recurring task data from PROACTIVE.md.
 
     Attributes:
         version: Format version
         last_updated: When the file was last updated
-        tasks: List of proactive tasks
-        planner_outputs: Dictionary of planner outputs by scope
+        tasks: List of recurring tasks
+        planner_outputs: DEPRECATED - planners now update "Goals, Plan, and Status" section
+                        via file operations. This field is kept for backward compatibility.
     """
     version: str = "1.0"
     last_updated: Optional[datetime] = None
-    tasks: List[ProactiveTask] = field(default_factory=list)
-    planner_outputs: Dict[str, str] = field(default_factory=dict)
+    tasks: List[RecurringTask] = field(default_factory=list)
+    planner_outputs: Dict[str, str] = field(default_factory=dict)  # Deprecated
 
-    def get_tasks_by_frequency(self, frequency: str) -> List[ProactiveTask]:
+    def get_tasks_by_frequency(self, frequency: str) -> List[RecurringTask]:
         """Get all tasks for a specific frequency.
 
         Args:
@@ -254,7 +259,7 @@ class ProactiveData:
         """
         return [t for t in self.tasks if t.frequency == frequency]
 
-    def get_enabled_tasks(self, frequency: Optional[str] = None) -> List[ProactiveTask]:
+    def get_enabled_tasks(self, frequency: Optional[str] = None) -> List[RecurringTask]:
         """Get all enabled tasks, optionally filtered by frequency.
 
         Args:
@@ -268,7 +273,7 @@ class ProactiveData:
             tasks = [t for t in tasks if t.frequency == frequency]
         return tasks
 
-    def get_task_by_id(self, task_id: str) -> Optional[ProactiveTask]:
+    def get_task_by_id(self, task_id: str) -> Optional[RecurringTask]:
         """Find a task by its ID.
 
         Args:
@@ -282,7 +287,7 @@ class ProactiveData:
                 return task
         return None
 
-    def add_task(self, task: ProactiveTask) -> None:
+    def add_task(self, task: RecurringTask) -> None:
         """Add a new task.
 
         Args:
@@ -312,7 +317,7 @@ class ProactiveData:
                 return True
         return False
 
-    def update_task(self, task_id: str, updates: Dict[str, Any]) -> Optional[ProactiveTask]:
+    def update_task(self, task_id: str, updates: Dict[str, Any]) -> Optional[RecurringTask]:
         """Update a task with new values.
 
         Args:

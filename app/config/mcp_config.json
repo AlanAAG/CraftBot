@@ -11,7 +11,7 @@
         "."
       ],
       "env": {},
-      "enabled": false
+      "enabled": true
     },
     {
       "name": "github",
@@ -1213,7 +1213,7 @@
         "C:/path/to/Google-Scholar-MCP-Server/google_scholar_server.py"
       ],
       "env": {},
-      "enabled": true
+      "enabled": false
     },
     {
       "name": "google-maps-mcp",
@@ -1237,7 +1237,7 @@
         "C:/path/to/Google-Flights-MCP-Server/server.py"
       ],
       "env": {},
-      "enabled": true
+      "enabled": false
     },
     {
       "name": "google-flights-mcp-alt",

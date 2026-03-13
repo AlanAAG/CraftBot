@@ -32,12 +32,13 @@ from app.tui.skill_settings import (
     remove_skill,
 )
 
-from app.tui.integration_settings import (
+from app.external_comms.integration_settings import (
     list_integrations,
     get_integration_info,
     get_integration_accounts,
     connect_integration_token,
     connect_integration_oauth,
+    connect_integration_interactive,
     disconnect_integration,
     get_integration_auth_type,
     get_integration_fields,
@@ -68,13 +69,13 @@ from app.ui_layer.settings.proactive_settings import (
     update_scheduler_config,
     toggle_schedule,
     toggle_schedule_runtime,
-    # Proactive tasks
-    get_proactive_tasks,
-    add_proactive_task,
-    update_proactive_task,
-    remove_proactive_task,
-    toggle_proactive_task,
-    reset_proactive_tasks,
+    # Recurring tasks
+    get_recurring_tasks,
+    add_recurring_task,
+    update_recurring_task,
+    remove_recurring_task,
+    toggle_recurring_task,
+    reset_recurring_tasks,
     reload_proactive_manager,
 )
 
@@ -131,6 +132,7 @@ __all__ = [
     "get_integration_accounts",
     "connect_integration_token",
     "connect_integration_oauth",
+    "connect_integration_interactive",
     "disconnect_integration",
     "get_integration_auth_type",
     "get_integration_fields",
@@ -154,12 +156,13 @@ __all__ = [
     "update_scheduler_config",
     "toggle_schedule",
     "toggle_schedule_runtime",
-    "get_proactive_tasks",
-    "add_proactive_task",
-    "update_proactive_task",
-    "remove_proactive_task",
-    "toggle_proactive_task",
-    "reset_proactive_tasks",
+    # Recurring tasks
+    "get_recurring_tasks",
+    "add_recurring_task",
+    "update_recurring_task",
+    "remove_recurring_task",
+    "toggle_recurring_task",
+    "reset_recurring_tasks",
     "reload_proactive_manager",
     # Memory mode control
     "is_memory_enabled",

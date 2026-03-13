@@ -181,6 +181,29 @@ export function WorkspacePage() {
     }
   }, [selectedFile, readFile])
 
+  // Keep a ref to the latest refresh function so interval always uses current directory
+  const refreshRef = useRef(refresh)
+  useEffect(() => {
+    refreshRef.current = refresh
+  }, [refresh])
+
+  // Auto-refresh: refresh on mount (tab switch) and every 30 seconds
+  // This preserves the current directory - only refreshes file list in place
+  useEffect(() => {
+    // Refresh immediately when user switches to Workspace tab
+    refreshRef.current()
+
+    // Set up 30-second auto-refresh interval
+    const intervalId = setInterval(() => {
+      refreshRef.current()
+    }, 30000)
+
+    // Cleanup interval on unmount
+    return () => {
+      clearInterval(intervalId)
+    }
+  }, [])
+
   // ─────────────────────────────────────────────────────────────────────
   // Handlers
   // ─────────────────────────────────────────────────────────────────────

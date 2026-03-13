@@ -520,8 +520,20 @@ class AgentBase:
 
                 if event_lines:
                     logger.info(f"[MEMORY] Processing {len(event_lines)} unprocessed events")
-                    self.create_process_memory_task()
-                    task_created = True
+                    task_id = self.create_process_memory_task()
+
+                    if task_id:
+                        # Queue trigger to start the task
+                        trigger = Trigger(
+                            fire_at=time.time(),
+                            priority=60,
+                            next_action_description="Process unprocessed events into long-term memory",
+                            session_id=task_id,
+                            payload={},
+                        )
+                        await self.triggers.put(trigger)
+                        logger.info(f"[MEMORY] Queued trigger for memory processing task: {task_id}")
+                        task_created = True
                 else:
                     logger.info("[MEMORY] No unprocessed events to process")
             else:
@@ -673,7 +685,7 @@ class AgentBase:
             task_name=f"{frequency.title()} Heartbeat",
             task_instruction=f"Execute {frequency} proactive tasks from PROACTIVE.md. "
                            f"There are {len(tasks)} task(s) to process.",
-            mode="complex",
+            mode="simple",
             action_sets=["file_operations", "proactive"],
             selected_skills=["heartbeat-processor"],
         )
@@ -702,7 +714,7 @@ class AgentBase:
             task_name=f"{scope.title()} Planner",
             task_instruction=f"Review recent interactions and plan {scope}ly proactive activities. "
                            f"Update PROACTIVE.md planner section with findings.",
-            mode="complex",
+            mode="simple",
             action_sets=["file_operations", "proactive"],
             selected_skills=[skill_name],
         )
@@ -981,6 +993,20 @@ class AgentBase:
         for decision in action_decisions:
             action_name = decision.get("action_name")
             action_params = decision.get("parameters", {})
+
+            # Check if action was marked as error (e.g., dropped due to parallel constraints)
+            if "_error" in decision:
+                error_msg = decision.get("_error")
+                logger.warning(f"Action '{action_name}' has error: {error_msg}")
+                # Log to event stream so agent sees the error
+                if self.event_stream_manager:
+                    self.event_stream_manager.log(
+                        kind="action_error",
+                        message=f"Action {action_name} failed: {error_msg}",
+                        display_message=f"{action_name} → failed",
+                        action_name=action_name,
+                    )
+                continue
 
             if not action_name:
                 continue
@@ -1267,17 +1293,27 @@ class AgentBase:
 
             logger.debug(f"[TRIGGER] Creating new trigger for session: {new_session_id}")
 
+            # Check if there's a pending user message from fire() that needs to be carried forward
+            pending_message, pending_platform = self.triggers.pop_pending_user_message(new_session_id)
+            if pending_message:
+                next_action_desc = f"Perform the next best action for the task based on the todos and event stream\n\n[NEW USER MESSAGE]: {pending_message}"
+            else:
+                next_action_desc = "Perform the next best action for the task based on the todos and event stream"
+
+            # Build payload with platform if available
+            trigger_payload = {"gui_mode": STATE.gui_mode}
+            if pending_platform:
+                trigger_payload["platform"] = pending_platform
+
             # Build and enqueue trigger safely
             try:
                 await self.triggers.put(
                     Trigger(
                         fire_at=fire_at,
                         priority=5,
-                        next_action_description="Perform the next best action for the task based on the todos and event stream",
+                        next_action_description=next_action_desc,
                         session_id=new_session_id,
-                        payload={
-                            "gui_mode": STATE.gui_mode,
-                        },
+                        payload=trigger_payload,
                     ),
                     skip_merge=True,  # Session is already explicitly set, no LLM merge check needed
                 )
@@ -1470,18 +1506,16 @@ class AgentBase:
                     if matched_session_id != "new":
                         # Fire the matched trigger so it gets priority,
                         # and attach the new user message so react() sees it.
-                        if not await self.triggers.fire(
-                            matched_session_id, message=chat_content
-                        ):
-                            logger.warning(
-                                f"[CHAT] Trigger for session_id {matched_session_id} not found, creating new."
-                            )
-                        else:
-                            logger.info(
-                                f"[CHAT] Routed message to existing session {matched_session_id} "
-                                f"(reason: {routing_result.get('reason', 'N/A')})"
-                            )
-                            return
+                        # This also works for active triggers (being processed).
+                        fired = await self.triggers.fire(
+                            matched_session_id, message=chat_content, platform=platform
+                        )
+                        logger.info(
+                            f"[CHAT] Routed message to existing session {matched_session_id} "
+                            f"(fired={fired}, reason: {routing_result.get('reason', 'N/A')})"
+                        )
+                        # Always trust routing decision - don't create new session
+                        return
 
             # No existing triggers matched or action == "new" — create a fresh session
             await self.state_manager.start_session(gui_mode)

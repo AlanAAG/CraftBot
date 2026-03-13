@@ -35,6 +35,7 @@ class SchedulerManager:
         self._config_path: Optional[Path] = None
         self._trigger_queue: Optional[TriggerQueue] = None
         self._is_running: bool = False
+        self._master_enabled: bool = True  # Track master enabled state for config saves
         self._lock = asyncio.Lock()
 
     async def initialize(
@@ -54,6 +55,9 @@ class SchedulerManager:
 
         # Load configuration
         config = self._load_config()
+
+        # Track master enabled state for config saves
+        self._master_enabled = config.enabled
 
         if not config.enabled:
             logger.info("[SCHEDULER] Scheduler is disabled in config")
@@ -107,6 +111,7 @@ class SchedulerManager:
         priority: int = 50,
         mode: str = "simple",
         enabled: bool = True,
+        recurring: bool = True,
         action_sets: Optional[List[str]] = None,
         skills: Optional[List[str]] = None,
         payload: Optional[Dict[str, Any]] = None,
@@ -122,6 +127,7 @@ class SchedulerManager:
             priority: Trigger priority (lower = higher priority)
             mode: Task mode ("simple" or "complex")
             enabled: Whether to enable immediately
+            recurring: True for recurring tasks, False for one-time tasks
             action_sets: Action sets to use
             skills: Skills to use
             payload: Extra trigger payload
@@ -146,6 +152,7 @@ class SchedulerManager:
             enabled=enabled,
             priority=priority,
             mode=mode,
+            recurring=recurring,
             action_sets=action_sets or [],
             skills=skills or [],
             payload=payload or {},
@@ -246,6 +253,20 @@ class SchedulerManager:
     def disable_schedule(self, schedule_id: str) -> bool:
         """Disable a schedule."""
         return self.update_schedule(schedule_id, enabled=False)
+
+    def set_master_enabled(self, enabled: bool) -> None:
+        """Set the master scheduler enabled state.
+
+        This controls the top-level 'enabled' flag in the config file.
+        Call this before enabling/disabling individual schedules to ensure
+        the correct state is saved when _save_config() is called.
+
+        Note: This does NOT write to the config file directly - it only
+        updates the internal state. The file is expected to be updated
+        separately (e.g., by the UI layer's update_scheduler_config).
+        """
+        self._master_enabled = enabled
+        logger.info(f"[SCHEDULER] Master enabled set to: {enabled}")
 
     def list_schedules(self) -> List[ScheduledTask]:
         """List all scheduled tasks."""
@@ -386,6 +407,16 @@ class SchedulerManager:
             f"(run #{schedule.run_count})"
         )
 
+        # Auto-remove non-recurring (immediate) tasks after firing
+        if not schedule.recurring:
+            logger.info(f"[SCHEDULER] One-time task fired, removing: {schedule.id}")
+            asyncio.create_task(self._remove_after_fire(schedule.id))
+
+    async def _remove_after_fire(self, schedule_id: str) -> None:
+        """Remove a one-time schedule after it has fired."""
+        await asyncio.sleep(1)  # Brief delay to ensure trigger is processed
+        self.remove_schedule(schedule_id)
+
     def _load_config(self) -> SchedulerConfig:
         """Load configuration from file."""
         if not self._config_path or not self._config_path.exists():
@@ -426,9 +457,9 @@ class SchedulerManager:
         if not self._config_path:
             return
 
-        # Build config data
+        # Build config data (preserve master enabled state)
         config = SchedulerConfig(
-            enabled=True,
+            enabled=self._master_enabled,
             schedules=list(self._schedules.values()),
         )
 

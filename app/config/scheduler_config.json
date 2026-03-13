@@ -9,6 +9,7 @@
       "enabled": true,
       "priority": 100,
       "mode": "simple",
+      "recurring": true,
       "action_sets": [],
       "skills": [],
       "payload": {
@@ -20,10 +21,11 @@
       "id": "hourly-heartbeat",
       "name": "Hourly Heartbeat",
       "instruction": "Execute hourly proactive tasks from PROACTIVE.md",
-      "schedule": "every 5 minutes",
+      "schedule": "every 1 hours",
       "enabled": true,
       "priority": 60,
-      "mode": "complex",
+      "mode": "simple",
+      "recurring": true,
       "action_sets": [
         "file_operations",
         "proactive"
@@ -40,10 +42,11 @@
       "id": "daily-heartbeat",
       "name": "Daily Heartbeat",
       "instruction": "Execute daily proactive tasks from PROACTIVE.md",
-      "schedule": "every day at 7am",
+      "schedule": "every day at 8am",
       "enabled": true,
       "priority": 40,
-      "mode": "complex",
+      "mode": "simple",
+      "recurring": true,
       "action_sets": [
         "file_operations",
         "proactive",
@@ -64,7 +67,8 @@
       "schedule": "every sunday at 6pm",
       "enabled": true,
       "priority": 45,
-      "mode": "complex",
+      "mode": "simple",
+      "recurring": true,
       "action_sets": [
         "file_operations",
         "proactive"
@@ -84,7 +88,8 @@
       "schedule": "0 9 1 * *",
       "enabled": true,
       "priority": 50,
-      "mode": "complex",
+      "mode": "simple",
+      "recurring": true,
       "action_sets": [
         "file_operations",
         "proactive"
@@ -101,10 +106,11 @@
       "id": "day-planner",
       "name": "Daily Planning",
       "instruction": "Review interactions and plan proactive tasks for today",
-      "schedule": "every day at 6am",
+      "schedule": "every day at 7am",
       "enabled": true,
       "priority": 35,
-      "mode": "complex",
+      "mode": "simple",
+      "recurring": true,
       "action_sets": [
         "file_operations",
         "proactive"
@@ -124,7 +130,8 @@
       "schedule": "every sunday at 5pm",
       "enabled": true,
       "priority": 35,
-      "mode": "complex",
+      "mode": "simple",
+      "recurring": true,
       "action_sets": [
         "file_operations",
         "proactive"
@@ -144,7 +151,8 @@
       "schedule": "0 8 1 * *",
       "enabled": true,
       "priority": 35,
-      "mode": "complex",
+      "mode": "simple",
+      "recurring": true,
       "action_sets": [
         "file_operations",
         "proactive"

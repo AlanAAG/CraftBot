@@ -121,8 +121,16 @@
 }
 
 .message.user {
-  background: var(--color-primary);
-  color: var(--color-white);
+  background: #6ee164;
+  color: var(--color-black);
+}
+
+.message.user a {
+  color: #1e40af;
+}
+
+.message.user a:hover {
+  color: #1e3a8a;
 }
 
 .message.agent {
@@ -161,7 +169,7 @@
 }
 
 .message.user .sender {
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--color-black);
 }
 
 .timestamp {
@@ -201,10 +209,14 @@
 }
 
 .input {
-  flex: 1;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
   resize: none;
   min-height: 36px;
-  max-height: 120px;
+  /* Max height for ~5 lines: 5 lines × 19.5px (13px font × 1.5 line-height) + 16px padding + 2px border ≈ 116px */
+  max-height: 116px;
+  overflow-y: auto;
   padding: var(--space-2) var(--space-3);
   border: 1px solid var(--border-primary);
   border-radius: var(--radius-lg);

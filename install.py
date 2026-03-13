@@ -829,8 +829,6 @@ def setup_pip_environment(requirements_file: str = REQUIREMENTS_FILE):
         print(f"\n✗ Exception during setup: {e}")
         raise
 
-    # Install Playwright browser (needed for WhatsApp Web)
-    install_playwright_browser()
 
 # ==========================================
 # OMNIPARSER SETUP (GUI Mode)
@@ -1218,6 +1216,9 @@ if __name__ == "__main__":
     else:
         setup_pip_environment()
         print()
+
+    # Install Playwright browser (needed for WhatsApp Web)
+    install_playwright_browser(use_conda=use_conda)
 
     # Install browser frontend dependencies
     install_browser_frontend()

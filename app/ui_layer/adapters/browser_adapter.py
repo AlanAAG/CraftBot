@@ -13,6 +13,7 @@ from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set
 
 from aiohttp.client_exceptions import ClientConnectionResetError
 
+from agent_core.utils.logger import logger
 from app.config import AGENT_WORKSPACE_ROOT
 from app.ui_layer.adapters.base import InterfaceAdapter
 from app.ui_layer.settings import (
@@ -30,11 +31,11 @@ from app.ui_layer.settings import (
     get_scheduler_config,
     update_scheduler_config,
     toggle_schedule_runtime,
-    get_proactive_tasks,
-    add_proactive_task,
-    update_proactive_task,
-    remove_proactive_task,
-    reset_proactive_tasks,
+    get_recurring_tasks,
+    add_recurring_task,
+    update_recurring_task,
+    remove_recurring_task,
+    reset_recurring_tasks,
     reload_proactive_manager,
     # Memory settings
     get_memory_mode,
@@ -77,6 +78,7 @@ from app.ui_layer.settings import (
     get_integration_info,
     connect_integration_token,
     connect_integration_oauth,
+    connect_integration_interactive,
     disconnect_integration,
     # WhatsApp QR code flow
     start_whatsapp_qr_session,
@@ -798,7 +800,7 @@ class BrowserAdapter(InterfaceAdapter):
                 pass
 
         # Close all WebSocket connections
-        for ws in self._ws_clients:
+        for ws in self._ws_clients.copy():
             await ws.close()
         self._ws_clients.clear()
 
@@ -1159,6 +1161,10 @@ class BrowserAdapter(InterfaceAdapter):
             integration_id = data.get("id", "")
             await self._handle_integration_connect_oauth(integration_id)
 
+        elif msg_type == "integration_connect_interactive":
+            integration_id = data.get("id", "")
+            await self._handle_integration_connect_interactive(integration_id)
+
         elif msg_type == "integration_disconnect":
             integration_id = data.get("id", "")
             account_id = data.get("account_id")
@@ -1179,6 +1185,20 @@ class BrowserAdapter(InterfaceAdapter):
         elif msg_type == "dashboard_metrics_filter":
             period = data.get("period", "total")
             await self._handle_dashboard_metrics_filter(period)
+
+        # Onboarding handlers
+        elif msg_type == "onboarding_step_get":
+            await self._handle_onboarding_step_get()
+
+        elif msg_type == "onboarding_step_submit":
+            value = data.get("value")
+            await self._handle_onboarding_step_submit(value)
+
+        elif msg_type == "onboarding_skip":
+            await self._handle_onboarding_skip()
+
+        elif msg_type == "onboarding_back":
+            await self._handle_onboarding_back()
 
     async def _handle_dashboard_metrics_filter(self, period: str) -> None:
         """Handle filtered metrics request for specific time period."""
@@ -1203,6 +1223,280 @@ class BrowserAdapter(InterfaceAdapter):
                 "data": {
                     "error": str(e),
                     "period": period,
+                },
+            })
+
+    # -------------------------------------------------------------------------
+    # Onboarding Handlers
+    # -------------------------------------------------------------------------
+
+    def _get_onboarding_controller(self) -> "OnboardingFlowController":
+        """Get or create the onboarding flow controller."""
+        if not hasattr(self, "_onboarding_controller"):
+            self._onboarding_controller = OnboardingFlowController(self._controller)
+        return self._onboarding_controller
+
+    async def _handle_onboarding_step_get(self) -> None:
+        """Get current onboarding step info."""
+        try:
+            controller = self._get_onboarding_controller()
+
+            if not controller.needs_hard_onboarding:
+                await self._broadcast({
+                    "type": "onboarding_step",
+                    "data": {
+                        "success": True,
+                        "completed": True,
+                    },
+                })
+                return
+
+            step = controller.get_current_step()
+            options = controller.get_step_options()
+
+            await self._broadcast({
+                "type": "onboarding_step",
+                "data": {
+                    "success": True,
+                    "completed": False,
+                    "step": {
+                        "name": step.name,
+                        "title": step.title,
+                        "description": step.description,
+                        "required": step.required,
+                        "index": controller.current_step_index,
+                        "total": controller.total_steps,
+                        "options": [
+                            {
+                                "value": opt.value,
+                                "label": opt.label,
+                                "description": opt.description,
+                                "default": opt.default,
+                                "icon": opt.icon,
+                                "requires_setup": opt.requires_setup,
+                            }
+                            for opt in options
+                        ],
+                        "default": controller.get_step_default(),
+                    },
+                },
+            })
+        except Exception as e:
+            logger.error(f"[ONBOARDING] Error getting step: {e}")
+            await self._broadcast({
+                "type": "onboarding_step",
+                "data": {
+                    "success": False,
+                    "error": str(e),
+                },
+            })
+
+    async def _handle_onboarding_step_submit(self, value: Any) -> None:
+        """Submit a value for the current onboarding step."""
+        try:
+            controller = self._get_onboarding_controller()
+
+            # Validate the value
+            is_valid, error = controller.validate_step_value(value)
+
+            if not is_valid:
+                await self._broadcast({
+                    "type": "onboarding_submit",
+                    "data": {
+                        "success": False,
+                        "error": error or "Invalid value",
+                        "index": controller.current_step_index,
+                    },
+                })
+                return
+
+            # Submit the value
+            controller.submit_step_value(value)
+
+            # Move to next step
+            has_more = controller.next_step()
+
+            if not has_more:
+                # Onboarding complete - controller._complete() already called
+                from app.onboarding import onboarding_manager
+
+                await self._broadcast({
+                    "type": "onboarding_complete",
+                    "data": {
+                        "success": True,
+                        "agentName": onboarding_manager.state.agent_name or "Agent",
+                    },
+                })
+                # Clear cached controller for fresh state
+                if hasattr(self, "_onboarding_controller"):
+                    delattr(self, "_onboarding_controller")
+            else:
+                # Send next step info
+                step = controller.get_current_step()
+                options = controller.get_step_options()
+
+                await self._broadcast({
+                    "type": "onboarding_submit",
+                    "data": {
+                        "success": True,
+                        "nextStep": {
+                            "name": step.name,
+                            "title": step.title,
+                            "description": step.description,
+                            "required": step.required,
+                            "index": controller.current_step_index,
+                            "total": controller.total_steps,
+                            "options": [
+                                {
+                                    "value": opt.value,
+                                    "label": opt.label,
+                                    "description": opt.description,
+                                    "default": opt.default,
+                                    "icon": opt.icon,
+                                    "requires_setup": opt.requires_setup,
+                                }
+                                for opt in options
+                            ],
+                            "default": controller.get_step_default(),
+                        },
+                    },
+                })
+        except Exception as e:
+            logger.error(f"[ONBOARDING] Error submitting step: {e}")
+            await self._broadcast({
+                "type": "onboarding_submit",
+                "data": {
+                    "success": False,
+                    "error": str(e),
+                },
+            })
+
+    async def _handle_onboarding_skip(self) -> None:
+        """Skip the current optional onboarding step."""
+        try:
+            controller = self._get_onboarding_controller()
+
+            # Check if step is required before trying to skip
+            step = controller.get_current_step()
+            if step.required:
+                await self._broadcast({
+                    "type": "onboarding_skip",
+                    "data": {
+                        "success": False,
+                        "error": "This step is required and cannot be skipped",
+                    },
+                })
+                return
+
+            # Skip the step (advances to next or completes)
+            controller.skip_step()
+
+            # Check if onboarding is complete after skip
+            if controller.is_complete:
+                from app.onboarding import onboarding_manager
+
+                await self._broadcast({
+                    "type": "onboarding_complete",
+                    "data": {
+                        "success": True,
+                        "agentName": onboarding_manager.state.agent_name or "Agent",
+                    },
+                })
+                if hasattr(self, "_onboarding_controller"):
+                    delattr(self, "_onboarding_controller")
+            else:
+                # Send next step info
+                step = controller.get_current_step()
+                options = controller.get_step_options()
+
+                await self._broadcast({
+                    "type": "onboarding_skip",
+                    "data": {
+                        "success": True,
+                        "nextStep": {
+                            "name": step.name,
+                            "title": step.title,
+                            "description": step.description,
+                            "required": step.required,
+                            "index": controller.current_step_index,
+                            "total": controller.total_steps,
+                            "options": [
+                                {
+                                    "value": opt.value,
+                                    "label": opt.label,
+                                    "description": opt.description,
+                                    "default": opt.default,
+                                    "icon": opt.icon,
+                                    "requires_setup": opt.requires_setup,
+                                }
+                                for opt in options
+                            ],
+                            "default": controller.get_step_default(),
+                        },
+                    },
+                })
+        except Exception as e:
+            logger.error(f"[ONBOARDING] Error skipping step: {e}")
+            await self._broadcast({
+                "type": "onboarding_skip",
+                "data": {
+                    "success": False,
+                    "error": str(e),
+                },
+            })
+
+    async def _handle_onboarding_back(self) -> None:
+        """Go back to the previous onboarding step."""
+        try:
+            controller = self._get_onboarding_controller()
+
+            if not controller.previous_step():
+                await self._broadcast({
+                    "type": "onboarding_back",
+                    "data": {
+                        "success": False,
+                        "error": "Already at the first step",
+                    },
+                })
+                return
+
+            # Send previous step info
+            step = controller.get_current_step()
+            options = controller.get_step_options()
+
+            await self._broadcast({
+                "type": "onboarding_back",
+                "data": {
+                    "success": True,
+                    "step": {
+                        "name": step.name,
+                        "title": step.title,
+                        "description": step.description,
+                        "required": step.required,
+                        "index": controller.current_step_index,
+                        "total": controller.total_steps,
+                        "options": [
+                            {
+                                "value": opt.value,
+                                "label": opt.label,
+                                "description": opt.description,
+                                "default": opt.default,
+                                "icon": opt.icon,
+                                "requires_setup": opt.requires_setup,
+                            }
+                            for opt in options
+                        ],
+                        "default": controller.get_step_default(),
+                    },
+                },
+            })
+        except Exception as e:
+            logger.error(f"[ONBOARDING] Error going back: {e}")
+            await self._broadcast({
+                "type": "onboarding_back",
+                "data": {
+                    "success": False,
+                    "error": str(e),
                 },
             })
 
@@ -1475,7 +1769,9 @@ class BrowserAdapter(InterfaceAdapter):
                 # Update runtime scheduler if available
                 agent = self._controller.agent
                 if hasattr(agent, 'scheduler') and agent.scheduler:
-                    # Toggle schedules at runtime
+                    # Toggle individual schedules at runtime
+                    # Note: Master proactive toggle is handled separately via proactive_mode_set
+                    # which updates settings.json, not scheduler_config.json
                     if "schedules" in updates:
                         for schedule_update in updates["schedules"]:
                             schedule_id = schedule_update.get("id")
@@ -1522,7 +1818,7 @@ class BrowserAdapter(InterfaceAdapter):
         if proactive_manager:
             reload_proactive_manager(proactive_manager)
 
-        result = get_proactive_tasks(
+        result = get_recurring_tasks(
             proactive_manager,
             frequency=frequency,
             enabled_only=False
@@ -1570,7 +1866,7 @@ class BrowserAdapter(InterfaceAdapter):
         agent = self._controller.agent
         proactive_manager = getattr(agent, 'proactive_manager', None)
 
-        result = add_proactive_task(
+        result = add_recurring_task(
             proactive_manager,
             name=task_data.get("name", "New Task"),
             frequency=task_data.get("frequency", "daily"),
@@ -1623,7 +1919,7 @@ class BrowserAdapter(InterfaceAdapter):
         if "frequency" in updates:
             update_dict["frequency"] = updates["frequency"]
 
-        result = update_proactive_task(proactive_manager, task_id, update_dict)
+        result = update_recurring_task(proactive_manager, task_id, update_dict)
 
         if result.get("success"):
             await self._broadcast({
@@ -1648,7 +1944,7 @@ class BrowserAdapter(InterfaceAdapter):
         agent = self._controller.agent
         proactive_manager = getattr(agent, 'proactive_manager', None)
 
-        result = remove_proactive_task(proactive_manager, task_id)
+        result = remove_recurring_task(proactive_manager, task_id)
 
         if result.get("success"):
             await self._broadcast({
@@ -1671,7 +1967,7 @@ class BrowserAdapter(InterfaceAdapter):
 
     async def _handle_proactive_tasks_reset(self) -> None:
         """Reset all proactive tasks (restore from template)."""
-        result = reset_proactive_tasks()
+        result = reset_recurring_tasks()
 
         if result.get("success"):
             # Reload proactive manager
@@ -1944,12 +2240,26 @@ class BrowserAdapter(InterfaceAdapter):
 
             # Check if there's a create_process_memory_task method
             if hasattr(agent, 'create_process_memory_task'):
-                task = await agent.create_process_memory_task()
+                task_id = agent.create_process_memory_task()
+
+                if task_id:
+                    # Queue trigger to start the task (same as _handle_memory_processing_trigger)
+                    import time
+                    from app.trigger import Trigger
+                    trigger = Trigger(
+                        fire_at=time.time(),
+                        priority=60,
+                        next_action_description="Process unprocessed events into long-term memory",
+                        session_id=task_id,
+                        payload={},
+                    )
+                    await agent.triggers.put(trigger)
+
                 await self._broadcast({
                     "type": "memory_process_trigger",
                     "data": {
                         "success": True,
-                        "taskId": task.id if task else None,
+                        "taskId": task_id,
                         "message": "Memory processing task created",
                     },
                 })
@@ -2600,7 +2910,7 @@ class BrowserAdapter(InterfaceAdapter):
                     "id": integration_id,
                 },
             })
-            # Refresh the list on success
+            # Refresh the list on success (listener is started by connect_integration_token)
             if success:
                 await self._handle_integration_list()
         except Exception as e:
@@ -2625,7 +2935,32 @@ class BrowserAdapter(InterfaceAdapter):
                     "id": integration_id,
                 },
             })
-            # Refresh the list on success
+            # Refresh the list on success (listener is started by connect_integration_oauth)
+            if success:
+                await self._handle_integration_list()
+        except Exception as e:
+            await self._broadcast({
+                "type": "integration_connect_result",
+                "data": {
+                    "success": False,
+                    "error": str(e),
+                    "id": integration_id,
+                },
+            })
+
+    async def _handle_integration_connect_interactive(self, integration_id: str) -> None:
+        """Connect an integration using interactive flow (e.g. Telegram QR login)."""
+        try:
+            success, message = await connect_integration_interactive(integration_id)
+            await self._broadcast({
+                "type": "integration_connect_result",
+                "data": {
+                    "success": success,
+                    "message": message,
+                    "id": integration_id,
+                },
+            })
+            # Refresh the list on success (listener is started by connect_integration_interactive)
             if success:
                 await self._handle_integration_list()
         except Exception as e:
@@ -2695,7 +3030,7 @@ class BrowserAdapter(InterfaceAdapter):
                 "type": "whatsapp_status_result",
                 "data": result,
             })
-            # If connected, refresh the integrations list
+            # If connected, refresh the integrations list (listener is started by check_whatsapp_session_status)
             if result.get("connected"):
                 await self._handle_integration_list()
         except Exception as e:
@@ -2734,7 +3069,7 @@ class BrowserAdapter(InterfaceAdapter):
         json_msg = json.dumps(message)
         disconnected = set()
 
-        for ws in self._ws_clients:
+        for ws in self._ws_clients.copy():
             try:
                 await ws.send_str(json_msg)
             except (ClientConnectionResetError, ConnectionResetError, RuntimeError):
@@ -3513,7 +3848,7 @@ class BrowserAdapter(InterfaceAdapter):
         self,
         message: str,
         file_path: str,
-        sender: str = "agent",
+        sender: Optional[str] = None,
         style: str = "agent",
     ) -> Dict[str, Any]:
         """
@@ -3524,7 +3859,7 @@ class BrowserAdapter(InterfaceAdapter):
         Args:
             message: The message content
             file_path: Absolute path or path relative to workspace
-            sender: Message sender (default: "agent")
+            sender: Message sender (default: uses agent name from onboarding)
             style: Message style (default: "agent")
 
         Returns:
@@ -3536,7 +3871,7 @@ class BrowserAdapter(InterfaceAdapter):
         self,
         message: str,
         file_paths: list,
-        sender: str = "agent",
+        sender: Optional[str] = None,
         style: str = "agent",
     ) -> Dict[str, Any]:
         """
@@ -3548,13 +3883,19 @@ class BrowserAdapter(InterfaceAdapter):
         Args:
             message: The message content
             file_paths: List of absolute paths or paths relative to workspace
-            sender: Message sender (default: "agent")
+            sender: Message sender (default: uses agent name from onboarding)
             style: Message style (default: "agent")
 
         Returns:
             Dict with 'success' (bool), 'files_sent' (int), and optionally 'errors' (list of str)
         """
         try:
+            # Get agent name from onboarding state if sender not provided
+            # (same as _handle_agent_message in base adapter)
+            if sender is None:
+                from app.onboarding import onboarding_manager
+                sender = onboarding_manager.state.agent_name or "Agent"
+
             attachments = []
             errors = []
 
@@ -3614,12 +3955,16 @@ class BrowserAdapter(InterfaceAdapter):
 
     def _get_initial_state(self) -> Dict[str, Any]:
         """Get initial state for new connections."""
+        from app.onboarding import onboarding_manager
+
         state = self._controller.state
         metrics = self._metrics_collector.get_metrics()
 
         return {
             "agentState": state.agent_state.value,
             "guiMode": state.gui_mode,
+            "needsHardOnboarding": onboarding_manager.needs_hard_onboarding,
+            "agentName": onboarding_manager.state.agent_name or "Agent",
             "currentTask": {
                 "id": state.current_task_id,
                 "name": state.current_task_name,

@@ -30,7 +30,7 @@ ALL information that is operationally important for downstream decisions.
   • key entities (files/URLs/IDs/emails/app names) that may be referenced later
   • meaningful metrics/counters if they affect decisions
 - Remove noise, duplicates, transient progress messages, or low-value chatter.
-- Prefer concise bullets; keep it readable and compact (aim ~250–350 words).
+- Prefer concise bullets; keep it readable and compact (aim ~400–800 words).
 - Do NOT include the recent (unsummarized) tail; we only rewrite the head summary.
 </rules>
 
@@ -73,7 +73,6 @@ from agent_core.core.prompts.context import (
     AGENT_ROLE_PROMPT,
     AGENT_INFO_PROMPT,
     POLICY_PROMPT,
-    AGENT_STATE_PROMPT,
     USER_PROFILE_PROMPT,
     ENVIRONMENTAL_CONTEXT_PROMPT,
     AGENT_FILE_SYSTEM_CONTEXT_PROMPT,
@@ -82,13 +81,8 @@ from agent_core.core.prompts.context import (
 # Routing prompts
 from agent_core.core.prompts.routing import (
     ROUTE_TO_SESSION_PROMPT,
-    RESOLVE_ACTION_INPUT_PROMPT,
 )
 
-# Reasoning prompts
-from agent_core.core.prompts.reasoning import (
-    REASONING_PROMPT,
-)
 
 # GUI prompts
 from agent_core.core.prompts.gui import (
@@ -123,15 +117,11 @@ __all__ = [
     "AGENT_ROLE_PROMPT",
     "AGENT_INFO_PROMPT",
     "POLICY_PROMPT",
-    "AGENT_STATE_PROMPT",
     "USER_PROFILE_PROMPT",
     "ENVIRONMENTAL_CONTEXT_PROMPT",
     "AGENT_FILE_SYSTEM_CONTEXT_PROMPT",
     # Routing prompts
     "ROUTE_TO_SESSION_PROMPT",
-    "RESOLVE_ACTION_INPUT_PROMPT",
-    # Reasoning prompts
-    "REASONING_PROMPT",
     # GUI prompts
     "GUI_REASONING_PROMPT",
     "GUI_REASONING_PROMPT_OMNIPARSER",
