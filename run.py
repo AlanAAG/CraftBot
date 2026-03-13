@@ -38,7 +38,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # --- Base directory ---
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# In a PyInstaller --onefile binary, bundled data is extracted to sys._MEIPASS
+if getattr(sys, 'frozen', False):
+    BASE_DIR = sys._MEIPASS
+else:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # --- Configuration ---
 CONFIG_FILE = os.path.join(BASE_DIR, "config.json")
