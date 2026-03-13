@@ -1817,6 +1817,7 @@ function ModelSettings() {
   // Provider list state
   const [providers, setProviders] = useState<ProviderInfo[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const hasInitialized = useRef(false)
 
   // Current settings state
   const [provider, setProvider] = useState('anthropic')
@@ -1838,7 +1839,7 @@ function ModelSettings() {
   const [testResult, setTestResult] = useState<TestResult | null>(null)
   const [testBeforeSave, setTestBeforeSave] = useState(false)
 
-  // Load data when connected
+  // Set up message handlers (runs once when connected)
   useEffect(() => {
     if (!isConnected) return
 
@@ -1859,16 +1860,19 @@ function ModelSettings() {
           api_keys: Record<string, ApiKeyStatus>
           base_urls: Record<string, string>
         }
-        if (d.success) {
+        if (d.success && !hasInitialized.current) {
+          // Only set provider and models on initial load
           setProvider(d.llm_provider || 'anthropic')
           setApiKeys(d.api_keys || {})
           setBaseUrls(d.base_urls || {})
+          
           // Load custom models if set, or initialize from current provider defaults
           const currentProv = providers.find(p => p.id === (d.llm_provider || 'anthropic'))
           setCurrentLlmModel(d.llm_model || currentProv?.llm_model || '')
           setCurrentVlmModel(d.vlm_model || currentProv?.vlm_model || '')
           setNewLlmModel('')
           setNewVlmModel('')
+          hasInitialized.current = true
         }
       }),
       onMessage('model_settings_update', (data: unknown) => {
@@ -1928,24 +1932,39 @@ function ModelSettings() {
       }),
     ]
 
+    return () => cleanups.forEach(cleanup => cleanup())
+  }, [isConnected, onMessage, send, testBeforeSave, provider, newApiKey, newBaseUrl])
+
+  // Load initial data only once when connected
+  useEffect(() => {
+    if (!isConnected || hasInitialized.current) return
+
     send('model_providers_get')
     send('model_settings_get')
-
-    return () => cleanups.forEach(cleanup => cleanup())
-  }, [isConnected, send, onMessage, testBeforeSave, provider, newApiKey, newBaseUrl, providers])
+  }, [isConnected, send])
 
   const currentProvider = providers.find(p => p.id === provider)
   const hasKey = apiKeys[provider]?.has_key || newApiKey.length > 0
   const needsKey = currentProvider?.requires_api_key && !hasKey
 
+  // Update models when provider changes (only)
+  useEffect(() => {
+    // Find the provider definition
+    const selectedProvider = providers.find(p => p.id === provider)
+    if (selectedProvider && !newLlmModel) {
+      setCurrentLlmModel(selectedProvider.llm_model || '')
+    }
+    if (selectedProvider && !newVlmModel) {
+      setCurrentVlmModel(selectedProvider.vlm_model || '')
+    }
+  }, [provider, providers]) // Only depend on provider and providers list changes
+
   const handleProviderChange = (newProvider: string) => {
     setProvider(newProvider)
     setNewApiKey('')
     setNewBaseUrl('')
-    // Reset model edits to current values when switching providers
-    const newProv = providers.find(p => p.id === newProvider)
-    setCurrentLlmModel(newProv?.llm_model || '')
-    setCurrentVlmModel(newProv?.vlm_model || '')
+    // Clear any edited model inputs when switching providers
+    // The useEffect will automatically update currentLlmModel/currentVlmModel
     setNewLlmModel('')
     setNewVlmModel('')
     setHasChanges(true)
@@ -1961,19 +1980,30 @@ function ModelSettings() {
   }
 
   const handleSave = () => {
-    if (needsKey) {
-      showToast('error', 'API key is required')
-      return
-    }
+    // Allow saving provider and model changes even without API key
+    // Only test connection if adding/changing API key or base URL
+    const isChangingApiKey = newApiKey.length > 0
+    const isChangingBaseUrl = newBaseUrl.length > 0
 
-    // Test connection before saving
-    setTestBeforeSave(true)
-    setIsTesting(true)
-    send('model_connection_test', {
-      provider,
-      apiKey: newApiKey || undefined,
-      baseUrl: newBaseUrl || baseUrls[provider],
-    })
+    if (isChangingApiKey || isChangingBaseUrl) {
+      // Test connection before saving when changing credentials
+      setTestBeforeSave(true)
+      setIsTesting(true)
+      send('model_connection_test', {
+        provider,
+        apiKey: newApiKey || undefined,
+        baseUrl: newBaseUrl || baseUrls[provider],
+      })
+    } else {
+      // Save provider/model changes directly without testing
+      setIsSaving(true)
+      send('model_settings_update', {
+        llmProvider: provider,
+        vlmProvider: provider,
+        llmModel: newLlmModel || currentLlmModel || undefined,
+        vlmModel: newVlmModel || currentVlmModel || undefined,
+      })
+    }
   }
 
   return (
@@ -2067,7 +2097,8 @@ function ModelSettings() {
             <Button
               variant="secondary"
               onClick={handleTestConnection}
-              disabled={isTesting || needsKey}
+              disabled={isTesting || !apiKeys[provider]?.has_key}
+              title={!apiKeys[provider]?.has_key ? 'API key required for testing' : ''}
             >
               {isTesting ? (
                 <>
@@ -2081,7 +2112,7 @@ function ModelSettings() {
             <Button
               variant="primary"
               onClick={handleSave}
-              disabled={isSaving || isTesting || needsKey || !hasChanges}
+              disabled={isSaving || isTesting || !hasChanges}
             >
               {isSaving ? (
                 <>
