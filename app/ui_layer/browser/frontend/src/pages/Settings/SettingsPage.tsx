@@ -25,6 +25,7 @@ import { useToast } from '../../contexts/ToastContext'
 import { useTheme } from '../../contexts/ThemeContext'
 import { useConfirmModal } from '../../hooks'
 import styles from './SettingsPage.module.css'
+import { getWsUrl } from '../../utils/connection'
 
 type SettingsCategory =
   | 'general'
@@ -94,8 +95,7 @@ function useSettingsWebSocket() {
   const messageHandlersRef = useRef<Map<string, (data: unknown) => void>>(new Map())
 
   useEffect(() => {
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-    const wsUrl = `${protocol}//${window.location.host}/ws`
+    const wsUrl = getWsUrl()
     const ws = new WebSocket(wsUrl)
     wsRef.current = ws
 

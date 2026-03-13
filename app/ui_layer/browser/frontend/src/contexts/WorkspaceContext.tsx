@@ -14,6 +14,7 @@ import type {
   FileDownloadResponse,
   WSMessage,
 } from '../types'
+import { getWsUrl } from '../utils/connection'
 
 // ─────────────────────────────────────────────────────────────────────
 // Types
@@ -252,8 +253,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       wsRef.current = null
     }
 
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-    const wsUrl = `${protocol}//${window.location.host}/ws`
+    const wsUrl = getWsUrl()
 
     try {
       const ws = new WebSocket(wsUrl)

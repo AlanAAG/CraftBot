@@ -245,15 +245,22 @@ def main():
 
         # Run the main Python app in the foreground.
         # This call BLOCKS until the app exits.
-        python_app_cmd = PYTHON_APP_BASE_CMD + sys.argv[1:]
-        result = subprocess.run(
-            python_app_cmd,
-            stdin=sys.stdin,
-            stdout=sys.stdout,
-            stderr=sys.stderr,
-            check=False
-        )
-        final_exit_code = result.returncode
+        if getattr(sys, 'frozen', False):
+            # PyInstaller binary: import and run directly instead of subprocess
+            # (sys.executable points to the binary, not Python)
+            from app.main import main as app_main
+            app_main()
+            final_exit_code = 0
+        else:
+            python_app_cmd = PYTHON_APP_BASE_CMD + sys.argv[1:]
+            result = subprocess.run(
+                python_app_cmd,
+                stdin=sys.stdin,
+                stdout=sys.stdout,
+                stderr=sys.stderr,
+                check=False
+            )
+            final_exit_code = result.returncode
 
     except (subprocess.CalledProcessError, TimeoutError, FileNotFoundError):
         final_exit_code = 1

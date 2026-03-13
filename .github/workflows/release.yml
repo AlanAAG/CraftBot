@@ -114,6 +114,8 @@ jobs:
 
       - name: Build frontend
         shell: bash
+        env:
+          VITE_BACKEND_PORT: "7926"
         run: |
           cd app/ui_layer/browser/frontend
           npm install

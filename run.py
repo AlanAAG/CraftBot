@@ -261,8 +261,128 @@ def _try_install_nodejs_linux(silent: bool = False) -> bool:
     
     return False
 
+def _launch_static_frontend(silent: bool = False) -> Optional[subprocess.Popen]:
+    """Serve pre-built frontend static files with proxy support.
+
+    Used when running as a PyInstaller binary where npm/node aren't available
+    but the built dist/ folder is bundled. Proxies /ws and /api requests to
+    the backend server, mirroring the Vite dev server proxy config.
+    """
+    import http.server
+    import threading
+    import urllib.request
+
+    dist_dir = os.path.join(FRONTEND_DIR, "dist")
+    backend_port = int(os.environ.get("VITE_BACKEND_PORT", BACKEND_PORT))
+    backend_url = f"http://localhost:{backend_port}"
+
+    class FrontendHandler(http.server.SimpleHTTPRequestHandler):
+        """Serves static files and proxies /api and /ws to the backend."""
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, directory=dist_dir, **kwargs)
+
+        def do_GET(self):
+            if self.path.startswith("/api/") or self.path.startswith("/api?"):
+                self._proxy_request()
+            elif self.path.startswith("/ws"):
+                # WebSocket upgrade can't be proxied via HTTP; the frontend
+                # will connect directly if we return 426
+                self.send_error(426, "WebSocket connections not proxied - connect directly to backend")
+            else:
+                # Serve static files; fall back to index.html for SPA routing
+                # Check if file exists, otherwise serve index.html
+                file_path = os.path.join(dist_dir, self.path.lstrip("/"))
+                if not os.path.exists(file_path) or os.path.isdir(file_path):
+                    if not os.path.exists(file_path + "/index.html") and "." not in os.path.basename(self.path):
+                        self.path = "/index.html"
+                super().do_GET()
+
+        def do_POST(self):
+            if self.path.startswith("/api/"):
+                self._proxy_request()
+            else:
+                self.send_error(404)
+
+        def do_PUT(self):
+            if self.path.startswith("/api/"):
+                self._proxy_request()
+            else:
+                self.send_error(404)
+
+        def do_DELETE(self):
+            if self.path.startswith("/api/"):
+                self._proxy_request()
+            else:
+                self.send_error(404)
+
+        def _proxy_request(self):
+            """Forward request to the backend server."""
+            target_url = f"{backend_url}{self.path}"
+            try:
+                # Read request body if present
+                content_length = int(self.headers.get("Content-Length", 0))
+                body = self.rfile.read(content_length) if content_length > 0 else None
+
+                # Build proxy request
+                req = urllib.request.Request(target_url, data=body, method=self.command)
+                # Forward relevant headers
+                for header in ("Content-Type", "Authorization", "Accept"):
+                    if self.headers.get(header):
+                        req.add_header(header, self.headers[header])
+
+                with urllib.request.urlopen(req, timeout=120) as resp:
+                    self.send_response(resp.status)
+                    for key, val in resp.getheaders():
+                        if key.lower() not in ("transfer-encoding", "connection"):
+                            self.send_header(key, val)
+                    self.end_headers()
+                    self.wfile.write(resp.read())
+            except urllib.error.HTTPError as e:
+                self.send_response(e.code)
+                self.end_headers()
+                self.wfile.write(e.read())
+            except Exception as e:
+                self.send_error(502, f"Backend proxy error: {e}")
+
+        def log_message(self, format, *args):
+            pass  # Suppress request logging
+
+    try:
+        httpd = http.server.HTTPServer(("localhost", FRONTEND_PORT), FrontendHandler)
+    except OSError as e:
+        if not silent:
+            print(f"Error: Could not start static frontend server: {e}")
+        return None
+
+    thread = threading.Thread(target=httpd.serve_forever, daemon=True)
+    thread.start()
+
+    # Return a dummy Popen-like object so callers can treat it uniformly
+    class _StaticServer:
+        def __init__(self, server):
+            self._server = server
+            self.returncode = None
+        def poll(self):
+            return None  # always running
+        def terminate(self):
+            self._server.shutdown()
+        def kill(self):
+            self._server.shutdown()
+
+    dummy = _StaticServer(httpd)
+    _background_processes.append(dummy)
+    return dummy
+
+
 def launch_frontend(silent: bool = False) -> Optional[subprocess.Popen]:
     """Launch the frontend dev server for browser mode."""
+    # If running as a PyInstaller binary, serve pre-built static files
+    # instead of launching npm dev server (node/npm won't be available)
+    dist_dir = os.path.join(FRONTEND_DIR, "dist")
+    if getattr(sys, 'frozen', False) and os.path.exists(dist_dir):
+        return _launch_static_frontend(silent)
+
     if not os.path.exists(FRONTEND_DIR):
         if not silent:
             print(f"Error: Frontend directory not found at {FRONTEND_DIR}")
@@ -289,7 +409,7 @@ def launch_frontend(silent: bool = False) -> Optional[subprocess.Popen]:
                 print("Node.js not found. Attempting auto-install on Linux...")
             if _try_install_nodejs_linux(silent=silent):
                 npm_cmd = shutil.which("npm")
-        
+
         if not npm_cmd:
             if not silent:
                 print("Error: npm not found in PATH")
@@ -658,6 +778,19 @@ def launch_agent(env_name: Optional[str], conda_base: Optional[str], use_conda: 
         pass_args.append(a)
 
     print(f"Starting CraftBot...\n")
+
+    # When running as a PyInstaller frozen binary, sys.executable points to
+    # the binary itself, so spawning "python main.py" would re-run run.py
+    # in an infinite loop. Instead, import and call main() directly.
+    if getattr(sys, 'frozen', False):
+        try:
+            sys.argv = [sys.argv[0]] + pass_args
+            from main import main as main_entry
+            main_entry()
+        except KeyboardInterrupt:
+            print("\nInterrupted.")
+            sys.exit(0)
+        return
 
     # Build command
     if use_conda and env_name:
