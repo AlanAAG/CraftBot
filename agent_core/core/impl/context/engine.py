@@ -24,6 +24,7 @@ from agent_core.core.prompts import (
     AGENT_FILE_SYSTEM_CONTEXT_PROMPT,
     POLICY_PROMPT,
     USER_PROFILE_PROMPT,
+    LANGUAGE_INSTRUCTION,
 )
 from agent_core.core.state import get_state, get_session_or_none
 from agent_core.core.task import Task
@@ -223,6 +224,14 @@ class ContextEngine:
             logger.warning(f"[CONTEXT] Failed to read USER.md: {e}")
 
         return ""
+
+    def create_system_language_instruction(self) -> str:
+        """Create a system message block with language instruction.
+
+        Returns the language instruction that tells the agent to use
+        the user's preferred language as specified in USER.md.
+        """
+        return LANGUAGE_INSTRUCTION
 
     def create_system_base_instruction(self) -> str:
         """Create a system message of instruction."""
@@ -613,6 +622,7 @@ class ContextEngine:
             "role_info": True,
             "agent_info": True,
             "user_profile": True,
+            "language_instruction": True,
             "policy": False,
             "environment": True,
             "file_system": True,
@@ -629,6 +639,7 @@ class ContextEngine:
         system_sections = [
             ("agent_info", self.create_system_agent_info),
             ("user_profile", self.create_system_user_profile),
+            ("language_instruction", self.create_system_language_instruction),
             ("policy", self.create_system_policy),
             ("role_info", self.create_system_role_info),
             ("environment", self.create_system_environmental_context),

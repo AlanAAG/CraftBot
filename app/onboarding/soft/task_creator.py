@@ -29,6 +29,7 @@ INTERVIEW FLOW (4 batches):
    (Infer timezone from their location, keep this silent)
 
 2. PREFERENCES BATCH - Ask together:
+   - What language do you prefer me to communicate in?
    - Do you prefer casual or formal communication?
    - Should I proactively suggest things or wait for instructions?
    - What types of actions should I ask your approval for?
@@ -50,7 +51,7 @@ IMPORTANT GUIDELINES:
 
 After gathering ALL information:
 1. Read agent_file_system/USER.md
-2. Update USER.md with the collected information using stream_edit (including Life Goals section)
+2. Update USER.md with the collected information using stream_edit (including Language in Communication Preferences and Life Goals section)
 3. Suggest 3-5 specific tasks that can help them achieve their life goals using CraftBot's automation capabilities
 4. End the task immediately with task_end (do NOT wait for confirmation)
 

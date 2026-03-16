@@ -97,9 +97,8 @@
 }
 
 .messageWrapper.systemWrapper {
-  margin: 0 auto;
-  align-items: center;
-  max-width: 90%;
+  margin-right: auto;
+  align-items: flex-start;
 }
 
 .messageWrapper.errorWrapper {
