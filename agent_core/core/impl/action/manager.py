@@ -92,6 +92,33 @@ class ActionManager:
         self._on_action_end = on_action_end
         self._get_parent_id = get_parent_id
 
+    def _generate_unique_session_id(self) -> str:
+        """Generate a unique 6-character session ID.
+
+        Creates a short session ID using the first 6 hex characters of a UUID4.
+        Checks for duplicates against active task IDs from state_manager.
+
+        Returns:
+            A unique 6-character hex string session ID.
+        """
+        max_attempts = 100
+        for _ in range(max_attempts):
+            candidate = uuid.uuid4().hex[:6]
+
+            # Check against active task IDs from state manager
+            try:
+                main_state = self.state_manager.get_main_state()
+                existing_ids = set(main_state.active_task_ids) if main_state else set()
+            except Exception:
+                existing_ids = set()
+
+            if candidate not in existing_ids:
+                return candidate
+
+        # Fallback to full UUID hex if somehow all short IDs are taken
+        logger.warning("Could not generate unique 6-char session ID after 100 attempts, using full UUID")
+        return uuid.uuid4().hex
+
     # ------------------------------------------------------------------
     # Public helpers
     # ------------------------------------------------------------------
@@ -397,7 +424,7 @@ class ActionManager:
         for action, input_data in actions:
             if action.name == "task_start":
                 # Generate unique session_id for each task_start to prevent overwriting
-                action_session_id = str(uuid.uuid4())
+                action_session_id = self._generate_unique_session_id()
                 logger.info(f"[PARALLEL] Assigning unique session_id {action_session_id} to task_start")
             else:
                 action_session_id = session_id

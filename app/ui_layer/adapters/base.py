@@ -233,6 +233,12 @@ class InterfaceAdapter(ABC):
         self._unsubscribers.append(
             bus.subscribe(UIEventType.GUI_MODE_CHANGED, self._handle_gui_mode_change)
         )
+        self._unsubscribers.append(
+            bus.subscribe(UIEventType.WAITING_FOR_USER, self._handle_waiting_for_user)
+        )
+        self._unsubscribers.append(
+            bus.subscribe(UIEventType.TASK_UPDATE, self._handle_task_update)
+        )
 
         # Footage events
         self._unsubscribers.append(
@@ -385,6 +391,23 @@ class InterfaceAdapter(ABC):
         """Handle GUI mode change event."""
         if self.footage_component:
             self.footage_component.set_visible(event.data.get("gui_mode", False))
+
+    def _handle_waiting_for_user(self, event: UIEvent) -> None:
+        """Handle waiting for user event - update task status to waiting."""
+        task_id = event.data.get("task_id", "")
+        if task_id and self.action_panel:
+            asyncio.create_task(
+                self.action_panel.update_item(task_id, "waiting")
+            )
+
+    def _handle_task_update(self, event: UIEvent) -> None:
+        """Handle task update event - update task status."""
+        task_id = event.data.get("task_id", "")
+        status = event.data.get("status", "running")
+        if task_id and self.action_panel:
+            asyncio.create_task(
+                self.action_panel.update_item(task_id, status)
+            )
 
     def _handle_footage_update(self, event: UIEvent) -> None:
         """Handle footage update event."""
