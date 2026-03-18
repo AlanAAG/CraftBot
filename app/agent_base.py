@@ -269,6 +269,7 @@ class AgentBase:
         # ── misc ──
         self.is_running: bool = True
         self._interface_mode: str = "tui"  # Will be updated in run() based on selected interface
+        self.ui_controller = None  # Set by interface after UIController is created
         self._extra_system_prompt: str = self._load_extra_system_prompt()
 
         # Scheduler for periodic tasks (memory processing, proactive checks, etc.)
@@ -1429,6 +1430,39 @@ class AgentBase:
 
         return "\n\n".join(sections)
 
+    async def _generate_unique_session_id(self) -> str:
+        """Generate a unique 6-character session ID.
+
+        Creates a short session ID using the first 6 hex characters of a UUID4.
+        Checks for duplicates against running tasks and queued/active triggers.
+
+        Returns:
+            A unique 6-character hex string session ID.
+        """
+        max_attempts = 100  # Prevent infinite loop in edge cases
+        for _ in range(max_attempts):
+            candidate = uuid.uuid4().hex[:6]
+
+            # Check against running tasks
+            existing_task_ids = set(self.task_manager.tasks.keys())
+
+            # Check against queued triggers
+            queued_triggers = await self.triggers.list_triggers()
+            queued_session_ids = {t.session_id for t in queued_triggers if t.session_id}
+
+            # Check against active triggers (being processed)
+            active_session_ids = set(self.triggers._active.keys())
+
+            # Combine all existing IDs
+            all_existing_ids = existing_task_ids | queued_session_ids | active_session_ids
+
+            if candidate not in all_existing_ids:
+                return candidate
+
+        # Fallback to full UUID if somehow all short IDs are taken (extremely unlikely)
+        logger.warning("Could not generate unique 6-char session ID after 100 attempts, using full UUID")
+        return uuid.uuid4().hex
+
     async def _route_to_session(
         self,
         item_type: str,
@@ -1526,6 +1560,49 @@ class AgentBase:
                             f"[CHAT] Routed message to existing session {matched_session_id} "
                             f"(fired={fired}, reason: {routing_result.get('reason', 'N/A')})"
                         )
+
+                        # Reset task status from "waiting" to "running" when user replies
+                        # Update UI regardless of fire() result - user has replied so we should
+                        # acknowledge it. If fire() failed, the task may be stale but we still
+                        # want to reset the waiting indicator.
+                        if self.ui_controller:
+                            from app.ui_layer.events import UIEvent, UIEventType
+
+                            self.ui_controller.event_bus.emit(
+                                UIEvent(
+                                    type=UIEventType.TASK_UPDATE,
+                                    data={
+                                        "task_id": matched_session_id,
+                                        "status": "running",
+                                    },
+                                )
+                            )
+
+                            # Check if there are still other tasks waiting
+                            # If not, update global agent state back to working
+                            triggers = await self.triggers.list_triggers()
+                            has_waiting_tasks = any(
+                                getattr(t, 'waiting_for_reply', False)
+                                for t in triggers
+                                if t.session_id != matched_session_id
+                            )
+                            if not has_waiting_tasks:
+                                self.ui_controller.event_bus.emit(
+                                    UIEvent(
+                                        type=UIEventType.AGENT_STATE_CHANGED,
+                                        data={
+                                            "state": "working",
+                                            "status_message": "Agent is working...",
+                                        },
+                                    )
+                                )
+
+                        if not fired:
+                            logger.warning(
+                                f"[CHAT] Trigger not found for session {matched_session_id} - "
+                                "message may not be delivered to task"
+                            )
+
                         # Always trust routing decision - don't create new session
                         return
 
@@ -1560,7 +1637,7 @@ class AgentBase:
                         "Please perform action that best suit this user chat "
                         f"you just received{platform_hint}: {chat_content}"
                     ),
-                    session_id=str(uuid.uuid4()),  # Generate unique session ID
+                    session_id=await self._generate_unique_session_id(),
                     payload=trigger_payload,
                 ),
                 skip_merge=True,
