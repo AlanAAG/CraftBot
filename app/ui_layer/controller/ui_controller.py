@@ -237,31 +237,9 @@ class UIController:
             return
 
         # Not a command - send to agent
-        # Update state
-        self._state_store.dispatch("SET_AGENT_STATE", AgentStateType.WORKING.value)
-
-        # If there's a current task that was waiting, reset its status to running
-        current_task_id = self._state_store.state.current_task_id
-        if current_task_id:
-            self._state_store.dispatch(
-                "UPDATE_ACTION_ITEM",
-                {
-                    "id": current_task_id,
-                    "status": "running",
-                },
-            )
-            # Emit task update event so adapters update the task status immediately
-            self._event_bus.emit(
-                UIEvent(
-                    type=UIEventType.TASK_UPDATE,
-                    data={
-                        "task_id": current_task_id,
-                        "status": "running",
-                    },
-                    source_adapter=adapter_id,
-                    task_id=current_task_id,
-                )
-            )
+        # Note: Task status updates (waiting -> running) are handled in _handle_chat_message
+        # after routing determines the correct session. We don't update here to avoid
+        # incorrectly changing status of unrelated tasks.
 
         # Emit state change event so adapters can update status immediately
         self._event_bus.emit(
