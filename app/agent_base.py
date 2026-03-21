@@ -149,7 +149,6 @@ class AgentBase:
             provider=llm_provider,
             api_key=llm_api_key,
             base_url=llm_base_url,
-            db_interface=self.db_interface,
             deferred=deferred_init,
         )
         self.vlm = VLMInterface(
