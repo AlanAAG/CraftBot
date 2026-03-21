@@ -4,6 +4,7 @@ import { useVirtualizer } from '@tanstack/react-virtual'
 import { useLocation } from 'react-router-dom'
 import { useWebSocket } from '../../contexts/WebSocketContext'
 import { Button, IconButton, StatusIndicator } from '../../components/ui'
+import { useDerivedAgentStatus } from '../../hooks'
 import { ChatMessageItem } from './ChatMessage'
 import styles from './ChatPage.module.css'
 
@@ -34,7 +35,14 @@ const formatFileSize = (bytes: number): string => {
 }
 
 export function ChatPage() {
-  const { messages, actions, status, connected, sendMessage, cancelTask, cancellingTaskId, openFile, openFolder, lastSeenMessageId, markMessagesAsSeen } = useWebSocket()
+  const { messages, actions, connected, sendMessage, cancelTask, cancellingTaskId, openFile, openFolder, lastSeenMessageId, markMessagesAsSeen } = useWebSocket()
+
+  // Derive agent status from actions and messages
+  const status = useDerivedAgentStatus({
+    actions,
+    messages,
+    connected,
+  })
   const [input, setInput] = useState('')
   const [pendingAttachments, setPendingAttachments] = useState<PendingAttachment[]>([])
   const [attachmentError, setAttachmentError] = useState<string | null>(null)
@@ -372,8 +380,8 @@ export function ChatPage() {
 
         {/* Status bar */}
         <div className={styles.statusBar}>
-          <StatusIndicator status={connected ? status.state : 'error'} size="sm" variant="dot" />
-          <span>{connected ? status.message : 'Disconnected'}</span>
+          <StatusIndicator status={status.state} size="sm" variant="dot" />
+          <span>{status.message}</span>
         </div>
 
         {/* Input area */}
