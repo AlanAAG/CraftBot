@@ -3324,7 +3324,18 @@ function IntegrationsSettings() {
           setCredentials({})
           setConnectError('')
         } else {
-          setConnectError(d.error || d.message || 'Connection failed')
+          const errorMsg = d.error || d.message || 'Connection failed'
+          // Don't show error for user-initiated cancellation (modal already closed)
+          if (errorMsg.toLowerCase().includes('cancelled')) {
+            // Silent - user already closed the modal
+            return
+          }
+          // Show toast for timeout so user knows what happened
+          if (errorMsg.toLowerCase().includes('timed out')) {
+            showToast('error', 'OAuth timed out. Please try again.')
+          }
+          // Show error in modal if still open
+          setConnectError(errorMsg)
         }
       }),
       onMessage('integration_disconnect_result', (data: unknown) => {
@@ -3471,6 +3482,25 @@ function IntegrationsSettings() {
     setWhatsappStatus('idle')
     setWhatsappError(null)
     setShowConnectModal(false)
+  }
+
+  const handleCloseConnectModal = () => {
+    // Cancel any in-progress OAuth/interactive flow for this integration
+    if (isConnecting && selectedIntegration) {
+      send('integration_connect_cancel', { id: selectedIntegration.id })
+    }
+
+    // Handle WhatsApp-specific cleanup (has its own polling mechanism)
+    if (selectedIntegration?.id === 'whatsapp' && whatsappStatus !== 'idle') {
+      handleCancelWhatsApp()
+      return // handleCancelWhatsApp already closes the modal
+    }
+
+    // Reset state
+    setIsConnecting(false)
+    setShowConnectModal(false)
+    setConnectError('')
+    setCredentials({})
   }
 
   const handleOpenManage = (integration: Integration) => {
@@ -3644,11 +3674,11 @@ function IntegrationsSettings() {
 
       {/* Connect Modal */}
       {showConnectModal && selectedIntegration && (
-        <div className={styles.modalOverlay} onClick={() => setShowConnectModal(false)}>
+        <div className={styles.modalOverlay} onClick={handleCloseConnectModal}>
           <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <h3>Connect {selectedIntegration.name}</h3>
-              <button className={styles.modalClose} onClick={() => setShowConnectModal(false)}>
+              <button className={styles.modalClose} onClick={handleCloseConnectModal}>
                 <X size={18} />
               </button>
             </div>
@@ -3669,10 +3699,10 @@ function IntegrationsSettings() {
                     disabled={isConnecting}
                   >
                     {isConnecting ? (
-                      <>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <Loader2 size={16} className={styles.spinning} />
                         Connecting...
-                      </>
+                      </span>
                     ) : (
                       <>Sign in with {selectedIntegration.name}</>
                     )}
@@ -3707,10 +3737,10 @@ function IntegrationsSettings() {
                     disabled={isConnecting}
                   >
                     {isConnecting ? (
-                      <>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <Loader2 size={16} className={styles.spinning} />
                         Connecting...
-                      </>
+                      </span>
                     ) : (
                       'Connect'
                     )}
@@ -3745,10 +3775,10 @@ function IntegrationsSettings() {
                     disabled={isConnecting}
                   >
                     {isConnecting ? (
-                      <>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <Loader2 size={16} className={styles.spinning} />
                         Connecting...
-                      </>
+                      </span>
                     ) : (
                       'Connect with Token'
                     )}
@@ -3792,10 +3822,10 @@ function IntegrationsSettings() {
                     disabled={isConnecting}
                   >
                     {isConnecting ? (
-                      <>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <Loader2 size={16} className={styles.spinning} />
                         Connecting...
-                      </>
+                      </span>
                     ) : (
                       'Connect Bot'
                     )}
@@ -3810,10 +3840,10 @@ function IntegrationsSettings() {
                     disabled={isConnecting}
                   >
                     {isConnecting ? (
-                      <>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <Loader2 size={16} className={styles.spinning} />
                         Waiting for QR scan...
-                      </>
+                      </span>
                     ) : (
                       'Connect User Account (QR Code)'
                     )}

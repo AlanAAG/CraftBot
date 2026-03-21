@@ -648,6 +648,9 @@ class BrowserAdapter(InterfaceAdapter):
         self._metrics_collector = MetricsCollector(controller.agent)
         self._metrics_task: Optional[asyncio.Task] = None
 
+        # Track active OAuth tasks for cancellation support
+        self._oauth_tasks: Dict[str, asyncio.Task] = {}
+
     @property
     def theme_adapter(self) -> ThemeAdapter:
         return self._theme_adapter
@@ -1164,6 +1167,10 @@ class BrowserAdapter(InterfaceAdapter):
         elif msg_type == "integration_connect_interactive":
             integration_id = data.get("id", "")
             await self._handle_integration_connect_interactive(integration_id)
+
+        elif msg_type == "integration_connect_cancel":
+            integration_id = data.get("id", "")
+            await self._handle_integration_connect_cancel(integration_id)
 
         elif msg_type == "integration_disconnect":
             integration_id = data.get("id", "")
@@ -2989,7 +2996,17 @@ class BrowserAdapter(InterfaceAdapter):
             })
 
     async def _handle_integration_connect_oauth(self, integration_id: str) -> None:
-        """Start OAuth flow for an integration."""
+        """Start OAuth flow for an integration (non-blocking)."""
+        # Cancel any existing OAuth task for this integration
+        if integration_id in self._oauth_tasks:
+            self._oauth_tasks[integration_id].cancel()
+
+        # Run OAuth in background task so WebSocket message loop stays responsive
+        task = asyncio.create_task(self._run_oauth_flow(integration_id))
+        self._oauth_tasks[integration_id] = task
+
+    async def _run_oauth_flow(self, integration_id: str) -> None:
+        """Execute OAuth flow and broadcast result (runs as background task)."""
         try:
             success, message = await connect_integration_oauth(integration_id)
             await self._broadcast({
@@ -3003,6 +3020,16 @@ class BrowserAdapter(InterfaceAdapter):
             # Refresh the list on success (listener is started by connect_integration_oauth)
             if success:
                 await self._handle_integration_list()
+        except asyncio.CancelledError:
+            # OAuth was cancelled by user closing the modal
+            await self._broadcast({
+                "type": "integration_connect_result",
+                "data": {
+                    "success": False,
+                    "message": "OAuth cancelled",
+                    "id": integration_id,
+                },
+            })
         except Exception as e:
             await self._broadcast({
                 "type": "integration_connect_result",
@@ -3012,9 +3039,21 @@ class BrowserAdapter(InterfaceAdapter):
                     "id": integration_id,
                 },
             })
+        finally:
+            self._oauth_tasks.pop(integration_id, None)
 
     async def _handle_integration_connect_interactive(self, integration_id: str) -> None:
-        """Connect an integration using interactive flow (e.g. Telegram QR login)."""
+        """Connect an integration using interactive flow (non-blocking)."""
+        # Cancel any existing interactive task for this integration
+        if integration_id in self._oauth_tasks:
+            self._oauth_tasks[integration_id].cancel()
+
+        # Run interactive flow in background task so WebSocket message loop stays responsive
+        task = asyncio.create_task(self._run_interactive_flow(integration_id))
+        self._oauth_tasks[integration_id] = task
+
+    async def _run_interactive_flow(self, integration_id: str) -> None:
+        """Execute interactive flow and broadcast result (runs as background task)."""
         try:
             success, message = await connect_integration_interactive(integration_id)
             await self._broadcast({
@@ -3028,6 +3067,16 @@ class BrowserAdapter(InterfaceAdapter):
             # Refresh the list on success (listener is started by connect_integration_interactive)
             if success:
                 await self._handle_integration_list()
+        except asyncio.CancelledError:
+            # Interactive flow was cancelled by user closing the modal
+            await self._broadcast({
+                "type": "integration_connect_result",
+                "data": {
+                    "success": False,
+                    "message": "Connection cancelled",
+                    "id": integration_id,
+                },
+            })
         except Exception as e:
             await self._broadcast({
                 "type": "integration_connect_result",
@@ -3037,6 +3086,14 @@ class BrowserAdapter(InterfaceAdapter):
                     "id": integration_id,
                 },
             })
+        finally:
+            self._oauth_tasks.pop(integration_id, None)
+
+    async def _handle_integration_connect_cancel(self, integration_id: str) -> None:
+        """Cancel an in-progress OAuth/interactive flow."""
+        if integration_id in self._oauth_tasks:
+            self._oauth_tasks[integration_id].cancel()
+            # Result will be broadcast by the cancelled task's CancelledError handler
 
     async def _handle_integration_disconnect(
         self, integration_id: str, account_id: Optional[str] = None
