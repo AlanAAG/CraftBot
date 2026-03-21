@@ -76,8 +76,8 @@ class GoogleHandler(IntegrationHandler):
             "code_challenge": code_challenge,
             "code_challenge_method": "S256",
         }
-        from agent_core import run_oauth_flow
-        code, error = run_oauth_flow(f"https://accounts.google.com/o/oauth2/v2/auth?{urlencode(params)}")
+        from agent_core import run_oauth_flow_async
+        code, error = await run_oauth_flow_async(f"https://accounts.google.com/o/oauth2/v2/auth?{urlencode(params)}")
         if error: return False, f"Google OAuth failed: {error}"
 
         token_data = {
@@ -141,8 +141,8 @@ class SlackHandler(IntegrationHandler):
 
         scopes = "chat:write,channels:read,channels:history,groups:read,groups:history,users:read,files:write,im:read,im:write,im:history"
         params = {"client_id": SLACK_SHARED_CLIENT_ID, "scope": scopes, "redirect_uri": REDIRECT_URI_HTTPS, "state": secrets.token_urlsafe(32)}
-        from agent_core import run_oauth_flow
-        code, error = run_oauth_flow(f"https://slack.com/oauth/v2/authorize?{urlencode(params)}", use_https=True)
+        from agent_core import run_oauth_flow_async
+        code, error = await run_oauth_flow_async(f"https://slack.com/oauth/v2/authorize?{urlencode(params)}", use_https=True)
         if error: return False, f"Slack OAuth failed: {error}"
 
         import aiohttp
@@ -206,8 +206,8 @@ class NotionHandler(IntegrationHandler):
             return False, "CraftOS Notion integration not configured. Set NOTION_SHARED_CLIENT_ID and NOTION_SHARED_CLIENT_SECRET env vars.\nAlternatively, use /notion login <token> with your own integration token."
 
         params = {"client_id": NOTION_SHARED_CLIENT_ID, "redirect_uri": REDIRECT_URI, "response_type": "code", "owner": "user", "state": secrets.token_urlsafe(32)}
-        from agent_core import run_oauth_flow
-        code, error = run_oauth_flow(f"https://api.notion.com/v1/oauth/authorize?{urlencode(params)}")
+        from agent_core import run_oauth_flow_async
+        code, error = await run_oauth_flow_async(f"https://api.notion.com/v1/oauth/authorize?{urlencode(params)}")
         if error: return False, f"Notion OAuth failed: {error}"
 
         import aiohttp
@@ -264,8 +264,8 @@ class LinkedInHandler(IntegrationHandler):
             return False, "Not configured. Set LINKEDIN_CLIENT_ID and LINKEDIN_CLIENT_SECRET env vars."
 
         params = {"response_type": "code", "client_id": LINKEDIN_CLIENT_ID, "redirect_uri": REDIRECT_URI, "scope": "openid profile email w_member_social", "state": secrets.token_urlsafe(32)}
-        from agent_core import run_oauth_flow
-        code, error = run_oauth_flow(f"https://www.linkedin.com/oauth/v2/authorization?{urlencode(params)}")
+        from agent_core import run_oauth_flow_async
+        code, error = await run_oauth_flow_async(f"https://www.linkedin.com/oauth/v2/authorization?{urlencode(params)}")
         if error: return False, f"LinkedIn OAuth failed: {error}"
 
         import aiohttp
@@ -818,8 +818,8 @@ class OutlookHandler(IntegrationHandler):
             "code_challenge": code_challenge,
             "code_challenge_method": "S256",
         }
-        from agent_core import run_oauth_flow
-        code, error = run_oauth_flow(
+        from agent_core import run_oauth_flow_async
+        code, error = await run_oauth_flow_async(
             f"https://login.microsoftonline.com/common/oauth2/v2.0/authorize?{urlencode(params)}"
         )
         if error:
