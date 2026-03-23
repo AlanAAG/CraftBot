@@ -1069,6 +1069,66 @@ class GitHubHandler(IntegrationHandler):
 
 
 # ═══════════════════════════════════════════════════════════════════
+# Twitter/X (API key + secret + access tokens)
+# ═══════════════════════════════════════════════════════════════════
+
+class TwitterHandler(IntegrationHandler):
+    async def login(self, args):
+        if len(args) < 4:
+            return False, "Usage: /twitter login <api_key> <api_secret> <access_token> <access_token_secret>\nGet these from developer.x.com"
+        api_key, api_secret, access_token, access_token_secret = args[0].strip(), args[1].strip(), args[2].strip(), args[3].strip()
+
+        # Validate by calling /users/me
+        try:
+            from app.external_comms.platforms.twitter import TwitterCredential, _oauth1_header
+            import httpx as _httpx
+
+            url = "https://api.twitter.com/2/users/me"
+            params = {"user.fields": "id,name,username"}
+            auth_hdr = _oauth1_header("GET", url, params, api_key, api_secret, access_token, access_token_secret)
+            r = _httpx.get(url, headers={"Authorization": auth_hdr}, params=params, timeout=15)
+            if r.status_code != 200:
+                return False, f"Twitter auth failed (HTTP {r.status_code}). Check your API credentials.\nGet them from developer.x.com → Dashboard → Keys and tokens"
+            data = r.json().get("data", {})
+        except Exception as e:
+            return False, f"Twitter connection error: {e}"
+
+        save_credential("twitter.json", TwitterCredential(
+            api_key=api_key,
+            api_secret=api_secret,
+            access_token=access_token,
+            access_token_secret=access_token_secret,
+            user_id=data.get("id", ""),
+            username=data.get("username", ""),
+        ))
+        return True, f"Twitter/X connected as @{data.get('username')} ({data.get('name', '')})"
+
+    async def logout(self, args):
+        if not has_credential("twitter.json"):
+            return False, "No Twitter credentials found."
+        try:
+            from app.external_comms.manager import get_external_comms_manager
+            manager = get_external_comms_manager()
+            if manager:
+                await manager.stop_platform("twitter")
+        except Exception:
+            pass
+        remove_credential("twitter.json")
+        return True, "Removed Twitter credential."
+
+    async def status(self):
+        if not has_credential("twitter.json"):
+            return True, "Twitter/X: Not connected"
+        from app.external_comms.platforms.twitter import TwitterCredential
+        cred = load_credential("twitter.json", TwitterCredential)
+        if not cred:
+            return True, "Twitter/X: Not connected"
+        username = cred.username or "unknown"
+        tag_info = f" [tag: {cred.watch_tag}]" if cred.watch_tag else ""
+        return True, f"Twitter/X: Connected\n  - @{username}{tag_info}"
+
+
+# ═══════════════════════════════════════════════════════════════════
 # Registry
 # ═══════════════════════════════════════════════════════════════════
 
@@ -1084,4 +1144,5 @@ INTEGRATION_HANDLERS: dict[str, IntegrationHandler] = {
     "whatsapp_business":  WhatsAppBusinessHandler(),
     "jira":               JiraHandler(),
     "github":             GitHubHandler(),
+    "twitter":            TwitterHandler(),
 }

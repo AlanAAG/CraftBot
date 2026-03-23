@@ -87,6 +87,17 @@ INTEGRATION_REGISTRY: Dict[str, Dict[str, Any]] = {
             {"key": "access_token", "label": "Personal Access Token", "placeholder": "ghp_...", "password": True},
         ],
     },
+    "twitter": {
+        "name": "Twitter/X",
+        "description": "Tweets, mentions, and timeline",
+        "auth_type": "token",
+        "fields": [
+            {"key": "api_key", "label": "API Key", "placeholder": "Enter API key", "password": True},
+            {"key": "api_secret", "label": "API Secret", "placeholder": "Enter API secret", "password": True},
+            {"key": "access_token", "label": "Access Token", "placeholder": "Enter access token", "password": True},
+            {"key": "access_token_secret", "label": "Access Token Secret", "placeholder": "Enter access token secret", "password": True},
+        ],
+    },
 }
 
 
@@ -225,6 +236,7 @@ PLATFORM_MAP = {
     "google": ["google_workspace"],
     "jira": ["jira"],
     "github": ["github"],
+    "twitter": ["twitter"],
 }
 
 
@@ -305,6 +317,15 @@ async def connect_integration_token(integration_id: str, credentials: Dict[str, 
         if not access_token:
             return False, "Personal access token is required"
         args = [access_token]
+
+    elif integration_id == "twitter":
+        api_key = credentials.get("api_key", "")
+        api_secret = credentials.get("api_secret", "")
+        access_token = credentials.get("access_token", "")
+        access_token_secret = credentials.get("access_token_secret", "")
+        if not all([api_key, api_secret, access_token, access_token_secret]):
+            return False, "All four Twitter API credentials are required"
+        args = [api_key, api_secret, access_token, access_token_secret]
 
     else:
         return False, f"Token-based login not supported for {integration_id}"

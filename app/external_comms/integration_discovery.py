@@ -22,6 +22,7 @@ PLATFORM_TO_ACTION_SET: Dict[str, str] = {
     "slack": "slack",
     "jira": "jira",
     "github": "github",
+    "twitter": "twitter",
 }
 
 # Maps action sets to their primary send actions for conversation mode
@@ -34,6 +35,7 @@ ACTION_SET_SEND_ACTIONS: Dict[str, List[str]] = {
     "slack": ["send_slack_message"],
     "jira": ["add_jira_comment", "create_jira_issue"],
     "github": ["add_github_comment", "create_github_issue"],
+    "twitter": ["post_tweet", "reply_to_tweet"],
 }
 
 
