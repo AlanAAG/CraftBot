@@ -74,7 +74,7 @@ def create_soft_onboarding_task(task_manager: "TaskManager") -> str:
     task_id = task_manager.create_task(
         task_name="User Profile Interview",
         task_instruction=SOFT_ONBOARDING_TASK_INSTRUCTION,
-        mode="complex",
+        mode="simple",
         action_sets=["file_operations", "core"],
         selected_skills=["user-profile-interview"]
     )
