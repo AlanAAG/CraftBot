@@ -40,6 +40,7 @@ def _import_all_platforms() -> None:
         "app.external_comms.platforms.linkedin",
         "app.external_comms.platforms.outlook",
         "app.external_comms.platforms.google_workspace",
+        "app.external_comms.platforms.jira",
     ]
     import importlib
     for mod in platform_modules:

@@ -917,6 +917,101 @@ class WhatsAppBusinessHandler(IntegrationHandler):
 
 
 # ═══════════════════════════════════════════════════════════════════
+# Jira (API token)
+# ═══════════════════════════════════════════════════════════════════
+
+class JiraHandler(IntegrationHandler):
+    async def login(self, args):
+        if len(args) < 3:
+            return False, "Usage: /jira login <domain> <email> <api_token>\nGet an API token from https://id.atlassian.com/manage-profile/security/api-tokens"
+        domain, email, api_token = args[0], args[1], args[2]
+
+        # Normalize domain
+        clean_domain = domain.strip().rstrip("/")
+        if clean_domain.startswith("https://"):
+            clean_domain = clean_domain[len("https://"):]
+        if clean_domain.startswith("http://"):
+            clean_domain = clean_domain[len("http://"):]
+        # Auto-append .atlassian.net if user only entered the subdomain
+        if "." not in clean_domain:
+            clean_domain = f"{clean_domain}.atlassian.net"
+
+        email = email.strip()
+        api_token = api_token.strip()
+
+        # Validate by calling /myself (try API v3, then v2 as fallback)
+        import httpx as _httpx
+        raw_auth = base64.b64encode(f"{email}:{api_token}".encode()).decode()
+        auth_headers = {"Authorization": f"Basic {raw_auth}", "Accept": "application/json"}
+
+        data = None
+        last_status = 0
+        try:
+            for api_ver in ("3", "2"):
+                url = f"https://{clean_domain}/rest/api/{api_ver}/myself"
+                logger.info(f"[Jira] Trying {url} with email={email}")
+                r = _httpx.get(url, headers=auth_headers, timeout=15, follow_redirects=True)
+                if r.status_code == 200:
+                    data = r.json()
+                    break
+                body = r.text
+                logger.warning(f"[Jira] API v{api_ver} returned HTTP {r.status_code}: {body[:300]}")
+                last_status = r.status_code
+
+            if data is None:
+                hints = [f"Tried: https://{clean_domain}/rest/api/3/myself"]
+                if last_status == 401:
+                    hints.append("Ensure you are using an API token, not your account password.")
+                    hints.append("The email must match your Atlassian account email exactly.")
+                    hints.append("Generate a token at: https://id.atlassian.com/manage-profile/security/api-tokens")
+                elif last_status == 403:
+                    hints.append("Your account may not have REST API access. Check Jira permissions.")
+                elif last_status == 404:
+                    hints.append(f"Domain '{clean_domain}' not reachable or has no REST API.")
+                hint_str = "\n".join(f"  - {h}" for h in hints)
+                return False, f"Jira auth failed (HTTP {last_status}).\n{hint_str}"
+        except _httpx.ConnectError:
+            return False, f"Cannot connect to https://{clean_domain} — check the domain name."
+        except Exception as e:
+            return False, f"Jira connection error: {e}"
+
+        from app.external_comms.platforms.jira import JiraCredential
+        save_credential("jira.json", JiraCredential(
+            domain=clean_domain,
+            email=email,
+            api_token=api_token,
+        ))
+        display_name = data.get("displayName", email)
+        return True, f"Jira connected as {display_name} ({clean_domain})"
+
+    async def logout(self, args):
+        if not has_credential("jira.json"):
+            return False, "No Jira credentials found."
+        try:
+            from app.external_comms.manager import get_external_comms_manager
+            manager = get_external_comms_manager()
+            if manager:
+                await manager.stop_platform("jira")
+        except Exception:
+            pass
+        remove_credential("jira.json")
+        return True, "Removed Jira credential."
+
+    async def status(self):
+        if not has_credential("jira.json"):
+            return True, "Jira: Not connected"
+        from app.external_comms.platforms.jira import JiraCredential
+        cred = load_credential("jira.json", JiraCredential)
+        if not cred:
+            return True, "Jira: Not connected"
+        domain = cred.domain or cred.site_url or "unknown"
+        email = cred.email or "OAuth"
+        labels = cred.watch_labels
+        label_info = f" [watching: {', '.join(labels)}]" if labels else ""
+        return True, f"Jira: Connected\n  - {email} ({domain}){label_info}"
+
+
+# ═══════════════════════════════════════════════════════════════════
 # Registry
 # ═══════════════════════════════════════════════════════════════════
 
@@ -930,4 +1025,5 @@ INTEGRATION_HANDLERS: dict[str, IntegrationHandler] = {
     "whatsapp":           WhatsAppHandler(),
     "outlook":            OutlookHandler(),
     "whatsapp_business":  WhatsAppBusinessHandler(),
+    "jira":               JiraHandler(),
 }
