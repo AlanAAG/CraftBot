@@ -1012,6 +1012,63 @@ class JiraHandler(IntegrationHandler):
 
 
 # ═══════════════════════════════════════════════════════════════════
+# GitHub (personal access token)
+# ═══════════════════════════════════════════════════════════════════
+
+class GitHubHandler(IntegrationHandler):
+    async def login(self, args):
+        if not args:
+            return False, "Usage: /github login <personal_access_token>\nGenerate one at: https://github.com/settings/tokens"
+        token = args[0].strip()
+
+        import httpx as _httpx
+        try:
+            r = _httpx.get(
+                "https://api.github.com/user",
+                headers={"Authorization": f"Bearer {token}", "Accept": "application/vnd.github+json"},
+                timeout=15,
+            )
+            if r.status_code != 200:
+                return False, f"GitHub auth failed (HTTP {r.status_code}). Check your token."
+            data = r.json()
+        except Exception as e:
+            return False, f"GitHub connection error: {e}"
+
+        from app.external_comms.platforms.github import GitHubCredential
+        save_credential("github.json", GitHubCredential(
+            access_token=token,
+            username=data.get("login", ""),
+        ))
+        return True, f"GitHub connected as @{data.get('login')} ({data.get('name', '')})"
+
+    async def logout(self, args):
+        if not has_credential("github.json"):
+            return False, "No GitHub credentials found."
+        try:
+            from app.external_comms.manager import get_external_comms_manager
+            manager = get_external_comms_manager()
+            if manager:
+                await manager.stop_platform("github")
+        except Exception:
+            pass
+        remove_credential("github.json")
+        return True, "Removed GitHub credential."
+
+    async def status(self):
+        if not has_credential("github.json"):
+            return True, "GitHub: Not connected"
+        from app.external_comms.platforms.github import GitHubCredential
+        cred = load_credential("github.json", GitHubCredential)
+        if not cred:
+            return True, "GitHub: Not connected"
+        username = cred.username or "unknown"
+        tag = cred.watch_tag
+        tag_info = f" [tag: {tag}]" if tag else ""
+        repos_info = f" [repos: {', '.join(cred.watch_repos)}]" if cred.watch_repos else ""
+        return True, f"GitHub: Connected\n  - @{username}{tag_info}{repos_info}"
+
+
+# ═══════════════════════════════════════════════════════════════════
 # Registry
 # ═══════════════════════════════════════════════════════════════════
 
@@ -1026,4 +1083,5 @@ INTEGRATION_HANDLERS: dict[str, IntegrationHandler] = {
     "outlook":            OutlookHandler(),
     "whatsapp_business":  WhatsAppBusinessHandler(),
     "jira":               JiraHandler(),
+    "github":             GitHubHandler(),
 }

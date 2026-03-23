@@ -79,6 +79,14 @@ INTEGRATION_REGISTRY: Dict[str, Dict[str, Any]] = {
             {"key": "api_token", "label": "API Token", "placeholder": "Enter Jira API token", "password": True},
         ],
     },
+    "github": {
+        "name": "GitHub",
+        "description": "Repositories, issues, and pull requests",
+        "auth_type": "token",
+        "fields": [
+            {"key": "access_token", "label": "Personal Access Token", "placeholder": "ghp_...", "password": True},
+        ],
+    },
 }
 
 
@@ -216,6 +224,7 @@ PLATFORM_MAP = {
     "telegram": ["telegram_bot", "telegram_user"],
     "google": ["google_workspace"],
     "jira": ["jira"],
+    "github": ["github"],
 }
 
 
@@ -290,6 +299,12 @@ async def connect_integration_token(integration_id: str, credentials: Dict[str, 
         if not domain or not email or not api_token:
             return False, "Domain, email, and API token are required"
         args = [domain, email, api_token]
+
+    elif integration_id == "github":
+        access_token = credentials.get("access_token", "")
+        if not access_token:
+            return False, "Personal access token is required"
+        args = [access_token]
 
     else:
         return False, f"Token-based login not supported for {integration_id}"
