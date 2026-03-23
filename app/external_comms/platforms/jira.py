@@ -52,6 +52,7 @@ class JiraCredential:
     site_url: str = ""
     # Listener settings
     watch_labels: List[str] = field(default_factory=list)
+    watch_tag: str = ""  # e.g. "@craftbot" — only trigger on comments containing this tag
 
 
 @register_client
@@ -171,6 +172,25 @@ class JiraClient(BasePlatformClient):
             self._cred = cred
             logger.info(f"[JIRA] Removed watch label: {label}")
 
+    # -- Watch tag (comment mention filter) ----------------------------
+
+    def get_watch_tag(self) -> str:
+        """Return the tag the listener filters comments on (e.g. '@craftbot')."""
+        cred = self._load()
+        return cred.watch_tag
+
+    def set_watch_tag(self, tag: str) -> None:
+        """Set the mention tag to watch for in comments.
+
+        Only comments containing this tag will trigger events.
+        Pass an empty string to trigger on all issue updates (no comment filtering).
+        """
+        cred = self._load()
+        cred.watch_tag = tag.strip()
+        save_credential(CREDENTIAL_FILE, cred)
+        self._cred = cred
+        logger.info(f"[JIRA] Watch tag set to: {cred.watch_tag or '(disabled — all updates)'}")
+
     # ------------------------------------------------------------------
     # Listening (JQL polling)
     # ------------------------------------------------------------------
@@ -200,8 +220,10 @@ class JiraClient(BasePlatformClient):
         self._listening = True
         self._poll_task = asyncio.create_task(self._poll_loop())
 
-        labels_info = ", ".join(self._load().watch_labels) if self._load().watch_labels else "(all issues)"
-        logger.info(f"[JIRA] Poller started — watching labels: {labels_info}")
+        cred = self._load()
+        labels_info = ", ".join(cred.watch_labels) if cred.watch_labels else "(all)"
+        tag_info = cred.watch_tag or "(disabled — all updates)"
+        logger.info(f"[JIRA] Poller started — labels: {labels_info} | tag: {tag_info}")
 
     async def stop_listening(self) -> None:
         if not self._listening:
@@ -287,6 +309,7 @@ class JiraClient(BasePlatformClient):
         if not self._message_callback:
             return
 
+        cred = self._load()
         fields_data = issue.get("fields", {})
         issue_key = issue.get("key", "")
         summary = fields_data.get("summary", "")
@@ -302,7 +325,82 @@ class JiraClient(BasePlatformClient):
         reporter = fields_data.get("reporter") or {}
         reporter_name = reporter.get("displayName", "Unknown")
 
-        # Build text summary
+        # Extract comments
+        comments = (fields_data.get("comment") or {}).get("comments", [])
+
+        # --- Watch tag filtering ---
+        # If a watch_tag is set, only dispatch when a comment contains the tag.
+        # The triggering comment text (after the tag) becomes the message.
+        watch_tag = cred.watch_tag
+        if watch_tag:
+            matching_comment = None
+            tag_lower = watch_tag.lower()
+            # Scan comments newest-first for one containing the tag
+            for comment in reversed(comments):
+                comment_body = _extract_adf_text(comment.get("body", {}))
+                if tag_lower in comment_body.lower():
+                    # Dedup: use comment ID so we don't re-trigger on same comment
+                    comment_id = comment.get("id", "")
+                    comment_dedup = f"{issue_key}:comment:{comment_id}"
+                    if comment_dedup in self._seen_issue_keys:
+                        continue
+                    self._seen_issue_keys.add(comment_dedup)
+                    matching_comment = comment
+                    break
+
+            if matching_comment is None:
+                # No comment with the tag — skip this issue entirely
+                return
+
+            # Build message from the tagged comment
+            comment_author = (matching_comment.get("author") or {}).get("displayName", "Unknown")
+            comment_author_id = (matching_comment.get("author") or {}).get("accountId", "")
+            comment_body = _extract_adf_text(matching_comment.get("body", {}))
+
+            # Strip the tag from the comment to get the instruction
+            idx = comment_body.lower().find(tag_lower)
+            if idx >= 0:
+                instruction = comment_body[idx + len(watch_tag):].strip()
+            else:
+                instruction = comment_body
+
+            text_parts = [
+                f"[{issue_key}] {summary}",
+                f"Status: {status_name} | Assignee: {assignee_name}",
+                f"Comment by {comment_author}: {instruction or comment_body}",
+            ]
+
+            timestamp = None
+            created_str = matching_comment.get("created", "")
+            if created_str:
+                try:
+                    timestamp = datetime.fromisoformat(created_str.replace("Z", "+00:00"))
+                except Exception:
+                    pass
+
+            platform_msg = PlatformMessage(
+                platform="jira",
+                sender_id=comment_author_id,
+                sender_name=comment_author,
+                text="\n".join(text_parts),
+                channel_id=project_key,
+                channel_name=f"{project_key} ({issue_type})",
+                message_id=f"{issue_key}:{matching_comment.get('id', '')}",
+                timestamp=timestamp,
+                raw={
+                    "issue": issue,
+                    "trigger": "comment_tag",
+                    "tag": watch_tag,
+                    "instruction": instruction or comment_body,
+                    "comment": matching_comment,
+                },
+            )
+
+            await self._message_callback(platform_msg)
+            logger.info(f"[JIRA] Tag '{watch_tag}' matched in {issue_key} by {comment_author}: {instruction[:80]}...")
+            return
+
+        # --- No watch tag — dispatch all updates (original behavior) ---
         text_parts = [
             f"[{issue_key}] {summary}",
             f"Type: {issue_type} | Priority: {priority} | Status: {status_name}",
@@ -311,8 +409,6 @@ class JiraClient(BasePlatformClient):
         if labels:
             text_parts.append(f"Labels: {', '.join(labels)}")
 
-        # Check for latest comment
-        comments = (fields_data.get("comment") or {}).get("comments", [])
         if comments:
             latest_comment = comments[-1]
             comment_author = (latest_comment.get("author") or {}).get("displayName", "")

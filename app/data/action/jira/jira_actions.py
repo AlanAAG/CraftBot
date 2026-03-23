@@ -383,7 +383,57 @@ async def search_jira_users(input_data: dict) -> dict:
 
 
 # ------------------------------------------------------------------
-# Watch Labels (listener filter configuration)
+# Watch Tag (comment mention filter)
+# ------------------------------------------------------------------
+
+@action(
+    name="set_jira_watch_tag",
+    description="Set a mention tag to watch for in Jira comments. Only comments containing this tag (e.g. '@craftbot') will trigger events. Pass empty string to disable and receive all updates.",
+    action_sets=["jira"],
+    input_schema={
+        "tag": {"type": "string", "description": "The mention tag to watch for in comments. e.g. '@craftbot'. Empty = disabled.", "example": "@craftbot"},
+    },
+    output_schema={"status": {"type": "string", "example": "success"}},
+    parallelizable=False,
+)
+def set_jira_watch_tag(input_data: dict) -> dict:
+    try:
+        from app.external_comms.platforms.jira import JiraClient
+        client = JiraClient()
+        if not client.has_credentials():
+            return {"status": "error", "message": _NO_CRED_MSG}
+        tag = input_data.get("tag", "").strip()
+        client.set_watch_tag(tag)
+        if tag:
+            return {"status": "success", "message": f"Now only triggering on comments containing '{tag}'."}
+        return {"status": "success", "message": "Watch tag disabled. Triggering on all issue updates."}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@action(
+    name="get_jira_watch_tag",
+    description="Get the current mention tag the Jira listener watches for in comments.",
+    action_sets=["jira"],
+    input_schema={},
+    output_schema={"status": {"type": "string", "example": "success"}},
+)
+def get_jira_watch_tag(input_data: dict) -> dict:
+    try:
+        from app.external_comms.platforms.jira import JiraClient
+        client = JiraClient()
+        if not client.has_credentials():
+            return {"status": "error", "message": _NO_CRED_MSG}
+        tag = client.get_watch_tag()
+        if tag:
+            return {"status": "success", "tag": tag, "message": f"Watching for: '{tag}' in comments."}
+        return {"status": "success", "tag": "", "message": "No watch tag set. Triggering on all issue updates."}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+# ------------------------------------------------------------------
+# Watch Labels (issue label filter)
 # ------------------------------------------------------------------
 
 @action(

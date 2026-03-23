@@ -3290,6 +3290,12 @@ function IntegrationsSettings() {
   const [whatsappError, setWhatsappError] = useState<string | null>(null)
   const whatsappPollRef = React.useRef<ReturnType<typeof setInterval> | null>(null)
 
+  // Jira settings state
+  const [jiraWatchTag, setJiraWatchTag] = useState('')
+  const [jiraWatchLabels, setJiraWatchLabels] = useState('')
+  const [jiraSettingsLoaded, setJiraSettingsLoaded] = useState(false)
+  const [jiraSaving, setJiraSaving] = useState(false)
+
   // Confirm modal
   const { modalProps: confirmModalProps, confirm } = useConfirmModal()
 
@@ -3392,6 +3398,26 @@ function IntegrationsSettings() {
         setWhatsappStatus('idle')
         setWhatsappError(null)
       }),
+      // Jira settings handlers
+      onMessage('jira_settings', (data: unknown) => {
+        const d = data as { success: boolean; watch_tag?: string; watch_labels?: string[] }
+        if (d.success) {
+          setJiraWatchTag(d.watch_tag || '')
+          setJiraWatchLabels((d.watch_labels || []).join(', '))
+          setJiraSettingsLoaded(true)
+        }
+      }),
+      onMessage('jira_settings_result', (data: unknown) => {
+        const d = data as { success: boolean; watch_tag?: string; watch_labels?: string[]; message?: string; error?: string }
+        setJiraSaving(false)
+        if (d.success) {
+          setJiraWatchTag(d.watch_tag || '')
+          setJiraWatchLabels((d.watch_labels || []).join(', '))
+          showToast('success', d.message || 'Jira settings saved')
+        } else {
+          showToast('error', d.error || 'Failed to save Jira settings')
+        }
+      }),
     ]
 
     // Load initial data
@@ -3473,7 +3499,20 @@ function IntegrationsSettings() {
     setShowConnectModal(false)
   }
 
+  const handleSaveJiraSettings = () => {
+    setJiraSaving(true)
+    const labelsArray = jiraWatchLabels.split(',').map(l => l.trim()).filter(Boolean)
+    send('jira_update_settings', {
+      watch_tag: jiraWatchTag,
+      watch_labels: labelsArray,
+    })
+  }
+
   const handleOpenManage = (integration: Integration) => {
+    if (integration.id === 'jira') {
+      setJiraSettingsLoaded(false)
+      send('jira_get_settings')
+    }
     send('integration_info', { id: integration.id })
   }
 
@@ -3913,6 +3952,64 @@ function IntegrationsSettings() {
                   Add Another Account
                 </Button>
               </div>
+
+              {/* Jira-specific settings */}
+              {managingIntegration.id === 'jira' && managingIntegration.connected && (
+                <>
+                  <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '16px 0' }} />
+                  <h4 className={styles.manageSubtitle}>Listener Settings</h4>
+                  {!jiraSettingsLoaded ? (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 0' }}>
+                      <Loader2 size={16} className={styles.spinning} />
+                      <span>Loading settings...</span>
+                    </div>
+                  ) : (
+                    <div className={styles.connectForm}>
+                      <div className={styles.formGroup}>
+                        <label className={styles.formLabel}>Watch Tag</label>
+                        <input
+                          type="text"
+                          className={styles.formInput}
+                          placeholder="e.g. @craftbot"
+                          value={jiraWatchTag}
+                          onChange={(e) => setJiraWatchTag(e.target.value)}
+                        />
+                        <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 4 }}>
+                          Only trigger on comments containing this tag. Leave empty to trigger on all updates.
+                        </p>
+                      </div>
+                      <div className={styles.formGroup}>
+                        <label className={styles.formLabel}>Watch Labels</label>
+                        <input
+                          type="text"
+                          className={styles.formInput}
+                          placeholder="e.g. craftos, agent-task"
+                          value={jiraWatchLabels}
+                          onChange={(e) => setJiraWatchLabels(e.target.value)}
+                        />
+                        <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 4 }}>
+                          Comma-separated Jira labels. Only issues with these labels will be watched. Leave empty for all issues.
+                        </p>
+                      </div>
+                      <Button
+                        variant="primary"
+                        size="sm"
+                        onClick={handleSaveJiraSettings}
+                        disabled={jiraSaving}
+                      >
+                        {jiraSaving ? (
+                          <>
+                            <Loader2 size={14} className={styles.spinning} />
+                            Saving...
+                          </>
+                        ) : (
+                          'Save Settings'
+                        )}
+                      </Button>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
           </div>
         </div>
