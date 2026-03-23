@@ -139,10 +139,20 @@ def build_template(template_name: str) -> str:
             print(f"  Pre-installing: {cmd}")
             template = template.run_cmd(cmd, user="root")
 
-    # Copy full CraftBot code
+    # Copy full CraftBot code and build frontend
     template = (
         template
         .copy(".", "/home/user/agent/")
+        # Remove credentials/data that should not be in the template
+        .run_cmd("rm -rf /home/user/agent/.credentials /home/user/agent/agent_file_system /home/user/agent/chroma_db_memory")
+        .run_cmd(
+            "cd /home/user/agent/app/ui_layer/browser/frontend"
+            " && npm install --legacy-peer-deps"
+            " && npm run build"
+            " && rm -rf node_modules"
+            " && echo 'Frontend built successfully'"
+            " || echo 'WARN: Frontend build failed - will use fallback UI'"
+        )
         .run_cmd(
             "sed -i 's/\\r$//' /home/user/agent/e2b-start.sh"
             " && chmod +x /home/user/agent/e2b-start.sh"
