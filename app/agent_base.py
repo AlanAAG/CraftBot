@@ -2366,6 +2366,13 @@ class AgentBase:
         )
         await self.scheduler.start()
 
+        # Register scheduler_config for hot-reload (after scheduler is initialized)
+        config_watcher.register(
+            scheduler_config_path,
+            self.scheduler.reload,
+            name="scheduler_config.json"
+        )
+
         # Trigger soft onboarding if needed (BEFORE starting interface)
         # This ensures agent handles onboarding logic, not the interfaces
         from app.onboarding import onboarding_manager
