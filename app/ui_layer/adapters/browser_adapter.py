@@ -759,6 +759,25 @@ class BrowserAdapter(InterfaceAdapter):
     async def _on_start(self) -> None:
         """Start the browser interface."""
         from aiohttp import web
+        from app.onboarding import onboarding_manager
+        import uuid
+
+        # Display welcome system message if soft onboarding is pending
+        if onboarding_manager.needs_soft_onboarding:
+            welcome_message = ChatMessage(
+                sender="System",
+                content="""**Welcome to CraftBot**
+
+CraftBot can perform virtually any computer-based task by configuring the right MCP servers, skills, or connecting to apps.
+
+If you need help setting up MCP servers or skills, just ask the agent.
+
+A quick Q&A will now begin to understand your preferences and serve you better:""",
+                style="system",
+                timestamp=time.time(),
+                message_id=f"welcome-{uuid.uuid4().hex[:8]}",
+            )
+            self._chat._messages.insert(0, welcome_message)
 
         self._app = web.Application()
 
