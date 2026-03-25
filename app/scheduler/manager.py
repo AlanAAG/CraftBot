@@ -466,12 +466,23 @@ class SchedulerManager:
         # Ensure directory exists
         self._config_path.parent.mkdir(parents=True, exist_ok=True)
 
-        # Write atomically (write to temp, then rename)
+        # Write atomically (write to temp, then rename).
+        # On Windows the rename can fail with "Access is denied" when
+        # another process (e.g. an IDE) holds the target file open, so
+        # fall back to a direct overwrite in that case.
         temp_path = self._config_path.with_suffix(".tmp")
+        data = json.dumps(config.to_dict(), indent=2)
         try:
             with open(temp_path, "w", encoding="utf-8") as f:
-                json.dump(config.to_dict(), f, indent=2)
-            temp_path.replace(self._config_path)
+                f.write(data)
+            try:
+                temp_path.replace(self._config_path)
+            except OSError:
+                # Atomic rename failed (Windows lock) — write directly
+                with open(self._config_path, "w", encoding="utf-8") as f:
+                    f.write(data)
+                if temp_path.exists():
+                    temp_path.unlink()
         except Exception as e:
             logger.error(f"[SCHEDULER] Failed to save config: {e}")
             if temp_path.exists():

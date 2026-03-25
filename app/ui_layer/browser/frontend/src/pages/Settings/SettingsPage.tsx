@@ -955,12 +955,9 @@ function ProactiveSettings() {
     monthly: tasks.filter(t => t.frequency === 'monthly'),
   }
 
-  // Heartbeat schedules
+  // Heartbeat schedule (unified — single heartbeat checks all frequencies)
   const heartbeatSchedules = [
-    { id: 'hourly-heartbeat', label: 'Hourly Heartbeat', desc: 'Runs every hour to check and execute hourly tasks' },
-    { id: 'daily-heartbeat', label: 'Daily Heartbeat', desc: 'Runs once daily to execute daily tasks' },
-    { id: 'weekly-heartbeat', label: 'Weekly Heartbeat', desc: 'Runs weekly to execute weekly tasks' },
-    { id: 'monthly-heartbeat', label: 'Monthly Heartbeat', desc: 'Runs monthly to execute monthly tasks' },
+    { id: 'heartbeat', label: 'Heartbeat', desc: 'Runs every hour to check and execute all due proactive tasks' },
   ]
 
   // Planner schedules
@@ -1000,9 +997,9 @@ function ProactiveSettings() {
       <div className={`${styles.toggleableContent} ${!schedulerEnabled ? styles.disabledContent : ''}`}>
         {/* Heartbeat Schedules */}
         <div className={styles.subsection}>
-          <h4 className={styles.subsectionTitle}>Heartbeat Schedules</h4>
+          <h4 className={styles.subsectionTitle}>Heartbeat</h4>
           <p className={styles.subsectionDesc}>
-            Heartbeats periodically check and execute proactive tasks based on their frequency
+            A single heartbeat runs every hour and executes all due proactive tasks across every frequency
           </p>
           <div className={styles.scheduleList}>
             {heartbeatSchedules.map(item => {
@@ -1066,7 +1063,7 @@ function ProactiveSettings() {
             <div>
               <h4 className={styles.subsectionTitle}>Proactive Tasks</h4>
               <p className={styles.subsectionDesc}>
-                Tasks defined in PROACTIVE.md that the agent executes during heartbeats
+                Tasks defined in PROACTIVE.md that the agent executes during the heartbeat
               </p>
             </div>
             <Button variant="primary" size="sm" onClick={handleAddTask} icon={<Plus size={14} />} disabled={!schedulerEnabled}>
@@ -1365,7 +1362,7 @@ function TaskFormModal({ task, onClose, onSave }: TaskFormModalProps) {
             <div className={styles.toggleGroup}>
               <div className={styles.toggleInfo}>
                 <span className={styles.toggleLabel}>Enabled</span>
-                <span className={styles.toggleDesc}>Task will be executed during heartbeats</span>
+                <span className={styles.toggleDesc}>Task will be executed during the heartbeat</span>
               </div>
               <input
                 type="checkbox"

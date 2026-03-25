@@ -109,21 +109,89 @@ class RecurringTask:
 
     MAX_OUTCOME_HISTORY = 5
 
-    def should_run(self, current_frequency: str) -> bool:
-        """Check if this task should run for the given frequency.
+    def should_run(self, current_frequency: str = "") -> bool:
+        """Check if this task should run.
+
+        When ``current_frequency`` is given, only tasks matching that exact
+        frequency are considered (legacy per-frequency heartbeat behaviour).
+        When empty or ``"all"``, the method checks the task's own frequency
+        against the current date/time to decide if it is due.
 
         Args:
-            current_frequency: The frequency being processed (hourly, daily, etc.)
+            current_frequency: The frequency being processed, or "" / "all"
+                               to check all frequencies against current time.
 
         Returns:
             True if the task should run, False otherwise.
         """
         if not self.enabled:
             return False
-        if self.frequency != current_frequency:
-            return False
-        # Conditions are checked by the heartbeat processor
-        return True
+
+        # Legacy per-frequency filter
+        if current_frequency and current_frequency != "all":
+            return self.frequency == current_frequency
+
+        # Unified heartbeat: check if this task is due right now
+        now = datetime.now()
+
+        if self.frequency == "hourly":
+            # Hourly tasks are always due on every heartbeat
+            return True
+
+        if self.frequency == "daily":
+            # Daily tasks: check time field if present
+            if self.time:
+                task_hour, task_minute = (int(p) for p in self.time.split(":"))
+                # Due if we've passed the target time this hour
+                if now.hour < task_hour:
+                    return False
+                if now.hour == task_hour and now.minute < task_minute:
+                    return False
+            # Check if already ran today
+            if self.last_run and self.last_run.date() == now.date():
+                return False
+            return True
+
+        if self.frequency == "weekly":
+            # Weekly tasks: check day field
+            if self.day:
+                today_name = now.strftime("%A").lower()
+                if today_name != self.day.lower():
+                    return False
+            # Check time if present
+            if self.time:
+                task_hour, task_minute = (int(p) for p in self.time.split(":"))
+                if now.hour < task_hour:
+                    return False
+                if now.hour == task_hour and now.minute < task_minute:
+                    return False
+            # Check if already ran this week (use isocalendar)
+            if self.last_run and self.last_run.isocalendar()[1] == now.isocalendar()[1] and self.last_run.year == now.year:
+                return False
+            return True
+
+        if self.frequency == "monthly":
+            # Monthly tasks: check day field (day of month)
+            if self.day:
+                try:
+                    target_day = int(self.day)
+                    if now.day != target_day:
+                        return False
+                except ValueError:
+                    pass  # Non-numeric day, skip check
+            # Check time if present
+            if self.time:
+                task_hour, task_minute = (int(p) for p in self.time.split(":"))
+                if now.hour < task_hour:
+                    return False
+                if now.hour == task_hour and now.minute < task_minute:
+                    return False
+            # Check if already ran this month
+            if self.last_run and self.last_run.month == now.month and self.last_run.year == now.year:
+                return False
+            return True
+
+        return False
 
     def add_outcome(
         self,
