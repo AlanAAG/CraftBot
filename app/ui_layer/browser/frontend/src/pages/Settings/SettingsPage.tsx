@@ -947,12 +947,22 @@ function ProactiveSettings() {
     })
   }
 
-  // Group tasks by frequency
+  // Search state for proactive tasks
+  const [taskSearchQuery, setTaskSearchQuery] = useState('')
+
+  // Filter and group tasks by frequency
+  const filteredTasks = taskSearchQuery
+    ? tasks.filter(t =>
+        t.name.toLowerCase().includes(taskSearchQuery.toLowerCase()) ||
+        t.instruction.toLowerCase().includes(taskSearchQuery.toLowerCase())
+      )
+    : tasks
+
   const tasksByFrequency = {
-    hourly: tasks.filter(t => t.frequency === 'hourly'),
-    daily: tasks.filter(t => t.frequency === 'daily'),
-    weekly: tasks.filter(t => t.frequency === 'weekly'),
-    monthly: tasks.filter(t => t.frequency === 'monthly'),
+    hourly: filteredTasks.filter(t => t.frequency === 'hourly'),
+    daily: filteredTasks.filter(t => t.frequency === 'daily'),
+    weekly: filteredTasks.filter(t => t.frequency === 'weekly'),
+    monthly: filteredTasks.filter(t => t.frequency === 'monthly'),
   }
 
   // Heartbeat schedule (unified — single heartbeat checks all frequencies)
@@ -1070,6 +1080,23 @@ function ProactiveSettings() {
               Add Task
             </Button>
           </div>
+
+          {tasks.length > 0 && (
+            <div className={styles.searchContainer}>
+              <input
+                type="text"
+                placeholder="Search tasks..."
+                value={taskSearchQuery}
+                onChange={(e) => setTaskSearchQuery(e.target.value)}
+                className={styles.searchInput}
+              />
+              {taskSearchQuery && (
+                <span className={styles.searchCount}>
+                  {filteredTasks.length} of {tasks.length}
+                </span>
+              )}
+            </div>
+          )}
 
           {isLoadingTasks ? (
             <div className={styles.loadingState}>
