@@ -21,7 +21,7 @@
       "id": "heartbeat",
       "name": "Heartbeat",
       "instruction": "Execute all due proactive tasks from PROACTIVE.md across all frequencies",
-      "schedule": "every 1 hours",
+      "schedule": "0,30 * * * *",
       "enabled": true,
       "priority": 50,
       "mode": "simple",

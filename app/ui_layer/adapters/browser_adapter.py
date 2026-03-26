@@ -1864,7 +1864,7 @@ class BrowserAdapter(InterfaceAdapter):
         result = get_recurring_tasks(
             proactive_manager,
             frequency=frequency,
-            enabled_only=False
+            enabled_only=False,
         )
 
         if result.get("success"):
@@ -1883,6 +1883,7 @@ class BrowserAdapter(InterfaceAdapter):
                     "day": task.get("day"),
                     "runCount": task.get("run_count", 0),
                     "lastRun": task.get("last_executed"),
+                    "nextRun": task.get("next_run"),
                     "outcomeHistory": task.get("outcome_history", []),
                 }
                 tasks_data.append(task_dict)

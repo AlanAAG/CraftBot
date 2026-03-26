@@ -1119,6 +1119,9 @@ function ProactiveSettings() {
                               {task.lastRun && (
                                 <span>Last: {new Date(task.lastRun).toLocaleDateString()}</span>
                               )}
+                              {task.nextRun && (
+                                <span>Next: {new Date(task.nextRun).toLocaleString()}</span>
+                              )}
                             </div>
                           </div>
                           <div className={styles.taskActions}>
