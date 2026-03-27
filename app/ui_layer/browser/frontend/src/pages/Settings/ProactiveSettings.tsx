@@ -1,20 +1,74 @@
 import React, { useState, useEffect } from 'react'
 import {
-  RotateCcw,
   AlertTriangle,
-  X,
   Loader2,
   Plus,
   Edit2,
   Trash2,
+  RotateCcw,
+  X,
 } from 'lucide-react'
 import { Button, Badge, ConfirmModal } from '../../components/ui'
 import { useConfirmModal } from '../../hooks'
 import styles from './SettingsPage.module.css'
 import { useSettingsWebSocket } from './useSettingsWebSocket'
-import { formatCronExpression } from './helpers'
 
-// Types for proactive settings
+// Convert cron expression to human-readable format
+function formatCronExpression(cron: string): string {
+  const parts = cron.split(' ')
+  if (parts.length !== 5) return cron
+
+  const [minute, hour, dayOfMonth, month, dayOfWeek] = parts
+
+  const formatTime = (h: string, m: string): string => {
+    const hourNum = parseInt(h, 10)
+    const minNum = parseInt(m, 10)
+    const period = hourNum >= 12 ? 'PM' : 'AM'
+    const displayHour = hourNum === 0 ? 12 : hourNum > 12 ? hourNum - 12 : hourNum
+    const displayMin = minNum.toString().padStart(2, '0')
+    return `${displayHour}:${displayMin} ${period}`
+  }
+
+  const getDaySuffix = (day: number): string => {
+    if (day >= 11 && day <= 13) return 'th'
+    switch (day % 10) {
+      case 1: return 'st'
+      case 2: return 'nd'
+      case 3: return 'rd'
+      default: return 'th'
+    }
+  }
+
+  const dayNames: Record<string, string> = {
+    '0': 'Sunday', '7': 'Sunday',
+    '1': 'Monday', '2': 'Tuesday', '3': 'Wednesday',
+    '4': 'Thursday', '5': 'Friday', '6': 'Saturday'
+  }
+
+  if (hour === '*' && dayOfMonth === '*' && month === '*' && dayOfWeek === '*') {
+    const minNum = parseInt(minute, 10)
+    if (minNum === 0) return 'Every hour at :00'
+    return `Every hour at :${minute.padStart(2, '0')}`
+  }
+
+  if (dayOfMonth === '*' && month === '*' && dayOfWeek === '*') {
+    return `Daily at ${formatTime(hour, minute)}`
+  }
+
+  if (dayOfMonth === '*' && month === '*' && dayOfWeek !== '*') {
+    const dayName = dayNames[dayOfWeek] || dayOfWeek
+    return `Weekly on ${dayName} at ${formatTime(hour, minute)}`
+  }
+
+  if (dayOfMonth !== '*' && month === '*' && dayOfWeek === '*') {
+    const dayNum = parseInt(dayOfMonth, 10)
+    return `Monthly on the ${dayNum}${getDaySuffix(dayNum)} at ${formatTime(hour, minute)}`
+  }
+
+  return `Cron: ${cron}`
+}
+
+// Types
 interface ScheduleConfig {
   id: string
   name: string
@@ -38,6 +92,196 @@ interface ProactiveTask {
   lastRun?: string
   nextRun?: string
   outcomeHistory: Array<{ timestamp: string; result: string; success: boolean }>
+}
+
+// Helper functions for task display
+function getPriorityLabel(value: number): string {
+  if (value <= 35) return 'High'
+  if (value <= 55) return 'Medium'
+  return 'Low'
+}
+
+function getNotificationLabel(tier: number): string {
+  return tier >= 1 ? 'Notifies' : 'Silent'
+}
+
+// Priority level mappings
+type PriorityLevel = 'high' | 'medium' | 'low'
+const PRIORITY_VALUES: Record<PriorityLevel, number> = {
+  high: 30,
+  medium: 50,
+  low: 70,
+}
+
+function getPriorityLevel(value: number): PriorityLevel {
+  if (value <= 35) return 'high'
+  if (value <= 55) return 'medium'
+  return 'low'
+}
+
+// Task Form Modal Component
+interface TaskFormModalProps {
+  task: ProactiveTask | null
+  onClose: () => void
+  onSave: (taskData: Partial<ProactiveTask>) => void
+}
+
+function TaskFormModal({ task, onClose, onSave }: TaskFormModalProps) {
+  const [name, setName] = useState(task?.name || '')
+  const [frequency, setFrequency] = useState(task?.frequency || 'daily')
+  const [instruction, setInstruction] = useState(task?.instruction || '')
+  const [enabled, setEnabled] = useState(task?.enabled ?? true)
+  const [priorityLevel, setPriorityLevel] = useState<PriorityLevel>(
+    task ? getPriorityLevel(task.priority) : 'medium'
+  )
+  const [notifyBeforeRunning, setNotifyBeforeRunning] = useState(
+    task ? task.permissionTier >= 1 : true
+  )
+  const [time, setTime] = useState(task?.time || '')
+  const [day, setDay] = useState(task?.day || '')
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    onSave({
+      name,
+      frequency,
+      instruction,
+      enabled,
+      priority: PRIORITY_VALUES[priorityLevel],
+      permissionTier: notifyBeforeRunning ? 1 : 0,
+      time: time || undefined,
+      day: day || undefined,
+    })
+  }
+
+  return (
+    <div className={styles.modalOverlay} onClick={onClose}>
+      <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+        <div className={styles.modalHeader}>
+          <h3>{task ? 'Edit Task' : 'Add Proactive Task'}</h3>
+          <button className={styles.modalClose} onClick={onClose}>
+            <X size={18} />
+          </button>
+        </div>
+        <form onSubmit={handleSubmit}>
+          <div className={styles.modalBody}>
+            <div className={styles.formGroup}>
+              <label>Task Name</label>
+              <input
+                type="text"
+                value={name}
+                onChange={e => setName(e.target.value)}
+                placeholder="e.g., Check emails"
+                required
+              />
+            </div>
+
+            <div className={styles.formRow}>
+              <div className={styles.formGroup}>
+                <label>Frequency</label>
+                <select value={frequency} onChange={e => setFrequency(e.target.value)}>
+                  <option value="hourly">Hourly</option>
+                  <option value="daily">Daily</option>
+                  <option value="weekly">Weekly</option>
+                  <option value="monthly">Monthly</option>
+                </select>
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>Priority <span className={styles.labelHint}>(higher runs first)</span></label>
+                <select value={priorityLevel} onChange={e => setPriorityLevel(e.target.value as PriorityLevel)}>
+                  <option value="high">High</option>
+                  <option value="medium">Medium</option>
+                  <option value="low">Low</option>
+                </select>
+              </div>
+            </div>
+
+            <div className={styles.formRow}>
+              {frequency !== 'hourly' && (
+                <div className={styles.formGroup}>
+                  <label>Time (HH:MM)</label>
+                  <input
+                    type="time"
+                    value={time}
+                    onChange={e => setTime(e.target.value)}
+                  />
+                </div>
+              )}
+
+              {frequency === 'weekly' && (
+                <div className={styles.formGroup}>
+                  <label>Day of Week</label>
+                  <select value={day} onChange={e => setDay(e.target.value)}>
+                    <option value="">Select day</option>
+                    <option value="monday">Monday</option>
+                    <option value="tuesday">Tuesday</option>
+                    <option value="wednesday">Wednesday</option>
+                    <option value="thursday">Thursday</option>
+                    <option value="friday">Friday</option>
+                    <option value="saturday">Saturday</option>
+                    <option value="sunday">Sunday</option>
+                  </select>
+                </div>
+              )}
+            </div>
+
+            <div className={styles.toggleGroup}>
+              <div className={styles.toggleInfo}>
+                <span className={styles.toggleLabel}>Notify me before running</span>
+                <span className={styles.toggleDesc}>
+                  When enabled, the agent will inform you before executing this task.
+                  When disabled, the task runs silently.
+                </span>
+              </div>
+              <input
+                type="checkbox"
+                className={styles.toggle}
+                checked={notifyBeforeRunning}
+                onChange={e => setNotifyBeforeRunning(e.target.checked)}
+              />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label>Instruction</label>
+              <textarea
+                value={instruction}
+                onChange={e => setInstruction(e.target.value)}
+                placeholder="Describe what the agent should do..."
+                rows={4}
+                required
+              />
+              <span className={styles.hint}>
+                Be specific and actionable. The agent will follow these instructions during execution.
+              </span>
+            </div>
+
+            <div className={styles.toggleGroup}>
+              <div className={styles.toggleInfo}>
+                <span className={styles.toggleLabel}>Enabled</span>
+                <span className={styles.toggleDesc}>Task will be executed during heartbeats</span>
+              </div>
+              <input
+                type="checkbox"
+                className={styles.toggle}
+                checked={enabled}
+                onChange={e => setEnabled(e.target.checked)}
+              />
+            </div>
+          </div>
+
+          <div className={styles.modalFooter}>
+            <Button variant="secondary" type="button" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button variant="primary" type="submit">
+              {task ? 'Save Changes' : 'Add Task'}
+            </Button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )
 }
 
 export function ProactiveSettings() {
@@ -66,7 +310,6 @@ export function ProactiveSettings() {
     if (!isConnected) return
 
     const cleanups = [
-      // Proactive mode handlers (master toggle uses settings.json)
       onMessage('proactive_mode_get', (data: unknown) => {
         const d = data as { success: boolean; enabled: boolean }
         setIsLoadingScheduler(false)
@@ -82,7 +325,6 @@ export function ProactiveSettings() {
           setTimeout(() => setSaveStatus('idle'), 2000)
         }
       }),
-      // Scheduler config handlers (individual schedule toggles)
       onMessage('scheduler_config_get', (data: unknown) => {
         const d = data as { success: boolean; config?: { enabled: boolean; schedules: ScheduleConfig[] } }
         if (d.success && d.config) {
@@ -135,50 +377,41 @@ export function ProactiveSettings() {
       }),
     ]
 
-    // Load initial data
-    send('proactive_mode_get')  // Master toggle state from settings.json
-    send('scheduler_config_get')  // Individual schedule states
+    send('proactive_mode_get')
+    send('scheduler_config_get')
     send('proactive_tasks_get')
 
     return () => cleanups.forEach(c => c())
   }, [isConnected, send, onMessage])
 
-  // Get schedule by ID
   const getSchedule = (id: string) => schedules.find(s => s.id === id)
 
-  // Toggle proactive mode globally (uses settings.json, not scheduler_config)
   const handleToggleScheduler = (enabled: boolean) => {
     setSchedulerEnabled(enabled)
     send('proactive_mode_set', { enabled })
   }
 
-  // Toggle individual schedule
   const handleToggleSchedule = (scheduleId: string, enabled: boolean) => {
     send('scheduler_config_update', {
       updates: { schedules: [{ id: scheduleId, enabled }] }
     })
   }
 
-  // Handle adding a new task
   const handleAddTask = () => {
     setEditingTask(null)
     setShowTaskForm(true)
   }
 
-  // Handle editing a task
   const handleEditTask = (task: ProactiveTask) => {
     setEditingTask(task)
     setShowTaskForm(true)
   }
 
-  // Handle task toggle
   const handleToggleTask = (taskId: string, enabled: boolean) => {
     send('proactive_task_update', { taskId, updates: { enabled } })
-    // Optimistic update
     setTasks(prev => prev.map(t => t.id === taskId ? { ...t, enabled } : t))
   }
 
-  // Handle task deletion
   const handleDeleteTask = (taskId: string) => {
     confirm({
       title: 'Delete Task',
@@ -190,7 +423,6 @@ export function ProactiveSettings() {
     })
   }
 
-  // Handle reset all tasks
   const handleResetTasks = () => {
     confirm({
       title: 'Reset Tasks',
@@ -203,7 +435,6 @@ export function ProactiveSettings() {
     })
   }
 
-  // Group tasks by frequency
   const tasksByFrequency = {
     hourly: tasks.filter(t => t.frequency === 'hourly'),
     daily: tasks.filter(t => t.frequency === 'daily'),
@@ -211,7 +442,6 @@ export function ProactiveSettings() {
     monthly: tasks.filter(t => t.frequency === 'monthly'),
   }
 
-  // Heartbeat schedules
   const heartbeatSchedules = [
     { id: 'hourly-heartbeat', label: 'Hourly Heartbeat', desc: 'Runs every hour to check and execute hourly tasks' },
     { id: 'daily-heartbeat', label: 'Daily Heartbeat', desc: 'Runs once daily to execute daily tasks' },
@@ -219,7 +449,6 @@ export function ProactiveSettings() {
     { id: 'monthly-heartbeat', label: 'Monthly Heartbeat', desc: 'Runs monthly to execute monthly tasks' },
   ]
 
-  // Planner schedules
   const plannerSchedules = [
     { id: 'day-planner', label: 'Daily Planner', desc: 'Plans daily activities and priorities' },
     { id: 'week-planner', label: 'Weekly Planner', desc: 'Plans weekly goals and tasks' },
@@ -252,7 +481,7 @@ export function ProactiveSettings() {
         </div>
       </div>
 
-      {/* Toggleable Content - greyed out when proactive mode is disabled */}
+      {/* Toggleable Content */}
       <div className={`${styles.toggleableContent} ${!schedulerEnabled ? styles.disabledContent : ''}`}>
         {/* Heartbeat Schedules */}
         <div className={styles.subsection}>
@@ -451,197 +680,6 @@ export function ProactiveSettings() {
 
       {/* Confirm Modal */}
       <ConfirmModal {...confirmModalProps} />
-    </div>
-  )
-}
-
-// Helper functions for task display
-function getPriorityLabel(value: number): string {
-  if (value <= 35) return 'High'
-  if (value <= 55) return 'Medium'
-  return 'Low'
-}
-
-function getNotificationLabel(tier: number): string {
-  return tier >= 1 ? 'Notifies' : 'Silent'
-}
-
-// Task Form Modal Component
-interface TaskFormModalProps {
-  task: ProactiveTask | null
-  onClose: () => void
-  onSave: (taskData: Partial<ProactiveTask>) => void
-}
-
-// Priority level mappings (lower number = higher priority)
-type PriorityLevel = 'high' | 'medium' | 'low'
-const PRIORITY_VALUES: Record<PriorityLevel, number> = {
-  high: 30,
-  medium: 50,
-  low: 70,
-}
-
-function getPriorityLevel(value: number): PriorityLevel {
-  if (value <= 35) return 'high'
-  if (value <= 55) return 'medium'
-  return 'low'
-}
-
-function TaskFormModal({ task, onClose, onSave }: TaskFormModalProps) {
-  const [name, setName] = useState(task?.name || '')
-  const [frequency, setFrequency] = useState(task?.frequency || 'daily')
-  const [instruction, setInstruction] = useState(task?.instruction || '')
-  const [enabled, setEnabled] = useState(task?.enabled ?? true)
-  const [priorityLevel, setPriorityLevel] = useState<PriorityLevel>(
-    task ? getPriorityLevel(task.priority) : 'medium'
-  )
-  // Checkbox: true = notify before running (tier 1), false = silent (tier 0)
-  const [notifyBeforeRunning, setNotifyBeforeRunning] = useState(
-    task ? task.permissionTier >= 1 : true
-  )
-  const [time, setTime] = useState(task?.time || '')
-  const [day, setDay] = useState(task?.day || '')
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    onSave({
-      name,
-      frequency,
-      instruction,
-      enabled,
-      priority: PRIORITY_VALUES[priorityLevel],
-      permissionTier: notifyBeforeRunning ? 1 : 0,
-      time: time || undefined,
-      day: day || undefined,
-    })
-  }
-
-  return (
-    <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
-        <div className={styles.modalHeader}>
-          <h3>{task ? 'Edit Task' : 'Add Proactive Task'}</h3>
-          <button className={styles.modalClose} onClick={onClose}>
-            <X size={18} />
-          </button>
-        </div>
-        <form onSubmit={handleSubmit}>
-          <div className={styles.modalBody}>
-            <div className={styles.formGroup}>
-              <label>Task Name</label>
-              <input
-                type="text"
-                value={name}
-                onChange={e => setName(e.target.value)}
-                placeholder="e.g., Check emails"
-                required
-              />
-            </div>
-
-            <div className={styles.formRow}>
-              <div className={styles.formGroup}>
-                <label>Frequency</label>
-                <select value={frequency} onChange={e => setFrequency(e.target.value)}>
-                  <option value="hourly">Hourly</option>
-                  <option value="daily">Daily</option>
-                  <option value="weekly">Weekly</option>
-                  <option value="monthly">Monthly</option>
-                </select>
-              </div>
-
-              <div className={styles.formGroup}>
-                <label>Priority <span className={styles.labelHint}>(higher runs first)</span></label>
-                <select value={priorityLevel} onChange={e => setPriorityLevel(e.target.value as PriorityLevel)}>
-                  <option value="high">High</option>
-                  <option value="medium">Medium</option>
-                  <option value="low">Low</option>
-                </select>
-              </div>
-            </div>
-
-            <div className={styles.formRow}>
-              {frequency !== 'hourly' && (
-                <div className={styles.formGroup}>
-                  <label>Time (HH:MM)</label>
-                  <input
-                    type="time"
-                    value={time}
-                    onChange={e => setTime(e.target.value)}
-                  />
-                </div>
-              )}
-
-              {frequency === 'weekly' && (
-                <div className={styles.formGroup}>
-                  <label>Day of Week</label>
-                  <select value={day} onChange={e => setDay(e.target.value)}>
-                    <option value="">Select day</option>
-                    <option value="monday">Monday</option>
-                    <option value="tuesday">Tuesday</option>
-                    <option value="wednesday">Wednesday</option>
-                    <option value="thursday">Thursday</option>
-                    <option value="friday">Friday</option>
-                    <option value="saturday">Saturday</option>
-                    <option value="sunday">Sunday</option>
-                  </select>
-                </div>
-              )}
-            </div>
-
-            <div className={styles.toggleGroup}>
-              <div className={styles.toggleInfo}>
-                <span className={styles.toggleLabel}>Notify me before running</span>
-                <span className={styles.toggleDesc}>
-                  When enabled, the agent will inform you before executing this task.
-                  When disabled, the task runs silently.
-                </span>
-              </div>
-              <input
-                type="checkbox"
-                className={styles.toggle}
-                checked={notifyBeforeRunning}
-                onChange={e => setNotifyBeforeRunning(e.target.checked)}
-              />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label>Instruction</label>
-              <textarea
-                value={instruction}
-                onChange={e => setInstruction(e.target.value)}
-                placeholder="Describe what the agent should do..."
-                rows={4}
-                required
-              />
-              <span className={styles.hint}>
-                Be specific and actionable. The agent will follow these instructions during execution.
-              </span>
-            </div>
-
-            <div className={styles.toggleGroup}>
-              <div className={styles.toggleInfo}>
-                <span className={styles.toggleLabel}>Enabled</span>
-                <span className={styles.toggleDesc}>Task will be executed during heartbeats</span>
-              </div>
-              <input
-                type="checkbox"
-                className={styles.toggle}
-                checked={enabled}
-                onChange={e => setEnabled(e.target.checked)}
-              />
-            </div>
-          </div>
-
-          <div className={styles.modalFooter}>
-            <Button variant="secondary" type="button" onClick={onClose}>
-              Cancel
-            </Button>
-            <Button variant="primary" type="submit">
-              {task ? 'Save Changes' : 'Add Task'}
-            </Button>
-          </div>
-        </form>
-      </div>
     </div>
   )
 }

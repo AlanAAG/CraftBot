@@ -1,19 +1,44 @@
 import { useState, useEffect, useRef } from 'react'
 import {
+  ChevronRight,
   RotateCcw,
   FileText,
   AlertTriangle,
   Check,
   X,
   Loader2,
-  ChevronRight,
 } from 'lucide-react'
 import { Button, Badge, ConfirmModal } from '../../components/ui'
 import { useTheme } from '../../contexts/ThemeContext'
 import { useConfirmModal } from '../../hooks'
 import styles from './SettingsPage.module.css'
 import { useSettingsWebSocket } from './useSettingsWebSocket'
-import { applyTheme, getInitialTheme, getInitialAgentName } from './helpers'
+
+// Theme application helper
+function applyTheme(theme: string) {
+  const root = document.documentElement
+
+  if (theme === 'system') {
+    // Check system preference
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    root.setAttribute('data-theme', prefersDark ? 'dark' : 'light')
+  } else {
+    root.setAttribute('data-theme', theme)
+  }
+
+  // Persist to localStorage
+  localStorage.setItem('craftbot-theme', theme)
+}
+
+// Get initial theme from localStorage or default
+function getInitialTheme(): string {
+  return localStorage.getItem('craftbot-theme') || 'dark'
+}
+
+// Get initial agent name from localStorage or default
+function getInitialAgentName(): string {
+  return localStorage.getItem('craftbot-agent-name') || 'CraftBot'
+}
 
 export function GeneralSettings() {
   const { send, onMessage, isConnected } = useSettingsWebSocket()
@@ -128,14 +153,14 @@ export function GeneralSettings() {
         if (d.filename === 'USER.md') {
           setIsSavingUserMd(false)
           if (d.success) {
-            setOriginalUserMdContent(userMdContentRef.current) // Use ref for closure-safe access
+            setOriginalUserMdContent(userMdContentRef.current)
           }
           setUserMdSaveStatus(d.success ? 'success' : 'error')
           setTimeout(() => setUserMdSaveStatus('idle'), 3000)
         } else if (d.filename === 'AGENT.md') {
           setIsSavingAgentMd(false)
           if (d.success) {
-            setOriginalAgentMdContent(agentMdContentRef.current) // Use ref for closure-safe access
+            setOriginalAgentMdContent(agentMdContentRef.current)
           }
           setAgentMdSaveStatus(d.success ? 'success' : 'error')
           setTimeout(() => setAgentMdSaveStatus('idle'), 3000)
@@ -147,7 +172,7 @@ export function GeneralSettings() {
           setIsRestoringUserMd(false)
           if (d.success) {
             setUserMdContent(d.content)
-            setOriginalUserMdContent(d.content) // Also update original
+            setOriginalUserMdContent(d.content)
             setUserMdSaveStatus('success')
             setTimeout(() => setUserMdSaveStatus('idle'), 3000)
           }
@@ -155,7 +180,7 @@ export function GeneralSettings() {
           setIsRestoringAgentMd(false)
           if (d.success) {
             setAgentMdContent(d.content)
-            setOriginalAgentMdContent(d.content) // Also update original
+            setOriginalAgentMdContent(d.content)
             setAgentMdSaveStatus('success')
             setTimeout(() => setAgentMdSaveStatus('idle'), 3000)
           }

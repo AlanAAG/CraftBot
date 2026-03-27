@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import {
-  RotateCcw,
-  X,
   Loader2,
   Plus,
   Trash2,
+  RotateCcw,
+  X,
   Wrench,
 } from 'lucide-react'
 import { Button, Badge, ConfirmModal } from '../../components/ui'
@@ -13,7 +13,7 @@ import { useConfirmModal } from '../../hooks'
 import styles from './SettingsPage.module.css'
 import { useSettingsWebSocket } from './useSettingsWebSocket'
 
-// Skill types
+// Types
 interface SkillConfig {
   name: string
   description: string
@@ -152,7 +152,6 @@ export function SkillsSettings() {
       }),
     ]
 
-    // Load initial data
     send('skill_list')
 
     return () => cleanups.forEach(c => c())
@@ -165,7 +164,6 @@ export function SkillsSettings() {
     } else {
       send('skill_disable', { name })
     }
-    // Optimistic update
     setSkills(prev => prev.map(s => s.name === name ? { ...s, enabled } : s))
     setEnabledSkills(prev => enabled ? prev + 1 : prev - 1)
   }
@@ -178,7 +176,6 @@ export function SkillsSettings() {
       variant: 'danger',
     }, () => {
       send('skill_remove', { name })
-      // Optimistic update
       setSkills(prev => prev.filter(s => s.name !== name))
       setTotalSkills(prev => prev - 1)
     })
@@ -213,14 +210,12 @@ export function SkillsSettings() {
     })
   }
 
-  // Request template when modal opens
   const handleOpenCreateModal = () => {
     setShowCreateModal(true)
     setNewSkillName('')
     setNewSkillDesc('')
     setNewSkillContent('')
     setCreateError('')
-    // Request initial template
     send('skill_template', { name: 'my-skill', description: '' })
   }
 
@@ -229,7 +224,6 @@ export function SkillsSettings() {
     send('skill_reload')
   }
 
-  // Filter by search and sort alphabetically
   const sortedSkills = skills
     .filter(skill => {
       if (!searchQuery) return true
@@ -430,7 +424,6 @@ export function SkillsSettings() {
                   value={newSkillName}
                   onChange={(e) => {
                     setNewSkillName(e.target.value)
-                    // Update template when name changes
                     if (e.target.value.trim()) {
                       send('skill_template', { name: e.target.value.trim(), description: newSkillDesc })
                     }

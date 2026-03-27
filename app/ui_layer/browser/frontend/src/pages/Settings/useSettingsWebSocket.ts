@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { getWsUrl } from '../../utils/connection'
 
-// Custom hook for settings-related WebSocket operations
 export function useSettingsWebSocket() {
   const wsRef = useRef<WebSocket | null>(null)
   const [isConnected, setIsConnected] = useState(false)
@@ -21,8 +20,6 @@ export function useSettingsWebSocket() {
         const handler = messageHandlersRef.current.get(msg.type)
         if (handler) {
           handler(msg.data)
-        } else if (msg.type?.includes('jira') || msg.type?.includes('github')) {
-          console.warn('[Settings WS] No handler for:', msg.type, 'registered:', [...messageHandlersRef.current.keys()])
         }
       } catch (err) {
         console.error('[Settings WS] Failed to parse message:', err)

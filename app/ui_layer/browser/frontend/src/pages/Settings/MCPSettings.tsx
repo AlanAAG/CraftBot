@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
 import {
-  RotateCcw,
-  X,
   Loader2,
   Plus,
   Edit2,
   Trash2,
+  RotateCcw,
+  X,
 } from 'lucide-react'
 import { Button, Badge, ConfirmModal } from '../../components/ui'
 import { useToast } from '../../contexts/ToastContext'
@@ -13,7 +13,7 @@ import { useConfirmModal } from '../../hooks'
 import styles from './SettingsPage.module.css'
 import { useSettingsWebSocket } from './useSettingsWebSocket'
 
-// MCP Server config type
+// Types
 interface MCPServerConfig {
   name: string
   description: string
@@ -24,7 +24,6 @@ interface MCPServerConfig {
   env: Record<string, string>
 }
 
-// MCP item type for display
 interface MCPItem {
   name: string
   description: string
@@ -32,7 +31,7 @@ interface MCPItem {
   transport?: string
   action_set?: string
   env?: Record<string, string>
-  needsConfig?: boolean  // has empty env vars
+  needsConfig?: boolean
 }
 
 export function MCPSettings() {
@@ -91,7 +90,6 @@ export function MCPSettings() {
         const d = data as { success: boolean; message?: string; error?: string }
         if (d.success) {
           showToast('success', d.message || 'Server removed')
-          // Refresh list
           send('mcp_list')
         } else {
           showToast('error', d.error || 'Failed to remove server')
@@ -105,7 +103,6 @@ export function MCPSettings() {
           setShowAddModal(false)
           setCustomJsonConfig('')
           setAddError('')
-          // Refresh list
           send('mcp_list')
         } else {
           setAddError(d.error || 'Failed to add server')
@@ -123,7 +120,6 @@ export function MCPSettings() {
         if (d.success) {
           showToast('success', d.message || 'Configuration saved')
           setConfigServer(null)
-          // Refresh list
           send('mcp_list')
         } else {
           showToast('error', d.error || 'Failed to update configuration')
@@ -131,13 +127,12 @@ export function MCPSettings() {
       }),
     ]
 
-    // Load initial data
     send('mcp_list')
 
     return () => cleanups.forEach(c => c())
   }, [isConnected, send, onMessage])
 
-  // Build MCP list from configured servers, filter and sort
+  // Build MCP list
   const mcpList: MCPItem[] = servers
     .filter(s => {
       if (!searchQuery) return true
@@ -155,7 +150,6 @@ export function MCPSettings() {
     }))
     .sort((a, b) => a.name.localeCompare(b.name))
 
-  // Stats
   const totalServers = servers.length
   const enabledServers = servers.filter(s => s.enabled).length
 
@@ -163,7 +157,6 @@ export function MCPSettings() {
   const handleReloadServers = () => {
     setIsReloading(true)
     send('mcp_list')
-    // Reset after a short delay since mcp_list doesn't have a specific "reload" response
     setTimeout(() => {
       setIsReloading(false)
       showToast('success', 'MCP servers reloaded')
@@ -176,7 +169,6 @@ export function MCPSettings() {
     } else {
       send('mcp_disable', { name })
     }
-    // Optimistic update
     setServers(prev => prev.map(s => s.name === name ? { ...s, enabled } : s))
   }
 
@@ -188,7 +180,6 @@ export function MCPSettings() {
       variant: 'danger',
     }, () => {
       send('mcp_remove', { name })
-      // Optimistic update
       setServers(prev => prev.filter(s => s.name !== name))
     })
   }
@@ -203,7 +194,6 @@ export function MCPSettings() {
     if (!configServer) return
     setIsSavingEnv(true)
 
-    // Update each env var
     const envEntries = Object.entries(envValues)
     if (envEntries.length === 0) {
       setIsSavingEnv(false)

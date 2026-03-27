@@ -9,7 +9,7 @@ import { useToast } from '../../contexts/ToastContext'
 import styles from './SettingsPage.module.css'
 import { useSettingsWebSocket } from './useSettingsWebSocket'
 
-// Provider info type
+// Types
 interface ProviderInfo {
   id: string
   name: string
@@ -21,17 +21,22 @@ interface ProviderInfo {
   has_vlm: boolean
 }
 
-// API key status type
 interface ApiKeyStatus {
   has_key: boolean
   masked_key: string
 }
 
-// Connection test result type
 interface TestResult {
   success: boolean
   message: string
   error?: string
+}
+
+interface SuggestedModel {
+  name: string
+  label: string
+  size: string
+  recommended: boolean
 }
 
 export function ModelSettings() {
@@ -63,7 +68,25 @@ export function ModelSettings() {
   const [testResult, setTestResult] = useState<TestResult | null>(null)
   const [testBeforeSave, setTestBeforeSave] = useState(false)
 
-  // Set up message handlers (runs once when connected)
+  // Ollama model list state
+  const [ollamaModels, setOllamaModels] = useState<string[]>([])
+  const [ollamaModelsLoading, setOllamaModelsLoading] = useState(false)
+
+  // Ollama model download state
+  const [pullPhase, setPullPhase] = useState<'idle' | 'selecting' | 'pulling'>('idle')
+  const [suggestedModels, setSuggestedModels] = useState<SuggestedModel[]>([])
+  const [selectedPullModel, setSelectedPullModel] = useState('')
+  const [modelSearch, setModelSearch] = useState('')
+  const [pullBytes, setPullBytes] = useState<{ completed: number; total: number; percent: number } | null>(null)
+  const [pullStatus, setPullStatus] = useState('')
+
+  const fmtBytes = (n: number) => {
+    if (n >= 1_073_741_824) return `${(n / 1_073_741_824).toFixed(1)} GB`
+    if (n >= 1_048_576) return `${(n / 1_048_576).toFixed(0)} MB`
+    return `${(n / 1024).toFixed(0)} KB`
+  }
+
+  // Set up message handlers
   useEffect(() => {
     if (!isConnected) return
 
@@ -85,12 +108,10 @@ export function ModelSettings() {
           base_urls: Record<string, string>
         }
         if (d.success && !hasInitialized.current) {
-          // Only set provider and models on initial load
           setProvider(d.llm_provider || 'anthropic')
           setApiKeys(d.api_keys || {})
           setBaseUrls(d.base_urls || {})
 
-          // Load custom models if set, or initialize from current provider defaults
           const currentProv = providers.find(p => p.id === (d.llm_provider || 'anthropic'))
           setCurrentLlmModel(d.llm_model || currentProv?.llm_model || '')
           setCurrentVlmModel(d.vlm_model || currentProv?.vlm_model || '')
@@ -135,7 +156,6 @@ export function ModelSettings() {
           error: d.error,
         })
 
-        // If this test is before save and it was successful, proceed with save
         if (testBeforeSave && d.success) {
           setTestBeforeSave(false)
           setIsSaving(true)
@@ -150,14 +170,47 @@ export function ModelSettings() {
             providerForUrl: newBaseUrl ? provider : undefined,
           })
         } else if (testBeforeSave && !d.success) {
-          // Test failed, don't save and reset the flag
           setTestBeforeSave(false)
+        }
+      }),
+      onMessage('ollama_models_get', (data: unknown) => {
+        const d = data as { success: boolean; models: string[]; error?: string }
+        setOllamaModelsLoading(false)
+        if (d.success && d.models && d.models.length > 0) {
+          setOllamaModels(d.models)
+        } else {
+          setOllamaModels([])
+        }
+      }),
+      onMessage('local_llm_suggested_models', (data: unknown) => {
+        const d = data as { models: SuggestedModel[] }
+        setSuggestedModels(d.models || [])
+        const rec = d.models?.find(m => m.recommended)
+        if (rec) setSelectedPullModel(rec.name)
+      }),
+      onMessage('local_llm_pull_progress', (data: unknown) => {
+        const d = data as { message: string; total: number; completed: number; percent: number }
+        setPullStatus(d.message || '')
+        if (d.total > 0) setPullBytes({ completed: d.completed, total: d.total, percent: d.percent })
+      }),
+      onMessage('local_llm_pull_model', (data: unknown) => {
+        const d = data as { success: boolean; model?: string; error?: string }
+        if (d.success) {
+          setPullPhase('idle')
+          setPullBytes(null)
+          setPullStatus('')
+          setOllamaModelsLoading(true)
+          send('ollama_models_get', { baseUrl: baseUrls['remote'] || undefined })
+          showToast('success', `Model ${d.model} downloaded successfully`)
+        } else {
+          setPullPhase('idle')
+          showToast('error', d.error || 'Model download failed')
         }
       }),
     ]
 
     return () => cleanups.forEach(cleanup => cleanup())
-  }, [isConnected, onMessage, send, testBeforeSave, provider, newApiKey, newBaseUrl])
+  }, [isConnected, onMessage, send, testBeforeSave, provider, newApiKey, newBaseUrl, baseUrls])
 
   // Load initial data only once when connected
   useEffect(() => {
@@ -167,13 +220,19 @@ export function ModelSettings() {
     send('model_settings_get')
   }, [isConnected, send])
 
+  // Fetch Ollama models whenever the active provider is 'remote'
+  useEffect(() => {
+    if (!isConnected || provider !== 'remote') return
+    setOllamaModelsLoading(true)
+    send('ollama_models_get', { baseUrl: baseUrls['remote'] || undefined })
+  }, [provider, isConnected])
+
   const currentProvider = providers.find(p => p.id === provider)
   const hasKey = apiKeys[provider]?.has_key || newApiKey.length > 0
   const needsKey = currentProvider?.requires_api_key && !hasKey
 
-  // Update models when provider changes (only)
+  // Update models when provider changes
   useEffect(() => {
-    // Find the provider definition
     const selectedProvider = providers.find(p => p.id === provider)
     if (selectedProvider && !newLlmModel) {
       setCurrentLlmModel(selectedProvider.llm_model || '')
@@ -181,14 +240,12 @@ export function ModelSettings() {
     if (selectedProvider && !newVlmModel) {
       setCurrentVlmModel(selectedProvider.vlm_model || '')
     }
-  }, [provider, providers]) // Only depend on provider and providers list changes
+  }, [provider, providers])
 
   const handleProviderChange = (newProvider: string) => {
     setProvider(newProvider)
     setNewApiKey('')
     setNewBaseUrl('')
-    // Clear any edited model inputs when switching providers
-    // The useEffect will automatically update currentLlmModel/currentVlmModel
     setNewLlmModel('')
     setNewVlmModel('')
     setHasChanges(true)
@@ -204,13 +261,10 @@ export function ModelSettings() {
   }
 
   const handleSave = () => {
-    // Allow saving provider and model changes even without API key
-    // Only test connection if adding/changing API key or base URL
     const isChangingApiKey = newApiKey.length > 0
     const isChangingBaseUrl = newBaseUrl.length > 0
 
     if (isChangingApiKey || isChangingBaseUrl) {
-      // Test connection before saving when changing credentials
       setTestBeforeSave(true)
       setIsTesting(true)
       send('model_connection_test', {
@@ -219,7 +273,6 @@ export function ModelSettings() {
         baseUrl: newBaseUrl || baseUrls[provider],
       })
     } else {
-      // Save provider/model changes directly without testing
       setIsSaving(true)
       send('model_settings_update', {
         llmProvider: provider,
@@ -228,6 +281,22 @@ export function ModelSettings() {
         vlmModel: newVlmModel || currentVlmModel || undefined,
       })
     }
+  }
+
+  const handleDownloadModelClick = () => {
+    setPullPhase('selecting')
+    setPullBytes(null)
+    setPullStatus('')
+    setModelSearch('')
+    if (suggestedModels.length === 0) {
+      send('local_llm_suggested_models')
+    }
+  }
+
+  const handleStartPull = () => {
+    if (!selectedPullModel) return
+    setPullPhase('pulling')
+    send('local_llm_pull_model', { model: selectedPullModel, baseUrl: newBaseUrl || baseUrls['remote'] || undefined })
   }
 
   return (
@@ -259,22 +328,137 @@ export function ModelSettings() {
             <>
               <div className={styles.formGroup}>
                 <label>LLM Model</label>
-                <input
-                  type="text"
-                  value={newLlmModel || currentLlmModel || ''}
-                  onChange={(e) => { setNewLlmModel(e.target.value); setHasChanges(true) }}
-                  placeholder={currentLlmModel || 'Enter LLM model name...'}
-                />
+                {provider === 'remote' && ollamaModels.length > 0 ? (
+                  <select
+                    value={newLlmModel || currentLlmModel || ''}
+                    onChange={(e) => { setNewLlmModel(e.target.value); setHasChanges(true) }}
+                  >
+                    {ollamaModels.map(m => <option key={m} value={m}>{m}</option>)}
+                  </select>
+                ) : (
+                  <input
+                    type="text"
+                    value={newLlmModel || currentLlmModel || ''}
+                    onChange={(e) => { setNewLlmModel(e.target.value); setHasChanges(true) }}
+                    placeholder={
+                      provider === 'remote' && ollamaModelsLoading
+                        ? 'Loading models...'
+                        : currentLlmModel || 'Enter LLM model name...'
+                    }
+                  />
+                )}
               </div>
+
+              {/* Download new Ollama model */}
+              {provider === 'remote' && (
+                <div className={styles.ollamaDownloadSection}>
+                  {pullPhase === 'idle' && (
+                    <button className={styles.downloadModelBtn} onClick={handleDownloadModelClick}>
+                      + Download New Model
+                    </button>
+                  )}
+
+                  {pullPhase === 'selecting' && (
+                    <div className={styles.pullModelPanel}>
+                      <div className={styles.pullPanelHeader}>
+                        <span>Select model to download</span>
+                        <button onClick={() => setPullPhase('idle')}>&#x2715;</button>
+                      </div>
+                      <input
+                        className={styles.pullModelSearch}
+                        placeholder="Search models..."
+                        value={modelSearch}
+                        onChange={e => setModelSearch(e.target.value)}
+                      />
+                      <div className={styles.pullModelList}>
+                        {suggestedModels
+                          .filter(m =>
+                            m.name.toLowerCase().includes(modelSearch.toLowerCase()) ||
+                            m.label.toLowerCase().includes(modelSearch.toLowerCase())
+                          )
+                          .map(m => (
+                            <label
+                              key={m.name}
+                              className={`${styles.pullModelItem} ${selectedPullModel === m.name ? styles.pullModelItemSelected : ''}`}
+                            >
+                              <input
+                                type="radio"
+                                checked={selectedPullModel === m.name}
+                                onChange={() => setSelectedPullModel(m.name)}
+                              />
+                              <span className={styles.pullModelName}>{m.label}</span>
+                              <span className={styles.pullModelSize}>{m.size}</span>
+                              {m.recommended && <span className={styles.pullModelBadge}>Recommended</span>}
+                            </label>
+                          ))}
+                      </div>
+                      <div className={styles.pullPanelFooter}>
+                        <button
+                          className={styles.pullStartBtn}
+                          onClick={handleStartPull}
+                          disabled={!selectedPullModel}
+                        >
+                          Download
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {pullPhase === 'pulling' && (
+                    <div className={styles.pullProgressPanel}>
+                      <span>Downloading {selectedPullModel}...</span>
+                      {pullBytes && pullBytes.total > 0 ? (
+                        <>
+                          <div className={styles.pullProgressBar}>
+                            <div className={styles.pullProgressFill} style={{ width: `${pullBytes.percent}%` }} />
+                          </div>
+                          <div className={styles.pullProgressInfo}>
+                            <span>{fmtBytes(pullBytes.completed)} / {fmtBytes(pullBytes.total)}</span>
+                            <span>{pullBytes.percent}%</span>
+                          </div>
+                        </>
+                      ) : (
+                        <div className={styles.pullProgressBar}>
+                          <div className={styles.pullProgressFill} style={{ width: '0%' }} />
+                        </div>
+                      )}
+                      <p className={styles.pullStatusText}>{pullStatus || 'Starting...'}</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
               {currentProvider.has_vlm && (
                 <div className={styles.formGroup}>
                   <label>VLM Model</label>
-                  <input
-                    type="text"
-                    value={newVlmModel || currentVlmModel || ''}
-                    onChange={(e) => { setNewVlmModel(e.target.value); setHasChanges(true) }}
-                    placeholder={currentVlmModel || 'Enter VLM model name...'}
-                  />
+                  {(() => {
+                    const visionKeywords = ['llava', 'vision', 'moondream', 'bakllava']
+                    const visionModels = ollamaModels.filter(m =>
+                      visionKeywords.some(kw => m.toLowerCase().includes(kw))
+                    )
+                    const vlmOptions = provider === 'remote' && ollamaModels.length > 0
+                      ? (visionModels.length > 0 ? visionModels : ollamaModels)
+                      : []
+                    return vlmOptions.length > 0 ? (
+                      <select
+                        value={newVlmModel || currentVlmModel || ''}
+                        onChange={(e) => { setNewVlmModel(e.target.value); setHasChanges(true) }}
+                      >
+                        {vlmOptions.map(m => <option key={m} value={m}>{m}</option>)}
+                      </select>
+                    ) : (
+                      <input
+                        type="text"
+                        value={newVlmModel || currentVlmModel || ''}
+                        onChange={(e) => { setNewVlmModel(e.target.value); setHasChanges(true) }}
+                        placeholder={
+                          provider === 'remote' && ollamaModelsLoading
+                            ? 'Loading models...'
+                            : currentVlmModel || 'Enter VLM model name...'
+                        }
+                      />
+                    )
+                  })()}
                 </div>
               )}
             </>
@@ -303,7 +487,7 @@ export function ModelSettings() {
             </div>
           )}
 
-          {/* Base URL (for Ollama/BytePlus) */}
+          {/* Base URL */}
           {currentProvider?.base_url_env && (
             <div className={styles.formGroup}>
               <label>Server URL</label>
@@ -321,8 +505,8 @@ export function ModelSettings() {
             <Button
               variant="secondary"
               onClick={handleTestConnection}
-              disabled={isTesting || !apiKeys[provider]?.has_key}
-              title={!apiKeys[provider]?.has_key ? 'API key required for testing' : ''}
+              disabled={isTesting || (provider !== 'remote' && !apiKeys[provider]?.has_key)}
+              title={provider !== 'remote' && !apiKeys[provider]?.has_key ? 'API key required for testing' : ''}
             >
               {isTesting ? (
                 <>
@@ -373,12 +557,12 @@ export function ModelSettings() {
             <p className={styles.testResultMessage}>
               {testResult.success ? (
                 testBeforeSave ? (
-                  <div style={{ textAlign: 'center' }}>
-                    <div>{testResult.message}</div>
-                    <div style={{ marginTop: 12, fontWeight: 600, color: '#10b981' }}>
-                      ✓ Configuration saved successfully
-                    </div>
-                  </div>
+                  <span style={{ textAlign: 'center', display: 'block' }}>
+                    <span>{testResult.message}</span>
+                    <span style={{ marginTop: 12, fontWeight: 600, color: '#10b981', display: 'block' }}>
+                      &#x2713; Configuration saved successfully
+                    </span>
+                  </span>
                 ) : (
                   testResult.message
                 )

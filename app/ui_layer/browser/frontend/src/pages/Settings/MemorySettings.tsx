@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react'
 import {
   Brain,
   Database,
-  RotateCcw,
   AlertTriangle,
-  X,
   Loader2,
   Plus,
   Edit2,
   Trash2,
+  RotateCcw,
+  X,
 } from 'lucide-react'
 import { Button, Badge, ConfirmModal } from '../../components/ui'
 import { useToast } from '../../contexts/ToastContext'
@@ -16,13 +16,83 @@ import { useConfirmModal } from '../../hooks'
 import styles from './SettingsPage.module.css'
 import { useSettingsWebSocket } from './useSettingsWebSocket'
 
-// Types for memory settings
+// Types
 interface MemoryItem {
   id: string
   timestamp: string
   category: string
   content: string
   raw: string
+}
+
+// Memory Item Form Modal Component
+interface MemoryItemFormModalProps {
+  item: MemoryItem | null
+  onClose: () => void
+  onSave: (itemData: { category: string; content: string }) => void
+}
+
+function MemoryItemFormModal({ item, onClose, onSave }: MemoryItemFormModalProps) {
+  const [category, setCategory] = useState(item?.category || 'preference')
+  const [content, setContent] = useState(item?.content || '')
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    onSave({ category: category.toLowerCase().trim(), content })
+  }
+
+  return (
+    <div className={styles.modalOverlay} onClick={onClose}>
+      <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+        <div className={styles.modalHeader}>
+          <h3>{item ? 'Edit Memory' : 'Add Memory Item'}</h3>
+          <button className={styles.modalClose} onClick={onClose}>
+            <X size={18} />
+          </button>
+        </div>
+        <form onSubmit={handleSubmit}>
+          <div className={styles.modalBody}>
+            <div className={styles.formGroup}>
+              <label>Category</label>
+              <input
+                type="text"
+                value={category}
+                onChange={e => setCategory(e.target.value)}
+                placeholder="e.g., preference, fact, work, reminder"
+                required
+              />
+              <span className={styles.hint}>
+                Use categories like preference, fact, work, event, or reminder
+              </span>
+            </div>
+
+            <div className={styles.formGroup}>
+              <label>Content</label>
+              <textarea
+                value={content}
+                onChange={e => setContent(e.target.value)}
+                placeholder="Enter the memory content. Use clear, factual statements like 'User prefers dark mode' or 'John's birthday is March 15th'"
+                rows={4}
+                required
+              />
+              <span className={styles.hint}>
+                Write in third person. The agent will reference this information in future conversations.
+              </span>
+            </div>
+          </div>
+
+          <div className={styles.modalFooter}>
+            <Button variant="secondary" type="button" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button variant="primary" type="submit">
+              {item ? 'Save Changes' : 'Add Memory'}
+            </Button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )
 }
 
 export function MemorySettings() {
@@ -129,32 +199,27 @@ export function MemorySettings() {
       }),
     ]
 
-    // Load initial data
     send('memory_mode_get')
     send('memory_items_get')
 
     return () => cleanups.forEach(c => c())
   }, [isConnected, send, onMessage])
 
-  // Toggle memory mode
   const handleToggleMemory = (enabled: boolean) => {
     setMemoryEnabled(enabled)
     send('memory_mode_set', { enabled })
   }
 
-  // Handle adding a new memory item
   const handleAddItem = () => {
     setEditingItem(null)
     setShowItemForm(true)
   }
 
-  // Handle editing a memory item
   const handleEditItem = (item: MemoryItem) => {
     setEditingItem(item)
     setShowItemForm(true)
   }
 
-  // Handle deleting a memory item
   const handleDeleteItem = (itemId: string) => {
     confirm({
       title: 'Delete Memory Item',
@@ -166,7 +231,6 @@ export function MemorySettings() {
     })
   }
 
-  // Handle manual memory processing
   const handleProcessMemory = () => {
     confirm({
       title: 'Process Memory',
@@ -179,7 +243,6 @@ export function MemorySettings() {
     })
   }
 
-  // Handle reset memory
   const handleResetMemory = () => {
     confirm({
       title: 'Reset Memory',
@@ -192,7 +255,6 @@ export function MemorySettings() {
     })
   }
 
-  // Sort items by timestamp
   const sortedItems = [...items].sort((a, b) => {
     const dateA = new Date(a.timestamp).getTime()
     const dateB = new Date(b.timestamp).getTime()
@@ -226,7 +288,7 @@ export function MemorySettings() {
         </div>
       </div>
 
-      {/* Toggleable Content - greyed out when memory is disabled */}
+      {/* Toggleable Content */}
       <div className={`${styles.toggleableContent} ${!memoryEnabled ? styles.disabledContent : ''}`}>
         {/* Memory Items */}
         <div className={styles.subsection}>
@@ -358,76 +420,6 @@ export function MemorySettings() {
 
       {/* Confirm Modal */}
       <ConfirmModal {...confirmModalProps} />
-    </div>
-  )
-}
-
-// Memory Item Form Modal Component
-interface MemoryItemFormModalProps {
-  item: MemoryItem | null
-  onClose: () => void
-  onSave: (itemData: { category: string; content: string }) => void
-}
-
-function MemoryItemFormModal({ item, onClose, onSave }: MemoryItemFormModalProps) {
-  const [category, setCategory] = useState(item?.category || 'preference')
-  const [content, setContent] = useState(item?.content || '')
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    onSave({ category: category.toLowerCase().trim(), content })
-  }
-
-  return (
-    <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
-        <div className={styles.modalHeader}>
-          <h3>{item ? 'Edit Memory' : 'Add Memory Item'}</h3>
-          <button className={styles.modalClose} onClick={onClose}>
-            <X size={18} />
-          </button>
-        </div>
-        <form onSubmit={handleSubmit}>
-          <div className={styles.modalBody}>
-            <div className={styles.formGroup}>
-              <label>Category</label>
-              <input
-                type="text"
-                value={category}
-                onChange={e => setCategory(e.target.value)}
-                placeholder="e.g., preference, fact, work, reminder"
-                required
-              />
-              <span className={styles.hint}>
-                Use categories like preference, fact, work, event, or reminder
-              </span>
-            </div>
-
-            <div className={styles.formGroup}>
-              <label>Content</label>
-              <textarea
-                value={content}
-                onChange={e => setContent(e.target.value)}
-                placeholder="Enter the memory content. Use clear, factual statements like 'User prefers dark mode' or 'John's birthday is March 15th'"
-                rows={4}
-                required
-              />
-              <span className={styles.hint}>
-                Write in third person. The agent will reference this information in future conversations.
-              </span>
-            </div>
-          </div>
-
-          <div className={styles.modalFooter}>
-            <Button variant="secondary" type="button" onClick={onClose}>
-              Cancel
-            </Button>
-            <Button variant="primary" type="submit">
-              {item ? 'Save Changes' : 'Add Memory'}
-            </Button>
-          </div>
-        </form>
-      </div>
     </div>
   )
 }

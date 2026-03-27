@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useRef, useState, useCallback, ReactNode } from 'react'
-import type { ChatMessage, ActionItem, AgentStatus, InitialState, WSMessage, DashboardMetrics, TaskCancelResponse, FilteredDashboardMetrics, MetricsTimePeriod, OnboardingStep, OnboardingStepResponse, OnboardingSubmitResponse, OnboardingCompleteResponse } from '../types'
+import type { ChatMessage, ActionItem, AgentStatus, InitialState, WSMessage, DashboardMetrics, TaskCancelResponse, FilteredDashboardMetrics, MetricsTimePeriod, OnboardingStep, OnboardingStepResponse, OnboardingSubmitResponse, OnboardingCompleteResponse, LocalLLMState, LocalLLMCheckResponse, LocalLLMTestResponse, LocalLLMInstallResponse, LocalLLMProgressResponse, LocalLLMPullProgressResponse, SuggestedModel } from '../types'
 import { getWsUrl } from '../utils/connection'
 
 // Pending attachment type for upload
@@ -27,6 +27,8 @@ interface WebSocketState {
   onboardingStep: OnboardingStep | null
   onboardingError: string | null
   onboardingLoading: boolean
+  // Local LLM (Ollama) state
+  localLLM: LocalLLMState
 }
 
 interface WebSocketContextType extends WebSocketState {
@@ -42,6 +44,13 @@ interface WebSocketContextType extends WebSocketState {
   submitOnboardingStep: (value: string | string[]) => void
   skipOnboardingStep: () => void
   goBackOnboardingStep: () => void
+  // Local LLM (Ollama) methods
+  checkLocalLLM: () => void
+  testLocalLLMConnection: (url: string) => void
+  installLocalLLM: () => void
+  startLocalLLM: () => void
+  requestSuggestedModels: () => void
+  pullOllamaModel: (model: string) => void
 }
 
 const defaultState: WebSocketState = {
@@ -71,6 +80,15 @@ const defaultState: WebSocketState = {
   onboardingStep: null,
   onboardingError: null,
   onboardingLoading: false,
+  // Local LLM (Ollama) state
+  localLLM: {
+    phase: 'idle',
+    defaultUrl: 'http://localhost:11434',
+    installProgress: [],
+    pullProgress: [],
+    pullBytes: null,
+    suggestedModels: [],
+  },
 }
 
 const WebSocketContext = createContext<WebSocketContextType | undefined>(undefined)
@@ -428,6 +446,158 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
         }
         break
       }
+
+      // ── Local LLM (Ollama) ───────────────────────────────────────────────
+      case 'local_llm_check': {
+        const r = msg.data as unknown as LocalLLMCheckResponse
+        // Phases that must not be overridden by a background check result
+        const BUSY_PHASES: LocalLLMState['phase'][] = ['installing', 'starting', 'pulling_model']
+        if (!r.success) {
+          setState(prev => {
+            if (BUSY_PHASES.includes(prev.localLLM.phase)) return prev
+            return { ...prev, localLLM: { ...prev.localLLM, phase: 'error', error: r.error } }
+          })
+          break
+        }
+        let phase: LocalLLMState['phase']
+        if (r.running) {
+          phase = 'running'
+        } else if (r.installed) {
+          phase = 'not_running'
+        } else {
+          phase = 'not_installed'
+        }
+        setState(prev => {
+          if (BUSY_PHASES.includes(prev.localLLM.phase)) return prev
+          return {
+            ...prev,
+            localLLM: {
+              ...prev.localLLM,
+              phase,
+              version: r.version,
+              defaultUrl: r.default_url || 'http://localhost:11434',
+              error: undefined,
+              testResult: undefined,
+            },
+          }
+        })
+        break
+      }
+
+      case 'local_llm_test': {
+        const r = msg.data as unknown as LocalLLMTestResponse
+        if (r.success && (!r.models || r.models.length === 0)) {
+          // Connected but no models — ask user to pick one
+          setState(prev => ({
+            ...prev,
+            localLLM: {
+              ...prev.localLLM,
+              phase: 'selecting_model',
+              testResult: { success: r.success, message: r.message, error: r.error, models: r.models },
+            },
+          }))
+          wsRef.current?.send(JSON.stringify({ type: 'local_llm_suggested_models' }))
+        } else {
+          setState(prev => ({
+            ...prev,
+            localLLM: {
+              ...prev.localLLM,
+              phase: r.success ? 'connected' : prev.localLLM.phase,
+              testResult: { success: r.success, message: r.message, error: r.error, models: r.models },
+            },
+          }))
+        }
+        break
+      }
+
+      case 'local_llm_install_progress': {
+        const r = msg.data as unknown as LocalLLMProgressResponse
+        setState(prev => ({
+          ...prev,
+          localLLM: {
+            ...prev.localLLM,
+            installProgress: [...prev.localLLM.installProgress, r.message],
+          },
+        }))
+        break
+      }
+
+      case 'local_llm_install': {
+        const r = msg.data as unknown as LocalLLMInstallResponse
+        if (r.success) {
+          // Trigger a status check instead of assuming 'not_running' —
+          // the installer may have auto-launched Ollama already
+          setState(prev => ({ ...prev, localLLM: { ...prev.localLLM, phase: 'checking', installProgress: [] } }))
+          wsRef.current?.send(JSON.stringify({ type: 'local_llm_check' }))
+        } else {
+          setState(prev => ({
+            ...prev,
+            localLLM: { ...prev.localLLM, phase: 'error', error: r.error ?? 'Installation failed' },
+          }))
+        }
+        break
+      }
+
+      case 'local_llm_start': {
+        const r = msg.data as unknown as LocalLLMInstallResponse
+        setState(prev => ({
+          ...prev,
+          localLLM: {
+            ...prev.localLLM,
+            phase: r.success ? 'running' : 'error',
+            error: r.success ? undefined : (r.error ?? 'Failed to start Ollama'),
+            testResult: undefined,
+          },
+        }))
+        break
+      }
+
+      case 'local_llm_suggested_models': {
+        const r = msg.data as unknown as { models: SuggestedModel[] }
+        setState(prev => ({ ...prev, localLLM: { ...prev.localLLM, suggestedModels: r.models } }))
+        break
+      }
+
+      case 'local_llm_pull_progress': {
+        const r = msg.data as unknown as LocalLLMPullProgressResponse
+        setState(prev => {
+          // Only append to the log for non-byte-progress status lines
+          const isDownloading = r.total > 0
+          const newLog = isDownloading
+            ? prev.localLLM.pullProgress  // don't spam log with repeated byte updates
+            : r.message && !prev.localLLM.pullProgress.includes(r.message)
+              ? [...prev.localLLM.pullProgress, r.message]
+              : prev.localLLM.pullProgress
+          return {
+            ...prev,
+            localLLM: {
+              ...prev.localLLM,
+              pullProgress: newLog,
+              pullBytes: isDownloading
+                ? { completed: r.completed, total: r.total, percent: r.percent }
+                : prev.localLLM.pullBytes,
+            },
+          }
+        })
+        break
+      }
+
+      case 'local_llm_pull_model': {
+        const r = msg.data as unknown as LocalLLMInstallResponse & { model?: string }
+        if (r.success) {
+          // Re-test to refresh model count and advance to 'connected'
+          setState(prev => {
+            wsRef.current?.send(JSON.stringify({ type: 'local_llm_test', url: prev.localLLM.defaultUrl }))
+            return { ...prev, localLLM: { ...prev.localLLM, pullProgress: [], error: undefined } }
+          })
+        } else {
+          setState(prev => ({
+            ...prev,
+            localLLM: { ...prev.localLLM, phase: 'error', error: r.error ?? 'Model download failed' },
+          }))
+        }
+        break
+      }
     }
   }, [])
 
@@ -524,6 +694,61 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
+  // Local LLM (Ollama) methods
+  const checkLocalLLM = useCallback(() => {
+    if (wsRef.current?.readyState !== WebSocket.OPEN) return
+    const BUSY_PHASES: LocalLLMState['phase'][] = ['installing', 'starting', 'pulling_model']
+    setState(prev => {
+      if (BUSY_PHASES.includes(prev.localLLM.phase)) return prev  // Don't interrupt active ops
+      return { ...prev, localLLM: { ...prev.localLLM, phase: 'checking', error: undefined } }
+    })
+    wsRef.current.send(JSON.stringify({ type: 'local_llm_check' }))
+  }, [])
+
+  const testLocalLLMConnection = useCallback((url: string) => {
+    if (wsRef.current?.readyState === WebSocket.OPEN) {
+      wsRef.current.send(JSON.stringify({ type: 'local_llm_test', url }))
+    }
+  }, [])
+
+  const installLocalLLM = useCallback(() => {
+    if (wsRef.current?.readyState === WebSocket.OPEN) {
+      setState(prev => ({
+        ...prev,
+        localLLM: { ...prev.localLLM, phase: 'installing', installProgress: [], error: undefined },
+      }))
+      wsRef.current.send(JSON.stringify({ type: 'local_llm_install' }))
+    } else {
+      setState(prev => ({
+        ...prev,
+        localLLM: { ...prev.localLLM, phase: 'error', error: 'Not connected — please wait a moment and retry.' },
+      }))
+    }
+  }, [])
+
+  const startLocalLLM = useCallback(() => {
+    if (wsRef.current?.readyState === WebSocket.OPEN) {
+      setState(prev => ({ ...prev, localLLM: { ...prev.localLLM, phase: 'starting', error: undefined } }))
+      wsRef.current.send(JSON.stringify({ type: 'local_llm_start' }))
+    }
+  }, [])
+
+  const requestSuggestedModels = useCallback(() => {
+    if (wsRef.current?.readyState === WebSocket.OPEN) {
+      wsRef.current.send(JSON.stringify({ type: 'local_llm_suggested_models' }))
+    }
+  }, [])
+
+  const pullOllamaModel = useCallback((model: string) => {
+    if (wsRef.current?.readyState === WebSocket.OPEN) {
+      setState(prev => ({
+        ...prev,
+        localLLM: { ...prev.localLLM, phase: 'pulling_model', pullProgress: [], pullBytes: null, error: undefined },
+      }))
+      wsRef.current.send(JSON.stringify({ type: 'local_llm_pull_model', model }))
+    }
+  }, [])
+
   return (
     <WebSocketContext.Provider
       value={{
@@ -539,6 +764,12 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
         submitOnboardingStep,
         skipOnboardingStep,
         goBackOnboardingStep,
+        checkLocalLLM,
+        testLocalLLMConnection,
+        installLocalLLM,
+        startLocalLLM,
+        requestSuggestedModels,
+        pullOllamaModel,
       }}
     >
       {children}
