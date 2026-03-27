@@ -1223,7 +1223,8 @@ class BrowserAdapter(InterfaceAdapter):
             await self._handle_local_llm_suggested_models()
         elif msg_type == "local_llm_pull_model":
             model = data.get("model", "")
-            await self._handle_local_llm_pull_model(model)
+            base_url = data.get("baseUrl")
+            await self._handle_local_llm_pull_model(model, base_url)
 
     async def _handle_dashboard_metrics_filter(self, period: str) -> None:
         """Handle filtered metrics request for specific time period."""
@@ -1648,7 +1649,7 @@ class BrowserAdapter(InterfaceAdapter):
             "data": {"models": SUGGESTED_MODELS},
         })
 
-    async def _handle_local_llm_pull_model(self, model: str) -> None:
+    async def _handle_local_llm_pull_model(self, model: str, base_url: str | None = None) -> None:
         """Pull an Ollama model, streaming progress back to the client."""
         if not model:
             await self._broadcast({
@@ -1656,6 +1657,15 @@ class BrowserAdapter(InterfaceAdapter):
                 "data": {"success": False, "error": "No model specified"},
             })
             return
+
+        # Resolve base URL: explicit param > stored settings > default
+        if not base_url:
+            try:
+                from app.ui_layer.settings.model_settings import get_model_settings
+                settings_data = get_model_settings()
+                base_url = settings_data.get("base_urls", {}).get("remote")
+            except Exception:
+                pass
 
         async def progress_callback(data: dict) -> None:
             await self._broadcast({
@@ -1665,7 +1675,7 @@ class BrowserAdapter(InterfaceAdapter):
 
         try:
             from app.ui_layer.local_llm_setup import pull_ollama_model
-            result = await pull_ollama_model(model, progress_callback)
+            result = await pull_ollama_model(model, progress_callback, base_url=base_url)
             await self._broadcast({
                 "type": "local_llm_pull_model",
                 "data": result,

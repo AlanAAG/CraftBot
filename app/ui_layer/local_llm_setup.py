@@ -239,7 +239,7 @@ async def start_ollama() -> Dict[str, Any]:
         return {"success": False, "error": str(exc)}
 
 
-async def pull_ollama_model(model: str, progress_callback: Callable) -> Dict[str, Any]:
+async def pull_ollama_model(model: str, progress_callback: Callable, base_url: str | None = None) -> Dict[str, Any]:
     """Pull an Ollama model via REST API, streaming structured progress via callback.
 
     Uses a background thread so the asyncio event loop stays unblocked and no
@@ -255,7 +255,8 @@ async def pull_ollama_model(model: str, progress_callback: Callable) -> Dict[str
     import threading
     import urllib.request as _ureq
 
-    pull_url = OLLAMA_DEFAULT_URL + "/api/pull"
+    ollama_url = (base_url or OLLAMA_DEFAULT_URL).rstrip("/")
+    pull_url = ollama_url + "/api/pull"
     payload = json.dumps({"name": model, "stream": True}).encode()
 
     line_queue: "queue.Queue[str | Exception | None]" = queue.Queue()
