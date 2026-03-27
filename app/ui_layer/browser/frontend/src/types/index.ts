@@ -19,13 +19,14 @@ export interface ChatMessage {
   timestamp: number
   messageId: string
   attachments?: Attachment[]
+  taskSessionId?: string  // Links message to a task session for reply feature
 }
 
 // ─────────────────────────────────────────────────────────────────────
 // Action/Task Types
 // ─────────────────────────────────────────────────────────────────────
 
-export type ActionStatus = 'running' | 'completed' | 'error' | 'pending' | 'cancelled'
+export type ActionStatus = 'running' | 'completed' | 'error' | 'pending' | 'cancelled' | 'waiting'
 export type ItemType = 'task' | 'action' | 'reasoning'
 
 export interface ActionItem {
@@ -395,6 +396,9 @@ export interface FileItem {
 export interface FileListResponse {
   directory: string
   files: FileItem[]
+  total: number
+  hasMore: boolean
+  offset: number
   success: boolean
   error?: string
 }

@@ -10,6 +10,20 @@ interface PendingAttachment {
   content: string  // base64
 }
 
+// Reply target for reply-to-chat/task feature
+interface ReplyTarget {
+  type: 'chat' | 'task'
+  sessionId?: string       // May be undefined for old messages without session tracking
+  displayName: string      // Truncated preview for UI display
+  originalContent: string  // Full content for agent context
+}
+
+// Reply context sent with message
+interface ReplyContext {
+  sessionId?: string
+  originalMessage: string
+}
+
 interface WebSocketState {
   connected: boolean
   messages: ChatMessage[]
@@ -27,12 +41,22 @@ interface WebSocketState {
   onboardingStep: OnboardingStep | null
   onboardingError: string | null
   onboardingLoading: boolean
+  // Unread message tracking
+  lastSeenMessageId: string | null
+  // Reply state for reply-to-chat/task feature
+  replyTarget: ReplyTarget | null
+  // Chat pagination
+  hasMoreMessages: boolean
+  loadingOlderMessages: boolean
+  // Action pagination
+  hasMoreActions: boolean
+  loadingOlderActions: boolean
   // Local LLM (Ollama) state
   localLLM: LocalLLMState
 }
 
 interface WebSocketContextType extends WebSocketState {
-  sendMessage: (content: string, attachments?: PendingAttachment[]) => void
+  sendMessage: (content: string, attachments?: PendingAttachment[], replyContext?: ReplyContext) => void
   sendCommand: (command: string) => void
   clearMessages: () => void
   cancelTask: (taskId: string) => void
@@ -44,6 +68,24 @@ interface WebSocketContextType extends WebSocketState {
   submitOnboardingStep: (value: string | string[]) => void
   skipOnboardingStep: () => void
   goBackOnboardingStep: () => void
+  // Unread message tracking
+  markMessagesAsSeen: () => void
+  // Reply-to-chat/task methods
+  setReplyTarget: (target: ReplyTarget) => void
+  clearReplyTarget: () => void
+  // Chat pagination
+  loadOlderMessages: () => void
+  // Action pagination
+  loadOlderActions: () => void
+}
+
+// Initialize lastSeenMessageId from localStorage
+const getInitialLastSeenMessageId = (): string | null => {
+  try {
+    return localStorage.getItem('lastSeenMessageId')
+  } catch {
+    return null
+  }
   // Local LLM (Ollama) methods
   checkLocalLLM: () => void
   testLocalLLMConnection: (url: string) => void
@@ -80,6 +122,16 @@ const defaultState: WebSocketState = {
   onboardingStep: null,
   onboardingError: null,
   onboardingLoading: false,
+  // Unread message tracking
+  lastSeenMessageId: getInitialLastSeenMessageId(),
+  // Reply state
+  replyTarget: null,
+  // Chat pagination
+  hasMoreMessages: true,
+  loadingOlderMessages: false,
+  // Action pagination
+  hasMoreActions: true,
+  loadingOlderActions: false,
   // Local LLM (Ollama) state
   localLLM: {
     phase: 'idle',
@@ -140,8 +192,8 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
         }
       }
 
-      ws.onclose = () => {
-        console.log('[WS] Disconnected, reconnectCount =', reconnectCountRef.current)
+      ws.onclose = (event) => {
+        console.log('[WS] Disconnected, code:', event.code, 'reason:', event.reason, 'wasClean:', event.wasClean, 'reconnectCount:', reconnectCountRef.current)
         isConnectingRef.current = false
         setState(prev => ({
           ...prev,
@@ -192,10 +244,12 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
     switch (msg.type) {
       case 'init': {
         const data = msg.data as unknown as InitialState
+        const initMessages = data.messages || []
+        const initActions = data.actions || []
         setState(prev => ({
           ...prev,
-          messages: data.messages || [],
-          actions: data.actions || [],
+          messages: initMessages,
+          actions: initActions,
           status: {
             state: data.agentState || 'idle',
             message: data.status || 'Ready',
@@ -206,6 +260,8 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
           dashboardMetrics: data.dashboardMetrics || null,
           needsHardOnboarding: data.needsHardOnboarding || false,
           agentName: data.agentName || 'Agent',
+          hasMoreMessages: initMessages.length >= 50,
+          hasMoreActions: initActions.filter((a: ActionItem) => a.itemType === 'task').length >= 15,
         }))
         break
       }
@@ -219,9 +275,31 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
         break
       }
 
-      case 'chat_clear':
-        setState(prev => ({ ...prev, messages: [] }))
+      case 'chat_history': {
+        const data = msg.data as unknown as { messages: ChatMessage[]; hasMore: boolean }
+        setState(prev => ({
+          ...prev,
+          messages: [...(data.messages || []), ...prev.messages],
+          hasMoreMessages: data.hasMore,
+          loadingOlderMessages: false,
+        }))
         break
+      }
+
+      case 'chat_clear':
+        setState(prev => ({ ...prev, messages: [], hasMoreMessages: false }))
+        break
+
+      case 'action_history': {
+        const data = msg.data as unknown as { actions: ActionItem[]; hasMore: boolean }
+        setState(prev => ({
+          ...prev,
+          actions: [...(data.actions || []), ...prev.actions],
+          hasMoreActions: data.hasMore,
+          loadingOlderActions: false,
+        }))
+        break
+      }
 
       case 'action_add': {
         const action = msg.data as unknown as ActionItem
@@ -617,13 +695,56 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
     }
   }, [connect])
 
-  const sendMessage = useCallback((content: string, attachments?: PendingAttachment[]) => {
+  const loadOlderMessages = useCallback(() => {
+    if (!state.hasMoreMessages || state.loadingOlderMessages || state.messages.length === 0) return
+    if (wsRef.current?.readyState !== WebSocket.OPEN) return
+
+    const oldestTimestamp = state.messages[0]?.timestamp
+    if (!oldestTimestamp) return
+
+    setState(prev => ({ ...prev, loadingOlderMessages: true }))
+    wsRef.current.send(JSON.stringify({
+      type: 'chat_history',
+      beforeTimestamp: oldestTimestamp,
+      limit: 50,
+    }))
+  }, [state.hasMoreMessages, state.loadingOlderMessages, state.messages])
+
+  const loadOlderActions = useCallback(() => {
+    if (!state.hasMoreActions || state.loadingOlderActions || state.actions.length === 0) return
+    if (wsRef.current?.readyState !== WebSocket.OPEN) return
+
+    // Find the oldest task's createdAt (not action) for the before_timestamp
+    const oldestTask = state.actions.find(a => a.itemType === 'task')
+    const oldestCreatedAt = oldestTask?.createdAt || state.actions[0]?.createdAt
+    if (!oldestCreatedAt) return
+
+    setState(prev => ({ ...prev, loadingOlderActions: true }))
+    wsRef.current.send(JSON.stringify({
+      type: 'action_history',
+      beforeTimestamp: oldestCreatedAt,
+      limit: 15,
+    }))
+  }, [state.hasMoreActions, state.loadingOlderActions, state.actions])
+
+  const sendMessage = useCallback((content: string, attachments?: PendingAttachment[], replyContext?: ReplyContext) => {
     if (wsRef.current?.readyState === WebSocket.OPEN) {
-      wsRef.current.send(JSON.stringify({
-        type: 'message',
-        content,
-        attachments: attachments || []
-      }))
+      try {
+        const payload = {
+          type: 'message',
+          content,
+          attachments: attachments || [],
+          replyContext: replyContext || null,
+        }
+        const payloadStr = JSON.stringify(payload)
+        console.log('[WebSocket] Sending message, payload size:', payloadStr.length, 'bytes, attachments:', attachments?.length || 0)
+        wsRef.current.send(payloadStr)
+        console.log('[WebSocket] Message sent successfully')
+      } catch (error) {
+        console.error('[WebSocket] Error sending message:', error)
+      }
+    } else {
+      console.warn('[WebSocket] Cannot send message - WebSocket not open, state:', wsRef.current?.readyState)
     }
   }, [])
 
@@ -694,6 +815,32 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
+  // Mark all current messages as seen
+  const markMessagesAsSeen = useCallback(() => {
+    setState(prev => {
+      if (prev.messages.length > 0) {
+        const lastId = prev.messages[prev.messages.length - 1].messageId
+        if (lastId && lastId !== prev.lastSeenMessageId) {
+          try {
+            localStorage.setItem('lastSeenMessageId', lastId)
+          } catch {
+            // localStorage may be unavailable
+          }
+          return { ...prev, lastSeenMessageId: lastId }
+        }
+      }
+      return prev
+    })
+  }, [])
+
+  // Set reply target for reply-to-chat/task feature
+  const setReplyTarget = useCallback((target: ReplyTarget) => {
+    setState(prev => ({ ...prev, replyTarget: target }))
+  }, [])
+
+  // Clear reply target
+  const clearReplyTarget = useCallback(() => {
+    setState(prev => ({ ...prev, replyTarget: null }))
   // Local LLM (Ollama) methods
   const checkLocalLLM = useCallback(() => {
     if (wsRef.current?.readyState !== WebSocket.OPEN) return
@@ -764,6 +911,11 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
         submitOnboardingStep,
         skipOnboardingStep,
         goBackOnboardingStep,
+        markMessagesAsSeen,
+        setReplyTarget,
+        clearReplyTarget,
+        loadOlderMessages,
+        loadOlderActions,
         checkLocalLLM,
         testLocalLLMConnection,
         installLocalLLM,

@@ -185,8 +185,8 @@ class BrowserChatComponent(ChatComponentProtocol):
             from app.usage.chat_storage import get_chat_storage, StoredChatMessage
             self._storage = get_chat_storage()
 
-            # Load recent messages from storage
-            stored_messages = self._storage.get_recent_messages(limit=200)
+            # Load recent messages from storage (initial page)
+            stored_messages = self._storage.get_recent_messages(limit=50)
             for stored in stored_messages:
                 attachments = None
                 if stored.attachments:
@@ -207,6 +207,7 @@ class BrowserChatComponent(ChatComponentProtocol):
                     timestamp=stored.timestamp,
                     message_id=stored.message_id,
                     attachments=attachments,
+                    task_session_id=stored.task_session_id,
                 ))
         except Exception:
             # Storage may not be available, continue without persistence
@@ -239,6 +240,7 @@ class BrowserChatComponent(ChatComponentProtocol):
                     style=message.style,
                     timestamp=message.timestamp,
                     attachments=attachments_data,
+                    task_session_id=message.task_session_id,
                 )
                 self._storage.insert_message(stored)
             except Exception:
@@ -266,6 +268,10 @@ class BrowserChatComponent(ChatComponentProtocol):
                 for att in message.attachments
             ]
 
+        # Include task session ID for reply feature
+        if message.task_session_id:
+            message_data["taskSessionId"] = message.task_session_id
+
         await self._adapter._broadcast({
             "type": "chat_message",
             "data": message_data,
@@ -291,8 +297,49 @@ class BrowserChatComponent(ChatComponentProtocol):
         pass
 
     def get_messages(self) -> List[ChatMessage]:
-        """Get all messages."""
+        """Get all loaded messages."""
         return self._messages.copy()
+
+    def get_messages_before(self, before_timestamp: float, limit: int = 50) -> List[ChatMessage]:
+        """Get older messages from storage before a given timestamp."""
+        if not self._storage:
+            return []
+        try:
+            stored = self._storage.get_messages_before(before_timestamp, limit=limit)
+            messages = []
+            for s in stored:
+                attachments = None
+                if s.attachments:
+                    attachments = [
+                        Attachment(
+                            name=att.get("name", ""),
+                            path=att.get("path", ""),
+                            type=att.get("type", ""),
+                            size=att.get("size", 0),
+                            url=att.get("url", ""),
+                        )
+                        for att in s.attachments
+                    ]
+                messages.append(ChatMessage(
+                    sender=s.sender,
+                    content=s.content,
+                    style=s.style,
+                    timestamp=s.timestamp,
+                    message_id=s.message_id,
+                    attachments=attachments,
+                ))
+            return messages
+        except Exception:
+            return []
+
+    def get_total_count(self) -> int:
+        """Get total message count from storage."""
+        if not self._storage:
+            return len(self._messages)
+        try:
+            return self._storage.get_message_count()
+        except Exception:
+            return len(self._messages)
 
 
 class BrowserActionPanelComponent(ActionPanelProtocol):
@@ -313,8 +360,8 @@ class BrowserActionPanelComponent(ActionPanelProtocol):
             # Mark any stale running items as cancelled from previous session
             self._storage.mark_running_as_cancelled()
 
-            # Load recent actions from storage
-            stored_items = self._storage.get_recent_items(limit=200)
+            # Load recent tasks (and their child actions) from storage
+            stored_items = self._storage.get_recent_tasks_with_actions(task_limit=15)
             for stored in stored_items:
                 self._items.append(ActionItem(
                     id=stored.id,
@@ -546,8 +593,41 @@ class BrowserActionPanelComponent(ActionPanelProtocol):
         pass
 
     def get_items(self) -> List[ActionItem]:
-        """Get all items."""
+        """Get all loaded items."""
         return self._items.copy()
+
+    def get_tasks_before(self, before_timestamp: float, task_limit: int = 15) -> List[ActionItem]:
+        """Get older tasks (and their child actions) from storage."""
+        if not self._storage:
+            return []
+        try:
+            stored = self._storage.get_tasks_before(before_timestamp, task_limit=task_limit)
+            return [
+                ActionItem(
+                    id=s.id,
+                    name=s.name,
+                    status=s.status,
+                    item_type=s.item_type,
+                    parent_id=s.parent_id,
+                    created_at=s.created_at,
+                    completed_at=s.completed_at,
+                    input_data=s.input_data,
+                    output_data=s.output_data,
+                    error_message=s.error_message,
+                )
+                for s in stored
+            ]
+        except Exception:
+            return []
+
+    def get_task_count(self) -> int:
+        """Get total task count (not actions) from storage."""
+        if not self._storage:
+            return len([i for i in self._items if i.item_type == 'task'])
+        try:
+            return self._storage.get_task_count()
+        except Exception:
+            return len([i for i in self._items if i.item_type == 'task'])
 
 
 class BrowserStatusBarComponent(StatusBarProtocol):
@@ -649,6 +729,9 @@ class BrowserAdapter(InterfaceAdapter):
         self._metrics_collector = MetricsCollector(controller.agent)
         self._metrics_task: Optional[asyncio.Task] = None
 
+        # Track active OAuth tasks for cancellation support
+        self._oauth_tasks: Dict[str, asyncio.Task] = {}
+
     @property
     def theme_adapter(self) -> ThemeAdapter:
         return self._theme_adapter
@@ -673,6 +756,36 @@ class BrowserAdapter(InterfaceAdapter):
     def metrics_collector(self) -> MetricsCollector:
         """Get the metrics collector for dashboard data."""
         return self._metrics_collector
+
+    async def submit_message(
+        self,
+        message: str,
+        reply_context: Optional[Dict[str, Any]] = None
+    ) -> None:
+        """
+        Submit a message from the user with optional reply context.
+
+        Overrides base class to handle reply-to-chat/task feature.
+        Appends reply context to the message before routing to the agent.
+
+        Args:
+            message: The user's input message
+            reply_context: Optional dict with {sessionId?: str, originalMessage: str}
+        """
+        agent_context = message
+
+        # Add reply context note (similar to attachment_note pattern)
+        if reply_context and reply_context.get("originalMessage"):
+            reply_note = f"\n\n[REPLYING TO PREVIOUS AGENT MESSAGE]:\n{reply_context['originalMessage']}"
+            agent_context = message + reply_note
+
+        # Pass to controller with target session ID if replying
+        target_session_id = reply_context.get("sessionId") if reply_context else None
+        await self._controller.submit_message(
+            agent_context,
+            self._adapter_id,
+            target_session_id=target_session_id
+        )
 
     def _handle_task_start(self, event: UIEvent) -> None:
         """Handle task start event with metrics tracking."""
@@ -722,6 +835,25 @@ class BrowserAdapter(InterfaceAdapter):
     async def _on_start(self) -> None:
         """Start the browser interface."""
         from aiohttp import web
+        from app.onboarding import onboarding_manager
+        import uuid
+
+        # Display welcome system message if soft onboarding is pending
+        if onboarding_manager.needs_soft_onboarding:
+            welcome_message = ChatMessage(
+                sender="System",
+                content="""**Welcome to CraftBot**
+
+CraftBot can perform virtually any computer-based task by configuring the right MCP servers, skills, or connecting to apps.
+
+If you need help setting up MCP servers or skills, just ask the agent.
+
+A quick Q&A will now begin to understand your preferences and serve you better:""",
+                style="system",
+                timestamp=time.time(),
+                message_id=f"welcome-{uuid.uuid4().hex[:8]}",
+            )
+            self._chat._messages.insert(0, welcome_message)
 
         self._app = web.Application()
 
@@ -856,16 +988,23 @@ class BrowserAdapter(InterfaceAdapter):
                         break
                 except json.JSONDecodeError as e:
                     # Continue on JSON errors, don't close connection
-                    pass
+                    import traceback
+                    error_detail = f"JSON decode error: {e}"
+                    print(f"[BROWSER ADAPTER] {error_detail}")
+                    await self._broadcast_error_to_chat(error_detail)
                 except Exception as e:
                     # Continue on message errors, don't close connection
-                    pass
+                    import traceback
+                    error_detail = f"WebSocket message error: {type(e).__name__}: {e}\n{traceback.format_exc()}"
+                    print(f"[BROWSER ADAPTER] {error_detail}")
+                    await self._broadcast_error_to_chat(error_detail)
         except asyncio.CancelledError:
-            pass
-        except (ClientConnectionResetError, ConnectionResetError):
-            pass  # Silently handle expected connection errors
+            print("[BROWSER ADAPTER] WebSocket cancelled")
+        except (ClientConnectionResetError, ConnectionResetError) as e:
+            print(f"[BROWSER ADAPTER] WebSocket connection reset: {type(e).__name__}: {e}")
         except Exception as e:
-            pass
+            import traceback
+            print(f"[BROWSER ADAPTER] WebSocket loop error: {type(e).__name__}: {e}\n{traceback.format_exc()}")
         finally:
             self._ws_clients.discard(ws)
 
@@ -876,16 +1015,17 @@ class BrowserAdapter(InterfaceAdapter):
         msg_type = data.get("type")
 
         if msg_type == "message":
-            # User sent a message (may include attachments)
+            # User sent a message (may include attachments and/or reply context)
             content = data.get("content", "")
             attachments = data.get("attachments", [])
+            reply_context = data.get("replyContext")  # {sessionId?: str, originalMessage: str}
 
             if attachments:
                 # Message with attachments - use custom handler
-                await self._handle_chat_message_with_attachments(content, attachments)
+                await self._handle_chat_message_with_attachments(content, attachments, reply_context)
             elif content:
                 # Regular message without attachments - use normal flow
-                await self.submit_message(content)
+                await self.submit_message(content, reply_context)
 
         elif msg_type == "chat_attachment_upload":
             # Upload attachment for chat message
@@ -897,10 +1037,23 @@ class BrowserAdapter(InterfaceAdapter):
             if command:
                 await self.submit_message(command)
 
+        elif msg_type == "chat_history":
+            before_timestamp = data.get("beforeTimestamp")
+            limit = data.get("limit", 50)
+            await self._handle_chat_history(before_timestamp, limit)
+
+        elif msg_type == "action_history":
+            before_timestamp = data.get("beforeTimestamp")
+            limit = data.get("limit", 15)
+            await self._handle_action_history(before_timestamp, limit)
+
         # File operations
         elif msg_type == "file_list":
             directory = data.get("directory", "")
-            await self._handle_file_list(directory)
+            offset = data.get("offset", 0)
+            limit = data.get("limit", 50)
+            search = data.get("search", "")
+            await self._handle_file_list(directory, offset=offset, limit=limit, search=search)
 
         elif msg_type == "file_read":
             file_path = data.get("path", "")
@@ -1173,6 +1326,10 @@ class BrowserAdapter(InterfaceAdapter):
         elif msg_type == "integration_connect_interactive":
             integration_id = data.get("id", "")
             await self._handle_integration_connect_interactive(integration_id)
+
+        elif msg_type == "integration_connect_cancel":
+            integration_id = data.get("id", "")
+            await self._handle_integration_connect_cancel(integration_id)
 
         elif msg_type == "integration_disconnect":
             integration_id = data.get("id", "")
@@ -2026,7 +2183,7 @@ class BrowserAdapter(InterfaceAdapter):
         result = get_recurring_tasks(
             proactive_manager,
             frequency=frequency,
-            enabled_only=False
+            enabled_only=False,
         )
 
         if result.get("success"):
@@ -2045,6 +2202,7 @@ class BrowserAdapter(InterfaceAdapter):
                     "day": task.get("day"),
                     "runCount": task.get("run_count", 0),
                     "lastRun": task.get("last_executed"),
+                    "nextRun": task.get("next_run"),
                     "outcomeHistory": task.get("outcome_history", []),
                 }
                 tasks_data.append(task_dict)
@@ -3208,7 +3366,17 @@ class BrowserAdapter(InterfaceAdapter):
             })
 
     async def _handle_integration_connect_oauth(self, integration_id: str) -> None:
-        """Start OAuth flow for an integration."""
+        """Start OAuth flow for an integration (non-blocking)."""
+        # Cancel any existing OAuth task for this integration
+        if integration_id in self._oauth_tasks:
+            self._oauth_tasks[integration_id].cancel()
+
+        # Run OAuth in background task so WebSocket message loop stays responsive
+        task = asyncio.create_task(self._run_oauth_flow(integration_id))
+        self._oauth_tasks[integration_id] = task
+
+    async def _run_oauth_flow(self, integration_id: str) -> None:
+        """Execute OAuth flow and broadcast result (runs as background task)."""
         try:
             success, message = await connect_integration_oauth(integration_id)
             await self._broadcast({
@@ -3222,6 +3390,16 @@ class BrowserAdapter(InterfaceAdapter):
             # Refresh the list on success (listener is started by connect_integration_oauth)
             if success:
                 await self._handle_integration_list()
+        except asyncio.CancelledError:
+            # OAuth was cancelled by user closing the modal
+            await self._broadcast({
+                "type": "integration_connect_result",
+                "data": {
+                    "success": False,
+                    "message": "OAuth cancelled",
+                    "id": integration_id,
+                },
+            })
         except Exception as e:
             await self._broadcast({
                 "type": "integration_connect_result",
@@ -3231,9 +3409,21 @@ class BrowserAdapter(InterfaceAdapter):
                     "id": integration_id,
                 },
             })
+        finally:
+            self._oauth_tasks.pop(integration_id, None)
 
     async def _handle_integration_connect_interactive(self, integration_id: str) -> None:
-        """Connect an integration using interactive flow (e.g. Telegram QR login)."""
+        """Connect an integration using interactive flow (non-blocking)."""
+        # Cancel any existing interactive task for this integration
+        if integration_id in self._oauth_tasks:
+            self._oauth_tasks[integration_id].cancel()
+
+        # Run interactive flow in background task so WebSocket message loop stays responsive
+        task = asyncio.create_task(self._run_interactive_flow(integration_id))
+        self._oauth_tasks[integration_id] = task
+
+    async def _run_interactive_flow(self, integration_id: str) -> None:
+        """Execute interactive flow and broadcast result (runs as background task)."""
         try:
             success, message = await connect_integration_interactive(integration_id)
             await self._broadcast({
@@ -3247,6 +3437,16 @@ class BrowserAdapter(InterfaceAdapter):
             # Refresh the list on success (listener is started by connect_integration_interactive)
             if success:
                 await self._handle_integration_list()
+        except asyncio.CancelledError:
+            # Interactive flow was cancelled by user closing the modal
+            await self._broadcast({
+                "type": "integration_connect_result",
+                "data": {
+                    "success": False,
+                    "message": "Connection cancelled",
+                    "id": integration_id,
+                },
+            })
         except Exception as e:
             await self._broadcast({
                 "type": "integration_connect_result",
@@ -3256,6 +3456,14 @@ class BrowserAdapter(InterfaceAdapter):
                     "id": integration_id,
                 },
             })
+        finally:
+            self._oauth_tasks.pop(integration_id, None)
+
+    async def _handle_integration_connect_cancel(self, integration_id: str) -> None:
+        """Cancel an in-progress OAuth/interactive flow."""
+        if integration_id in self._oauth_tasks:
+            self._oauth_tasks[integration_id].cancel()
+            # Result will be broadcast by the cancelled task's CancelledError handler
 
     async def _handle_integration_disconnect(
         self, integration_id: str, account_id: Optional[str] = None
@@ -3469,6 +3677,24 @@ class BrowserAdapter(InterfaceAdapter):
         # Clean up disconnected clients
         self._ws_clients -= disconnected
 
+    async def _broadcast_error_to_chat(self, error_message: str) -> None:
+        """Broadcast an error message to the chat panel for debugging."""
+        import time
+        try:
+            await self._broadcast({
+                "type": "chat_message",
+                "data": {
+                    "sender": "System",
+                    "content": f"[DEBUG ERROR] {error_message}",
+                    "style": "error",
+                    "timestamp": time.time(),
+                    "messageId": f"error:{time.time()}",
+                },
+            })
+        except Exception:
+            # If broadcast fails, at least print to console
+            print(f"[BROWSER ADAPTER] Failed to broadcast error: {error_message}")
+
     async def _broadcast_metrics_loop(self) -> None:
         """Periodically broadcast dashboard metrics to connected clients."""
         while self._running:
@@ -3520,8 +3746,10 @@ class BrowserAdapter(InterfaceAdapter):
             "modified": int(stat.st_mtime * 1000),  # milliseconds for JS
         }
 
-    async def _handle_file_list(self, directory: str) -> None:
-        """List files in a directory within the workspace."""
+    async def _handle_file_list(
+        self, directory: str, offset: int = 0, limit: int = 50, search: str = ""
+    ) -> None:
+        """List files in a directory within the workspace with pagination and search."""
         try:
             workspace = Path(AGENT_WORKSPACE_ROOT).resolve()
 
@@ -3540,15 +3768,28 @@ class BrowserAdapter(InterfaceAdapter):
             if not target.is_dir():
                 raise ValueError(f"Path is not a directory: {directory}")
 
-            files = []
-            for item in sorted(target.iterdir(), key=lambda x: (not x.is_dir(), x.name.lower())):
-                files.append(self._get_file_info(item))
+            # Collect and sort all files
+            all_files = sorted(target.iterdir(), key=lambda x: (not x.is_dir(), x.name.lower()))
+
+            # Apply search filter
+            if search:
+                search_lower = search.lower()
+                all_files = [f for f in all_files if search_lower in f.name.lower()]
+
+            total = len(all_files)
+
+            # Apply pagination
+            paginated = all_files[offset:offset + limit]
+            files = [self._get_file_info(item) for item in paginated]
 
             await self._broadcast({
                 "type": "file_list",
                 "data": {
                     "directory": directory,
                     "files": files,
+                    "total": total,
+                    "hasMore": offset + limit < total,
+                    "offset": offset,
                     "success": True,
                 },
             })
@@ -3558,6 +3799,9 @@ class BrowserAdapter(InterfaceAdapter):
                 "data": {
                     "directory": directory,
                     "files": [],
+                    "total": 0,
+                    "hasMore": False,
+                    "offset": 0,
                     "success": False,
                     "error": str(e),
                 },
@@ -3925,8 +4169,105 @@ class BrowserAdapter(InterfaceAdapter):
                 },
             })
 
-    async def _handle_chat_message_with_attachments(self, content: str, attachments: List[Dict[str, Any]]) -> None:
-        """Handle user chat message with attachments."""
+    async def _handle_chat_history(self, before_timestamp: float, limit: int = 50) -> None:
+        """Load older chat messages for infinite scroll."""
+        try:
+            older_messages = self._chat.get_messages_before(before_timestamp, limit=limit)
+            total = self._chat.get_total_count()
+
+            messages_data = []
+            for m in older_messages:
+                msg_data = {
+                    "sender": m.sender,
+                    "content": m.content,
+                    "style": m.style,
+                    "timestamp": m.timestamp,
+                    "messageId": m.message_id,
+                }
+                if m.attachments:
+                    msg_data["attachments"] = [
+                        {
+                            "name": att.name,
+                            "path": att.path,
+                            "type": att.type,
+                            "size": att.size,
+                            "url": att.url,
+                        }
+                        for att in m.attachments
+                    ]
+                if m.task_session_id:
+                    msg_data["taskSessionId"] = m.task_session_id
+                messages_data.append(msg_data)
+
+            await self._broadcast({
+                "type": "chat_history",
+                "data": {
+                    "messages": messages_data,
+                    "hasMore": len(older_messages) == limit,
+                    "total": total,
+                },
+            })
+        except Exception as e:
+            await self._broadcast({
+                "type": "chat_history",
+                "data": {
+                    "messages": [],
+                    "hasMore": False,
+                    "total": 0,
+                    "error": str(e),
+                },
+            })
+
+    async def _handle_action_history(self, before_timestamp: float, limit: int = 15) -> None:
+        """Load older tasks (and their actions) for pagination."""
+        try:
+            # before_timestamp is in milliseconds from frontend, convert to seconds
+            before_ts_seconds = before_timestamp / 1000.0
+            older_items = self._action_panel.get_tasks_before(before_ts_seconds, task_limit=limit)
+
+            # Count how many tasks were returned to determine hasMore
+            task_count = sum(1 for a in older_items if a.item_type == 'task')
+
+            actions_data = [
+                {
+                    "id": a.id,
+                    "name": a.name,
+                    "status": a.status,
+                    "itemType": a.item_type,
+                    "parentId": a.parent_id,
+                    "createdAt": int(a.created_at * 1000),
+                    "duration": a.duration,
+                    "input": a.input_data,
+                    "output": a.output_data,
+                    "error": a.error_message,
+                }
+                for a in older_items
+            ]
+
+            await self._broadcast({
+                "type": "action_history",
+                "data": {
+                    "actions": actions_data,
+                    "hasMore": task_count == limit,
+                },
+            })
+        except Exception as e:
+            await self._broadcast({
+                "type": "action_history",
+                "data": {
+                    "actions": [],
+                    "hasMore": False,
+                    "error": str(e),
+                },
+            })
+
+    async def _handle_chat_message_with_attachments(
+        self,
+        content: str,
+        attachments: List[Dict[str, Any]],
+        reply_context: Optional[Dict[str, Any]] = None
+    ) -> None:
+        """Handle user chat message with attachments and optional reply context."""
         import uuid
         from app.ui_layer.state.ui_state import AgentStateType
         from app.ui_layer.events import UIEvent, UIEventType
@@ -3991,6 +4332,11 @@ class BrowserAdapter(InterfaceAdapter):
             # (This is what the agent sees in the event stream - includes file paths)
             agent_context = content + attachment_note
 
+            # Add reply context note (similar to attachment_note pattern)
+            if reply_context and reply_context.get("originalMessage"):
+                reply_note = f"\n\n[REPLYING TO PREVIOUS AGENT MESSAGE]:\n{reply_context['originalMessage']}"
+                agent_context = agent_context + reply_note
+
             if not agent_context.strip():
                 return
 
@@ -4016,6 +4362,10 @@ class BrowserAdapter(InterfaceAdapter):
                 "sender": {"id": self._adapter_id or "user", "type": "user"},
                 "gui_mode": self._controller._state_store.state.gui_mode,
             }
+            # Include target session ID if replying to a specific session
+            if reply_context and reply_context.get("sessionId"):
+                payload["target_session_id"] = reply_context["sessionId"]
+
             await self._controller._agent._handle_chat_message(payload)
 
         except Exception as e:
@@ -4260,6 +4610,7 @@ class BrowserAdapter(InterfaceAdapter):
         file_paths: list,
         sender: Optional[str] = None,
         style: str = "agent",
+        session_id: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
         Send a chat message with one or more attachments from the agent.
@@ -4272,6 +4623,7 @@ class BrowserAdapter(InterfaceAdapter):
             file_paths: List of absolute paths or paths relative to workspace
             sender: Message sender (default: uses agent name from onboarding)
             style: Message style (default: "agent")
+            session_id: Optional task/session ID for multi-task isolation.
 
         Returns:
             Dict with 'success' (bool), 'files_sent' (int), and optionally 'errors' (list of str)
@@ -4300,6 +4652,7 @@ class BrowserAdapter(InterfaceAdapter):
                     content=message,
                     style=style,
                     attachments=attachments,
+                    task_session_id=session_id,
                 )
                 await self._chat.append_message(chat_message)
 
@@ -4373,6 +4726,7 @@ class BrowserAdapter(InterfaceAdapter):
                         }
                         for att in m.attachments
                     ]} if m.attachments else {}),
+                    **({"taskSessionId": m.task_session_id} if m.task_session_id else {}),
                 }
                 for m in self._chat.get_messages()
             ],
