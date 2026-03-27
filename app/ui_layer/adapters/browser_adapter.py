@@ -206,6 +206,7 @@ class BrowserChatComponent(ChatComponentProtocol):
                     timestamp=stored.timestamp,
                     message_id=stored.message_id,
                     attachments=attachments,
+                    task_session_id=stored.task_session_id,
                 ))
         except Exception:
             # Storage may not be available, continue without persistence
@@ -4089,6 +4090,7 @@ A quick Q&A will now begin to understand your preferences and serve you better:"
         file_paths: list,
         sender: Optional[str] = None,
         style: str = "agent",
+        session_id: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
         Send a chat message with one or more attachments from the agent.
@@ -4101,6 +4103,7 @@ A quick Q&A will now begin to understand your preferences and serve you better:"
             file_paths: List of absolute paths or paths relative to workspace
             sender: Message sender (default: uses agent name from onboarding)
             style: Message style (default: "agent")
+            session_id: Optional task/session ID for multi-task isolation.
 
         Returns:
             Dict with 'success' (bool), 'files_sent' (int), and optionally 'errors' (list of str)
@@ -4129,6 +4132,7 @@ A quick Q&A will now begin to understand your preferences and serve you better:"
                     content=message,
                     style=style,
                     attachments=attachments,
+                    task_session_id=session_id,
                 )
                 await self._chat.append_message(chat_message)
 
@@ -4202,6 +4206,7 @@ A quick Q&A will now begin to understand your preferences and serve you better:"
                         }
                         for att in m.attachments
                     ]} if m.attachments else {}),
+                    **({"taskSessionId": m.task_session_id} if m.task_session_id else {}),
                 }
                 for m in self._chat.get_messages()
             ],
