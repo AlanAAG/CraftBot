@@ -258,7 +258,7 @@ function formatCronExpression(cron: string): string {
   // Hourly: minute is fixed, everything else is *
   if (hour === '*' && dayOfMonth === '*' && month === '*' && dayOfWeek === '*') {
     const minNum = parseInt(minute, 10)
-    if (minNum === 0) return 'Every hour at :00'
+    if (minNum === 0) return 'Every hour'
     return `Every hour at :${minute.padStart(2, '0')}`
   }
 
