@@ -92,8 +92,8 @@ INTEGRATION_REGISTRY: Dict[str, Dict[str, Any]] = {
         "description": "Tweets, mentions, and timeline",
         "auth_type": "token",
         "fields": [
-            {"key": "api_key", "label": "API Key", "placeholder": "Enter API key", "password": True},
-            {"key": "api_secret", "label": "API Secret", "placeholder": "Enter API secret", "password": True},
+            {"key": "api_key", "label": "Consumer Key", "placeholder": "Enter Consumer key", "password": True},
+            {"key": "api_secret", "label": "Consumer Secret", "placeholder": "Enter Consumer secret", "password": True},
             {"key": "access_token", "label": "Access Token", "placeholder": "Enter access token", "password": True},
             {"key": "access_token_secret", "label": "Access Token Secret", "placeholder": "Enter access token secret", "password": True},
         ],
