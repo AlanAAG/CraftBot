@@ -47,7 +47,7 @@ function formatCronExpression(cron: string): string {
 
   if (hour === '*' && dayOfMonth === '*' && month === '*' && dayOfWeek === '*') {
     const minNum = parseInt(minute, 10)
-    if (minNum === 0) return 'Every hour at :00'
+    if (minNum === 0) return 'Twice every hour'
     return `Every hour at :${minute.padStart(2, '0')}`
   }
 
@@ -435,18 +435,25 @@ export function ProactiveSettings() {
     })
   }
 
+  // Search state for proactive tasks
+  const [taskSearchQuery, setTaskSearchQuery] = useState('')
+
+  const filteredTasks = taskSearchQuery
+    ? tasks.filter(t =>
+        t.name.toLowerCase().includes(taskSearchQuery.toLowerCase()) ||
+        t.instruction.toLowerCase().includes(taskSearchQuery.toLowerCase())
+      )
+    : tasks
+
   const tasksByFrequency = {
-    hourly: tasks.filter(t => t.frequency === 'hourly'),
-    daily: tasks.filter(t => t.frequency === 'daily'),
-    weekly: tasks.filter(t => t.frequency === 'weekly'),
-    monthly: tasks.filter(t => t.frequency === 'monthly'),
+    hourly: filteredTasks.filter(t => t.frequency === 'hourly'),
+    daily: filteredTasks.filter(t => t.frequency === 'daily'),
+    weekly: filteredTasks.filter(t => t.frequency === 'weekly'),
+    monthly: filteredTasks.filter(t => t.frequency === 'monthly'),
   }
 
   const heartbeatSchedules = [
-    { id: 'hourly-heartbeat', label: 'Hourly Heartbeat', desc: 'Runs every hour to check and execute hourly tasks' },
-    { id: 'daily-heartbeat', label: 'Daily Heartbeat', desc: 'Runs once daily to execute daily tasks' },
-    { id: 'weekly-heartbeat', label: 'Weekly Heartbeat', desc: 'Runs weekly to execute weekly tasks' },
-    { id: 'monthly-heartbeat', label: 'Monthly Heartbeat', desc: 'Runs monthly to execute monthly tasks' },
+    { id: 'heartbeat', label: 'Heartbeat', desc: 'Runs every 30 minutes to check and execute all due proactive tasks' },
   ]
 
   const plannerSchedules = [
@@ -558,6 +565,23 @@ export function ProactiveSettings() {
               Add Task
             </Button>
           </div>
+
+          {tasks.length > 0 && (
+            <div className={styles.searchContainer}>
+              <input
+                type="text"
+                placeholder="Search tasks..."
+                value={taskSearchQuery}
+                onChange={(e) => setTaskSearchQuery(e.target.value)}
+                className={styles.searchInput}
+              />
+              {taskSearchQuery && (
+                <span className={styles.searchCount}>
+                  {filteredTasks.length} of {tasks.length}
+                </span>
+              )}
+            </div>
+          )}
 
           {isLoadingTasks ? (
             <div className={styles.loadingState}>
