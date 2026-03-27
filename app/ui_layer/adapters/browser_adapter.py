@@ -53,6 +53,7 @@ from app.ui_layer.settings import (
     update_model_settings,
     test_connection,
     validate_can_save,
+    get_ollama_models,
     # MCP settings
     list_mcp_servers,
     add_mcp_server_from_json,
@@ -870,17 +871,21 @@ A quick Q&A will now begin to understand your preferences and serve you better:"
             if assets_path.exists():
                 self._app.router.add_static("/assets/", assets_path)
 
-            # Serve favicon
-            favicon_path = frontend_dist / "favicon.svg"
-            if favicon_path.exists():
-                self._app.router.add_get(
-                    "/favicon.svg",
-                    lambda _: web.FileResponse(favicon_path)
-                )
+            # Serve static files from dist/ (public/ files copied by Vite build)
+            # This must come before the SPA catch-all so images, fonts, etc. are served directly
+            _dist = frontend_dist  # capture for closure
 
-            # Serve index.html for all non-API routes (SPA routing)
+            async def _static_or_spa(request: web.Request) -> web.StreamResponse:
+                """Serve static file from dist/ if it exists, otherwise index.html for SPA routing."""
+                req_path = request.match_info.get("path", "")
+                if req_path:
+                    file_path = _dist / req_path
+                    if file_path.is_file():
+                        return web.FileResponse(file_path)
+                return web.FileResponse(_dist / "index.html")
+
             self._app.router.add_get("/", self._spa_handler)
-            self._app.router.add_get("/{path:.*}", self._spa_handler)
+            self._app.router.add_get("/{path:.*}", _static_or_spa)
         else:
             # Fallback to inline HTML for development without build
             self._app.router.add_get("/", self._index_handler)
@@ -1225,6 +1230,10 @@ A quick Q&A will now begin to understand your preferences and serve you better:"
         elif msg_type == "model_validate_save":
             await self._handle_model_validate_save(data)
 
+        elif msg_type == "ollama_models_get":
+            base_url = data.get("baseUrl")
+            await self._handle_ollama_models_get(base_url)
+
         # MCP settings operations
         elif msg_type == "mcp_list":
             await self._handle_mcp_list()
@@ -1327,6 +1336,24 @@ A quick Q&A will now begin to understand your preferences and serve you better:"
             account_id = data.get("account_id")
             await self._handle_integration_disconnect(integration_id, account_id)
 
+        # Jira settings handlers
+        elif msg_type == "jira_get_settings":
+            await self._handle_jira_get_settings()
+
+        elif msg_type == "jira_update_settings":
+            watch_tag = data.get("watch_tag")
+            watch_labels = data.get("watch_labels")
+            await self._handle_jira_update_settings(watch_tag=watch_tag, watch_labels=watch_labels)
+
+        # GitHub settings handlers
+        elif msg_type == "github_get_settings":
+            await self._handle_github_get_settings()
+
+        elif msg_type == "github_update_settings":
+            watch_tag = data.get("watch_tag")
+            watch_repos = data.get("watch_repos")
+            await self._handle_github_update_settings(watch_tag=watch_tag, watch_repos=watch_repos)
+
         # WhatsApp QR code flow handlers
         elif msg_type == "whatsapp_start_qr":
             await self._handle_whatsapp_start_qr()
@@ -1356,6 +1383,23 @@ A quick Q&A will now begin to understand your preferences and serve you better:"
 
         elif msg_type == "onboarding_back":
             await self._handle_onboarding_back()
+
+        # Local LLM (Ollama) helpers
+        elif msg_type == "local_llm_check":
+            await self._handle_local_llm_check()
+        elif msg_type == "local_llm_test":
+            url = data.get("url", "http://localhost:11434")
+            await self._handle_local_llm_test(url)
+        elif msg_type == "local_llm_install":
+            await self._handle_local_llm_install()
+        elif msg_type == "local_llm_start":
+            await self._handle_local_llm_start()
+        elif msg_type == "local_llm_suggested_models":
+            await self._handle_local_llm_suggested_models()
+        elif msg_type == "local_llm_pull_model":
+            model = data.get("model", "")
+            base_url = data.get("baseUrl")
+            await self._handle_local_llm_pull_model(model, base_url)
 
     async def _handle_dashboard_metrics_filter(self, period: str) -> None:
         """Handle filtered metrics request for specific time period."""
@@ -1435,6 +1479,7 @@ A quick Q&A will now begin to understand your preferences and serve you better:"
                             for opt in options
                         ],
                         "default": controller.get_step_default(),
+                        "provider": getattr(step, "provider", None),
                     },
                 },
             })
@@ -1466,6 +1511,45 @@ A quick Q&A will now begin to understand your preferences and serve you better:"
                     },
                 })
                 return
+
+            # For API key step, test the connection before proceeding
+            step = controller.get_current_step()
+            if step.name == "api_key":
+                provider = controller.get_collected_data().get("provider", "openai")
+                if provider == "remote":
+                    # Test Ollama connection with the submitted URL
+                    ollama_url = (value or "http://localhost:11434").strip()
+                    from app.ui_layer.local_llm_setup import test_ollama_connection_sync
+                    test_result = test_ollama_connection_sync(ollama_url)
+                    if not test_result.get("success"):
+                        err = test_result.get("error", "Cannot reach Ollama")
+                        await self._broadcast({
+                            "type": "onboarding_submit",
+                            "data": {
+                                "success": False,
+                                "error": f"Ollama connection failed: {err}",
+                                "index": controller.current_step_index,
+                            },
+                        })
+                        return
+                    # Normalise the value to the URL that actually worked
+                    value = ollama_url
+                elif value:
+                    test_result = test_connection(
+                        provider=provider,
+                        api_key=value,
+                    )
+                    if not test_result.get("success"):
+                        error_msg = test_result.get("error") or test_result.get("message") or "Connection test failed"
+                        await self._broadcast({
+                            "type": "onboarding_submit",
+                            "data": {
+                                "success": False,
+                                "error": f"Invalid API key: {error_msg}",
+                                "index": controller.current_step_index,
+                            },
+                        })
+                        return
 
             # Submit the value
             controller.submit_step_value(value)
@@ -1515,6 +1599,7 @@ A quick Q&A will now begin to understand your preferences and serve you better:"
                                 for opt in options
                             ],
                             "default": controller.get_step_default(),
+                            "provider": getattr(step, "provider", None),
                         },
                     },
                 })
@@ -1589,6 +1674,7 @@ A quick Q&A will now begin to understand your preferences and serve you better:"
                                 for opt in options
                             ],
                             "default": controller.get_step_default(),
+                            "provider": getattr(step, "provider", None),
                         },
                     },
                 })
@@ -1644,6 +1730,7 @@ A quick Q&A will now begin to understand your preferences and serve you better:"
                             for opt in options
                         ],
                         "default": controller.get_step_default(),
+                        "provider": getattr(step, "provider", None),
                     },
                 },
             })
@@ -1655,6 +1742,124 @@ A quick Q&A will now begin to understand your preferences and serve you better:"
                     "success": False,
                     "error": str(e),
                 },
+            })
+
+    # ── Local LLM (Ollama) handlers ──────────────────────────────────────────
+
+    async def _handle_local_llm_check(self) -> None:
+        """Return Ollama installation and runtime status."""
+        try:
+            from app.ui_layer.local_llm_setup import get_ollama_status
+            status = get_ollama_status()
+            await self._broadcast({
+                "type": "local_llm_check",
+                "data": {"success": True, **status},
+            })
+        except Exception as e:
+            logger.error(f"[LOCAL_LLM] Error checking status: {e}")
+            await self._broadcast({
+                "type": "local_llm_check",
+                "data": {"success": False, "error": str(e)},
+            })
+
+    async def _handle_local_llm_test(self, url: str) -> None:
+        """Test an HTTP connection to a running Ollama instance."""
+        try:
+            from app.ui_layer.local_llm_setup import test_ollama_connection_sync
+            result = test_ollama_connection_sync(url)
+            await self._broadcast({
+                "type": "local_llm_test",
+                "data": result,
+            })
+        except Exception as e:
+            logger.error(f"[LOCAL_LLM] Error testing connection: {e}")
+            await self._broadcast({
+                "type": "local_llm_test",
+                "data": {"success": False, "error": str(e)},
+            })
+
+    async def _handle_local_llm_install(self) -> None:
+        """Install Ollama, streaming progress back to the client."""
+        async def progress_callback(msg: str) -> None:
+            await self._broadcast({
+                "type": "local_llm_install_progress",
+                "data": {"message": msg},
+            })
+
+        try:
+            from app.ui_layer.local_llm_setup import install_ollama
+            result = await install_ollama(progress_callback)
+            await self._broadcast({
+                "type": "local_llm_install",
+                "data": result,
+            })
+        except Exception as e:
+            logger.error(f"[LOCAL_LLM] Error installing: {e}")
+            await self._broadcast({
+                "type": "local_llm_install",
+                "data": {"success": False, "error": str(e)},
+            })
+
+    async def _handle_local_llm_start(self) -> None:
+        """Start the Ollama server."""
+        try:
+            from app.ui_layer.local_llm_setup import start_ollama
+            result = await start_ollama()
+            await self._broadcast({
+                "type": "local_llm_start",
+                "data": result,
+            })
+        except Exception as e:
+            logger.error(f"[LOCAL_LLM] Error starting Ollama: {e}")
+            await self._broadcast({
+                "type": "local_llm_start",
+                "data": {"success": False, "error": str(e)},
+            })
+
+    async def _handle_local_llm_suggested_models(self) -> None:
+        """Return the list of suggested Ollama models."""
+        from app.ui_layer.local_llm_setup import SUGGESTED_MODELS
+        await self._broadcast({
+            "type": "local_llm_suggested_models",
+            "data": {"models": SUGGESTED_MODELS},
+        })
+
+    async def _handle_local_llm_pull_model(self, model: str, base_url: str | None = None) -> None:
+        """Pull an Ollama model, streaming progress back to the client."""
+        if not model:
+            await self._broadcast({
+                "type": "local_llm_pull_model",
+                "data": {"success": False, "error": "No model specified"},
+            })
+            return
+
+        # Resolve base URL: explicit param > stored settings > default
+        if not base_url:
+            try:
+                from app.ui_layer.settings.model_settings import get_model_settings
+                settings_data = get_model_settings()
+                base_url = settings_data.get("base_urls", {}).get("remote")
+            except Exception:
+                pass
+
+        async def progress_callback(data: dict) -> None:
+            await self._broadcast({
+                "type": "local_llm_pull_progress",
+                "data": data,
+            })
+
+        try:
+            from app.ui_layer.local_llm_setup import pull_ollama_model
+            result = await pull_ollama_model(model, progress_callback, base_url=base_url)
+            await self._broadcast({
+                "type": "local_llm_pull_model",
+                "data": result,
+            })
+        except Exception as e:
+            logger.error(f"[LOCAL_LLM] Error pulling model {model}: {e}")
+            await self._broadcast({
+                "type": "local_llm_pull_model",
+                "data": {"success": False, "error": str(e)},
             })
 
     async def _handle_task_cancel(self, task_id: str) -> None:
@@ -2618,6 +2823,20 @@ A quick Q&A will now begin to understand your preferences and serve you better:"
                 },
             })
 
+    async def _handle_ollama_models_get(self, base_url: Optional[str] = None) -> None:
+        """Fetch available models from Ollama and broadcast to frontend."""
+        try:
+            if not base_url:
+                settings_data = get_model_settings()
+                base_url = settings_data.get("base_urls", {}).get("remote")
+            result = get_ollama_models(base_url=base_url)
+            await self._broadcast({"type": "ollama_models_get", "data": result})
+        except Exception as e:
+            await self._broadcast({
+                "type": "ollama_models_get",
+                "data": {"success": False, "models": [], "error": str(e)},
+            })
+
     # ─────────────────────────────────────────────────────────────────────
     # MCP Settings Handlers
     # ─────────────────────────────────────────────────────────────────────
@@ -3272,6 +3491,109 @@ A quick Q&A will now begin to understand your preferences and serve you better:"
                     "id": integration_id,
                 },
             })
+
+    # =====================
+    # Jira Settings
+    # =====================
+
+    async def _handle_jira_get_settings(self) -> None:
+        """Get current Jira watch tag and labels."""
+        try:
+            from app.external_comms.credentials import has_credential, load_credential
+            from app.external_comms.platforms.jira import JiraCredential
+            if not has_credential("jira.json"):
+                await self._broadcast({"type": "jira_settings", "data": {"success": False, "error": "Not connected"}})
+                return
+            cred = load_credential("jira.json", JiraCredential)
+            await self._broadcast({
+                "type": "jira_settings",
+                "data": {
+                    "success": True,
+                    "watch_tag": cred.watch_tag if cred else "",
+                    "watch_labels": cred.watch_labels if cred else [],
+                },
+            })
+        except Exception as e:
+            await self._broadcast({"type": "jira_settings", "data": {"success": False, "error": str(e)}})
+
+    async def _handle_jira_update_settings(self, watch_tag=None, watch_labels=None) -> None:
+        """Update Jira watch tag and/or labels."""
+        try:
+            from app.external_comms.platforms.jira import JiraClient
+            client = JiraClient()
+            if not client.has_credentials():
+                await self._broadcast({"type": "jira_settings_result", "data": {"success": False, "error": "Not connected"}})
+                return
+            if watch_tag is not None:
+                client.set_watch_tag(watch_tag)
+            if watch_labels is not None:
+                if isinstance(watch_labels, str):
+                    watch_labels = [l.strip() for l in watch_labels.split(",") if l.strip()]
+                client.set_watch_labels(watch_labels)
+            # Return updated settings
+            cred = client._load()
+            await self._broadcast({
+                "type": "jira_settings_result",
+                "data": {
+                    "success": True,
+                    "watch_tag": cred.watch_tag,
+                    "watch_labels": cred.watch_labels,
+                    "message": "Jira settings updated",
+                },
+            })
+        except Exception as e:
+            await self._broadcast({"type": "jira_settings_result", "data": {"success": False, "error": str(e)}})
+
+    # =====================
+    # GitHub Settings
+    # =====================
+
+    async def _handle_github_get_settings(self) -> None:
+        """Get current GitHub watch tag and repos."""
+        try:
+            from app.external_comms.credentials import has_credential, load_credential
+            from app.external_comms.platforms.github import GitHubCredential
+            if not has_credential("github.json"):
+                await self._broadcast({"type": "github_settings", "data": {"success": False, "error": "Not connected"}})
+                return
+            cred = load_credential("github.json", GitHubCredential)
+            await self._broadcast({
+                "type": "github_settings",
+                "data": {
+                    "success": True,
+                    "watch_tag": cred.watch_tag if cred else "",
+                    "watch_repos": cred.watch_repos if cred else [],
+                },
+            })
+        except Exception as e:
+            await self._broadcast({"type": "github_settings", "data": {"success": False, "error": str(e)}})
+
+    async def _handle_github_update_settings(self, watch_tag=None, watch_repos=None) -> None:
+        """Update GitHub watch tag and/or repos."""
+        try:
+            from app.external_comms.platforms.github import GitHubClient
+            client = GitHubClient()
+            if not client.has_credentials():
+                await self._broadcast({"type": "github_settings_result", "data": {"success": False, "error": "Not connected"}})
+                return
+            if watch_tag is not None:
+                client.set_watch_tag(watch_tag)
+            if watch_repos is not None:
+                if isinstance(watch_repos, str):
+                    watch_repos = [r.strip() for r in watch_repos.split(",") if r.strip()]
+                client.set_watch_repos(watch_repos)
+            cred = client._load()
+            await self._broadcast({
+                "type": "github_settings_result",
+                "data": {
+                    "success": True,
+                    "watch_tag": cred.watch_tag,
+                    "watch_repos": cred.watch_repos,
+                    "message": "GitHub settings updated",
+                },
+            })
+        except Exception as e:
+            await self._broadcast({"type": "github_settings_result", "data": {"success": False, "error": str(e)}})
 
     # =====================
     # WhatsApp QR Code Flow
