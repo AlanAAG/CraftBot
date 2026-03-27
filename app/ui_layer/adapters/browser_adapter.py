@@ -1174,6 +1174,24 @@ class BrowserAdapter(InterfaceAdapter):
             account_id = data.get("account_id")
             await self._handle_integration_disconnect(integration_id, account_id)
 
+        # Jira settings handlers
+        elif msg_type == "jira_get_settings":
+            await self._handle_jira_get_settings()
+
+        elif msg_type == "jira_update_settings":
+            watch_tag = data.get("watch_tag")
+            watch_labels = data.get("watch_labels")
+            await self._handle_jira_update_settings(watch_tag=watch_tag, watch_labels=watch_labels)
+
+        # GitHub settings handlers
+        elif msg_type == "github_get_settings":
+            await self._handle_github_get_settings()
+
+        elif msg_type == "github_update_settings":
+            watch_tag = data.get("watch_tag")
+            watch_repos = data.get("watch_repos")
+            await self._handle_github_update_settings(watch_tag=watch_tag, watch_repos=watch_repos)
+
         # WhatsApp QR code flow handlers
         elif msg_type == "whatsapp_start_qr":
             await self._handle_whatsapp_start_qr()
@@ -3090,6 +3108,109 @@ class BrowserAdapter(InterfaceAdapter):
                     "id": integration_id,
                 },
             })
+
+    # =====================
+    # Jira Settings
+    # =====================
+
+    async def _handle_jira_get_settings(self) -> None:
+        """Get current Jira watch tag and labels."""
+        try:
+            from app.external_comms.credentials import has_credential, load_credential
+            from app.external_comms.platforms.jira import JiraCredential
+            if not has_credential("jira.json"):
+                await self._broadcast({"type": "jira_settings", "data": {"success": False, "error": "Not connected"}})
+                return
+            cred = load_credential("jira.json", JiraCredential)
+            await self._broadcast({
+                "type": "jira_settings",
+                "data": {
+                    "success": True,
+                    "watch_tag": cred.watch_tag if cred else "",
+                    "watch_labels": cred.watch_labels if cred else [],
+                },
+            })
+        except Exception as e:
+            await self._broadcast({"type": "jira_settings", "data": {"success": False, "error": str(e)}})
+
+    async def _handle_jira_update_settings(self, watch_tag=None, watch_labels=None) -> None:
+        """Update Jira watch tag and/or labels."""
+        try:
+            from app.external_comms.platforms.jira import JiraClient
+            client = JiraClient()
+            if not client.has_credentials():
+                await self._broadcast({"type": "jira_settings_result", "data": {"success": False, "error": "Not connected"}})
+                return
+            if watch_tag is not None:
+                client.set_watch_tag(watch_tag)
+            if watch_labels is not None:
+                if isinstance(watch_labels, str):
+                    watch_labels = [l.strip() for l in watch_labels.split(",") if l.strip()]
+                client.set_watch_labels(watch_labels)
+            # Return updated settings
+            cred = client._load()
+            await self._broadcast({
+                "type": "jira_settings_result",
+                "data": {
+                    "success": True,
+                    "watch_tag": cred.watch_tag,
+                    "watch_labels": cred.watch_labels,
+                    "message": "Jira settings updated",
+                },
+            })
+        except Exception as e:
+            await self._broadcast({"type": "jira_settings_result", "data": {"success": False, "error": str(e)}})
+
+    # =====================
+    # GitHub Settings
+    # =====================
+
+    async def _handle_github_get_settings(self) -> None:
+        """Get current GitHub watch tag and repos."""
+        try:
+            from app.external_comms.credentials import has_credential, load_credential
+            from app.external_comms.platforms.github import GitHubCredential
+            if not has_credential("github.json"):
+                await self._broadcast({"type": "github_settings", "data": {"success": False, "error": "Not connected"}})
+                return
+            cred = load_credential("github.json", GitHubCredential)
+            await self._broadcast({
+                "type": "github_settings",
+                "data": {
+                    "success": True,
+                    "watch_tag": cred.watch_tag if cred else "",
+                    "watch_repos": cred.watch_repos if cred else [],
+                },
+            })
+        except Exception as e:
+            await self._broadcast({"type": "github_settings", "data": {"success": False, "error": str(e)}})
+
+    async def _handle_github_update_settings(self, watch_tag=None, watch_repos=None) -> None:
+        """Update GitHub watch tag and/or repos."""
+        try:
+            from app.external_comms.platforms.github import GitHubClient
+            client = GitHubClient()
+            if not client.has_credentials():
+                await self._broadcast({"type": "github_settings_result", "data": {"success": False, "error": "Not connected"}})
+                return
+            if watch_tag is not None:
+                client.set_watch_tag(watch_tag)
+            if watch_repos is not None:
+                if isinstance(watch_repos, str):
+                    watch_repos = [r.strip() for r in watch_repos.split(",") if r.strip()]
+                client.set_watch_repos(watch_repos)
+            cred = client._load()
+            await self._broadcast({
+                "type": "github_settings_result",
+                "data": {
+                    "success": True,
+                    "watch_tag": cred.watch_tag,
+                    "watch_repos": cred.watch_repos,
+                    "message": "GitHub settings updated",
+                },
+            })
+        except Exception as e:
+            await self._broadcast({"type": "github_settings_result", "data": {"success": False, "error": str(e)}})
 
     # =====================
     # WhatsApp QR Code Flow
