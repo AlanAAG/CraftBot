@@ -77,6 +77,13 @@ interface WebSocketContextType extends WebSocketState {
   loadOlderMessages: () => void
   // Action pagination
   loadOlderActions: () => void
+  // Local LLM (Ollama) methods
+  checkLocalLLM: () => void
+  testLocalLLMConnection: (url: string) => void
+  installLocalLLM: () => void
+  startLocalLLM: () => void
+  requestSuggestedModels: () => void
+  pullOllamaModel: (model: string) => void
 }
 
 // Initialize lastSeenMessageId from localStorage
@@ -86,13 +93,6 @@ const getInitialLastSeenMessageId = (): string | null => {
   } catch {
     return null
   }
-  // Local LLM (Ollama) methods
-  checkLocalLLM: () => void
-  testLocalLLMConnection: (url: string) => void
-  installLocalLLM: () => void
-  startLocalLLM: () => void
-  requestSuggestedModels: () => void
-  pullOllamaModel: (model: string) => void
 }
 
 const defaultState: WebSocketState = {
@@ -841,6 +841,8 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
   // Clear reply target
   const clearReplyTarget = useCallback(() => {
     setState(prev => ({ ...prev, replyTarget: null }))
+  }, [])
+
   // Local LLM (Ollama) methods
   const checkLocalLLM = useCallback(() => {
     if (wsRef.current?.readyState !== WebSocket.OPEN) return
