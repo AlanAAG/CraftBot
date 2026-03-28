@@ -582,17 +582,20 @@ class AgentBase:
         )
 
     def _extract_user_message_from_trigger(self, trigger: Trigger) -> Optional[str]:
-        """Extract user message that was stored by triggers.fire().
+        """Extract and consume user message that was stored by triggers.fire().
 
         When a message is routed to an existing session, the fire() method
         stores it in the trigger's payload. This message needs to be recorded
         to the event stream so the LLM can see it.
 
+        Uses pop() to consume the message, preventing it from being carried
+        forward to subsequent triggers via create_new_trigger().
+
         Returns:
             The user message if found, None otherwise.
         """
         payload = trigger.payload or {}
-        return payload.get("pending_user_message")
+        return payload.pop("pending_user_message", None)
 
     async def _initialize_session(self, gui_mode: bool | None, session_id: str) -> None:
         """Initialize the agent session and set current task ID.
