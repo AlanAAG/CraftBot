@@ -382,6 +382,20 @@ class AgentBase:
                 # Use platform from trigger_data (already formatted by _extract_trigger_data)
                 self.state_manager.record_user_message(user_message, platform=trigger_data.platform)
 
+            # Check if task is waiting for user reply but no message was received
+            # In this case, re-schedule the wait trigger instead of executing actions
+            if session_id and self.task_manager and not user_message:
+                task = self.task_manager.tasks.get(session_id)
+                if task and task.waiting_for_user_reply:
+                    logger.info(f"[REACT] Task {session_id} is waiting for user reply but no message received. Re-scheduling wait trigger.")
+                    # Re-schedule the wait trigger with another 3-hour delay
+                    await self._create_new_trigger(
+                        session_id,
+                        {"fire_at_delay": 10800, "wait_for_user_reply": True},  # 3 hours
+                        STATE
+                    )
+                    return
+
             # Debug: Log state after session initialization
             logger.debug(
                 f"[STATE] session_id={session_id} | "
@@ -1124,6 +1138,11 @@ class AgentBase:
             (output.get("fire_at_delay", 0.0) for output in outputs), default=0.0
         )
 
+        # Preserve wait_for_user_reply if any action sets it to True
+        merged["wait_for_user_reply"] = any(
+            output.get("wait_for_user_reply", False) for output in outputs
+        )
+
         # Check for errors
         errors = [o for o in outputs if o.get("status") == "error"]
         if errors:
@@ -1139,6 +1158,16 @@ class AgentBase:
         self.state_manager.bump_event_stream()
         if not await self._check_agent_limits():
             return
+
+        # Update task's waiting_for_user_reply flag based on action output
+        wait_for_reply = action_output.get("wait_for_user_reply", False)
+        task_id = new_session_id or session_id
+        if task_id and self.task_manager:
+            task = self.task_manager.tasks.get(task_id)
+            if task:
+                task.waiting_for_user_reply = wait_for_reply
+                if wait_for_reply:
+                    logger.info(f"[TASK] Task {task_id} is now waiting for user reply")
 
         # Check if parallel actions created multiple tasks
         parallel_results = action_output.get("parallel_results")
@@ -1323,6 +1352,9 @@ class AgentBase:
 
             fire_at = time.time() + fire_at_delay
 
+            # Check if this trigger should be marked as waiting for user reply
+            wait_for_user_reply = action_output.get("wait_for_user_reply", False)
+
             logger.debug(f"[TRIGGER] Creating new trigger for session: {new_session_id}")
 
             # Check if there's a pending user message from fire() that needs to be carried forward
@@ -1347,6 +1379,7 @@ class AgentBase:
                         next_action_description=next_action_desc,
                         session_id=new_session_id,
                         payload=trigger_payload,
+                        waiting_for_reply=wait_for_user_reply,
                     ),
                     skip_merge=True,  # Session is already explicitly set, no LLM merge check needed
                 )
@@ -1562,6 +1595,13 @@ class AgentBase:
                 if fired:
                     logger.info(f"[CHAT] Successfully resumed session {target_session_id}")
 
+                    # Reset task's waiting_for_user_reply flag
+                    if self.task_manager:
+                        task = self.task_manager.tasks.get(target_session_id)
+                        if task and task.waiting_for_user_reply:
+                            task.waiting_for_user_reply = False
+                            logger.info(f"[TASK] Task {target_session_id} no longer waiting for user reply")
+
                     # Reset task status from "waiting" to "running" when user replies
                     if self.ui_controller:
                         from app.ui_layer.events import UIEvent, UIEventType
@@ -1633,6 +1673,13 @@ class AgentBase:
                             f"[CHAT] Routed message to existing session {matched_session_id} "
                             f"(fired={fired}, reason: {routing_result.get('reason', 'N/A')})"
                         )
+
+                        # Reset task's waiting_for_user_reply flag
+                        if self.task_manager:
+                            task = self.task_manager.tasks.get(matched_session_id)
+                            if task and task.waiting_for_user_reply:
+                                task.waiting_for_user_reply = False
+                                logger.info(f"[TASK] Task {matched_session_id} no longer waiting for user reply")
 
                         # Reset task status from "waiting" to "running" when user replies
                         # Update UI regardless of fire() result - user has replied so we should

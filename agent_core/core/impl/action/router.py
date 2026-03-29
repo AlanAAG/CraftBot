@@ -224,6 +224,7 @@ class ActionRouter:
         # Build the instruction prompt for the LLM
         task_state = self.context_engine.get_task_state(session_id=session_id)
         memory_context = self.context_engine.get_memory_context(query, session_id=session_id)
+        event_stream_content = self.context_engine.get_event_stream(session_id=session_id)
         static_prompt = SELECT_ACTION_IN_TASK_PROMPT.format(
             agent_state=self.context_engine.get_agent_state(session_id=session_id),
             task_state=task_state,
@@ -236,7 +237,7 @@ class ActionRouter:
             agent_state=self.context_engine.get_agent_state(session_id=session_id),
             task_state=task_state,
             memory_context=memory_context,
-            event_stream=self.context_engine.get_event_stream(session_id=session_id),
+            event_stream=event_stream_content,
             query=query,
             action_candidates=self._format_candidates(action_candidates),
         )
@@ -329,6 +330,7 @@ class ActionRouter:
         # Build the instruction prompt
         task_state = self.context_engine.get_task_state(session_id=session_id)
         memory_context = self.context_engine.get_memory_context(query, session_id=session_id)
+        event_stream_content = self.context_engine.get_event_stream(session_id=session_id)
         static_prompt = SELECT_ACTION_IN_SIMPLE_TASK_PROMPT.format(
             agent_state=self.context_engine.get_agent_state(session_id=session_id),
             task_state=task_state,
@@ -341,7 +343,7 @@ class ActionRouter:
             agent_state=self.context_engine.get_agent_state(session_id=session_id),
             task_state=task_state,
             memory_context=memory_context,
-            event_stream=self.context_engine.get_event_stream(session_id=session_id),
+            event_stream=event_stream_content,
             query=query,
             action_candidates=self._format_candidates(action_candidates),
         )
@@ -431,6 +433,7 @@ class ActionRouter:
         # Build the instruction prompt for the LLM
         task_state = self.context_engine.get_task_state(session_id=session_id)
         memory_context = self.context_engine.get_memory_context(query, session_id=session_id)
+        event_stream_content = self.context_engine.get_event_stream(session_id=session_id)
         static_prompt = SELECT_ACTION_IN_GUI_PROMPT.format(
             agent_state=self.context_engine.get_agent_state(session_id=session_id),
             task_state=task_state,
@@ -441,7 +444,7 @@ class ActionRouter:
         full_prompt = SELECT_ACTION_IN_GUI_PROMPT.format(
             agent_state=self.context_engine.get_agent_state(session_id=session_id),
             task_state=task_state,
-            event_stream=self.context_engine.get_event_stream(session_id=session_id),
+            event_stream=event_stream_content,
             memory_context=memory_context,
             gui_action_space=GUI_ACTION_SPACE_PROMPT,
         )
