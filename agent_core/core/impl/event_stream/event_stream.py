@@ -303,7 +303,17 @@ class EventStream:
             logger.info(f"[EventStream] Summarization complete. Tokens: {self._total_tokens}")
 
         except Exception:
-            logger.exception("[EventStream] LLM summarization failed. Keeping all events without summarization.")
+            logger.exception(
+                "[EventStream] LLM summarization failed. "
+                "Pruning oldest events without a summary to prevent retry spam."
+            )
+            # Fallback: drop the oldest chunk without generating a summary so that
+            # _total_tokens falls below the threshold.  Without this, every subsequent
+            # log() call would immediately re-trigger summarization and flood the logs.
+            removed_tokens = sum(get_cached_token_count(r) for r in chunk)
+            self._total_tokens -= removed_tokens
+            self.tail_events = self.tail_events[cutoff:]
+            self._session_sync_points.clear()
 
     # ───────────────────── utilities ─────────────────────
 

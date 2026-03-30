@@ -49,7 +49,7 @@ from app.config import (
 
 from app.internal_action_interface import InternalActionInterface
 from app.llm import LLMInterface, LLMCallType
-from agent_core.core.impl.llm.errors import classify_llm_error
+from agent_core.core.impl.llm.errors import classify_llm_error, LLMConsecutiveFailureError
 from app.vlm_interface import VLMInterface
 from app.database_interface import DatabaseInterface
 from app.logger import logger
@@ -1208,6 +1208,9 @@ class AgentBase:
         # Get user-friendly error message
         user_message = classify_llm_error(error)
 
+        # Fatal LLM errors must not re-queue the task - that causes infinite retry loops
+        is_fatal_llm_error = isinstance(error, LLMConsecutiveFailureError)
+
         try:
             logger.debug("[REACT ERROR] Logging to event stream")
             self.event_stream_manager.log(
@@ -1217,7 +1220,18 @@ class AgentBase:
                 task_id=session_to_use,
             )
             self.state_manager.bump_event_stream()
-            await self._create_new_trigger(session_to_use, action_output, STATE)
+            if is_fatal_llm_error:
+                # Cancel the task instead of re-queueing to prevent infinite retries
+                logger.warning(
+                    f"[REACT ERROR] LLMConsecutiveFailureError detected - cancelling task {session_to_use} "
+                    "to prevent infinite retry loop."
+                )
+                if self.task_manager:
+                    await self.task_manager.mark_task_cancel(
+                        reason="LLM calls failed too many consecutive times. Task aborted."
+                    )
+            else:
+                await self._create_new_trigger(session_to_use, action_output, STATE)
         except Exception as e:
             logger.error(
                 "[REACT ERROR] Failed to log to event stream or create trigger",
