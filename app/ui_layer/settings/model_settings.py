@@ -69,6 +69,12 @@ PROVIDER_INFO = {
     #     "settings_key": "moonshot",
     #     "requires_api_key": True,
     # },
+    "grok": {
+        "name": "Grok (xAI)",
+        "api_key_env": "XAI_API_KEY",
+        "settings_key": "grok",
+        "requires_api_key": True,
+    },
     "remote": {
         "name": "Local (Ollama)",
         "base_url_env": "REMOTE_MODEL_URL",

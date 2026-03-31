@@ -347,7 +347,7 @@ class LLMInterface:
             logger.info(f"[LLM SEND] system={system_prompt} | user={user_prompt}")
 
         try:
-            if self.provider in ("openai", "minimax", "deepseek", "moonshot"):
+            if self.provider in ("openai", "minimax", "deepseek", "moonshot", "grok"):
                 response = self._generate_openai(system_prompt, user_prompt)
             elif self.provider == "remote":
                 response = self._generate_ollama(system_prompt, user_prompt)
@@ -482,7 +482,7 @@ class LLMInterface:
         supports_caching = (
             (self.provider == "byteplus" and self._byteplus_cache_manager) or
             (self.provider == "gemini" and self._gemini_cache_manager) or
-            (self.provider in ("openai", "deepseek") and self.client) or  # OpenAI/DeepSeek use automatic caching with prompt_cache_key
+            (self.provider in ("openai", "deepseek", "grok") and self.client) or  # OpenAI/DeepSeek/Grok use automatic caching with prompt_cache_key
             (self.provider == "anthropic" and self._anthropic_client)  # Anthropic uses ephemeral caching with extended TTL
         )
 
@@ -579,7 +579,7 @@ class LLMInterface:
                 return True
             if self.provider == "gemini" and self._gemini_cache_manager:
                 return True
-            if self.provider in ("openai", "deepseek") and self.client:
+            if self.provider in ("openai", "deepseek", "grok") and self.client:
                 return True
             if self.provider == "anthropic" and self._anthropic_client:
                 return True
@@ -661,8 +661,8 @@ class LLMInterface:
                 logger.info(f"[LLM RECV] {cleaned}")
             return cleaned
 
-        # Handle OpenAI/DeepSeek with call_type-based cache routing
-        if self.provider in ("openai", "deepseek"):
+        # Handle OpenAI/DeepSeek/Grok with call_type-based cache routing
+        if self.provider in ("openai", "deepseek", "grok"):
             # Get stored system prompt or use provided one
             session_key = f"{task_id}:{call_type}"
             stored_system_prompt = self._session_system_prompts.get(session_key)
