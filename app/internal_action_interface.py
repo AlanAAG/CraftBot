@@ -208,7 +208,19 @@ class InternalActionInterface:
         Returns:
             Dict with 'success' (bool), 'files_sent' (int), and optionally 'errors' (list of str)
         """
+        import os
         from app.onboarding import onboarding_manager
+
+        # Validate file paths before passing to UI adapter
+        errors = []
+        for fp in file_paths:
+            if not os.path.exists(fp):
+                errors.append(f"File not found: {fp}")
+            elif os.path.isdir(fp):
+                errors.append(f"Cannot attach directory: {fp}")
+
+        if errors:
+            return {"success": False, "files_sent": 0, "errors": errors}
 
         ui_adapter = InternalActionInterface.ui_adapter
 
