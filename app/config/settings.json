@@ -19,9 +19,7 @@
     "openai": "",
     "anthropic": "",
     "google": "",
-    "byteplus": "6aa60576-c6ef-4835-a77a-f7e51d0637ef",
-    "grok": "xai-10DEBO4YBy1TIb01DksBvPUVIzzQOTSdiQZwYM9J3KDGi1rcdiBMdv4YiUiK6zUmivsfLaONLMRJmhSi",
-    "deepseek": "sk-92ad69dddc244545a8789b3a101a9dd2"
+    "byteplus": ""
   },
   "endpoints": {
     "remote_model_url": "",
