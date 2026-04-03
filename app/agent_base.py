@@ -1497,6 +1497,36 @@ class AgentBase:
 
         return "\n\n".join(sections)
 
+    def _format_recent_conversation(self, limit: int = 10) -> str:
+        """Format recent conversation messages for routing context.
+
+        Provides the routing LLM with recent conversation history so it can
+        recognize messages related to completed tasks that are no longer in
+        the active sessions list.
+
+        Args:
+            limit: Maximum number of recent messages to include.
+
+        Returns:
+            Formatted string of recent conversation messages.
+        """
+        if not self.event_stream_manager:
+            return "No recent conversation history."
+
+        recent_msgs = self.event_stream_manager.get_recent_conversation_messages(limit=limit)
+        if not recent_msgs:
+            return "No recent conversation history."
+
+        lines = []
+        for evt in recent_msgs:
+            ts = evt.ts.strftime("%Y-%m-%d %H:%M:%S") if evt.ts else "unknown"
+            line = f"[{ts}] [{evt.kind}]: {evt.message}"
+            if len(line) > 300:
+                line = line[:297] + "..."
+            lines.append(line)
+
+        return "\n".join(lines)
+
     async def _generate_unique_session_id(self) -> str:
         """Generate a unique 6-character session ID.
 
@@ -1536,6 +1566,7 @@ class AgentBase:
         item_content: str,
         existing_sessions: str,
         source_platform: str = "default",
+        recent_conversation: str = "No recent conversation history.",
     ) -> Dict[str, Any]:
         """Route incoming item to appropriate session using unified prompt.
 
@@ -1544,6 +1575,7 @@ class AgentBase:
             item_content: The content of the message or trigger description
             existing_sessions: Formatted string of existing sessions
             source_platform: The platform the message came from (e.g., "cli", "gui")
+            recent_conversation: Formatted string of recent conversation messages
 
         Returns:
             Dict with routing decision containing:
@@ -1556,6 +1588,7 @@ class AgentBase:
             item_content=item_content,
             source_platform=source_platform,
             existing_sessions=existing_sessions,
+            recent_conversation=recent_conversation,
         )
 
         logger.debug(f"[UNIFIED ROUTING PROMPT]:\n{prompt}")
@@ -1665,11 +1698,13 @@ class AgentBase:
             if active_task_ids:
                 # Use unified routing prompt with rich task context
                 existing_sessions = self._format_sessions_for_routing(active_task_ids, triggers)
+                recent_conversation = self._format_recent_conversation(limit=10)
                 routing_result = await self._route_to_session(
                     item_type="message",
                     item_content=chat_content,
                     existing_sessions=existing_sessions,
                     source_platform=platform,
+                    recent_conversation=recent_conversation,
                 )
 
                 action = routing_result.get("action", "new")
