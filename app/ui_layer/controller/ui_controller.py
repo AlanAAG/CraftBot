@@ -286,6 +286,20 @@ class UIController:
 
     async def _watch_agent_events(self) -> None:
         """Watch and transform agent events to UI events."""
+        # Mark all pre-existing events as seen so restored events
+        # from previous sessions are not emitted as new UI messages.
+        # State-updating events (task_start, task_end) are still processed
+        # to rebuild UI state (e.g., show restored tasks as running).
+        streams = self._agent.event_stream_manager.get_all_streams_with_ids()
+        for task_id, stream in streams:
+            for event in stream.as_list():
+                key = (event.iso_ts, event.kind, event.message)
+                self._state_store.dispatch("MARK_EVENT_SEEN", key)
+                # Rebuild UI state from restored events without emitting to UI
+                ui_event = EventTransformer.transform(event, task_id)
+                if ui_event:
+                    self._update_state_from_event(ui_event)
+
         while self._running and self._agent.is_running:
             try:
                 # Get all event streams

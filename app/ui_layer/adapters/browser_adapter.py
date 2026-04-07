@@ -357,8 +357,11 @@ class BrowserActionPanelComponent(ActionPanelProtocol):
             from app.usage.action_storage import get_action_storage, StoredActionItem
             self._storage = get_action_storage()
 
-            # Mark any stale running items as cancelled from previous session
-            self._storage.mark_running_as_cancelled()
+            # Mark stale running items as cancelled, but exclude restored tasks
+            restored_ids = getattr(
+                self._adapter._controller.agent, '_restored_task_ids', set()
+            )
+            self._storage.mark_running_as_cancelled(exclude=restored_ids)
 
             # Load recent tasks (and their child actions) from storage
             stored_items = self._storage.get_recent_tasks_with_actions(task_limit=15)
