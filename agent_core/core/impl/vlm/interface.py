@@ -533,13 +533,15 @@ class VLMInterface:
 
         content = content.strip()
 
-        token_count_input = response.usage.input_tokens
+        # Anthropic reports input_tokens as non-cached input only.
+        # Total input = input_tokens + cache_creation + cache_read
+        base_input = response.usage.input_tokens
         token_count_output = response.usage.output_tokens
-        total_tokens = token_count_input + token_count_output
-
         cache_creation = getattr(response.usage, "cache_creation_input_tokens", 0) or 0
         cache_read = getattr(response.usage, "cache_read_input_tokens", 0) or 0
-        cached_tokens = cache_creation + cache_read
+        token_count_input = base_input + cache_creation + cache_read
+        total_tokens = token_count_input + token_count_output
+        cached_tokens = cache_read
 
         # Record cache metrics
         metrics = get_cache_metrics()

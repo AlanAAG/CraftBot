@@ -1729,16 +1729,17 @@ class LLMInterface:
             content = content.strip()
 
             # Token usage from Anthropic response
-            token_count_input = response.usage.input_tokens
-            token_count_output = response.usage.output_tokens
-            total_tokens = token_count_input + token_count_output
-
-            # Log cache stats if available (Anthropic returns cache info in usage)
+            # Anthropic reports input_tokens as non-cached input only.
             # cache_creation_input_tokens: tokens written to cache (first call)
             # cache_read_input_tokens: tokens read from cache (subsequent calls)
+            # Total input = input_tokens + cache_creation + cache_read
+            base_input = response.usage.input_tokens
+            token_count_output = response.usage.output_tokens
             cache_creation = getattr(response.usage, "cache_creation_input_tokens", 0) or 0
             cache_read = getattr(response.usage, "cache_read_input_tokens", 0) or 0
-            cached_tokens = cache_creation + cache_read
+            token_count_input = base_input + cache_creation + cache_read
+            total_tokens = token_count_input + token_count_output
+            cached_tokens = cache_read
 
             # Record metrics
             metrics = get_cache_metrics()
