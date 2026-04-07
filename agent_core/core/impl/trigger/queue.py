@@ -156,7 +156,7 @@ class TriggerQueue:
 
     async def clear(self) -> None:
         """
-        Remove all pending triggers from the queue.
+        Remove all pending and active triggers from the queue.
 
         The queue is cleared under the protection of the condition variable so
         waiting consumers are notified immediately that the queue state has
@@ -164,6 +164,7 @@ class TriggerQueue:
         """
         async with self._cv:
             self._heap.clear()
+            self._active.clear()
             self._cv.notify_all()
 
     # =================================================================
