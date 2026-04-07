@@ -1412,6 +1412,56 @@ A quick Q&A will now begin to understand your objectives to serve you better:"""
             base_url = data.get("baseUrl")
             await self._handle_local_llm_pull_model(model, base_url)
 
+        # Update operations
+        elif msg_type == "check_update":
+            await self._handle_check_update()
+
+        elif msg_type == "do_update":
+            await self._handle_do_update()
+
+    async def _handle_check_update(self) -> None:
+        """Check if a CraftBot update is available."""
+        from app.updater import check_for_update
+
+        try:
+            update_available, current, latest = await check_for_update()
+            await self._broadcast({
+                "type": "update_check_result",
+                "data": {
+                    "updateAvailable": update_available,
+                    "currentVersion": current,
+                    "latestVersion": latest,
+                },
+            })
+        except Exception as e:
+            await self._broadcast({
+                "type": "update_check_result",
+                "data": {
+                    "updateAvailable": False,
+                    "currentVersion": "",
+                    "latestVersion": "",
+                    "error": str(e),
+                },
+            })
+
+    async def _handle_do_update(self) -> None:
+        """Perform CraftBot update and restart."""
+        from app.updater import perform_update
+
+        async def progress(msg: str) -> None:
+            await self._broadcast({
+                "type": "update_progress",
+                "data": {"message": msg},
+            })
+
+        try:
+            await perform_update(progress_callback=progress)
+        except Exception as e:
+            await self._broadcast({
+                "type": "update_progress",
+                "data": {"message": f"Update failed: {e}"},
+            })
+
     async def _handle_dashboard_metrics_filter(self, period: str) -> None:
         """Handle filtered metrics request for specific time period."""
         try:
@@ -4741,7 +4791,10 @@ A quick Q&A will now begin to understand your objectives to serve you better:"""
         state = self._controller.state
         metrics = self._metrics_collector.get_metrics()
 
+        from app.config import get_app_version
+
         return {
+            "version": get_app_version(),
             "agentState": state.agent_state.value,
             "guiMode": state.gui_mode,
             "needsHardOnboarding": onboarding_manager.needs_hard_onboarding,

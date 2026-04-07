@@ -501,6 +501,7 @@ class UIController:
             MCPCommand,
             SkillCommand,
             CredCommand,
+            UpdateCommand,
         )
 
         self._command_registry.register(HelpCommand(self))
@@ -512,6 +513,7 @@ class UIController:
         self._command_registry.register(MCPCommand(self))
         self._command_registry.register(SkillCommand(self))
         self._command_registry.register(CredCommand(self))
+        self._command_registry.register(UpdateCommand(self))
 
         # Register integration commands
         self._register_integration_commands()

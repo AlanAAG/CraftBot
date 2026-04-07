@@ -7,9 +7,12 @@ import {
   Check,
   X,
   Loader2,
+  Download,
+  RefreshCw,
 } from 'lucide-react'
 import { Button, Badge, ConfirmModal } from '../../components/ui'
 import { useTheme } from '../../contexts/ThemeContext'
+import { useWebSocket } from '../../contexts/WebSocketContext'
 import { useConfirmModal } from '../../hooks'
 import styles from './SettingsPage.module.css'
 import { useSettingsWebSocket } from './useSettingsWebSocket'
@@ -42,6 +45,7 @@ function getInitialAgentName(): string {
 
 export function GeneralSettings() {
   const { send, onMessage, isConnected } = useSettingsWebSocket()
+  const { version } = useWebSocket()
   const { theme: globalTheme, setTheme: setGlobalTheme } = useTheme()
   const [agentName, setAgentName] = useState(getInitialAgentName)
   const [initialAgentName, setInitialAgentName] = useState(getInitialAgentName)
@@ -79,6 +83,14 @@ export function GeneralSettings() {
   const [agentMdSaveStatus, setAgentMdSaveStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const [soulMdSaveStatus, setSoulMdSaveStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const [showAdvanced, setShowAdvanced] = useState(false)
+
+  // Update state
+  const [isCheckingUpdate, setIsCheckingUpdate] = useState(true) // starts true — auto-check on mount
+  const [updateAvailable, setUpdateAvailable] = useState(false)
+  const [latestVersion, setLatestVersion] = useState('')
+  const [isUpdating, setIsUpdating] = useState(false)
+  const [updateMessages, setUpdateMessages] = useState<string[]>([])
+  const [updateCheckDone, setUpdateCheckDone] = useState(false)
 
   // Confirm modal
   const { modalProps: confirmModalProps, confirm } = useConfirmModal()
@@ -188,6 +200,17 @@ export function GeneralSettings() {
           setTimeout(() => setSoulMdSaveStatus('idle'), 3000)
         }
       }),
+      onMessage('update_check_result', (data: unknown) => {
+        const d = data as { updateAvailable: boolean; currentVersion: string; latestVersion: string; error?: string }
+        setIsCheckingUpdate(false)
+        setUpdateCheckDone(true)
+        setUpdateAvailable(d.updateAvailable)
+        setLatestVersion(d.latestVersion)
+      }),
+      onMessage('update_progress', (data: unknown) => {
+        const d = data as { message: string }
+        setUpdateMessages(prev => [...prev, d.message])
+      }),
       onMessage('agent_file_restore', (data: unknown) => {
         const d = data as { filename: string; content: string; success: boolean }
         if (d.filename === 'USER.md') {
@@ -220,6 +243,8 @@ export function GeneralSettings() {
 
     // Request initial data
     send('settings_get')
+    // Auto-check for updates
+    send('check_update')
 
     return () => {
       cleanups.forEach(cleanup => cleanup())
@@ -318,6 +343,27 @@ export function GeneralSettings() {
     send('agent_file_write', { filename: 'SOUL.md', content: soulMdContent })
   }
 
+  const handleCheckUpdate = () => {
+    setIsCheckingUpdate(true)
+    setUpdateCheckDone(false)
+    setUpdateAvailable(false)
+    setUpdateMessages([])
+    send('check_update')
+  }
+
+  const handleDoUpdate = () => {
+    confirm({
+      title: 'Update CraftBot',
+      message: `Are you sure you want to update CraftBot to v${latestVersion}? The application will restart automatically after the update.`,
+      confirmText: 'Update',
+      variant: 'danger',
+    }, () => {
+      setIsUpdating(true)
+      setUpdateMessages([])
+      send('do_update')
+    })
+  }
+
   const handleRestoreSoulMd = () => {
     confirm({
       title: 'Restore SOUL.md',
@@ -376,6 +422,74 @@ export function GeneralSettings() {
           <span className={styles.statusError}>
             <X size={14} /> Save failed
           </span>
+        )}
+      </div>
+
+      {/* Version & Updates Section */}
+      <div className={styles.dangerZone} style={{ background: 'rgba(59, 130, 246, 0.05)', borderColor: 'rgba(59, 130, 246, 0.2)' }}>
+        <div className={styles.dangerHeader}>
+          <Download size={18} style={{ color: 'var(--color-primary)' }} />
+          <h4 style={{ color: 'var(--color-primary)' }}>Version & Updates</h4>
+        </div>
+        <p className={styles.dangerDescription}>
+          {isCheckingUpdate ? (<>
+            Current version: v{version}<br />
+            Checking the latest version from GitHub...
+          </>) : updateCheckDone && updateAvailable ? (<>
+            Current version: v{version}<br />
+            Latest version: v{latestVersion}<br />
+            A newer version is available on GitHub. Updating will pull the latest code, install dependencies, and restart CraftBot automatically.
+          </>) : updateCheckDone ? (<>
+            Current version: v{version}<br />
+            Latest version: v{latestVersion || version}<br />
+            You are running the latest version. No updates are available at this time.
+          </>) : (<>
+            Current version: v{version}<br />
+            Check GitHub for the latest available version.
+          </>)}
+        </p>
+        {isCheckingUpdate ? (
+          <Button
+            variant="secondary"
+            disabled
+            icon={<Loader2 size={14} className={styles.spinning} />}
+          >
+            Checking...
+          </Button>
+        ) : updateCheckDone && updateAvailable ? (
+          <Button
+            variant="primary"
+            onClick={handleDoUpdate}
+            disabled={isUpdating}
+            icon={isUpdating ? <Loader2 size={14} className={styles.spinning} /> : <Download size={14} />}
+          >
+            {isUpdating ? 'Updating...' : `Update to v${latestVersion}`}
+          </Button>
+        ) : (
+          <Button
+            variant="secondary"
+            onClick={handleCheckUpdate}
+            icon={<RefreshCw size={14} />}
+          >
+            Check for updates
+          </Button>
+        )}
+        {updateMessages.length > 0 && (
+          <div style={{
+            marginTop: 'var(--space-3)',
+            padding: 'var(--space-2) var(--space-3)',
+            background: 'var(--bg-tertiary)',
+            borderRadius: 'var(--radius-sm)',
+            maxHeight: '150px',
+            overflowY: 'auto',
+            fontSize: 'var(--text-xs)',
+            fontFamily: 'monospace',
+            color: 'var(--text-secondary)',
+          }}>
+            {updateMessages.map((msg, i) => (
+              <div key={i}>{msg}</div>
+            ))}
+          </div>
         )}
       </div>
 

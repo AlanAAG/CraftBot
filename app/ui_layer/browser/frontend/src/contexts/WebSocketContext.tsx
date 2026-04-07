@@ -26,6 +26,7 @@ interface ReplyContext {
 
 interface WebSocketState {
   connected: boolean
+  version: string
   messages: ChatMessage[]
   actions: ActionItem[]
   status: AgentStatus
@@ -97,6 +98,7 @@ const getInitialLastSeenMessageId = (): string | null => {
 
 const defaultState: WebSocketState = {
   connected: false,
+  version: '',
   messages: [],
   actions: [],
   status: {
@@ -248,6 +250,7 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
         const initActions = data.actions || []
         setState(prev => ({
           ...prev,
+          version: data.version || '',
           messages: initMessages,
           actions: initActions,
           status: {

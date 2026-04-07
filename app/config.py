@@ -37,6 +37,7 @@ _settings_cache: Optional[Dict[str, Any]] = None
 def _get_default_settings() -> Dict[str, Any]:
     """Return default settings structure."""
     return {
+        "version": "0.0.0",
         "general": {"agent_name": "CraftBot"},
         "proactive": {"enabled": True},
         "memory": {"enabled": True},
@@ -96,6 +97,12 @@ def get_settings(reload: bool = False) -> Dict[str, Any]:
     except (json.JSONDecodeError, IOError):
         _settings_cache = _get_default_settings()
         return _settings_cache
+
+
+def get_app_version() -> str:
+    """Get the application version from settings."""
+    settings = get_settings()
+    return settings.get("version", "0.0.0")
 
 
 def get_llm_provider() -> str:
