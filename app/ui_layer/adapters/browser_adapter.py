@@ -896,9 +896,9 @@ A quick Q&A will now begin to understand your objectives to serve you better:"""
         if static_path.exists():
             self._app.router.add_static("/static/", static_path)
 
-        runner = web.AppRunner(self._app)
-        await runner.setup()
-        site = web.TCPSite(runner, self._host, self._port)
+        self._runner = web.AppRunner(self._app)
+        await self._runner.setup()
+        site = web.TCPSite(self._runner, self._host, self._port)
         await site.start()
 
         # Only print URL info if not using browser startup UI (run.py handles it)
@@ -940,6 +940,11 @@ A quick Q&A will now begin to understand your objectives to serve you better:"""
         for ws in self._ws_clients.copy():
             await ws.close()
         self._ws_clients.clear()
+
+        # Shut down the aiohttp server and release the port
+        if self._runner:
+            await self._runner.cleanup()
+            self._runner = None
 
     async def _websocket_handler(self, request: "web.Request") -> "web.WebSocketResponse":
         """Handle WebSocket connections."""
