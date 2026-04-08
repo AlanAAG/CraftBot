@@ -14,6 +14,7 @@ Options:
     --no-conda                Don't use conda (overrides config setting)
     --frontend-port PORT      Set frontend port (default: 7925)
     --backend-port PORT       Set backend port (default: 7926)
+    --no-open-browser         Start servers but do not auto-open the browser (used by service mode)
 
 Note: The installation method (conda/pip) is saved from install.py and reused here.
 """
@@ -1062,6 +1063,8 @@ if __name__ == "__main__":
         print("Run: python install.py --gui --conda\n")
         sys.exit(1)
 
+    no_open_browser = "--no-open-browser" in args
+
     # Browser mode: start frontend + agent, wait for both, then open browser
     if browser_mode:
         # Kill stale processes from previous runs that may still hold our ports
@@ -1150,7 +1153,8 @@ if __name__ == "__main__":
         # Print ready banner and open browser
         if frontend_ready and backend_ready:
             print_ready_banner(FRONTEND_URL)
-            webbrowser.open(FRONTEND_URL)
+            if not no_open_browser:
+                webbrowser.open(FRONTEND_URL)
         elif not frontend_alive:
             print("\n⚠ Error: Frontend server crashed")
             print("   Check if Node.js and npm are properly installed")
@@ -1163,7 +1167,8 @@ if __name__ == "__main__":
         else:
             # Frontend or backend may still be starting, but proceed anyway
             print_ready_banner(FRONTEND_URL)
-            webbrowser.open(FRONTEND_URL)
+            if not no_open_browser:
+                webbrowser.open(FRONTEND_URL)
 
         # Wait for agent to finish (keeps script running)
         # If the agent exits with code 42, it means an update was applied
