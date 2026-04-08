@@ -195,7 +195,8 @@ def main():
     # ------------------------------
 
     # Check if GUI mode is enabled
-    gui_mode_enabled = os.getenv("GUI_MODE_ENABLED", "False").lower() == "true"
+    # [V1.2.2] GUI mode is temporarily disabled - always force False
+    gui_mode_enabled = False  # os.getenv("GUI_MODE_ENABLED", "False").lower() == "true"
     docker_started = False
 
     # Check if browser startup UI is active (suppress verbose output)

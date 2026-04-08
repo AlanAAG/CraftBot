@@ -196,7 +196,6 @@ Critical Rules:
 - When all todos completed AND user sends an EXPLICIT approval (e.g. 'looks good', 'thanks', 'done'), use 'task_end' with status 'complete'.
 - When all todos completed BUT the user sends a NEW question or request, do NOT end the task. Add new todos for the follow-up and continue working.
 - If unrecoverable error, use 'task_end' with status 'abort'.
-- In GUI mode: only ONE UI interaction per action. Switch to CLI mode using 'switch_mode' action when task is complete.
 - You must provide concrete parameter values for the action's input_schema.
 
 File Reading Best Practices:
@@ -271,8 +270,7 @@ Example: task_update_todos(...) + send_message(...)
 
 Never parallelize these:
 - Write/mutate operations: write_file, stream_edit, clipboard_write
-- GUI interactions: mouse_click, mouse_move, keyboard_type, scroll, etc.
-- Task/state management: set_mode, wait
+- Task/state management: wait
 - Action set changes: add_action_sets, remove_action_sets
 - Multiple send_message actions together (combine into one message instead)
 - Multiple task_update_todos actions together (use one call with complete todo list)
@@ -482,8 +480,7 @@ Example: task_update_todos(...) + send_message(...)
 
 Never parallelize these:
 - Write/mutate operations: write_file, stream_edit, clipboard_write
-- GUI interactions: mouse_click, mouse_move, keyboard_type, scroll, etc.
-- Task/state management: set_mode, wait
+- Task/state management: wait
 - Action set changes: add_action_sets, remove_action_sets
 - Multiple send_message actions together (combine into one message instead)
 - Multiple task_update_todos actions together (use one call with complete todo list)

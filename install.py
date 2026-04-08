@@ -5,14 +5,12 @@ CraftBot Installation Script
 Usage:
     python install.py              # Install core dependencies with global pip
     python install.py --conda      # Install with conda environment
-    python install.py --gui        # Install with GUI mode support (with global pip)
-    python install.py --gui --conda # Install with GUI and conda environment
 
 Options:
-    --gui           Install GUI components (OmniParser for screen automation)
     --conda         Use conda environment (optional)
-    --cpu-only      Install CPU-only PyTorch (for OmniParser, with --gui)
     --mamba         Use mamba instead of conda (faster, optional with --conda)
+
+Note: GUI mode (--gui) is temporarily disabled in V1.2.2.
 
 After installation completes, CraftBot will automatically launch in browser mode.
 To use TUI mode instead, run: python run.py --tui
@@ -1158,7 +1156,13 @@ if __name__ == "__main__":
     args = set(sys.argv[1:])
 
     # Parse flags
-    install_gui = "--gui" in args
+    # [V1.2.2] GUI mode is temporarily disabled in this version.
+    if "--gui" in args:
+        print("\n[!] GUI mode is temporarily disabled in this version (V1.2.2).")
+        print("    This feature is experimental and will be re-enabled in a future release.")
+        print("    Please run without --gui flag.\n")
+        sys.exit(1)
+    install_gui = False  # "--gui" in args  # [V1.2.2] disabled
     use_conda = "--conda" in args
     force_cpu = "--cpu-only" in args
 

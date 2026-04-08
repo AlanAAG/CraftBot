@@ -6,10 +6,8 @@ Usage:
     python run.py             # Run the agent (browser interface - default)
     python run.py --tui       # Run in TUI mode
     python run.py --cli       # Run in CLI mode
-    python run.py --gui       # Run with GUI mode enabled (AI can control VM)
 
 Options:
-    --gui                     Enable GUI mode (optional, requires: python install.py --gui)
     --tui                     Use TUI (terminal UI) interface instead of browser
     --cli                     Use CLI (command line) interface
     --conda                   Use conda environment (overrides config setting)
@@ -985,7 +983,13 @@ if __name__ == "__main__":
     args = set(args_list)
 
     # Parse flags
-    gui_mode = "--gui" in args
+    # [V1.2.2] GUI mode is temporarily disabled in this version.
+    if "--gui" in args:
+        print("\n[!] GUI mode is temporarily disabled in this version (V1.2.2).")
+        print("    This feature is experimental and will be re-enabled in a future release.")
+        print("    Please run without --gui flag.\n")
+        sys.exit(1)
+    gui_mode = False  # "--gui" in args  # [V1.2.2] disabled
     tui_mode = "--tui" in args
     cli_mode = "--cli" in args
     conda_flag = "--conda" in args
