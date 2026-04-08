@@ -91,12 +91,23 @@ class WhatsAppBridge:
             logger.warning("[WA-Bridge] Already running")
             return
 
+        # Kill any stale Chromium processes from a previous session
+        auth_dir = Path(self._auth_dir)
+        lock_file = auth_dir / "session" / "SingletonLock"
+        if lock_file.exists():
+            logger.info("[WA-Bridge] Found stale browser lock, cleaning up...")
+            try:
+                lock_file.unlink(missing_ok=True)
+            except Exception:
+                pass
+
         # Ensure node_modules are installed
         node_modules = BRIDGE_DIR / "node_modules"
         if not node_modules.exists():
             logger.info("[WA-Bridge] Installing npm dependencies...")
+            npm_cmd = "npm.cmd" if os.name == "nt" else "npm"
             proc = await asyncio.create_subprocess_exec(
-                "npm", "install",
+                npm_cmd, "install",
                 cwd=str(BRIDGE_DIR),
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
@@ -108,8 +119,9 @@ class WhatsAppBridge:
 
         logger.info(f"[WA-Bridge] Starting bridge process (auth_dir={self._auth_dir})")
 
+        node_cmd = "node.exe" if os.name == "nt" else "node"
         self._process = await asyncio.create_subprocess_exec(
-            "node", str(BRIDGE_SCRIPT), self._auth_dir,
+            node_cmd, str(BRIDGE_SCRIPT), self._auth_dir,
             stdin=asyncio.subprocess.PIPE,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
@@ -135,13 +147,23 @@ class WhatsAppBridge:
         except Exception:
             pass
 
-        # Wait for process to exit
+        # Wait for process to exit, kill entire process tree on timeout
         if self._process:
             try:
                 await asyncio.wait_for(self._process.wait(), timeout=10.0)
             except asyncio.TimeoutError:
-                logger.warning("[WA-Bridge] Process did not exit, killing")
-                self._process.kill()
+                logger.warning("[WA-Bridge] Process did not exit, killing process tree")
+                if os.name == "nt":
+                    # Windows: kill entire process tree (including spawned Chromium)
+                    try:
+                        subprocess.run(
+                            ["taskkill", "/F", "/T", "/PID", str(self._process.pid)],
+                            capture_output=True, timeout=5,
+                        )
+                    except Exception:
+                        self._process.kill()
+                else:
+                    self._process.kill()
 
         # Cancel reader tasks
         for task in [self._reader_task, self._stderr_task]:

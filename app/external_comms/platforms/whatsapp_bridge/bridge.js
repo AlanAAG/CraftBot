@@ -254,7 +254,8 @@ async function handleCommand(line) {
           emitResponse(id, { success: false, error: "Client not ready" });
           return;
         }
-        const chatId = args.to.includes("@") ? args.to : `${args.to}@c.us`;
+        const cleanNum = args.to.replace(/[\s\-\+\(\)]/g, "");
+        const chatId = args.to.includes("@") ? args.to : `${cleanNum}@c.us`;
         const sent = await client.sendMessage(chatId, args.text);
         if (sent?.id?._serialized) ownSentIds.add(sent.id._serialized);
         emitResponse(id, {
