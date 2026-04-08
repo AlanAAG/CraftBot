@@ -551,9 +551,10 @@ def launch_frontend(silent: bool = False) -> Optional[subprocess.Popen]:
             env=os.environ.copy(),
         )
         if sys.platform == "win32":
-            # CREATE_NO_WINDOW prevents the subprocess from trying to attach to
-            # the parent console, which can cause intermittent hangs on Windows
-            popen_kwargs["creationflags"] = subprocess.CREATE_NO_WINDOW
+            # CREATE_NO_WINDOW + DETACHED_PROCESS prevents npm/node from creating
+            # a visible console window, including child processes like Vite
+            DETACHED_PROCESS = 0x00000008
+            popen_kwargs["creationflags"] = DETACHED_PROCESS | subprocess.CREATE_NO_WINDOW
         process = subprocess.Popen(cmd, **popen_kwargs)
         _background_processes.append(process)
         return process
