@@ -76,6 +76,7 @@ let catchupDone = false;
 let readyTimestamp = 0; // Unix timestamp (seconds) when client became ready
 let ownerPhone = "";
 let ownerName = "";
+let selfChatId = "";
 
 // ---------------------------------------------------------------------------
 // Client Events
@@ -112,6 +113,16 @@ client.on("ready", async () => {
       ownerPhone = client.info.wid.user || "";
       ownerName = client.info.pushname || "";
       log(`Connected as +${ownerPhone} (${ownerName})`);
+      // Discover self-chat ID (may be @lid or @c.us)
+      try {
+        const ownJid = client.info.wid._serialized;
+        const selfChat = await client.getChatById(ownJid);
+        selfChatId = selfChat?.id?._serialized || ownJid;
+        log(`Self-chat ID: ${selfChatId}`);
+      } catch (e) {
+        selfChatId = client.info.wid._serialized;
+        log(`Self-chat fallback to wid: ${selfChatId}`);
+      }
     }
   } catch (err) {
     log(`Could not extract owner info: ${err.message}`);
@@ -211,7 +222,7 @@ client.on("message_create", async (msg) => {
   try {
     const chat = await msg.getChat();
     const ownJid = client.info?.wid?._serialized || "";
-    const isSelfChat = ownJid && msg.to === ownJid;
+    const isSelfChat = (ownJid && msg.to === ownJid) || (selfChatId && (msg.to === selfChatId || chat.id._serialized === selfChatId));
 
     emitEvent("message_sent", {
       id: msg.id._serialized,
@@ -254,7 +265,8 @@ async function handleCommand(line) {
           emitResponse(id, { success: false, error: "Client not ready" });
           return;
         }
-        const chatId = args.to.includes("@") ? args.to : `${args.to}@c.us`;
+        const cleanNum = args.to.replace(/[\s\-\+\(\)]/g, "");
+        const chatId = args.to.includes("@") ? args.to : `${cleanNum}@c.us`;
         const sent = await client.sendMessage(chatId, args.text);
         if (sent?.id?._serialized) ownSentIds.add(sent.id._serialized);
         emitResponse(id, {
