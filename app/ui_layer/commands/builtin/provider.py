@@ -103,7 +103,7 @@ Examples:
 
         # Reinitialize the LLM
         try:
-            self._controller.agent.reinitialize_llm()
+            self._controller.agent.reinitialize_llm(provider)
             message = f"Provider changed to {display_name}"
             if api_key:
                 message += " with new API key"

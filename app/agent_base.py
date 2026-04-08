@@ -123,6 +123,7 @@ class AgentBase:
         llm_provider: str = "anthropic",
         llm_api_key: str | None = None,
         llm_base_url: str | None = None,
+        llm_model: str | None = None,
         deferred_init: bool = False,
     ) -> None:
         """
@@ -137,6 +138,7 @@ class AgentBase:
                 :class:`VLMInterface`.
             llm_api_key: API key for the LLM provider.
             llm_base_url: Base URL for the LLM provider (optional).
+            llm_model: Model name override (None = use registry default).
             deferred_init: If True, allow LLM/VLM initialization to be deferred
                 until API key is configured (useful for first-time setup).
         """
@@ -149,12 +151,14 @@ class AgentBase:
         # LLM + prompt plumbing (may be deferred if API key not yet configured)
         self.llm = LLMInterface(
             provider=llm_provider,
+            model=llm_model,
             api_key=llm_api_key,
             base_url=llm_base_url,
             deferred=deferred_init,
         )
         self.vlm = VLMInterface(
             provider=llm_provider,
+            model=llm_model,
             api_key=llm_api_key,
             base_url=llm_base_url,
             deferred=deferred_init,
@@ -2191,13 +2195,16 @@ class AgentBase:
         Call this after updating environment variables with new API keys.
 
         Args:
-            provider: Optional provider to switch to. If None, uses current provider.
+            provider: Optional provider to switch to. If None, reads from settings.
 
         Returns:
             True if both LLM and VLM were initialized successfully.
         """
-        llm_ok = self.llm.reinitialize(provider)
-        vlm_ok = self.vlm.reinitialize(provider)
+        from app.config import get_llm_provider, get_vlm_provider
+        llm_provider = provider or get_llm_provider()
+        vlm_provider = get_vlm_provider()
+        llm_ok = self.llm.reinitialize(llm_provider)
+        vlm_ok = self.vlm.reinitialize(vlm_provider)
 
         if llm_ok and vlm_ok:
             logger.info(f"[AGENT] LLM and VLM reinitialized with provider: {self.llm.provider}")

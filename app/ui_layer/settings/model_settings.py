@@ -224,8 +224,10 @@ def get_model_settings() -> Dict[str, Any]:
         if endpoints_settings.get("byteplus_base_url"):
             base_urls["byteplus"] = endpoints_settings["byteplus_base_url"]
 
-        if endpoints_settings.get("remote_model_url"):
-            base_urls["remote"] = endpoints_settings["remote_model_url"]
+        # Support both the GUI key ("remote_model_url") and the TUI key ("remote")
+        remote_url = endpoints_settings.get("remote_model_url") or endpoints_settings.get("remote")
+        if remote_url:
+            base_urls["remote"] = remote_url
 
         return {
             "success": True,

@@ -221,3 +221,60 @@ Mode: Browser
   [ 6/8] Loading libraries...                 ✓
   [ 7/8] Starting scheduler...                ✓
   [ 8/8] Starting communications...           ✓
+
+============================================================
+CraftBot service started at 2026-04-08 20:52:14
+Command: C:\Python314\pythonw.exe C:\Users\ganiy\OneDrive\Desktop\OneDrive\Korivi Important Data\Aether\CraftOS\CraftBot\CraftBot\run.py --no-open-browser
+============================================================
+
+🤖 CraftBot
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Mode: Browser
+
+  [ 1/8] Starting frontend server...          ✓
+  [ 2/8] Starting agent backend...            ✓
+  [ 3/8] Initializing agent...                ✓
+  [ 4/8] Connecting to MCP servers...         ✓
+  [ 5/8] Loading skills...                    ✓
+  [ 6/8] Loading libraries...                 ✓
+  [ 7/8] Starting scheduler...                ✓
+  [ 8/8] Starting communications...           ✓
+
+============================================================
+CraftBot service started at 2026-04-08 20:57:52
+Command: C:\Python314\pythonw.exe C:\Users\ganiy\OneDrive\Desktop\OneDrive\Korivi Important Data\Aether\CraftOS\CraftBot\CraftBot\run.py --no-open-browser
+============================================================
+
+🤖 CraftBot
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Mode: Browser
+
+  [ 1/8] Starting frontend server...          ✓
+  [ 2/8] Starting agent backend...            ✓
+  [ 3/8] Initializing agent...                ✓
+  [ 4/8] Connecting to MCP servers...         ✓
+  [ 5/8] Loading skills...                    ✓
+  [ 6/8] Loading libraries...                 ✓
+  [ 7/8] Starting scheduler...                ✓
+  [ 8/8] Starting communications...           ✓
+
+============================================================
+CraftBot service started at 2026-04-08 21:06:10
+Command: C:\Python314\pythonw.exe C:\Users\ganiy\OneDrive\Desktop\OneDrive\Korivi Important Data\Aether\CraftOS\CraftBot\CraftBot\run.py --no-open-browser
+============================================================
+
+🤖 CraftBot
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Mode: Browser
+
+  [ 1/8] Starting frontend server...          ✓
+  [ 2/8] Starting agent backend...            ✓
+  [ 3/8] Initializing agent...                ✓
+  [ 4/8] Connecting to MCP servers...         ✓
+  [ 5/8] Loading skills...                    ✓
+  [ 6/8] Loading libraries...                 ✓
+  [ 7/8] Starting scheduler...                ✓
+  [ 8/8] Starting communications...           ✓

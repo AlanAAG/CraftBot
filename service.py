@@ -164,43 +164,50 @@ def _open_browser_when_ready(url: str, pid_check_fn, delay: float = 4.0) -> None
     webbrowser.open(url)
 
 
-def _open_browser_detached(url: str, delay: int = 5) -> None:
-    """Launch a detached process that waits then opens the browser.
+def _open_browser_detached(url: str) -> None:
+    """Launch a detached Python process that polls for the server then opens the browser.
 
-    This allows the calling script to exit immediately while the browser
-    still opens after the server has had time to start.
+    Uses Python's built-in webbrowser module — no PowerShell execution policy issues.
+    The spawned process is fully detached so the calling script can exit immediately.
     """
+    # Inline Python script: poll until the server responds (max 30s), then open.
+    poll_script = (
+        "import sys, time, webbrowser\n"
+        "try:\n"
+        "    from urllib.request import urlopen\n"
+        "    deadline = time.time() + 30\n"
+        "    while time.time() < deadline:\n"
+        "        try:\n"
+        f"            urlopen('{url}', timeout=1).close()\n"
+        "            break\n"
+        "        except Exception:\n"
+        "            time.sleep(0.5)\n"
+        "except Exception:\n"
+        "    pass\n"
+        f"webbrowser.open('{url}')\n"
+    )
+
+    # On Windows use pythonw.exe so no console window flashes up.
+    python = sys.executable
     if _PLATFORM == "win32":
-        # Poll until the server responds (max 30s), then open the browser.
-        # No visible window — PowerShell runs silently.
+        pythonw = python.replace("python.exe", "pythonw.exe")
+        if os.path.isfile(pythonw):
+            python = pythonw
+
+    kwargs: dict = dict(
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    if _PLATFORM == "win32":
         DETACHED_PROCESS = 0x00000008
         CREATE_NO_WINDOW = 0x08000000
-        ps_cmd = (
-            f'$url = "{url}"; '
-            f'$deadline = (Get-Date).AddSeconds(30); '
-            f'while ((Get-Date) -lt $deadline) {{ '
-            f'  try {{ Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 1 -ErrorAction Stop | Out-Null; break }} '
-            f'  catch {{ Start-Sleep -Milliseconds 500 }} '
-            f'}}; '
-            f'Start-Process $url'
-        )
-        subprocess.Popen(
-            ["powershell", "-NoProfile", "-Command", ps_cmd],
-            stdin=subprocess.DEVNULL,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-            creationflags=DETACHED_PROCESS | CREATE_NO_WINDOW,
-            close_fds=True,
-        )
+        kwargs["creationflags"] = DETACHED_PROCESS | CREATE_NO_WINDOW
+        kwargs["close_fds"] = True
     else:
-        subprocess.Popen(
-            f'sleep {delay} && xdg-open "{url}" 2>/dev/null || open "{url}" 2>/dev/null',
-            shell=True,
-            stdin=subprocess.DEVNULL,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-            start_new_session=True,
-        )
+        kwargs["start_new_session"] = True
+
+    subprocess.Popen([python, "-c", poll_script], **kwargs)
 
 
 def cmd_start(extra_args: List[str]) -> None:
@@ -273,7 +280,7 @@ def cmd_start(extra_args: List[str]) -> None:
         # Fire-and-forget: a detached process waits a few seconds then opens
         # the browser.  The current script exits immediately so the terminal
         # can be closed right away without affecting CraftBot.
-        _open_browser_detached(BROWSER_URL, delay=5)
+        _open_browser_detached(BROWSER_URL)
 
 
 def cmd_stop() -> None:
@@ -776,9 +783,9 @@ def cmd_install(extra_args: List[str]) -> None:
     cmd_start(extra_args)
 
     print("\nCraftBot is running in the background.")
+    print(f"Open your browser at: {BROWSER_URL}")
     print("You can close this window now.")
-    print("(This window will also try to close automatically in 5 seconds...)")
-    time.sleep(5)
+    time.sleep(2)
     _close_console_window()
 
 

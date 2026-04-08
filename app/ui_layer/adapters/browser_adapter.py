@@ -2748,7 +2748,10 @@ A quick Q&A will now begin to understand your objectives to serve you better:"""
     async def _handle_model_settings_update(self, data: Dict[str, Any]) -> None:
         """Update model settings.
 
-        Validates API key presence and tests connection BEFORE saving settings.
+        Validates API key presence before saving. Connection is tested only when
+        credentials (API key or base URL) are actually changing, so that saving
+        a model name or switching providers works even when the service is offline
+        (e.g. Ollama not running).
         """
         try:
             new_provider = data.get("llmProvider")
@@ -2776,8 +2779,11 @@ A quick Q&A will now begin to understand your objectives to serve you better:"""
                     })
                     return
 
-            # Step 2: Test connection before saving
-            if new_provider:
+            # Step 2: Test connection before saving — only when credentials are changing.
+            # Mirror the frontend logic: skip the test when only model/provider name
+            # changes so that saving works even if the service (e.g. Ollama) is offline.
+            credentials_changing = bool(api_key or base_url)
+            if new_provider and credentials_changing:
                 # Determine the API key to test with
                 test_api_key = api_key
                 if not test_api_key and provider_for_key != new_provider:

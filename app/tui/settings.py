@@ -121,7 +121,7 @@ def save_remote_endpoint(url: str) -> bool:
 
         if "endpoints" not in settings:
             settings["endpoints"] = {}
-        settings["endpoints"]["remote"] = url
+        settings["endpoints"]["remote_model_url"] = url
 
         if not _save_settings(settings):
             return False
