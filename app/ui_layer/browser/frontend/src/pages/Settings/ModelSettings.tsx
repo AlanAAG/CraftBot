@@ -31,6 +31,7 @@ interface TestResult {
   success: boolean
   message: string
   error?: string
+  models?: string[]
 }
 
 interface SuggestedModel {
@@ -160,12 +161,13 @@ export function ModelSettings() {
         }
       }),
       onMessage('model_connection_test', (data: unknown) => {
-        const d = data as { success: boolean; message: string; error?: string }
+        const d = data as { success: boolean; message: string; error?: string; models?: string[] }
         setIsTesting(false)
         setTestResult({
           success: d.success,
           message: d.message,
           error: d.error,
+          models: d.models,
         })
 
         if (testBeforeSave && d.success) {
@@ -730,7 +732,23 @@ export function ModelSettings() {
                     </span>
                   </span>
                 ) : (
-                  testResult.message
+                  <span style={{ textAlign: 'center', display: 'block' }}>
+                    <span>{testResult.message}</span>
+                    {testResult.models && testResult.models.length > 0 && (
+                      <span style={{ marginTop: 10, display: 'block', fontSize: '0.85em', color: 'var(--text-secondary)' }}>
+                        {testResult.models.map(m => (
+                          <span key={m} style={{
+                            display: 'inline-block',
+                            background: 'var(--bg-tertiary)',
+                            borderRadius: 4,
+                            padding: '2px 8px',
+                            margin: '3px 3px 0 0',
+                            fontFamily: 'monospace',
+                          }}>{m}</span>
+                        ))}
+                      </span>
+                    )}
+                  </span>
                 )
               ) : (
                 testResult.error || testResult.message
