@@ -701,8 +701,8 @@ class WhatsAppHandler(IntegrationHandler):
         event_type, event_data = await bridge.wait_for_qr_or_ready(timeout=60.0)
 
         if event_type == "ready":
-            # Already authenticated — save credential and stop the bridge
-            # (start_listening will restart it on the main event loop)
+            # Already authenticated — save credential, keep bridge running
+            # (start_listening will reuse it if still running and ready)
             from app.external_comms.platforms.whatsapp_web import WhatsAppWebCredential
             owner_phone = bridge.owner_phone or ""
             owner_name = bridge.owner_name or ""
@@ -711,7 +711,6 @@ class WhatsAppHandler(IntegrationHandler):
                 owner_phone=owner_phone,
                 owner_name=owner_name,
             ))
-            await bridge.stop()
             display = owner_phone or owner_name or "connected"
             return True, f"WhatsApp Web connected: +{display}"
 
@@ -753,8 +752,8 @@ class WhatsAppHandler(IntegrationHandler):
             if not ready:
                 return False, "Timed out waiting for QR scan. Run /whatsapp login again."
 
-            # Save credential with owner info, then stop bridge
-            # (start_listening will restart it on the main event loop)
+            # Save credential with owner info, keep bridge running
+            # (start_listening will reuse it if still running and ready)
             from app.external_comms.platforms.whatsapp_web import WhatsAppWebCredential
             owner_phone = bridge.owner_phone or ""
             owner_name = bridge.owner_name or ""
@@ -763,7 +762,6 @@ class WhatsAppHandler(IntegrationHandler):
                 owner_phone=owner_phone,
                 owner_name=owner_name,
             ))
-            await bridge.stop()
             display = owner_phone or owner_name or "connected"
             return True, f"WhatsApp Web connected: +{display}"
 

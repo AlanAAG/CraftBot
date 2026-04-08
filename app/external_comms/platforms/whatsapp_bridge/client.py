@@ -370,7 +370,8 @@ class WhatsAppBridge:
 
         elif event == "message_sent":
             logger.info(
-                f"[WA-Bridge] Message sent to {data.get('chat', {}).get('name', 'unknown')}: "
+                f"[WA-Bridge] Message sent to {data.get('chat', {}).get('name', 'unknown')} "
+                f"(self_chat={data.get('is_self_chat', False)}): "
                 f"{(data.get('body', '') or '')[:80]}"
             )
 
