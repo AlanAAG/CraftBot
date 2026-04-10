@@ -1,0 +1,231 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - 'heading "Round 3 Deadline: 20th April 2026" [level=3] [ref=e6]'
+      - link "Apply Now arrow up icon" [ref=e7] [cursor=pointer]:
+        - /url: /apply-now
+        - text: Apply Now
+        - img "arrow up icon" [ref=e8]
+    - banner [ref=e9]:
+      - generic [ref=e11]:
+        - link "tetr-logo" [ref=e12] [cursor=pointer]:
+          - /url: /
+          - img "tetr-logo" [ref=e13]
+        - generic [ref=e14]:
+          - generic [ref=e15]:
+            - button "Programs Programs Icon" [ref=e16] [cursor=pointer]:
+              - generic [ref=e17]: Programs
+              - generic [ref=e18]: Programs
+              - img "Icon" [ref=e19]
+            - link "Faculty Faculty" [ref=e20] [cursor=pointer]:
+              - /url: /faculty
+              - generic [ref=e21]: Faculty
+              - generic [ref=e22]: Faculty
+            - link "Student Life Student Life" [ref=e23] [cursor=pointer]:
+              - /url: /student-life
+              - generic [ref=e24]: Student Life
+              - generic [ref=e25]: Student Life
+            - button "About About Icon" [ref=e26] [cursor=pointer]:
+              - generic [ref=e27]: About
+              - generic [ref=e28]: About
+              - img "Icon" [ref=e29]
+          - generic [ref=e30]:
+            - link "APPLY NOW" [ref=e31] [cursor=pointer]:
+              - /url: /apply-now
+            - link "CONTACT US" [ref=e32] [cursor=pointer]:
+              - /url: /contact-us
+  - main [ref=e33]:
+    - generic [ref=e36]:
+      - heading "Tetr Is Shaping Conversations Globally" [level=1] [ref=e37]:
+        - text: Tetr Is Shaping
+        - text: Conversations Globally
+      - paragraph [ref=e38]: A snapshot of how we're being seen, shared, and celebrated by the world's media.
+    - generic [ref=e41]:
+      - generic [ref=e42]:
+        - button "globe-icon All Regions arc-arrow-down" [ref=e44] [cursor=pointer]:
+          - img "globe-icon" [ref=e45]
+          - generic [ref=e46]: All Regions
+          - img "arc-arrow-down" [ref=e47]
+        - button "calender-icon All Dates arc-arrow-down" [ref=e49] [cursor=pointer]:
+          - img "calender-icon" [ref=e50]
+          - generic [ref=e51]: All Dates
+          - img "arc-arrow-down" [ref=e52]
+      - generic [ref=e53]:
+        - link "La Nacion" [ref=e54] [cursor=pointer]:
+          - /url: https://www.lanacion.com.ar/sociedad/educacion-ofrecen-un-millon-de-dolares-en-becas-para-jovenes-argentinos-que-deseen-estudiar-en-el-nid13032025/
+          - img "La Nacion" [ref=e55]
+          - img [ref=e57]
+        - link "Infobae" [ref=e60] [cursor=pointer]:
+          - /url: https://www.infobae.com/educacion/2025/03/14/ofrecen-becas-para-estudiantes-argentinos-que-quieran-formarse-en-negocios-en-el-exterior/?outputType=amp-type
+          - img "Infobae" [ref=e61]
+          - img [ref=e63]
+        - link "La Voz del Interior" [ref=e66] [cursor=pointer]:
+          - /url: https://www.lavoz.com.ar/servicios/ofrecen-becas-para-argentinos-que-quieran-estudiar-en-el-exterior-los-requisitos-y-como-postularse/
+          - img "La Voz del Interior" [ref=e67]
+          - img [ref=e69]
+        - link "Catamarca Actual" [ref=e72] [cursor=pointer]:
+          - /url: https://www.catamarcactual.com.ar/nacionales/2025/3/13/reparten-en-argentina-un-millon-de-dolares-en-becas-para-estudiar-trabajar-en-el-exterior-286894.html
+          - img "Catamarca Actual" [ref=e73]
+          - img [ref=e75]
+        - link "CDN Central de Noticias" [ref=e78] [cursor=pointer]:
+          - /url: https://cdn-centraldenoticias.com.ar/2025/03/13/reparten-en-argentina-un-millon-de-dolares-en-becas-para-estudiar-y-trabajar-en-el-exterior-como-acceder/
+          - img "CDN Central de Noticias" [ref=e79]
+          - img [ref=e81]
+        - link "Yahoo en español" [ref=e84] [cursor=pointer]:
+          - /url: https://espanol.yahoo.com/noticias/educaci%C3%B3n-ofrecen-mill%C3%B3n-d%C3%B3lares-becas-215331770.html
+          - img "Yahoo en español" [ref=e85]
+          - img [ref=e87]
+        - link "MIV" [ref=e90] [cursor=pointer]:
+          - /url: https://miv.com.ar/arg/id-5005_Educaci-n-ofrecen-un-mill-n-de-d-lares-en-becas-para-j-venes-argentinos-que-deseen-estudiar-en-el-exterior
+          - img "MIV" [ref=e91]
+          - img [ref=e93]
+        - link "Radio City Campana" [ref=e96] [cursor=pointer]:
+          - /url: https://radiocitycampana.com.ar/arg/id-5005_Educaci-n-ofrecen-un-mill-n-de-d-lares-en-becas-para-j-venes-argentinos-que-deseen-estudiar-en-el-exterior
+          - img "Radio City Campana" [ref=e97]
+          - img [ref=e99]
+        - link "Red de Noticias" [ref=e102] [cursor=pointer]:
+          - /url: https://reddenoticias.ar/arg/id-5005_Educaci-n-ofrecen-un-mill-n-de-d-lares-en-becas-para-j-venes-argentinos-que-deseen-estudiar-en-el-exterior
+          - img "Red de Noticias" [ref=e103]
+          - img [ref=e105]
+        - link "Salta Ya" [ref=e108] [cursor=pointer]:
+          - /url: https://saltaya.com.ar/arg/id-5005_Educaci-n-ofrecen-un-mill-n-de-d-lares-en-becas-para-j-venes-argentinos-que-deseen-estudiar-en-el-exterior
+          - img "Salta Ya" [ref=e109]
+          - img [ref=e111]
+        - link "La Gaceta" [ref=e114] [cursor=pointer]:
+          - /url: https://www.lagaceta.com.ar/nota/1074783/sociedad/academia-negocios-anuncia-fondo-us-1-millon-becas-para-argentinos.html
+          - img "La Gaceta" [ref=e115]
+          - img [ref=e117]
+        - link "Escobar a Diario" [ref=e120] [cursor=pointer]:
+          - /url: https://escobaradiario.com.ar/interes-general/becas-para-estudiantes-argentinos-que-quieran-formarse-en-negocios-en-el-exterior/
+          - img "Escobar a Diario" [ref=e121]
+          - img [ref=e123]
+        - link "Estadao 150" [ref=e126] [cursor=pointer]:
+          - /url: https://www.estadao.com.br/educacao/blog-da-tissen/tetr-college-of-business-oferece-bolsas-integrais-para-graduacao/
+          - img "Estadao 150" [ref=e127]
+          - img [ref=e129]
+        - link "Virgula" [ref=e132] [cursor=pointer]:
+          - /url: https://virgula.me/carreira/tetr-abre-portas-para-estudantes-empreendedores-com-bolsa-de-u-1-milhao/
+          - img "Virgula" [ref=e133]
+          - img [ref=e135]
+        - link "Business Moment" [ref=e138] [cursor=pointer]:
+          - /url: https://businessmoment.com.br/tetr-anuncia-bolsa-de-u-1-milhao-para-estudantes-empreendedores-brasileiros/
+          - img "Business Moment" [ref=e139]
+          - img [ref=e141]
+        - link "Más Colombia" [ref=e144] [cursor=pointer]:
+          - /url: https://mascolombia.com/becas-para-estudiantes-colombianos/
+          - img "Más Colombia" [ref=e145]
+          - img [ref=e147]
+        - link "La Nota Económica" [ref=e150] [cursor=pointer]:
+          - /url: https://lanotaeconomica.com.co/movidas-empresarial/de-colombia-para-el-mundo-tetr-le-abre-las-puertas-a-estudiantes-emprendedores-con-fondos-por-usd1-millon/
+          - img "La Nota Económica" [ref=e151]
+          - img [ref=e153]
+        - link "Gestion" [ref=e156] [cursor=pointer]:
+          - /url: https://gestion.pe/peru/becas-internacionales-para-emprendedores-que-buscan-estudiar-negocios-como-postular-noticia/?ref=gesr
+          - img "Gestion" [ref=e157]
+          - img [ref=e159]
+        - link "Ecos Digitales" [ref=e162] [cursor=pointer]:
+          - /url: https://ecosdigitales.com/escuela-tetr-ofrece-un-millon-dolares-becas-emprendedores-peruanos.html
+          - img "Ecos Digitales" [ref=e163]
+          - img [ref=e165]
+        - link "Zawya, Thomas Reuters" [ref=e168] [cursor=pointer]:
+          - /url: https://www.zawya.com/en/projects/industry/learning-by-doing-leading-by-experience-whdmss6r
+          - img "Zawya, Thomas Reuters" [ref=e169]
+          - img [ref=e171]
+        - link "Khaleej Times" [ref=e174] [cursor=pointer]:
+          - /url: https://www.khaleejtimes.com/kt-network/tetr-college-of-business-launched-in-dubai-empowering-global-students-launch-23-businesses?botrequest=true
+          - img "Khaleej Times" [ref=e175]
+          - img [ref=e177]
+  - contentinfo [ref=e180]:
+    - generic [ref=e181]:
+      - generic [ref=e182] [cursor=pointer]:
+        - img [ref=e184]
+        - text: Resources WhatsApp Instagram YouTube Close
+      - generic [ref=e190]:
+        - img "close-icon" [ref=e192] [cursor=pointer]
+        - generic [ref=e193]:
+          - heading "We value your privacy" [level=2] [ref=e194]
+          - generic [ref=e195]:
+            - paragraph [ref=e196]: We use cookies to improve your browsing experience, personalise content, and understand how our website is used. By clicking “Accept all cookies”, you agree to our use of cookies.
+            - paragraph [ref=e197]:
+              - text: You can accept all cookies or reject all. Learn more in our
+              - link "Privacy Policy" [ref=e198] [cursor=pointer]:
+                - /url: /privacy-policy
+              - text: .
+          - generic [ref=e199]:
+            - button "Reject all" [ref=e200] [cursor=pointer]
+            - button "Accept all cookies" [ref=e201] [cursor=pointer]
+      - generic [ref=e202]:
+        - generic [ref=e203]:
+          - link "tetr-footer-brand-image" [ref=e204] [cursor=pointer]:
+            - /url: /
+            - img "tetr-footer-brand-image" [ref=e205]
+          - link "APPLY NOW Icon" [ref=e207] [cursor=pointer]:
+            - /url: /apply-now
+            - text: APPLY NOW
+            - img "Icon" [ref=e208]
+        - generic [ref=e209]:
+          - generic [ref=e210]:
+            - link "About" [ref=e211] [cursor=pointer]:
+              - /url: /about
+            - link "Faculty" [ref=e212] [cursor=pointer]:
+              - /url: /faculty
+            - link "Blog" [ref=e213] [cursor=pointer]:
+              - /url: /blog
+            - link "Events" [ref=e214] [cursor=pointer]:
+              - /url: /events
+          - generic [ref=e215]:
+            - link "Resources" [ref=e216] [cursor=pointer]:
+              - /url: /resources
+            - link "News" [ref=e217] [cursor=pointer]:
+              - /url: /news
+            - link "Reviews" [ref=e218] [cursor=pointer]:
+              - /url: /reviews
+            - link "Career Labs" [ref=e219] [cursor=pointer]:
+              - /url: /careers
+          - generic [ref=e220]:
+            - generic [ref=e221] [cursor=pointer]: Dropshipping Report
+            - generic [ref=e222] [cursor=pointer]: D2C Report
+            - generic [ref=e223] [cursor=pointer]: UG Brochure
+            - generic [ref=e224] [cursor=pointer]: PG Brochure
+          - generic [ref=e225]:
+            - link "Experiences at Tetr" [ref=e226] [cursor=pointer]:
+              - /url: /experiences-at-tetr
+            - link "Kickstarter" [ref=e227] [cursor=pointer]:
+              - /url: /kickstarter
+            - link "Dropshipping" [ref=e228] [cursor=pointer]:
+              - /url: /dropshipping
+        - generic [ref=e229]:
+          - generic [ref=e231]:
+            - paragraph [ref=e232]: QS Gold Winner
+            - paragraph [ref=e233]: Most Innovative Business School of 2025
+          - generic [ref=e234]:
+            - generic [ref=e235]:
+              - link "instagram logo" [ref=e236] [cursor=pointer]:
+                - /url: https://www.instagram.com/tetr.college/
+                - img "instagram logo" [ref=e237]
+              - link "youtube logo" [ref=e238] [cursor=pointer]:
+                - /url: https://www.youtube.com/@tetrcollege
+                - img "youtube logo" [ref=e239]
+              - link "linkedin logo" [ref=e240] [cursor=pointer]:
+                - /url: https://www.linkedin.com/school/tetr-college-of-business/
+                - img "linkedin logo" [ref=e241]
+            - generic [ref=e242]:
+              - text: "Email:"
+              - link "info@tetr.org" [ref=e243] [cursor=pointer]:
+                - /url: mailto:info@tetr.org
+          - generic [ref=e244]:
+            - img [ref=e245]
+            - img [ref=e246]
+    - generic [ref=e250]:
+      - generic [ref=e251]:
+        - link "Contact Us" [ref=e252] [cursor=pointer]:
+          - /url: /contact-us
+        - link "Refund Policy" [ref=e253] [cursor=pointer]:
+          - /url: /refund-policy
+        - link "Privacy Policy" [ref=e254] [cursor=pointer]:
+          - /url: /privacy-policy
+        - link "Terms & Conditions" [ref=e255] [cursor=pointer]:
+          - /url: /terms-conditions
+      - generic [ref=e256]:
+        - generic [ref=e257]: "* Tetr reserves the right to adjust the program location for this term due to prevailing visa restrictions. Participants will be notified accordingly."
+        - generic [ref=e258]: Copyright© 2026 Tetr. All rights reserved.

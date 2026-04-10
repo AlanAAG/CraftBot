@@ -1,0 +1,968 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - region "Notifications (F8)":
+      - list
+    - region "アラート、警告、更新"
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e6]:
+          - link "Preply" [ref=e7] [cursor=pointer]:
+            - /url: /ja/
+            - img "Preply" [ref=e9]
+          - generic [ref=e30]:
+            - link "講師を探す" [ref=e31] [cursor=pointer]:
+              - /url: https://preply.com/ja/online/english-tutors
+              - generic [ref=e32]: 講師を探す
+            - link "企業向けトレーニング" [ref=e33] [cursor=pointer]:
+              - /url: /en/business-language-training?start=logged_out_search
+              - generic [ref=e34]: 企業向けトレーニング
+            - link "講師になる" [ref=e35] [cursor=pointer]:
+              - /url: https://preply.com/ja/teach
+              - generic [ref=e36]: 講師になる
+        - generic [ref=e37]:
+          - button "Select language and currency" [ref=e39] [cursor=pointer]:
+            - generic [ref=e40]:
+              - paragraph [ref=e41]: 日本語, INR
+              - img [ref=e43]:
+                - img [ref=e44]
+          - link "ヘルプ" [ref=e46] [cursor=pointer]:
+            - /url: https://help.preply.com/ja/
+            - img [ref=e47]:
+              - img [ref=e48]
+          - button "ログイン" [ref=e50] [cursor=pointer]:
+            - generic [ref=e51]:
+              - img [ref=e52]:
+                - img [ref=e53]
+              - text: ログイン
+    - generic [ref=e55]:
+      - generic [ref=e57]:
+        - generic [ref=e60]:
+          - generic [ref=e61]:
+            - generic [ref=e62]:
+              - img "Tomas R." [ref=e64]
+              - paragraph [ref=e65]: Tomas R.
+              - generic [ref=e66]:
+                - generic [ref=e67]:
+                  - generic [ref=e68]:
+                    - paragraph [ref=e69]: "4.3"
+                    - img [ref=e70]
+                  - paragraph [ref=e73]: 2レビュー
+                - img "ES" [ref=e74]
+            - generic [ref=e75]:
+              - generic [ref=e76]:
+                - img "Robert F." [ref=e77]
+                - generic [ref=e80]: 初心者向け
+              - paragraph [ref=e81]: Robert F.
+              - generic [ref=e82]:
+                - generic [ref=e83]:
+                  - generic [ref=e84]:
+                    - paragraph [ref=e85]: "4.8"
+                    - img [ref=e86]
+                  - paragraph [ref=e89]: 34レビュー
+                - img "US" [ref=e90]
+            - generic [ref=e91]:
+              - generic [ref=e92]:
+                - img "Claire S." [ref=e93]
+                - generic [ref=e96]: ビジネスフランス語
+              - paragraph [ref=e97]: Claire S.
+              - generic [ref=e98]:
+                - generic [ref=e99]:
+                  - generic [ref=e100]:
+                    - paragraph [ref=e101]: "5"
+                    - img [ref=e102]
+                  - paragraph [ref=e105]: 43レビュー
+                - img "FR" [ref=e106]
+            - generic [ref=e107]:
+              - img "Giulia K." [ref=e109]
+              - paragraph [ref=e110]: Giulia K.
+              - generic [ref=e111]:
+                - generic [ref=e112]:
+                  - generic [ref=e113]:
+                    - paragraph [ref=e114]: "4.9"
+                    - img [ref=e115]
+                  - paragraph [ref=e118]: 34レビュー
+                - img "IT" [ref=e119]
+          - generic [ref=e120]:
+            - generic [ref=e121]:
+              - img "Tiago C." [ref=e123]
+              - paragraph [ref=e124]: Tiago C.
+              - generic [ref=e125]:
+                - generic [ref=e126]:
+                  - generic [ref=e127]:
+                    - paragraph [ref=e128]: "5"
+                    - img [ref=e129]
+                  - paragraph [ref=e132]: 44レビュー
+                - img "PT" [ref=e133]
+            - generic [ref=e134]:
+              - generic [ref=e135]:
+                - img "Jane M." [ref=e136]
+                - generic [ref=e139]: ネイティブスピーカー
+              - paragraph [ref=e140]: Jane M.
+              - generic [ref=e141]:
+                - generic [ref=e142]:
+                  - generic [ref=e143]:
+                    - paragraph [ref=e144]: "4.9"
+                    - img [ref=e145]
+                  - paragraph [ref=e148]: 67レビュー
+                - img "GB" [ref=e149]
+            - generic [ref=e150]:
+              - img "Andreas G." [ref=e152]
+              - paragraph [ref=e153]: Andreas G.
+              - generic [ref=e154]:
+                - generic [ref=e155]:
+                  - generic [ref=e156]:
+                    - paragraph [ref=e157]: "4.5"
+                    - img [ref=e158]
+                  - paragraph [ref=e161]: 34レビュー
+                - img "DE" [ref=e162]
+        - generic [ref=e165]:
+          - img "Preply" [ref=e168]
+          - generic [ref=e187]:
+            - heading "オンライン日本語レッスン＆マンツーマン日本語講師" [level=1] [ref=e188]
+            - generic [ref=e189]:
+              - generic [ref=e191]: オンライン日本語レッスンをお探しですか？ 4347人のプライベート日本語講師の中から、今すぐ予約できます。プレプリーは、43890 人以上のユーザーから、 5つ星評価中4.98つ星評価を得ている、世界大手のオンライン言語学習プラットフォームです。講師に100％満足するまで、無料で変更し放題。
+              - generic [ref=e193] [cursor=pointer]: 続きを読む
+          - generic [ref=e194]:
+            - generic [ref=e195]:
+              - paragraph [ref=e196]: 簡単な質問に答えて、あなたに合った講師 を見つけましょう
+              - generic [ref=e198] [cursor=pointer]:
+                - textbox [ref=e199]:
+                  - /placeholder: 日本語
+                  - text: 日本語
+                - button [ref=e200]:
+                  - img [ref=e201]
+            - button "講師を探す" [ref=e203] [cursor=pointer]:
+              - generic [ref=e204]:
+                - text: 講師を探す
+                - img [ref=e205]:
+                  - img [ref=e206]
+            - button "4,347人の講師を表示する" [ref=e208] [cursor=pointer]:
+              - generic [ref=e209]: 4,347人の講師を表示する
+      - separator [ref=e211]
+      - generic [ref=e212]:
+        - generic [ref=e213]:
+          - searchbox [ref=e214] [cursor=pointer]:
+            - generic [ref=e215]: 学びたい科目
+            - generic [ref=e217]:
+              - textbox [ref=e218]:
+                - /placeholder: 日本語
+                - text: 日本語
+              - button [ref=e219]:
+                - img [ref=e220]
+          - generic [ref=e222] [cursor=pointer]:
+            - generic [ref=e223]: レッスン価格
+            - generic [ref=e224]:
+              - generic [ref=e228]: ₹200 ～ ₹3,700+
+              - img [ref=e229]:
+                - img [ref=e230]
+          - generic [ref=e232] [cursor=pointer]:
+            - generic [ref=e233]: 講師の出身地
+            - generic [ref=e234]:
+              - generic [ref=e236]: すべての国
+              - img [ref=e237]:
+                - img [ref=e238]
+          - generic [ref=e240] [cursor=pointer]:
+            - generic [ref=e241]: 予約可能な時間帯
+            - generic [ref=e242]:
+              - generic [ref=e244]: すべての時間
+              - img [ref=e245]:
+                - img [ref=e246]
+        - generic [ref=e248]:
+          - generic [ref=e249]:
+            - generic [ref=e250] [cursor=pointer]:
+              - generic [ref=e251]: 専門分野
+              - img [ref=e252]:
+                - img [ref=e253]
+            - generic [ref=e255] [cursor=pointer]:
+              - generic [ref=e256]: 講師の話せる言語
+              - img [ref=e257]:
+                - img [ref=e258]
+            - generic [ref=e260] [cursor=pointer]:
+              - generic [ref=e261]: ネイティブスピーカー
+              - img [ref=e262]:
+                - img [ref=e263]
+            - generic [ref=e265] [cursor=pointer]:
+              - generic [ref=e266]: その他
+              - img [ref=e267]:
+                - img [ref=e268]
+          - generic [ref=e270]:
+            - generic [ref=e271] [cursor=pointer]:
+              - generic [ref=e272]: 講師の表示順 おすすめ順
+              - img [ref=e273]:
+                - img [ref=e274]
+            - generic [ref=e277]:
+              - img [ref=e279]
+              - textbox "名前かキーワードで検索する" [ref=e281]
+      - main [ref=e282]:
+        - heading "4,347人の日本語講師がいます" [level=2] [ref=e284]
+        - generic [ref=e285]:
+          - generic [ref=e287]:
+            - button "Video preview" [ref=e289] [cursor=pointer]:
+              - img "Video preview" [ref=e290]
+            - generic [ref=e292]:
+              - button "全スケジュールを表示する" [ref=e293] [cursor=pointer]:
+                - generic [ref=e294]: 全スケジュールを表示する
+              - button "Renさんのプロフィールを見る" [ref=e295] [cursor=pointer]:
+                - generic [ref=e296]: Renさんのプロフィールを見る
+          - generic [ref=e297]:
+            - list [ref=e298]:
+              - listitem [ref=e300]:
+                - button "Ren M. Ren M. 日本 ₹926 50分の レッスン 5 8レビュー 21 人の生徒 227 レッスン 日本語 話せる言語： 日本語 (ネイティブ), 英語 (中級) 安心して学べるフレンドリーな日本語レッスン！ — 初めまして！プロフィールをご覧頂きありがとうございます。 日本語を母語とし、現在はイタリアで生活しています。 海外で暮らす中で、言葉が通じない不安や、母国語以外で生活する大変さを日々実感しています。 だからこそ、日本語を学ぶ方の気持ちに寄り添ったレッスンを行いたいと考えています。 初心者の方を中心に、それぞれのレベルやペースに合わせて、日本語を「少しずつでも確実に」身につけられるようサポートしています。 これまで本格的な講師経験は多くありませんが、一人ひとりの目標や目的を大切に、毎回のレッスンを丁寧に準備しています。 詳細を見る 大人気：最近20回以上予約されています 体験レッスンを予約 メッセージを送る" [ref=e302]:
+                  - link "Ren M." [ref=e305] [cursor=pointer]:
+                    - /url: https://preply.com/ja/tutor/7320517
+                    - img "Ren M." [ref=e307]
+                  - generic [ref=e313]:
+                    - link "Ren M." [ref=e314] [cursor=pointer]:
+                      - /url: https://preply.com/ja/tutor/7320517
+                    - generic [ref=e318]
+                  - generic [ref=e330]:
+                    - generic [ref=e332]
+                    - generic [ref=e337]
+                  - button [ref=e352] [cursor=pointer]:
+                    - img [ref=e354]
+                  - generic [ref=e356]:
+                    - generic [ref=e357]
+                    - generic [ref=e379]
+                    - generic [ref=e385]
+                  - generic [ref=e393]:
+                    - button "体験レッスンを予約" [ref=e395] [cursor=pointer]
+                    - button "メッセージを送る" [ref=e399] [cursor=pointer]
+              - listitem [ref=e402]:
+                - button "Risa M. Risa M. 日本 プロ スーパー講師 ₹1,851 50分の レッスン 5 24レビュー 21 人の生徒 255 レッスン 日本語 話せる言語： 日本語 (ネイティブ), 英語 (中級)Show 1 more languages 3ヶ国語OKで初心者も安心♪ 日本語・英語・タイ語対応で、ゼロからでも大丈夫！アニメや旅行、留学・ビジネス、推し活まで大歓迎！あなたの“話したい”を全力で応援😊笑顔で話しやすい先生を探している方にぴったり😊🌸 — 🌸私について🌸 はじめまして！りさです😊💖 日本の千葉県（ディズニーランドの近く！）出身で、お母さんがタイ人なので日本×タイのハーフで今はタイに住んでいます。 アメリカ・カリフォルニア州の短期大学を卒業して、日本語・英語・タイ語の3ヶ国語を話し、日本語はネイティブです🌍✨ 旅行や可愛いコスメが大好きで、いつもニコニコしています☺️🌼 ポジティブで話しやすい先生を探してる人にはぴったりです💖 🌈こんな人におすすめ！ ✔️ 日本語をゼロから始めたい初心者さん ✔️ 日常会話を楽しく学びたい人 ✔️ 日本旅行をもっと楽しみたい！と思ってる人 詳細を見る 人気：最近6回予約されています 体験レッスンを予約 メッセージを送る" [ref=e404]:
+                  - link "Risa M." [ref=e407] [cursor=pointer]:
+                    - /url: https://preply.com/ja/tutor/7407945
+                    - img "Risa M." [ref=e409]
+                  - generic [ref=e414]:
+                    - generic [ref=e415]
+                    - generic [ref=e429]
+                  - generic [ref=e437]:
+                    - generic [ref=e439]
+                    - generic [ref=e444]
+                  - button [ref=e459] [cursor=pointer]:
+                    - img [ref=e461]
+                  - generic [ref=e463]:
+                    - generic [ref=e464]
+                    - generic [ref=e489]
+                    - generic [ref=e494]
+                  - generic [ref=e502]:
+                    - button "体験レッスンを予約" [ref=e504] [cursor=pointer]
+                    - button "メッセージを送る" [ref=e508] [cursor=pointer]
+              - listitem [ref=e511]:
+                - button "Mika O. Mika O. 日本 プロ スーパー講師 ₹1,296 50分の レッスン 5 23レビュー 37 人の生徒 656 レッスン 日本語 話せる言語： 日本語 (ネイティブ), 英語 (中級) 初心者さん大歓迎！やさしく楽しい日本語レッスン 💛 — こんにちは、実香（みか）です。 日本語ネイティブとして、初心者の方にもわかりやすく、ゆっくり丁寧に日本語を教えています。 会話練習、発音、日常表現など、生徒さんのペースに合わせて楽しくサポートします。 子どもからシニアの方まで、どなたでも歓迎です。 リラックスした雰囲気で、一緒に日本語を学んでいきましょう。 これまで幅広い年代の方に日本語を教えてきました。 初心者の方には、やさしい日本語から始めて、ゆっくり丁寧にサポートしています。 会話の練習、文法の基礎、日本文化の説明など、生徒さんの目的に合わせて柔軟に対応してきました。 詳細を見る 体験レッスンを予約 メッセージを送る" [ref=e513]:
+                  - link "Mika O." [ref=e516] [cursor=pointer]:
+                    - /url: https://preply.com/ja/tutor/7195376
+                    - img "Mika O." [ref=e518]
+                  - generic [ref=e523]:
+                    - generic [ref=e524]
+                    - generic [ref=e538]
+                  - generic [ref=e546]:
+                    - generic [ref=e548]
+                    - generic [ref=e553]
+                  - button [ref=e568] [cursor=pointer]:
+                    - img [ref=e570]
+                  - generic [ref=e572]:
+                    - generic [ref=e573]
+                    - generic [ref=e595]
+                  - generic [ref=e603]:
+                    - button "体験レッスンを予約" [ref=e605] [cursor=pointer]
+                    - button "メッセージを送る" [ref=e609] [cursor=pointer]
+              - listitem [ref=e612]:
+                - button "Yukiko M. Yukiko M. 日本 プロ スーパー講師 ₹1,111 50分の レッスン 5 6レビュー 13 人の生徒 133 レッスン 日本語 話せる言語： 日本語 (ネイティブ), インドネシア語 (中級)Show 1 more languages 日本語教師資格あり！観光専門学校での指導＆JICA (Japan International Cooperation Agency)での教育経験あり。初心者〜上級者対応◎英語・インドネシア語OK！日常会話・ビジネス日本語・文化も学べる実践レッスン✨ — こんにちは！日本語講師のゆきこです😊 神奈川県出身です。 Preplyでは新しいですが、これまでに、ロンドンやインドネシアの日本語学校で、2年以上の経験があり、300名以上の生徒を教えています。バリ島の観光専門学校での指導や、JICAの調整員として国際協力の現場にも携わるなど、多様なフィールドで日本語教育に関わってきました。 現在は、日常会話からビジネス日本語まで、学習者一人ひとりの目的に合わせた、柔軟で実践的なレッスンを提供しています。 インドネシアに約20年滞在していた経験があり、英語でもサポートが可能なので、初心者の方も安心して学べます🗣️ 詳細を見る とても人気：最近16回予約されています 体験レッスンを予約 メッセージを送る" [ref=e614]:
+                  - link "Yukiko M." [ref=e617] [cursor=pointer]:
+                    - /url: https://preply.com/ja/tutor/7485834
+                    - img "Yukiko M." [ref=e619]
+                  - generic [ref=e624]:
+                    - generic [ref=e625]
+                    - generic [ref=e639]
+                  - generic [ref=e647]:
+                    - generic [ref=e649]
+                    - generic [ref=e654]
+                  - button [ref=e669] [cursor=pointer]:
+                    - img [ref=e671]
+                  - generic [ref=e673]:
+                    - generic [ref=e674]
+                    - generic [ref=e699]
+                    - generic [ref=e704]
+                  - generic [ref=e712]:
+                    - button "体験レッスンを予約" [ref=e714] [cursor=pointer]
+                    - button "メッセージを送る" [ref=e718] [cursor=pointer]
+              - listitem [ref=e721]:
+                - button "Akiko N. Akiko N. 日本 スーパー講師 ₹1,018 50分の レッスン 5 13レビュー 27 人の生徒 113 レッスン 日本語 話せる言語： 日本語 (ネイティブ), ヒンディー語 (初級)Show 1 more languages 日本旅行・アニメがもっと好きになる🧳私と新しい物語の１ページを開きませんか? あなたの「話したい」を全力サポート🔥💪私と一緒に夢を叶えましょう!🌏️ — 🌸こんな人におすすめ ・初めて日本語を学ぶ ・日本旅行をもっと楽しみたい ・日本の接客業に就きたい ・アニメや映画などより日本の文化を楽しみたい ・独学でやってきたけど誰かと一緒に頑張りたい 🌸私について はじめまして、あきこです！ 温泉で有名な九州に住んでいます。友人からは明るく元気な性格と言われます！趣味は音楽です🎙️ 🌸実績 ・元ボイストレーナー・元ホテルマン ・現役インド留学生 🌸教えられること 📕初級者： ・ひらがな・カタカナ ・日本語の基本文法と語順 ・旅行で使える日常会話 ・単語の意味、簡単な文章作成 詳細を見る 体験レッスンを予約 メッセージを送る" [ref=e723]:
+                  - link "Akiko N." [ref=e726] [cursor=pointer]:
+                    - /url: https://preply.com/ja/tutor/7619381
+                    - img "Akiko N." [ref=e728]
+                  - generic [ref=e733]:
+                    - generic [ref=e734]
+                    - generic [ref=e750]: スーパー講師
+                  - generic [ref=e754]:
+                    - generic [ref=e756]
+                    - generic [ref=e761]
+                  - button [ref=e776] [cursor=pointer]:
+                    - img [ref=e778]
+                  - generic [ref=e780]:
+                    - generic [ref=e781]
+                    - generic [ref=e806]
+                  - generic [ref=e813]:
+                    - button "体験レッスンを予約" [ref=e815] [cursor=pointer]
+                    - button "メッセージを送る" [ref=e819] [cursor=pointer]
+              - generic [ref=e821]:
+                - paragraph [ref=e831]: 無料で変更
+                - generic [ref=e832]:
+                  - paragraph [ref=e833]: ぴったりの講師が見つかるまで、リスクなしでお試し
+                  - paragraph [ref=e834]: 最初の講師が合わなかった場合は、あと2人まで無料でお試しできます。
+              - listitem [ref=e836]:
+                - button "Moe F. Moe F. 日本 プロ ₹1,203 50分の レッスン 5 7レビュー 14 人の生徒 59 レッスン 日本語 話せる言語： 日本語 (ネイティブ), 英語 (中級 (B1)) 小学校教員8年👩‍🏫｜子ども〜大人まで大歓迎🌸｜50カ国以上の渡航経験✈️ — こんにちは！日本語ネイティブのもえです。 日本で小学校教員として8年間働いていました。 また、アフリカのルワンダの小学校で約2年間ボランティアをしていました。現在は、世界の国々を旅しています。 【私の好きなこと】 旅行/カメラ/写真/刺繍/裁縫/料理/お菓子作り/アニメ（特にNARUTO、HUNTER×HUNTER） 一つでも同じものがあれば嬉しいです😁 【今まで行った国✈︎】 🇩🇪🇮🇹🇨🇭🇱🇮🇻🇳🇰🇭🇹🇭🇮🇳🇳🇵🇱🇰🇺🇸🇮🇩🇭🇰🇷🇼🇯🇴🇹🇳🇹🇿🇿🇲🇿🇼🇲🇾🇵🇭🇰🇷🇺🇿🇰🇿🇰🇬🇹🇯🇹🇲🇹🇷🇦🇿🇬🇪🇦🇲🇨🇾🇬🇷🇧🇬🇵🇱🇱🇹🇱🇻🇪🇪🇫🇮🇸🇪🇳🇴🇬🇧🇦🇺🇸🇬🇰🇪🇺🇬🇲🇼🇧🇼🇿🇦🇱🇸 詳細を見る 人気：最近6回予約されています 体験レッスンを予約 メッセージを送る" [ref=e838]:
+                  - link "Moe F." [ref=e841] [cursor=pointer]:
+                    - /url: https://preply.com/ja/tutor/7637822
+                    - img "Moe F." [ref=e843]
+                  - generic [ref=e848]:
+                    - generic [ref=e849]
+                    - generic [ref=e860]: プロ
+                  - generic [ref=e864]:
+                    - generic [ref=e866]
+                    - generic [ref=e871]
+                  - button [ref=e886] [cursor=pointer]:
+                    - img [ref=e888]
+                  - generic [ref=e890]:
+                    - generic [ref=e891]
+                    - generic [ref=e913]
+                    - generic [ref=e918]
+                  - generic [ref=e926]:
+                    - button "体験レッスンを予約" [ref=e928] [cursor=pointer]
+                    - button "メッセージを送る" [ref=e932] [cursor=pointer]
+              - listitem [ref=e935]:
+                - button "Yuri H. Yuri H. 日本 ₹1,296 50分の レッスン 5 9レビュー 19 人の生徒 23 レッスン 日本語 話せる言語： 日本語 (ネイティブ), 英語 (ネイティブ) サーフィン旅好きな元看護師。日本語をめっちゃ楽しく学びましょう！🌊🌺 — 🌴こんにちは！日本出身のゆりです。🌸 自然が大好きで、色々な国を旅してサーフィンをするのが趣味です。以前は看護師として働いていました。 人と話すこがとにかく大好きでたまらないので、皆さんと一緒に楽しく日本語を学べるのを楽しみにしています！ちなみに猫を二匹飼ってます！ 日本語教師としての正式な経験はまだありませんが、日本で看護師として働いてきました。 看護師の仕事を通じて、相手の話をじっくり聞く力や、一人ひとりに合わせた丁寧なコミュニケーション、目標に向かって粘り強くサポートするスキルを磨いてきました。 詳細を見る とても人気：最近14回予約されています 体験レッスンを予約 メッセージを送る" [ref=e937]:
+                  - link "Yuri H." [ref=e940] [cursor=pointer]:
+                    - /url: https://preply.com/ja/tutor/7678745
+                    - img "Yuri H." [ref=e942]
+                  - generic [ref=e948]:
+                    - link "Yuri H." [ref=e949] [cursor=pointer]:
+                      - /url: https://preply.com/ja/tutor/7678745
+                    - generic [ref=e953]
+                  - generic [ref=e965]:
+                    - generic [ref=e967]
+                    - generic [ref=e972]
+                  - button [ref=e987] [cursor=pointer]:
+                    - img [ref=e989]
+                  - generic [ref=e991]:
+                    - generic [ref=e992]
+                    - generic [ref=e1014]
+                    - generic [ref=e1019]
+                  - generic [ref=e1027]:
+                    - button "体験レッスンを予約" [ref=e1029] [cursor=pointer]
+                    - button "メッセージを送る" [ref=e1033] [cursor=pointer]
+              - listitem [ref=e1036]:
+                - button "Yummy K. Yummy K. 日本 プロ ₹1,666 50分の レッスン 4.8 27レビュー 25 人の生徒 975 レッスン 日本語 話せる言語： 日本語 (ネイティブ), 韓国語 (中級 (A2))Show 1 more languages 3ヶ月で自然な日本語が話せる😀｜初心者・旅行向け 会話重視のレッスン 💬 初心者＆英語サポート＆JLPT対応OK 🌱 — こんにちは！奈良在住のYummyです🦌 英語教員免許を持っており、現在は留学カウンセラーとして日本の学生を海外へ送り出す仕事をしています✈️ カナダ・オーストラリア・フィリピンへの留学経験があり、語学学習の難しさやコツも理解しています🌏 初心者の方や旅行で日本語を使いたい方が、自信を持って話せるようサポートしています。 英語でのサポートも可能なので、初心者の方も安心してください🌱 これまでに、さまざまな国の生徒さんに日本語を教えてきました👩‍🏫 🥇直近のJLPTでは、N2・N5の合格者を輩出しています。 詳細を見る 人気：最近8回予約されています 体験レッスンを予約 メッセージを送る" [ref=e1038]:
+                  - link "Yummy K." [ref=e1041] [cursor=pointer]:
+                    - /url: https://preply.com/ja/tutor/6768048
+                    - img "Yummy K." [ref=e1043]
+                  - generic [ref=e1048]:
+                    - generic [ref=e1049]
+                    - generic [ref=e1065]: プロ
+                  - generic [ref=e1069]:
+                    - generic [ref=e1071]
+                    - generic [ref=e1076]
+                  - button [ref=e1091] [cursor=pointer]:
+                    - img [ref=e1093]
+                  - generic [ref=e1095]:
+                    - generic [ref=e1096]
+                    - generic [ref=e1121]
+                    - generic [ref=e1126]
+                  - generic [ref=e1134]:
+                    - button "体験レッスンを予約" [ref=e1136] [cursor=pointer]
+                    - button "メッセージを送る" [ref=e1140] [cursor=pointer]
+              - listitem [ref=e1143]:
+                - button "Haruka Y. Haruka Y. 日本 ₹2,129 50分の レッスン 5 22レビュー 33 人の生徒 524 レッスン 日本語 話せる言語： 日本語 (ネイティブ), 英語 (上級者)Show 1 more languages ✏️ 📔\\🌟日本語で広がる未来 🌟/📙‪🎨 🎶楽しく学んで、気づけば日本語が話せる自分に！🎶📝あなただけのカリキュラムで日本語の授業を体験してみて😊🏆 — こんにちは！✨♪ 私ははるかです☺️大阪出身です🐙 レストランやカフェ、ドラッグストア、コンビニなどで接客やキッチンの仕事をしてきました🏪🍽✨ 人と関わることが好きで、笑顔で丁寧に対応することを大切にしています🥰🩷 また、音楽も得意です！ホルン📯 ✨を演奏していて、高校時代にはマーチングバンドで日本一になった経験もあります🏅🔅 韓国・釜山外国語大学へ短期留学をして、韓国語能力試験（TOPIK）4級も取得しています😊☀️ 韓国語できます🙆🏻‍♀️ 10年間ホルンを続けているので音楽をいかした授業もできます🎼🌟 詳細を見る とても人気：最近17回予約されています 体験レッスンを予約 メッセージを送る" [ref=e1145]:
+                  - link "Haruka Y." [ref=e1148] [cursor=pointer]:
+                    - /url: https://preply.com/ja/tutor/7133269
+                    - img "Haruka Y." [ref=e1150]
+                  - generic [ref=e1156]:
+                    - link "Haruka Y." [ref=e1157] [cursor=pointer]:
+                      - /url: https://preply.com/ja/tutor/7133269
+                    - generic [ref=e1161]
+                  - generic [ref=e1173]:
+                    - generic [ref=e1175]
+                    - generic [ref=e1180]
+                  - button [ref=e1195] [cursor=pointer]:
+                    - img [ref=e1197]
+                  - generic [ref=e1199]:
+                    - generic [ref=e1200]
+                    - generic [ref=e1225]
+                    - generic [ref=e1230]
+                  - generic [ref=e1238]:
+                    - button "体験レッスンを予約" [ref=e1240] [cursor=pointer]
+                    - button "メッセージを送る" [ref=e1244] [cursor=pointer]
+              - listitem [ref=e1247]:
+                - button "Hiroki Y. Hiroki Y. 日本 プロ ₹1,203 50分の レッスン 5 12レビュー 26 人の生徒 162 レッスン 日本語 話せる言語： 日本語 (ネイティブ), 英語 (中級)Show 1 more languages 初心者向け (15歳以上か大人対象)✨ なぜ多くの大人が日本語を話せるようにならないのか？その解決方法までお伝えします 🗣️ — こんにちは！Hirokiです 👍 日本語が難しくて、圧倒されていませんか？ もしかしたら、こんなことを感じているかもしれません。 💬 教材が多すぎて、何を使えばいいかわからない… 💬 文法は分かるのに、話そうとすると固まってしまう… 💬 日本人と話すのがちょっと怖い… でも、安心してください！ ほとんどの初心者が同じ気持ちを経験しています。 問題は、日本語が「難しすぎる」ことではありません。⚠️ 学んだことを、ステップごとに「実際に使う練習」が足りないだけなんです。 私のレッスンでは、まさにそれを一番大切にしています。 詳細を見る とても人気：最近13回予約されています 体験レッスンを予約 メッセージを送る" [ref=e1249]:
+                  - link "Hiroki Y." [ref=e1252] [cursor=pointer]:
+                    - /url: https://preply.com/ja/tutor/7480476
+                    - img "Hiroki Y." [ref=e1254]
+                  - generic [ref=e1259]:
+                    - generic [ref=e1260]
+                    - generic [ref=e1276]: プロ
+                  - generic [ref=e1280]:
+                    - generic [ref=e1282]
+                    - generic [ref=e1287]
+                  - button [ref=e1302] [cursor=pointer]:
+                    - img [ref=e1304]
+                  - generic [ref=e1306]:
+                    - generic [ref=e1307]
+                    - generic [ref=e1332]
+                    - generic [ref=e1337]
+                  - generic [ref=e1345]:
+                    - button "体験レッスンを予約" [ref=e1347] [cursor=pointer]
+                    - button "メッセージを送る" [ref=e1351] [cursor=pointer]
+            - list [ref=e1353]:
+              - listitem [ref=e1354]:
+                - button "page-1" [ref=e1355] [cursor=pointer]: "1"
+              - listitem [ref=e1356]:
+                - button "page-2" [ref=e1357] [cursor=pointer]: "2"
+              - listitem [ref=e1358]:
+                - button "Jump forward" [ref=e1359] [cursor=pointer]: …
+              - listitem [ref=e1360]:
+                - button "page-435" [ref=e1361] [cursor=pointer]: "435"
+              - listitem [ref=e1362]:
+                - button "Next page" [ref=e1363] [cursor=pointer]:
+                  - img [ref=e1365]:
+                    - img [ref=e1366]
+      - navigation [ref=e1368]:
+        - generic [ref=e1370]:
+          - link "講師を探す" [ref=e1371] [cursor=pointer]:
+            - /url: /ja/
+          - paragraph [ref=e1372]: ›
+          - link "世界の言語" [ref=e1373] [cursor=pointer]:
+            - /url: /ja/online/language-tutors
+          - paragraph [ref=e1374]: ›
+          - link "オンライン 日本語 講師" [ref=e1375] [cursor=pointer]:
+            - /url: /ja/online/japanese-tutors
+      - generic [ref=e1379]:
+        - heading "Preplyの仕組み" [level=2] [ref=e1380]
+        - generic [ref=e1382]:
+          - button "1. 自分にぴったりの日本語講師を見つける" [ref=e1383] [cursor=pointer]:
+            - generic [ref=e1384]:
+              - generic [ref=e1386]: 1. 自分にぴったりの日本語講師を見つける
+              - img [ref=e1388]
+            - separator [ref=e1391]
+          - paragraph [ref=e1394]: 2,890人以上の日本語講師の中から選べます。検索フィルターを使って、あなたに最適な講師を見つけましょう。
+          - button "2. 初回レッスンを予約する" [ref=e1395] [cursor=pointer]:
+            - generic [ref=e1396]:
+              - generic [ref=e1398]: 2. 初回レッスンを予約する
+              - img [ref=e1400]
+            - separator [ref=e1403]
+          - paragraph [ref=e1405]: あなたのスケジュールにぴったりの時間を見つけて、バーチャルクラスルームで講師と繋がりましょう。
+          - button "3. 定期的にレッスンを受講する" [ref=e1406] [cursor=pointer]:
+            - generic [ref=e1407]:
+              - generic [ref=e1409]: 3. 定期的にレッスンを受講する
+              - img [ref=e1411]
+            - separator [ref=e1414]
+          - paragraph [ref=e1416]: レッスンを定期購入して、学習習慣をつけましょう また、他の講師を無料で体験することもできますので、安心してお選びください。
+      - generic [ref=e1418]:
+        - heading "オンラインで日本語を学ぶならPreplyがおすすめな理由" [level=4] [ref=e1420]
+        - generic [ref=e1421]:
+          - generic [ref=e1422]:
+            - generic [ref=e1423]:
+              - generic [ref=e1424]:
+                - heading "5" [level=3] [ref=e1425]
+                - heading "/5" [level=5] [ref=e1426]
+              - generic [ref=e1427]:
+                - img [ref=e1431]
+                - img [ref=e1436]
+                - img [ref=e1441]
+                - img [ref=e1446]
+                - img [ref=e1451]
+            - paragraph [ref=e1453]: 日本語のマンツーマン講師は、平均評価5、最大246件のレビューを獲得しています
+          - generic [ref=e1454]:
+            - generic [ref=e1456]:
+              - heading "3" [level=3] [ref=e1457]
+              - heading "言語" [level=5] [ref=e1458]
+            - paragraph [ref=e1459]: 日本語の講師は、教える言語以外にも、平均3の言語が話せます
+          - generic [ref=e1460]:
+            - generic [ref=e1462]:
+              - heading "2" [level=3] [ref=e1463]
+              - heading "時間" [level=5] [ref=e1464]
+            - paragraph [ref=e1465]: 日本語の講師は、平均 2 時間以内にメッセージに返信しています
+      - generic [ref=e1468]:
+        - heading "日本語を学ぶ生徒の声" [level=4] [ref=e1469]
+        - generic [ref=e1470]:
+          - generic [ref=e1472]:
+            - generic [ref=e1475]:
+              - generic [ref=e1476]:
+                - img "경찬" [ref=e1478]
+                - generic [ref=e1479]:
+                  - paragraph [ref=e1480]: 경찬
+                  - paragraph [ref=e1481]:
+                    - text: さんより
+                    - link "Naoto" [ref=e1482] [cursor=pointer]:
+                      - /url: https://preply.com/ja/tutor/1039442
+                    - text: 先生の感想
+              - generic [ref=e1483]:
+                - img [ref=e1487]
+                - img [ref=e1492]
+                - img [ref=e1497]
+                - img [ref=e1502]
+                - img [ref=e1507]
+              - paragraph [ref=e1509]: 日本語を始めてから1年が経った時点で先生に会いました 敬語、イントネーション、長短音などの詳細なティーチングを受け、会話力が改善されました。 親切でディテールな授業方法に大多数が助けられると確信しています。
+            - generic [ref=e1512]:
+              - generic [ref=e1513]:
+                - img "にん" [ref=e1515]
+                - generic [ref=e1516]:
+                  - paragraph [ref=e1517]: にん
+                  - paragraph [ref=e1518]:
+                    - text: さんより
+                    - link "Mikiko" [ref=e1519] [cursor=pointer]:
+                      - /url: https://preply.com/ja/tutor/5073217
+                    - text: 先生の感想
+              - generic [ref=e1520]:
+                - img [ref=e1524]
+                - img [ref=e1529]
+                - img [ref=e1534]
+                - img [ref=e1539]
+                - img [ref=e1544]
+              - paragraph [ref=e1546]: Mikiko K.先生の教え方が非常に丁寧で、わかりやすいです。私の弱みを明確したうえで、克服する方法を提案していただきました。面接のテクニックも親切に指導していただきました。能力が向上していると実感しました。すごくおすすめです。
+            - generic [ref=e1549]:
+              - generic [ref=e1550]:
+                - img "Caleb" [ref=e1552]
+                - generic [ref=e1553]:
+                  - paragraph [ref=e1554]: Caleb
+                  - paragraph [ref=e1555]:
+                    - text: さんより
+                    - link "Noa" [ref=e1556] [cursor=pointer]:
+                      - /url: https://preply.com/ja/tutor/4130563
+                    - text: 先生の感想
+              - generic [ref=e1557]:
+                - img [ref=e1561]
+                - img [ref=e1566]
+                - img [ref=e1571]
+                - img [ref=e1576]
+                - img [ref=e1581]
+              - paragraph [ref=e1583]: のあ先生とレッスンをするのが楽しかったです😁 僕は日本語で日本人とあまり話さないけど、日本語でのあ先生と話しやすかった👍 レッスンはありがとうございました！ Her English is also very good, if you need some extra help.
+            - generic [ref=e1586]:
+              - generic [ref=e1587]:
+                - img "Inkyung" [ref=e1589]
+                - generic [ref=e1590]:
+                  - paragraph [ref=e1591]: Inkyung
+                  - paragraph [ref=e1592]:
+                    - text: さんより
+                    - link "Daiki" [ref=e1593] [cursor=pointer]:
+                      - /url: https://preply.com/ja/tutor/5146348
+                    - text: 先生の感想
+              - generic [ref=e1594]:
+                - img [ref=e1598]
+                - img [ref=e1603]
+                - img [ref=e1608]
+                - img [ref=e1613]
+                - img [ref=e1618]
+              - paragraph [ref=e1620]: 매우 친절하고, 자세하게 설명해주려 노력하십니다. 추천합니다 先生はとても親切で、できるだけ詳しく説明してくれます。生徒の希望に合わせてテキスト本も色々用意してくれるので、すごく助かります。おすすめします。
+            - generic [ref=e1623]:
+              - generic [ref=e1624]:
+                - img "seonyu" [ref=e1626]
+                - generic [ref=e1627]:
+                  - paragraph [ref=e1628]: seonyu
+                  - paragraph [ref=e1629]:
+                    - text: さんより
+                    - link "Yoshimi" [ref=e1630] [cursor=pointer]:
+                      - /url: https://preply.com/ja/tutor/4418005
+                    - text: 先生の感想
+              - generic [ref=e1631]:
+                - img [ref=e1635]
+                - img [ref=e1640]
+                - img [ref=e1645]
+                - img [ref=e1650]
+                - img [ref=e1655]
+              - paragraph [ref=e1657]: 先生はとても優しくて、学生のレベル向けのカリキュラムを準備してると思います！日本語がよくわからない方から上級者に至るまで楽しく授業を受けられます。おすすめです！일본어를 잘 하지 못하시는 분이라도 요시미 선생님과 함께 수업을 하면 실력이 정말 많이 늘 것 같습니다! 천천히 쉬운 일본어로 수업을 진행해주시니까 정말 추천합니다!
+          - button [ref=e1658] [cursor=pointer]:
+            - img [ref=e1659]:
+              - img [ref=e1660]
+      - navigation [ref=e1662]:
+        - generic [ref=e1664]:
+          - generic [ref=e1665]:
+            - paragraph [ref=e1666]: お住まい地域の言語レッスン
+            - list [ref=e1667]:
+              - listitem [ref=e1668]:
+                - link "名古屋 近辺の日本語レッスン" [ref=e1669] [cursor=pointer]:
+                  - /url: /ja/nagoya/japanese-tutors
+              - listitem [ref=e1670]:
+                - link "大阪 近辺の日本語レッスン" [ref=e1671] [cursor=pointer]:
+                  - /url: /ja/osaka/japanese-tutors
+              - listitem [ref=e1672]:
+                - link "神戸 近辺の日本語レッスン" [ref=e1673] [cursor=pointer]:
+                  - /url: /ja/kobe/japanese-tutors
+              - listitem [ref=e1674]:
+                - link "京都 近辺の日本語レッスン" [ref=e1675] [cursor=pointer]:
+                  - /url: /ja/kyoto/japanese-tutors
+              - listitem [ref=e1676]:
+                - link "埼玉 近辺の日本語レッスン" [ref=e1677] [cursor=pointer]:
+                  - /url: /ja/saitama/japanese-tutors
+          - generic [ref=e1678]:
+            - paragraph [ref=e1679]: 人気の言語レッスン
+            - list [ref=e1680]:
+              - listitem [ref=e1681]:
+                - link "オンライン英語レッスン" [ref=e1682] [cursor=pointer]:
+                  - /url: /ja/online/english-tutors
+              - listitem [ref=e1683]:
+                - link "オンラインフランス語レッスン" [ref=e1684] [cursor=pointer]:
+                  - /url: /ja/online/french-tutors
+              - listitem [ref=e1685]:
+                - link "オンラインアラビア語レッスン" [ref=e1686] [cursor=pointer]:
+                  - /url: /ja/online/arabic-tutors
+              - listitem [ref=e1687]:
+                - link "オンライン韓国語レッスン" [ref=e1688] [cursor=pointer]:
+                  - /url: /ja/online/korean-tutors
+              - listitem [ref=e1689]:
+                - link "オンラインスペイン語レッスン" [ref=e1690] [cursor=pointer]:
+                  - /url: /ja/online/spanish-tutors
+              - listitem [ref=e1691]:
+                - link "オンライン中国語レッスン" [ref=e1692] [cursor=pointer]:
+                  - /url: /ja/online/chinese-tutors
+              - listitem [ref=e1693]:
+                - link "オンラインイタリア語レッスン" [ref=e1694] [cursor=pointer]:
+                  - /url: /ja/online/italian-tutors
+              - listitem [ref=e1695]:
+                - link "オンラインポルトガル語レッスン" [ref=e1696] [cursor=pointer]:
+                  - /url: /ja/online/portuguese-tutors
+              - listitem [ref=e1697]:
+                - link "オンラインドイツ語レッスン" [ref=e1698] [cursor=pointer]:
+                  - /url: /ja/online/german-tutors
+          - generic [ref=e1699]:
+            - paragraph [ref=e1700]: 他の言語を学ぶ
+            - list [ref=e1701]:
+              - listitem [ref=e1702]:
+                - link "オンラインオランダ語レッスン" [ref=e1703] [cursor=pointer]:
+                  - /url: /ja/online/dutch-tutors
+              - listitem [ref=e1704]:
+                - link "オンラインセルビア語レッスン" [ref=e1705] [cursor=pointer]:
+                  - /url: /ja/online/serbian-tutors
+              - listitem [ref=e1706]:
+                - link "オンラインバスク語レッスン" [ref=e1707] [cursor=pointer]:
+                  - /url: /ja/online/basque-tutors
+              - listitem [ref=e1708]:
+                - link "オンラインタガログ語レッスン" [ref=e1709] [cursor=pointer]:
+                  - /url: /ja/online/tagalog-tutors
+              - listitem [ref=e1710]:
+                - link "オンライン手話レッスン" [ref=e1711] [cursor=pointer]:
+                  - /url: /ja/online/sign-tutors
+              - listitem [ref=e1712]:
+                - link "オンライントルコ語レッスン" [ref=e1713] [cursor=pointer]:
+                  - /url: /ja/online/turkish-tutors
+              - listitem [ref=e1714]:
+                - link "オンラインベトナム語レッスン" [ref=e1715] [cursor=pointer]:
+                  - /url: /ja/online/vietnamese-tutors
+              - listitem [ref=e1716]:
+                - link "オンラインギリシャ語レッスン" [ref=e1717] [cursor=pointer]:
+                  - /url: /ja/online/greek-tutors
+              - listitem [ref=e1718]:
+                - link "オンラインラトビア語レッスン" [ref=e1719] [cursor=pointer]:
+                  - /url: /ja/online/latvian-tutors
+              - listitem [ref=e1720]:
+                - link "オンラインジョージア語レッスン" [ref=e1721] [cursor=pointer]:
+                  - /url: /ja/online/georgian-tutors
+          - generic [ref=e1722]:
+            - paragraph [ref=e1723]: その他の言語
+            - list [ref=e1724]:
+              - listitem [ref=e1725]:
+                - link "Japanse les online" [ref=e1726] [cursor=pointer]:
+                  - /url: /nl/online/japans-docenten
+              - listitem [ref=e1727]:
+                - link "Japanisch-Privatunterricht" [ref=e1728] [cursor=pointer]:
+                  - /url: /de/online/japanisch-Nachhilfe
+              - listitem [ref=e1729]:
+                - link "Репетиторы японского" [ref=e1730] [cursor=pointer]:
+                  - /url: /ru/online/repetitory--yaponskogo
+              - listitem [ref=e1731]:
+                - link "Online Japonca kursu" [ref=e1732] [cursor=pointer]:
+                  - /url: /tr/online/japonca-eğitimi
+              - listitem [ref=e1733]:
+                - link "sdfsd" [ref=e1734] [cursor=pointer]:
+                  - /url: /pl/online/korepetycje-z-japońskiego
+              - listitem [ref=e1735]:
+                - link "Clases de japonés online" [ref=e1736] [cursor=pointer]:
+                  - /url: /es/online/profesores--japonés
+              - listitem [ref=e1737]:
+                - link "Japanese tutors online" [ref=e1738] [cursor=pointer]:
+                  - /url: /en/online/japanese-tutors
+              - listitem [ref=e1739]:
+                - link "Cours de japonais en ligne" [ref=e1740] [cursor=pointer]:
+                  - /url: /fr/online/japonaise-tuteurs
+              - listitem [ref=e1741]:
+                - link "Corsi di giapponese online" [ref=e1742] [cursor=pointer]:
+                  - /url: /it/online/tutor-giapponese
+              - listitem [ref=e1743]:
+                - link "Aulas de japonês online" [ref=e1744] [cursor=pointer]:
+                  - /url: /pt/online/professores--japonesa
+      - generic [ref=e1746]:
+        - table "講師の出身国別日本語レッスン価格" [ref=e1747]:
+          - caption [ref=e1748]:
+            - heading "講師の出身国別日本語レッスン価格" [level=2] [ref=e1749]
+          - rowgroup [ref=e1750]:
+            - row "出身国 平均価格" [ref=e1751]:
+              - columnheader "出身国" [ref=e1752]
+              - columnheader "平均価格" [ref=e1753]
+          - rowgroup [ref=e1754]:
+            - row "Flag 日本 $30 / 時間" [ref=e1755]:
+              - cell "Flag 日本" [ref=e1756]:
+                - img "Flag" [ref=e1757]
+                - paragraph [ref=e1758]: 日本
+              - cell "$30 / 時間" [ref=e1759]:
+                - paragraph [ref=e1760]: $30 / 時間
+            - row "Flag アメリカ合衆国 $25 / 時間" [ref=e1761]:
+              - cell "Flag アメリカ合衆国" [ref=e1762]:
+                - img "Flag" [ref=e1763]
+                - paragraph [ref=e1764]: アメリカ合衆国
+              - cell "$25 / 時間" [ref=e1765]:
+                - paragraph [ref=e1766]: $25 / 時間
+            - row "Flag ウクライナ $30 / 時間" [ref=e1767]:
+              - cell "Flag ウクライナ" [ref=e1768]:
+                - img "Flag" [ref=e1769]
+                - paragraph [ref=e1770]: ウクライナ
+              - cell "$30 / 時間" [ref=e1771]:
+                - paragraph [ref=e1772]: $30 / 時間
+            - row "Flag ブラジル $26 / 時間" [ref=e1773]:
+              - cell "Flag ブラジル" [ref=e1774]:
+                - img "Flag" [ref=e1775]
+                - paragraph [ref=e1776]: ブラジル
+              - cell "$26 / 時間" [ref=e1777]:
+                - paragraph [ref=e1778]: $26 / 時間
+        - table "マンツーマン日本語講師の平均レッスン価格" [ref=e1780]:
+          - caption [ref=e1781]:
+            - heading "マンツーマン日本語講師の平均レッスン価格" [level=2] [ref=e1782]
+          - rowgroup [ref=e1783]:
+            - row "講師のタイプ 平均価格" [ref=e1784]:
+              - columnheader "講師のタイプ" [ref=e1785]
+              - columnheader "平均価格" [ref=e1786]
+          - rowgroup [ref=e1787]:
+            - row "ネイティブ日本語講師 $29 / 時間" [ref=e1788]:
+              - cell "ネイティブ日本語講師" [ref=e1789]:
+                - paragraph [ref=e1790]: ネイティブ日本語講師
+              - cell "$29 / 時間" [ref=e1791]:
+                - paragraph [ref=e1792]: $29 / 時間
+            - row "ノンネイティブ日本語講師 $25 / 時間" [ref=e1793]:
+              - cell "ノンネイティブ日本語講師" [ref=e1794]:
+                - paragraph [ref=e1795]: ノンネイティブ日本語講師
+              - cell "$25 / 時間" [ref=e1796]:
+                - paragraph [ref=e1797]: $25 / 時間
+      - article [ref=e1800]:
+        - heading "よくある質問 (FAQ)" [level=2] [ref=e1801]
+        - generic [ref=e1803]:
+          - heading "一番効果的な日本語の学習方法はなんですか？" [level=3] [ref=e1804]:
+            - strong [ref=e1805]: 一番効果的な日本語の学習方法はなんですか？
+          - generic [ref=e1806]:
+            - generic [ref=e1807]: プレプリーのオンライン日本語講師によるマンツーマンレッスンが最も効果的です。講師は生徒のニーズに合わせたカスタマイズされたレッスンを提供し、個別のスキルやテーマに焦点を当てることができます。
+            - generic [ref=e1809]:
+              - heading "プレプリーの講師はどのような資格や経験を持っていますか？" [level=3] [ref=e1810]:
+                - strong [ref=e1811]: プレプリーの講師はどのような資格や経験を持っていますか？
+              - generic [ref=e1812]:
+                - generic [ref=e1813]: プレプリーの日本語講師は、日本語能力試験N1の資格を持ち、日本でのビジネス経験や豊富なオンラインレッスン経験を持っています。さらに、多言語に堪能であり、生徒のニーズに合わせた教材を使用しています。
+                - generic [ref=e1815]:
+                  - heading "オンライン日本語レッスンで特定のスキルやテーマに集中したいのですが、講師は対応してくれますか？" [level=3] [ref=e1816]:
+                    - strong [ref=e1817]: オンライン日本語レッスンで特定のスキルやテーマに集中したいのですが、講師は対応してくれますか？
+                  - generic [ref=e1818]:
+                    - generic [ref=e1819]: はい、プレプリーの講師は生徒が特定のスキルやテーマに集中したい場合にも対応しています。カスタマイズされたレッスンを提供し、生徒の学習目標に合わせた内容を提供しています。
+                    - generic [ref=e1821]
+    - contentinfo [ref=e1886]:
+      - generic [ref=e1887]:
+        - generic [ref=e1888]:
+          - generic [ref=e1890]:
+            - heading "プレプリーについて" [level=5] [ref=e1891]
+            - list [ref=e1892]:
+              - listitem [ref=e1893]:
+                - link "初めての方へ" [ref=e1895] [cursor=pointer]:
+                  - /url: https://preply.com/ja/about-us
+              - listitem [ref=e1896]:
+                - link "ご利用方法" [ref=e1898] [cursor=pointer]:
+                  - /url: https://preply.com/ja/how-it-works
+              - listitem [ref=e1899]:
+                - link "お客様の声" [ref=e1901] [cursor=pointer]:
+                  - /url: https://preply.com/ja/reviews
+              - listitem [ref=e1902]:
+                - button "求人情報" [ref=e1904] [cursor=pointer]
+              - listitem [ref=e1905]:
+                - button "ステータス" [ref=e1907] [cursor=pointer]
+              - listitem [ref=e1908]:
+                - button "メディアキット" [ref=e1910] [cursor=pointer]
+              - listitem [ref=e1911]:
+                - button "アフィリエイト提携" [ref=e1913] [cursor=pointer]
+          - generic [ref=e1915]:
+            - heading "生徒の皆様へ" [level=5] [ref=e1916]
+            - list [ref=e1917]:
+              - listitem [ref=e1918]:
+                - link "プレプリーブログ" [ref=e1920] [cursor=pointer]:
+                  - /url: https://preply.com/ja/blog/
+              - listitem [ref=e1921]:
+                - link "よくある質問" [ref=e1923] [cursor=pointer]:
+                  - /url: https://preply.com/ja/questions
+              - listitem [ref=e1924]:
+                - link "学生割引キャンペーン" [ref=e1926] [cursor=pointer]:
+                  - /url: https://preply.com/en/student-discount
+              - listitem [ref=e1927]:
+                - link "友達を紹介する" [ref=e1929] [cursor=pointer]:
+                  - /url: https://preply.com/ja/referral
+              - listitem [ref=e1930]:
+                - link "無料英語レベル診断テスト" [ref=e1932] [cursor=pointer]:
+                  - /url: https://preply.com/en/language-tests/english
+              - listitem [ref=e1933]:
+                - link "無料単語テスト" [ref=e1935] [cursor=pointer]:
+                  - /url: https://preply.com/en/learn/english/test-your-vocab
+          - generic [ref=e1937]:
+            - heading "講師の皆様へ" [level=5] [ref=e1938]
+            - list [ref=e1939]:
+              - listitem [ref=e1940]:
+                - link "オンライン講師になる" [ref=e1942] [cursor=pointer]:
+                  - /url: https://preply.com/ja/teach
+              - listitem [ref=e1943]:
+                - link "オンラインで英語を教える" [ref=e1945] [cursor=pointer]:
+                  - /url: https://preply.com/ja/online/english-tutoring-jobs
+              - listitem [ref=e1946]:
+                - link "オンラインで日本語を教える" [ref=e1948] [cursor=pointer]:
+                  - /url: https://preply.com/ja/online/japanese-tutoring-jobs
+              - listitem [ref=e1949]:
+                - link "オンラインでフランス語を教える" [ref=e1951] [cursor=pointer]:
+                  - /url: https://preply.com/ja/online/french-tutoring-jobs
+              - listitem [ref=e1952]:
+                - link "オンラインで日本語を教える" [ref=e1954] [cursor=pointer]:
+                  - /url: https://preply.com/ja/online/japanese-tutoring-jobs
+              - listitem [ref=e1955]:
+                - link "オンライン家庭教師になる" [ref=e1957] [cursor=pointer]:
+                  - /url: https://preply.com/ja/online/tutoring-jobs
+          - generic [ref=e1959]:
+            - heading "法人の皆様へ" [level=5] [ref=e1960]
+            - list [ref=e1961]:
+              - listitem [ref=e1962]:
+                - link "法人向け言語トレーニング" [ref=e1964] [cursor=pointer]:
+                  - /url: https://preply.com/en/business-language-training
+              - listitem [ref=e1965]:
+                - link "法人向け英語レベルテスト" [ref=e1967] [cursor=pointer]:
+                  - /url: https://preply.com/ja/english-level-test-for-companies
+        - generic [ref=e1968]:
+          - generic [ref=e1970]:
+            - heading "サポート" [level=5] [ref=e1971]
+            - button "ヘルプが必要でしょうか？" [ref=e1973] [cursor=pointer]
+          - generic [ref=e1975]:
+            - heading "問い合わせ先" [level=5] [ref=e1976]
+            - generic [ref=e1977]:
+              - paragraph [ref=e1978]:
+                - img [ref=e1979]
+                - text: アメリカ
+              - paragraph [ref=e1985]: 1309 Beacon Street, Suite 300, Brookline, MA, 02446
+          - generic [ref=e1987]:
+            - heading "Preplyのソーシャルメディア" [level=5] [ref=e1988]
+            - generic [ref=e1989]:
+              - link "Facebook" [ref=e1992] [cursor=pointer]:
+                - /url: https://www.facebook.com/preply
+                - img [ref=e1993]
+                - text: Facebook
+              - link "Instagram" [ref=e1997] [cursor=pointer]:
+                - /url: https://www.instagram.com/preply/
+                - img [ref=e1998]
+                - text: Instagram
+              - link "Youtube" [ref=e2004] [cursor=pointer]:
+                - /url: https://www.youtube.com/user/preplysite
+                - img [ref=e2005]
+                - text: Youtube
+              - link "LinkedIn" [ref=e2010] [cursor=pointer]:
+                - /url: https://www.linkedin.com/company/preply/
+                - img [ref=e2011]
+                - text: LinkedIn
+              - link "TikTok" [ref=e2014] [cursor=pointer]:
+                - /url: https://www.tiktok.com/@preplyglobal
+                - img [ref=e2015]
+                - text: TikTok
+      - generic [ref=e2019]:
+        - generic [ref=e2021]:
+          - heading "言語を学ぼう" [level=5] [ref=e2022]
+          - list [ref=e2023]:
+            - listitem [ref=e2024]:
+              - link "オンラインで英語を学ぶ" [ref=e2026] [cursor=pointer]:
+                - /url: https://preply.com/en/learn/english
+            - listitem [ref=e2027]:
+              - link "その他の言語を学ぶ" [ref=e2029] [cursor=pointer]:
+                - /url: https://preply.com/en/learn
+        - generic [ref=e2031]:
+          - heading "マンツーマンプライベートレッスン" [level=5] [ref=e2032]
+          - list [ref=e2033]:
+            - listitem [ref=e2034]:
+              - link "オンライン英会話レッスン" [ref=e2036] [cursor=pointer]:
+                - /url: https://preply.com/ja/online/english-tutors
+            - listitem [ref=e2037]:
+              - link "オンラインスペイン語レッスン" [ref=e2039] [cursor=pointer]:
+                - /url: https://preply.com/ja/online/spanish-tutors
+            - listitem [ref=e2040]:
+              - link "オンラインフランス語レッスン" [ref=e2042] [cursor=pointer]:
+                - /url: https://preply.com/ja/online/french-tutors
+            - listitem [ref=e2043]:
+              - link "オンラインドイツ語レッスン" [ref=e2045] [cursor=pointer]:
+                - /url: https://preply.com/ja/online/german-tutors
+            - listitem [ref=e2046]:
+              - link "オンライン韓国語レッスン" [ref=e2048] [cursor=pointer]:
+                - /url: https://preply.com/ja/online/korean-tutors
+            - listitem [ref=e2049]:
+              - link "オンライン数学レッスン" [ref=e2051] [cursor=pointer]:
+                - /url: https://preply.com/ja/online/math-tutors
+            - listitem [ref=e2052]:
+              - link "オンライン日本語レッスン" [ref=e2054] [cursor=pointer]:
+                - /url: https://preply.com/ja/online/japanese-tutors
+            - listitem [ref=e2055]:
+              - link "オンライン中国語レッスン" [ref=e2057] [cursor=pointer]:
+                - /url: https://preply.com/ja/online/chinese-tutors
+            - listitem [ref=e2058]:
+              - link "オンラインロシア語レッスン" [ref=e2060] [cursor=pointer]:
+                - /url: https://preply.com/ja/online/russian-tutors
+        - generic [ref=e2062]:
+          - heading "お近くのオンラインレッスン" [level=5] [ref=e2063]
+          - list [ref=e2064]:
+            - listitem [ref=e2065]:
+              - link "東京のオンラインレッスン" [ref=e2067] [cursor=pointer]:
+                - /url: https://preply.com/ja/tokyo/all-tutors
+            - listitem [ref=e2068]:
+              - link "大阪のオンラインレッスン" [ref=e2070] [cursor=pointer]:
+                - /url: https://preply.com/ja/osaka/all-tutors
+            - listitem [ref=e2071]:
+              - link "横浜のオンラインレッスン" [ref=e2073] [cursor=pointer]:
+                - /url: https://preply.com/ja/yokohama/all-tutors
+            - listitem [ref=e2074]:
+              - link "名古屋のオンラインレッスン" [ref=e2076] [cursor=pointer]:
+                - /url: https://preply.com/ja/nagoya/all-tutors
+            - listitem [ref=e2077]:
+              - link "福岡のオンラインレッスン" [ref=e2079] [cursor=pointer]:
+                - /url: https://preply.com/ja/fukuoka/all-tutors
+            - listitem [ref=e2080]:
+              - link "海外のオンライン家庭教師を探す" [ref=e2082] [cursor=pointer]:
+                - /url: https://preply.com/ja/tutors-abroad
+            - listitem [ref=e2083]:
+              - link "都市別のオンラインレッスン" [ref=e2085] [cursor=pointer]:
+                - /url: https://preply.com/ja/tutors-by-city
+            - listitem [ref=e2086]:
+              - link "日本のマンツーマン英会話レッスン" [ref=e2088] [cursor=pointer]:
+                - /url: https://preply.com/ja/c/Japan/english-tutors
+            - listitem [ref=e2089]:
+              - link "日本のマンツーマン日本語レッスン" [ref=e2091] [cursor=pointer]:
+                - /url: https://preply.com/ja/c/Japan/japanese-tutors
+        - generic [ref=e2092]:
+          - paragraph [ref=e2095]: © 2012-2026 Preply Inc.
+          - generic [ref=e2096]:
+            - link "法務センター" [ref=e2098] [cursor=pointer]:
+              - /url: /ja/legal
+            - generic [ref=e2099]:
+              - text: ·
+              - link "プライバシーポリシー" [ref=e2100] [cursor=pointer]:
+                - /url: https://termsofuse.preply.com/terms_of_use/en_PrivacyPolicy.pdf
+            - generic [ref=e2101]:
+              - text: ·
+              - link "クッキーポリシー" [ref=e2102] [cursor=pointer]:
+                - /url: https://termsofuse.preply.com/terms_of_use/en_CookiePolicy.pdf
+            - generic [ref=e2103]:
+              - text: ·
+              - link "法的通知" [ref=e2104] [cursor=pointer]:
+                - /url: https://termsofuse.preply.com/terms_of_use/ja_Impressum.pdf
+      - button "Scroll to the top" [ref=e2106] [cursor=pointer]:
+        - img [ref=e2108]
+    - region "Notifications alt+T"
+    - generic [ref=e2111]:
+      - paragraph [ref=e2113]:
+        - text: Preplyは、ブラウザーの設定に従ってクッキーを使用します。詳細情報は
+        - link "クッキーポリシー" [ref=e2115] [cursor=pointer]:
+          - /url: https://termsofuse.preply.com/terms_of_use/en_CookiePolicy.pdf
+        - text: をご参照ください。
+      - generic "Close" [ref=e2117] [cursor=pointer]:
+        - img [ref=e2118]:
+          - img [ref=e2119]
+  - alert [ref=e2121]

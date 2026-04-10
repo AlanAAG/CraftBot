@@ -1,0 +1,1202 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - 'heading "Round 3 Deadline: 20th April 2026" [level=3] [ref=e6]'
+      - link "Apply Now arrow up icon" [ref=e7] [cursor=pointer]:
+        - /url: /apply-now
+        - text: Apply Now
+        - img "arrow up icon" [ref=e8]
+    - banner [ref=e9]:
+      - generic [ref=e11]:
+        - link "tetr-logo" [ref=e12] [cursor=pointer]:
+          - /url: /
+          - img "tetr-logo" [ref=e13]
+        - generic [ref=e14]:
+          - generic [ref=e15]:
+            - button "Programs Programs Icon" [ref=e16] [cursor=pointer]:
+              - generic [ref=e17]: Programs
+              - generic [ref=e18]: Programs
+              - img "Icon" [ref=e19]
+            - link "Faculty Faculty" [ref=e20] [cursor=pointer]:
+              - /url: /faculty
+              - generic [ref=e21]: Faculty
+              - generic [ref=e22]: Faculty
+            - link "Student Life Student Life" [ref=e23] [cursor=pointer]:
+              - /url: /student-life
+              - generic [ref=e24]: Student Life
+              - generic [ref=e25]: Student Life
+            - button "About About Icon" [ref=e26] [cursor=pointer]:
+              - generic [ref=e27]: About
+              - generic [ref=e28]: About
+              - img "Icon" [ref=e29]
+          - generic [ref=e30]:
+            - link "APPLY NOW" [ref=e31] [cursor=pointer]:
+              - /url: /apply-now
+            - link "CONTACT US" [ref=e32] [cursor=pointer]:
+              - /url: /contact-us
+    - navigation [ref=e33]:
+      - link "Curriculum" [ref=e34] [cursor=pointer]:
+        - /url: "#"
+      - link "Accreditation" [ref=e35] [cursor=pointer]:
+        - /url: "#"
+      - link "A Week at Tetr" [ref=e36] [cursor=pointer]:
+        - /url: "#"
+      - link "Courses" [ref=e37] [cursor=pointer]:
+        - /url: "#"
+      - link "Faculty" [ref=e38] [cursor=pointer]:
+        - /url: "#"
+      - link "Admissions" [ref=e39] [cursor=pointer]:
+        - /url: "#"
+      - link "Careers" [ref=e40] [cursor=pointer]:
+        - /url: "#"
+      - link "Apply Now Apply Now" [ref=e41] [cursor=pointer]:
+        - /url: /apply-now
+        - text: Apply Now
+        - img "Apply Now" [ref=e42]
+  - main [ref=e43]:
+    - generic [ref=e45]:
+      - heading "An Integrated 4 year Bachelors and Masters Program in Management & Technology in partnership with Thunderbird School of Global Management at ASU" [level=1] [ref=e46]
+      - 'link "Apply Now | Deadline: 20th April Icon" [ref=e48] [cursor=pointer]':
+        - /url: /apply-now
+        - text: "Apply Now | Deadline: 20th April"
+        - img "Icon" [ref=e49]
+    - generic [ref=e51]:
+      - img "Icon" [ref=e52]
+      - img "Icon" [ref=e53]
+      - generic [ref=e56]:
+        - generic [ref=e57]:
+          - generic [ref=e58]: DURATION
+          - generic [ref=e59]: 4 Years
+        - generic [ref=e61]:
+          - generic [ref=e62]: LOCATION
+          - generic [ref=e63]: 7 Countries
+        - generic [ref=e65]:
+          - generic [ref=e66]: ELIGIBILITY
+          - generic [ref=e67]: Grade XII
+        - generic [ref=e69]:
+          - generic [ref=e70]: FORMAT
+          - generic [ref=e71]: Full Time
+        - generic [ref=e73]:
+          - generic [ref=e74]: START DATE
+          - generic [ref=e75]: Sept 2026
+    - generic [ref=e77]:
+      - heading "Dive into the Hands-on Curriculum" [level=2] [ref=e78]
+      - generic [ref=e80]:
+        - img "Tet India" [ref=e82]
+        - generic [ref=e90]:
+          - generic [ref=e91]:
+            - generic [ref=e93] [cursor=pointer]:
+              - generic [ref=e94]: Term 1
+              - generic [ref=e96]:
+                - generic [ref=e97]: India
+                - generic [ref=e98]:
+                  - generic [ref=e99]: Tetr Base Camp
+                  - generic [ref=e100]: FITT-IIT Immersion
+            - generic [ref=e104]:
+              - generic [ref=e105]:
+                - generic [ref=e106]:
+                  - generic [ref=e107]: Term Project
+                  - paragraph [ref=e108]: Build an eCommerce dropshipping business selling globally sourced products to audiences in India. Target a revenue of $10,000.
+                - generic [ref=e109] [cursor=pointer]:
+                  - text: Review Cohort 1 Progress
+                  - img "Icon" [ref=e110]
+              - generic [ref=e111]:
+                - list [ref=e112]:
+                  - listitem [ref=e113] [cursor=pointer]: Courses & Workshops
+                  - listitem [ref=e114] [cursor=pointer]: Business Immersions
+                  - listitem [ref=e115] [cursor=pointer]: Cultural Immersions
+                - list [ref=e117]:
+                  - listitem [ref=e118]:
+                    - img "Icon" [ref=e119]
+                    - paragraph [ref=e120]:
+                      - generic [ref=e121]: "MAST 101 :"
+                      - text: How to work effectively in teams
+                  - listitem [ref=e122]:
+                    - img "Icon" [ref=e123]
+                    - paragraph [ref=e124]:
+                      - generic [ref=e125]: "MAST 201 :"
+                      - text: How to build a global supply chain
+                  - listitem [ref=e126]:
+                    - img "Icon" [ref=e127]
+                    - paragraph [ref=e128]:
+                      - generic [ref=e129]: "MAST 301 :"
+                      - text: How to write a comprehensive business plan
+                  - listitem [ref=e130]:
+                    - img "Icon" [ref=e131]
+                    - paragraph [ref=e132]:
+                      - generic [ref=e133]: "MAST 401 :"
+                      - text: How to create a winning fundraising Deck
+                  - listitem [ref=e134]:
+                    - img "Icon" [ref=e135]
+                    - paragraph [ref=e136]:
+                      - generic [ref=e137]: "MAST 501 :"
+                      - text: How to network effortlessly
+                  - button "Favicon View More" [ref=e138] [cursor=pointer]:
+                    - img "Favicon" [ref=e139]
+                    - text: View More
+          - generic [ref=e142] [cursor=pointer]:
+            - generic [ref=e143]: Term 2
+            - generic [ref=e145]:
+              - generic [ref=e146]: Dubai
+              - generic [ref=e148]: Tetr Base Camp
+          - generic [ref=e155]:
+            - img "Icon" [ref=e156]
+            - paragraph [ref=e157]: "Summer: Everest Base Camp Leadership Trek"
+          - generic [ref=e160] [cursor=pointer]:
+            - generic [ref=e161]: Term 3
+            - generic [ref=e163]:
+              - generic [ref=e164]: China
+              - generic [ref=e165]: Tetr Base Camp
+          - generic [ref=e171] [cursor=pointer]:
+            - generic [ref=e172]: Term 4
+            - generic [ref=e174]:
+              - generic [ref=e175]: Ghana
+              - generic [ref=e176]: Tetr Base Camp
+          - generic [ref=e183]:
+            - img "Icon" [ref=e184]
+            - paragraph [ref=e185]: "Summer: Teaching Fellowship or Internship"
+          - generic [ref=e188] [cursor=pointer]:
+            - generic [ref=e189]: Term 5
+            - generic [ref=e191]:
+              - generic [ref=e192]: Europe
+              - generic [ref=e194]: Tetr Base Camp
+          - generic [ref=e200] [cursor=pointer]:
+            - generic [ref=e201]: Term 6
+            - generic [ref=e204]: Internship
+          - generic [ref=e211]:
+            - img "Icon" [ref=e212]
+            - paragraph [ref=e213]: "Summer Break: Internship"
+          - generic [ref=e216] [cursor=pointer]:
+            - generic [ref=e217]: Term 7
+            - generic [ref=e219]:
+              - generic [ref=e220]: United States*
+              - generic [ref=e222]: Thunderbird at ASU
+          - generic [ref=e228] [cursor=pointer]:
+            - generic [ref=e229]: Term 8
+            - generic [ref=e231]:
+              - generic [ref=e232]: United States*
+              - generic [ref=e234]: Thunderbird at ASU
+      - paragraph [ref=e239]: The Dubai and India terms are swapped due to the current geopolitical situation.
+    - generic [ref=e242]:
+      - generic [ref=e243]:
+        - generic [ref=e244]: Degree & Accreditation
+        - heading "Graduate with a Masters Degree from Thunderbird School of Global Management at ASU and a Bachelors Degree from Tetr Icon" [level=2] [ref=e245]:
+          - text: Graduate with a
+          - link "Masters Degree from Thunderbird School of Global Management at ASU and a Bachelors Degree from Tetr Icon" [ref=e246] [cursor=pointer]:
+            - /url: https://thunderbird.asu.edu/degree/graduate/master-global-management
+            - text: Masters Degree from Thunderbird School of Global Management at ASU and a Bachelors Degree from Tetr
+            - img "Icon" [ref=e248]
+        - paragraph [ref=e249]: Complete the first 6 terms with Tetr & the final 2 terms with Thunderbird at ASU.
+      - generic [ref=e250]:
+        - generic [ref=e251]:
+          - generic [ref=e252] [cursor=pointer]:
+            - article [ref=e253]:
+              - heading "- Globally Ranked for International Trade, Backed by ASU" [level=4] [ref=e254]:
+                - generic [ref=e255]: "-"
+                - text: Globally Ranked for International Trade, Backed by ASU
+              - list [ref=e257]:
+                - listitem [ref=e258]:
+                  - img "Icon" [ref=e259]
+                  - paragraph [ref=e260]: Thunderbird School of Global Management at ASU is globally ranked No. 1 in International Trade by QS International Trade Rankings (2023–2026).
+                - listitem [ref=e261]:
+                  - img "Icon" [ref=e262]
+                  - paragraph [ref=e263]: Arizona State University is ranked No. 1 in the U.S. for Innovation, by U.S. News & World Report (2014–2026).
+            - article [ref=e264]:
+              - heading "+ Class of 2024 outcomes and salaries" [level=4] [ref=e265]:
+                - generic [ref=e266]: +
+                - text: Class of 2024 outcomes and salaries
+            - article [ref=e267]:
+              - heading "+ A Truly Global Network with Hands-On Learning" [level=4] [ref=e268]:
+                - generic [ref=e269]: +
+                - text: A Truly Global Network with Hands-On Learning
+          - generic [ref=e270]:
+            - generic [ref=e271]:
+              - paragraph [ref=e272]: Academic Partners
+              - generic [ref=e273]:
+                - img "UBI Business School" [ref=e274]
+                - img [ref=e275]
+            - generic [ref=e277]:
+              - paragraph [ref=e278]: Immersions
+              - img "iit" [ref=e280]
+        - generic:
+          - img "Tetr College"
+    - generic [ref=e283]:
+      - generic [ref=e284]:
+        - heading "What's a Week at Tetr Like?" [level=2] [ref=e285]
+        - paragraph [ref=e286]: Start your day with ambition and end it with impact. At Tetr, every week pushes boundaries.
+      - generic [ref=e287]:
+        - img "ug-time-table-image"
+    - generic [ref=e289]:
+      - generic [ref=e290]:
+        - heading "Learning by Doing. In Action." [level=2] [ref=e291]
+        - generic [ref=e292]:
+          - button "Icon" [ref=e293] [cursor=pointer]:
+            - img "Icon" [ref=e294]
+          - button "Icon" [ref=e295] [cursor=pointer]:
+            - img "Icon" [ref=e296]
+      - generic [ref=e297]:
+        - link "Kickstarter Campaigns Founded in Term 3" [ref=e298] [cursor=pointer]:
+          - /url: /kickstarter
+          - heading "Kickstarter Campaigns" [level=3] [ref=e299]
+          - text: Founded in Term 3
+        - generic [ref=e300] [cursor=pointer]:
+          - heading "D2C Companies" [level=3] [ref=e301]
+          - text: Founded in Term 2
+        - generic [ref=e302] [cursor=pointer]:
+          - heading "Dropshipping Companies" [level=3] [ref=e303]
+          - text: Founded in Term 1
+        - generic [ref=e304] [cursor=pointer]:
+          - heading "Creator Fellows" [level=3] [ref=e305]
+          - text: Progress in Term 1
+      - generic [ref=e308]:
+        - group "NaN / 19" [ref=e309]:
+          - generic [ref=e310] [cursor=pointer]:
+            - img "Icon" [ref=e312]
+            - generic [ref=e313]:
+              - generic [ref=e314]: BATCH 2028
+              - paragraph [ref=e315]: Review Cohort 1 Progress
+        - group "NaN / 19" [ref=e316]:
+          - link "8 BILLIONPROJECT @8.billionproject • Apparel Icon" [ref=e317] [cursor=pointer]:
+            - /url: https://www.instagram.com/8.billionproject?igsh=a3g5cjV0aWFxNjdv&utm_source=qr
+            - generic [ref=e319]:
+              - generic [ref=e320]:
+                - heading "8 BILLIONPROJECT" [level=3] [ref=e321]
+                - generic [ref=e322]: "@8.billionproject • Apparel"
+              - img "Icon" [ref=e324]
+        - group "NaN / 19" [ref=e325]:
+          - link "SERVE @serveclub_co • Sports Icon" [ref=e326] [cursor=pointer]:
+            - /url: https://www.instagram.com/serveclub_co?igsh=MXd0eXExOTl5MnNlbA==
+            - generic [ref=e328]:
+              - generic [ref=e329]:
+                - heading "SERVE" [level=3] [ref=e330]
+                - generic [ref=e331]: "@serveclub_co • Sports"
+              - img "Icon" [ref=e333]
+        - group "NaN / 19" [ref=e334]:
+          - link "MAISON&CO @maisonandcoofficial • Accessories Icon" [ref=e335] [cursor=pointer]:
+            - /url: https://www.instagram.com/maisonandcoofficial/?igsh=bHRlcXI5bzJ4b2V1#
+            - generic [ref=e337]:
+              - generic [ref=e338]:
+                - heading "MAISON&CO" [level=3] [ref=e339]
+                - generic [ref=e340]: "@maisonandcoofficial • Accessories"
+              - img "Icon" [ref=e342]
+        - group "NaN / 19" [ref=e343]:
+          - link "KNOTCULTURED @knotcultured • Apparel Icon" [ref=e344] [cursor=pointer]:
+            - /url: https://www.instagram.com/knotcultured/
+            - generic [ref=e346]:
+              - generic [ref=e347]:
+                - heading "KNOTCULTURED" [level=3] [ref=e348]
+                - generic [ref=e349]: "@knotcultured • Apparel"
+              - img "Icon" [ref=e351]
+        - group "NaN / 19" [ref=e352]:
+          - link "NAMASTE NONSENSE @namastenonsenseofficial • Entertainment Icon" [ref=e353] [cursor=pointer]:
+            - /url: https://www.instagram.com/namastenonsenseofficial?igsh=MTVkcDF0eTViMGdheA==
+            - generic [ref=e355]:
+              - generic [ref=e356]:
+                - heading "NAMASTE NONSENSE" [level=3] [ref=e357]
+                - generic [ref=e358]: "@namastenonsenseofficial • Entertainment"
+              - img "Icon" [ref=e360]
+        - group "NaN / 19" [ref=e361]:
+          - link "HERA ASTRA @hera.astra • Accessories / Jewelry Icon" [ref=e362] [cursor=pointer]:
+            - /url: https://www.instagram.com/hera.astra?igsh=b2hzemkyNzEzY3d3&utm_source=qr
+            - generic [ref=e364]:
+              - generic [ref=e365]:
+                - heading "HERA ASTRA" [level=3] [ref=e366]
+                - generic [ref=e367]: "@hera.astra • Accessories / Jewelry"
+              - img "Icon" [ref=e369]
+        - group "NaN / 19" [ref=e370]:
+          - link "MOZAIC @mozaiclife.co • Accessories / Bags Icon" [ref=e371] [cursor=pointer]:
+            - /url: https://www.instagram.com/mozaiclife.co?igsh=MXI3a3QwcGxlZHE2NA==
+            - generic [ref=e373]:
+              - generic [ref=e374]:
+                - heading "MOZAIC" [level=3] [ref=e375]
+                - generic [ref=e376]: "@mozaiclife.co • Accessories / Bags"
+              - img "Icon" [ref=e378]
+        - group "NaN / 19" [ref=e379]:
+          - link "DEAL IT @dealitclub • Entertainment Icon" [ref=e380] [cursor=pointer]:
+            - /url: https://www.instagram.com/dealitclub?igsh=a3l0NXg2Z2toZW8z
+            - generic [ref=e382]:
+              - generic [ref=e383]:
+                - heading "DEAL IT" [level=3] [ref=e384]
+                - generic [ref=e385]: "@dealitclub • Entertainment"
+              - img "Icon" [ref=e387]
+        - group "NaN / 19" [ref=e388]:
+          - link "LUAMI @luami.in • Apparel Icon" [ref=e389] [cursor=pointer]:
+            - /url: https://www.instagram.com/luami.in?igsh=c3ZvOWhoMTQ3eXU0
+            - generic [ref=e391]:
+              - generic [ref=e392]:
+                - heading "LUAMI" [level=3] [ref=e393]
+                - generic [ref=e394]: "@luami.in • Apparel"
+              - img "Icon" [ref=e396]
+        - group "NaN / 19" [ref=e397]:
+          - link "MYCELIAN @mycelian.store • Food / Beverage Icon" [ref=e398] [cursor=pointer]:
+            - /url: https://www.instagram.com/mycelian.store?igsh=a3pvNG01NTJ1OWVy
+            - generic [ref=e400]:
+              - generic [ref=e401]:
+                - heading "MYCELIAN" [level=3] [ref=e402]
+                - generic [ref=e403]: "@mycelian.store • Food / Beverage"
+              - img "Icon" [ref=e405]
+        - group "NaN / 19" [ref=e406]:
+          - link "BELURE @belure.india • Food / Snacks Icon" [ref=e407] [cursor=pointer]:
+            - /url: https://www.instagram.com/belure.india/
+            - generic [ref=e409]:
+              - generic [ref=e410]:
+                - heading "BELURE" [level=3] [ref=e411]
+                - generic [ref=e412]: "@belure.india • Food / Snacks"
+              - img "Icon" [ref=e414]
+        - group "NaN / 19" [ref=e415]:
+          - link "ICEBREAKERS @icebreakers____ • Accessories Icon" [ref=e416] [cursor=pointer]:
+            - /url: https://www.instagram.com/icebreakers____/
+            - generic [ref=e418]:
+              - generic [ref=e419]:
+                - heading "ICEBREAKERS" [level=3] [ref=e420]
+                - generic [ref=e421]: "@icebreakers____ • Accessories"
+              - img "Icon" [ref=e423]
+        - group "NaN / 19" [ref=e424]:
+          - link "COSSMOSS @shop.cosmoss • Food / Supplements Icon" [ref=e425] [cursor=pointer]:
+            - /url: https://www.instagram.com/shop.cosmoss/
+            - generic [ref=e427]:
+              - generic [ref=e428]:
+                - heading "COSSMOSS" [level=3] [ref=e429]
+                - generic [ref=e430]: "@shop.cosmoss • Food / Supplements"
+              - img "Icon" [ref=e432]
+        - group "NaN / 19" [ref=e433]:
+          - link "GYERY @gyeryofficial • Accessories Icon" [ref=e434] [cursor=pointer]:
+            - /url: https://www.instagram.com/gyeryofficial/
+            - generic [ref=e436]:
+              - generic [ref=e437]:
+                - heading "GYERY" [level=3] [ref=e438]
+                - generic [ref=e439]: "@gyeryofficial • Accessories"
+              - img "Icon" [ref=e441]
+        - group "NaN / 19" [ref=e442]:
+          - link "VOIDRA @_voidra_ • Accessories Icon" [ref=e443] [cursor=pointer]:
+            - /url: https://www.instagram.com/_voidra_
+            - generic [ref=e445]:
+              - generic [ref=e446]:
+                - heading "VOIDRA" [level=3] [ref=e447]
+                - generic [ref=e448]: "@_voidra_ • Accessories"
+              - img "Icon" [ref=e450]
+        - group "NaN / 19" [ref=e451]:
+          - link "MUZO @muzo_foods • Food / Snacks Icon" [ref=e452] [cursor=pointer]:
+            - /url: https://www.instagram.com/muzo_foods/
+            - generic [ref=e454]:
+              - generic [ref=e455]:
+                - heading "MUZO" [level=3] [ref=e456]
+                - generic [ref=e457]: "@muzo_foods • Food / Snacks"
+              - img "Icon" [ref=e459]
+        - group "NaN / 19" [ref=e460]:
+          - link "SINNFUL COOKIES @sinnfulcookies • Food / Snacks Icon" [ref=e461] [cursor=pointer]:
+            - /url: ""
+            - generic [ref=e463]:
+              - generic [ref=e464]:
+                - heading "SINNFUL COOKIES" [level=3] [ref=e465]
+                - generic [ref=e466]: "@sinnfulcookies • Food / Snacks"
+              - img "Icon" [ref=e468]
+        - group "NaN / 19" [ref=e469]:
+          - link "SIXOPPA @sixoppa • Apparel (Food) Icon" [ref=e470] [cursor=pointer]:
+            - /url: ""
+            - generic [ref=e472]:
+              - generic [ref=e473]:
+                - heading "SIXOPPA" [level=3] [ref=e474]
+                - generic [ref=e475]: "@sixoppa • Apparel (Food)"
+              - img "Icon" [ref=e477]
+    - generic [ref=e480]:
+      - generic [ref=e481]:
+        - heading "Learn. Apply. Reflect. Repeat." [level=2] [ref=e482]
+        - paragraph [ref=e483]:
+          - text: Hands-on courses and workshops designed to build real businesses—
+          - text: because real learning comes from real applications.
+      - generic [ref=e484]:
+        - generic [ref=e485]:
+          - generic [ref=e486] [cursor=pointer]:
+            - generic [ref=e487]: MAST
+            - paragraph [ref=e488]:
+              - text: Management
+              - text: "& Strategy"
+          - generic [ref=e490] [cursor=pointer]:
+            - generic [ref=e491]: SAMA
+            - paragraph [ref=e492]:
+              - text: Sales
+              - text: "& Marketing"
+          - generic [ref=e494] [cursor=pointer]:
+            - generic [ref=e495]: FIFI
+            - paragraph [ref=e496]:
+              - text: Finance
+              - text: "& Fintech"
+          - generic [ref=e498] [cursor=pointer]:
+            - generic [ref=e499]: PRTC
+            - paragraph [ref=e500]:
+              - text: Product
+              - text: "& Tech"
+          - generic [ref=e502] [cursor=pointer]:
+            - generic [ref=e503]: AIML
+            - paragraph [ref=e504]:
+              - text: Artificial Intelligence
+              - text: "& Machine Learning"
+          - generic [ref=e506] [cursor=pointer]:
+            - generic [ref=e507]: COMM
+            - paragraph [ref=e508]:
+              - text: Communication
+              - text: "& Development"
+          - generic [ref=e510] [cursor=pointer]:
+            - generic [ref=e511]: TGM
+            - paragraph [ref=e512]:
+              - text: Global
+              - text: Management
+        - generic [ref=e515]:
+          - group "1 / 5" [ref=e516]:
+            - generic [ref=e517]:
+              - generic [ref=e518]:
+                - generic [ref=e519]: Term 1
+                - heading "India" [level=3] [ref=e520]
+              - list [ref=e522]:
+                - listitem [ref=e523]:
+                  - img "Icon" [ref=e524]
+                  - paragraph [ref=e525]:
+                    - generic [ref=e526]: "MAST 101:"
+                    - text: How to work effectively in teams
+                - listitem [ref=e527]:
+                  - img "Icon" [ref=e528]
+                  - paragraph [ref=e529]:
+                    - generic [ref=e530]: "MAST 201:"
+                    - text: How to build a global supply chain
+                - listitem [ref=e531]:
+                  - img "Icon" [ref=e532]
+                  - paragraph [ref=e533]:
+                    - generic [ref=e534]: "MAST 301:"
+                    - text: How to write a comprehensive business plan
+                - listitem [ref=e535]:
+                  - img "Icon" [ref=e536]
+                  - paragraph [ref=e537]:
+                    - generic [ref=e538]: "MAST 401:"
+                    - text: How to create a winning fundraising Deck
+                - listitem [ref=e539]:
+                  - img "Icon" [ref=e540]
+                  - paragraph [ref=e541]:
+                    - generic [ref=e542]: "MAST 501:"
+                    - text: How to network effortlessly
+          - group "2 / 5" [ref=e543]:
+            - generic [ref=e544]:
+              - generic [ref=e545]:
+                - generic [ref=e546]: Term 2
+                - heading "Dubai" [level=3] [ref=e547]
+              - list [ref=e549]:
+                - listitem [ref=e550]:
+                  - img "Icon" [ref=e551]
+                  - paragraph [ref=e552]:
+                    - generic [ref=e553]: "MAST 102:"
+                    - text: How to analyse markets & identify new business opportunities
+                - listitem [ref=e554]:
+                  - img "Icon" [ref=e555]
+                  - paragraph [ref=e556]:
+                    - generic [ref=e557]: "MAST 202:"
+                    - text: How to identify & track key business
+                    - text: metrics
+                - listitem [ref=e558]:
+                  - img "Icon" [ref=e559]
+                  - paragraph [ref=e560]:
+                    - generic [ref=e561]: "MAST 302:"
+                    - text: How to manage & optimise inventory
+                - listitem [ref=e562]:
+                  - img "Icon" [ref=e563]
+                  - paragraph [ref=e564]:
+                    - generic [ref=e565]: "MAST 402:"
+                    - text: How to motivate your teams & give feedback
+          - group "3 / 5" [ref=e566]:
+            - generic [ref=e567]:
+              - generic [ref=e568]:
+                - generic [ref=e569]: Term 3
+                - heading "China" [level=3] [ref=e570]
+              - list [ref=e572]:
+                - listitem [ref=e573]:
+                  - img "Icon" [ref=e574]
+                  - paragraph [ref=e575]:
+                    - generic [ref=e576]: "MAST 107:"
+                    - text: How to protect your ideas using Intellectual Property Law
+                - listitem [ref=e577]:
+                  - img "Icon" [ref=e578]
+                  - paragraph [ref=e579]:
+                    - generic [ref=e580]: "MAST 207:"
+                    - text: How to use mathematical models for business optimisation
+                - listitem [ref=e581]:
+                  - img "Icon" [ref=e582]
+                  - paragraph [ref=e583]:
+                    - generic [ref=e584]: "MAST 307:"
+                    - text: How to build a business in manufacturing
+                - listitem [ref=e585]:
+                  - img "Icon" [ref=e586]
+                  - paragraph [ref=e587]:
+                    - generic [ref=e588]: "MAST 407:"
+                    - text: How to manage a crisis
+          - group "4 / 5" [ref=e589]:
+            - generic [ref=e590]:
+              - generic [ref=e591]:
+                - generic [ref=e592]: Term 4
+                - heading "Ghana" [level=3] [ref=e593]
+              - list [ref=e595]:
+                - listitem [ref=e596]:
+                  - img "Icon" [ref=e597]
+                  - paragraph [ref=e598]:
+                    - generic [ref=e599]: "MAST 104:"
+                    - text: How a country's economy works
+                - listitem [ref=e600]:
+                  - img "Icon" [ref=e601]
+                  - paragraph [ref=e602]:
+                    - generic [ref=e603]: "MAST 204:"
+                    - text: How to bring innovation to public policies (Global Case Studies)
+                - listitem [ref=e604]:
+                  - img "Icon" [ref=e605]
+                  - paragraph [ref=e606]:
+                    - generic [ref=e607]: "MAST 304:"
+                    - text: How to manage social ventures
+                - listitem [ref=e608]:
+                  - img "Icon" [ref=e609]
+                  - paragraph [ref=e610]:
+                    - generic [ref=e611]: "MAST 404:"
+                    - text: How to build solutions for Global Problems (Large Systems Thinking)
+          - group "5 / 5" [ref=e612]:
+            - generic [ref=e613]:
+              - generic [ref=e614]:
+                - generic [ref=e615]: Term 5
+                - heading "Europe" [level=3] [ref=e616]
+              - list [ref=e618]:
+                - listitem [ref=e619]:
+                  - img "Icon" [ref=e620]
+                  - paragraph [ref=e621]:
+                    - generic [ref=e622]: "MAST 103:"
+                    - text: How the (micro) economy works
+                - listitem [ref=e623]:
+                  - img "Icon" [ref=e624]
+                  - paragraph [ref=e625]:
+                    - generic [ref=e626]: "MAST 203:"
+                    - text: How to identify and forecast macro trends
+                - listitem [ref=e627]:
+                  - img "Icon" [ref=e628]
+                  - paragraph [ref=e629]:
+                    - generic [ref=e630]: "MAST 303:"
+                    - text: How to think strategically about your business
+      - generic [ref=e633]:
+        - button "Previous slide" [ref=e634] [cursor=pointer]:
+          - img "Icon" [ref=e635]
+        - button "Next slide" [ref=e636] [cursor=pointer]:
+          - img "Icon" [ref=e637]
+    - generic [ref=e640]:
+      - heading "Faculty That Inspire and Empower" [level=2] [ref=e642]
+      - generic [ref=e643]:
+        - generic [ref=e644]:
+          - generic [ref=e645]:
+            - img "Picture of Mr. Faverie Stephane"
+            - heading "Mr. Faverie Stephane" [level=3] [ref=e646]
+          - generic [ref=e647]:
+            - generic [ref=e648]: Executive Group President, Estee Lauder
+            - text: Area of Interest
+            - heading "Global Markets and Customer Dynamics" [level=4] [ref=e649]
+        - generic [ref=e650]:
+          - generic [ref=e651]:
+            - img "Picture of Dr. Lan Ma"
+            - heading "Dr. Lan Ma" [level=3] [ref=e652]
+          - generic [ref=e653]:
+            - generic [ref=e654]: Academician Adjunct Professor of Business - New York University
+            - text: Teaching
+            - heading "How to market strategically in the real world" [level=4] [ref=e655]
+        - generic [ref=e656]:
+          - generic [ref=e657]:
+            - img "Picture of Dr. Edward Rogers"
+            - heading "Dr. Edward Rogers" [level=3] [ref=e658]
+          - generic [ref=e659]:
+            - generic [ref=e660]: Former Chief Knowledge Officer, NASA
+            - text: Teaching
+            - heading "How to Manage Complexities" [level=4] [ref=e661]
+        - generic [ref=e662]:
+          - generic [ref=e663]:
+            - img "Picture of Dr. Zal Phiroz"
+            - heading "Dr. Zal Phiroz" [level=3] [ref=e664]
+          - generic [ref=e665]:
+            - generic [ref=e666]: Adjunct Professor, Harvard University
+            - text: Teaching
+            - heading "How do companies manage supply chain to procure & ship globally" [level=4] [ref=e667]
+        - generic [ref=e668]:
+          - generic [ref=e669]:
+            - img "Picture of Mr. Nitin Gaur"
+            - heading "Mr. Nitin Gaur" [level=3] [ref=e670]
+          - generic [ref=e671]:
+            - generic [ref=e672]: Former Advisory Board Member, Stanford University
+            - text: Teaching
+            - heading "How to Innovate in Fintech" [level=4] [ref=e673]
+        - generic [ref=e674]:
+          - generic [ref=e675]:
+            - img "Picture of Dr. Daniel Garett Van Der Vliet"
+            - heading "Dr. Daniel Garett Van Der Vliet" [level=3] [ref=e676]
+          - generic [ref=e677]:
+            - generic [ref=e678]: Executive Director, Cornell University
+            - text: Area of Interest
+            - heading "Leadership & Family Business" [level=4] [ref=e679]
+        - generic [ref=e680]:
+          - generic [ref=e681]:
+            - img "Picture of Dr. Shad Morris"
+            - heading "Dr. Shad Morris" [level=3] [ref=e682]
+          - generic [ref=e683]:
+            - generic [ref=e684]: Former Faculty Fellow, MIT Sloan
+            - text: Area of Interest
+            - heading "How to work effectively in teams" [level=4] [ref=e685]
+        - generic [ref=e686]:
+          - generic [ref=e687]:
+            - img "Picture of Dr. James Hayton"
+            - heading "Dr. James Hayton" [level=3] [ref=e688]
+          - generic [ref=e689]:
+            - generic [ref=e690]: Professor, Warwick Business School
+            - text: Area of Interest
+            - heading "Innovation and Entrepreneurship" [level=4] [ref=e691]
+        - generic [ref=e692]:
+          - generic [ref=e693]:
+            - img "Picture of Ms. Kevyn Eva Norton"
+            - heading "Ms. Kevyn Eva Norton" [level=3] [ref=e694]
+          - generic [ref=e695]:
+            - generic [ref=e696]: Product Lead, Easy Bites App
+            - text: Teaching
+            - heading "How to do Product and UX Research" [level=4] [ref=e697]
+      - link "VIEW MORE Icon" [ref=e699] [cursor=pointer]:
+        - /url: /faculty#meetMasters
+        - text: VIEW MORE
+        - img "Icon" [ref=e700]
+    - generic [ref=e702]:
+      - generic [ref=e703]:
+        - heading "Apply for our September 2026 batch. Get Started" [level=2] [ref=e704]:
+          - text: Apply for our
+          - text: September 2026 batch.
+          - text: Get Started
+        - img "Icon" [ref=e705]
+        - link "Apply Now Apply Now Icon" [ref=e706] [cursor=pointer]:
+          - /url: /apply-now
+          - generic [ref=e707]:
+            - generic [ref=e708]: Apply Now
+            - generic [ref=e709]: Apply Now
+          - img "Icon" [ref=e711]
+      - img "Icon" [ref=e712]
+      - generic [ref=e713]:
+        - paragraph [ref=e714]: A simple 3-step admission process
+        - generic [ref=e716]:
+          - generic [ref=e717]:
+            - generic [ref=e719]: "1"
+            - paragraph [ref=e721]:
+              - text: Fill out the
+              - text: Application form
+          - generic [ref=e722]:
+            - generic [ref=e724]: "2"
+            - paragraph [ref=e726]:
+              - text: Attempt the Tetr Trial,
+              - text: a 75 minutes AI-Powered Aptitude test
+          - generic [ref=e727]:
+            - generic [ref=e729]: "3"
+            - paragraph [ref=e731]:
+              - text: Interview with an
+              - text: Industry Leader to assess fit
+    - option "Select Course" [disabled] [selected]
+    - option "Bachelors"
+    - option "Masters"
+    - generic [ref=e735]:
+      - paragraph [ref=e736]:
+        - text: Take the Mock Tetr Trial
+        - text: to ensure smooth preparation.
+      - button "REGISTER NOW Icon" [ref=e737] [cursor=pointer]:
+        - text: REGISTER NOW
+        - img "Icon" [ref=e738]
+    - generic [ref=e740]:
+      - generic [ref=e742]:
+        - heading "Fee Structure" [level=2] [ref=e743]
+        - generic [ref=e744]: Currency in USD
+      - generic [ref=e745]:
+        - table [ref=e746]:
+          - rowgroup [ref=e747]:
+            - row "Academic fees (Incl. Taxes) Year 1 Year 2 Year 3 Year 4 Total" [ref=e748]:
+              - columnheader "Academic fees (Incl. Taxes)" [ref=e749]:
+                - generic [ref=e750]: Academic fees (Incl. Taxes)
+              - columnheader "Year 1" [ref=e751]
+              - columnheader "Year 2" [ref=e752]
+              - columnheader "Year 3" [ref=e753]
+              - columnheader "Year 4" [ref=e754]
+              - columnheader "Total" [ref=e755]
+          - rowgroup [ref=e756]:
+            - row "Tuition 45,940 45,540 40,940 30,439 162,859" [ref=e757]:
+              - cell "Tuition" [ref=e758]:
+                - generic [ref=e759]: Tuition
+              - cell "45,940" [ref=e760]:
+                - generic [ref=e761]: 45,940
+              - cell "45,540" [ref=e762]:
+                - generic [ref=e763]: 45,540
+              - cell "40,940" [ref=e764]:
+                - generic [ref=e765]: 40,940
+              - cell "30,439" [ref=e766]:
+                - generic [ref=e767]: 30,439
+              - cell "162,859" [ref=e768]:
+                - generic [ref=e769]: 162,859
+            - row "Academic Immersions 12,754 11,754 11,754 9,254 45,515" [ref=e770]:
+              - cell "Academic Immersions" [ref=e771]:
+                - generic [ref=e772]: Academic Immersions
+              - cell "12,754" [ref=e773]:
+                - generic [ref=e774]: 12,754
+              - cell "11,754" [ref=e775]:
+                - generic [ref=e776]: 11,754
+              - cell "11,754" [ref=e777]:
+                - generic [ref=e778]: 11,754
+              - cell "9,254" [ref=e779]:
+                - generic [ref=e780]: 9,254
+              - cell "45,515" [ref=e781]:
+                - generic [ref=e782]: 45,515
+            - row "Local Business Immersions 4,000 4,000 4,000 3,000 15,000" [ref=e783]:
+              - cell "Local Business Immersions" [ref=e784]:
+                - generic [ref=e785]:
+                  - text: Local Business
+                  - text: Immersions
+              - cell "4,000" [ref=e786]:
+                - generic [ref=e787]: 4,000
+              - cell "4,000" [ref=e788]:
+                - generic [ref=e789]: 4,000
+              - cell "4,000" [ref=e790]:
+                - generic [ref=e791]: 4,000
+              - cell "3,000" [ref=e792]:
+                - generic [ref=e793]: 3,000
+              - cell "15,000" [ref=e794]:
+                - generic [ref=e795]: 15,000
+            - row "Total Academic Fees (Incl. Taxes) 62,694 61,294 56,694 42,693 223,374" [ref=e796]:
+              - cell "Total Academic Fees (Incl. Taxes)" [ref=e797]:
+                - generic [ref=e798]:
+                  - text: Total Academic Fees
+                  - text: (Incl. Taxes)
+              - cell "62,694" [ref=e799]:
+                - generic [ref=e800]: 62,694
+              - cell "61,294" [ref=e801]:
+                - generic [ref=e802]: 61,294
+              - cell "56,694" [ref=e803]:
+                - generic [ref=e804]: 56,694
+              - cell "42,693" [ref=e805]:
+                - generic [ref=e806]: 42,693
+              - cell "223,374" [ref=e807]:
+                - generic [ref=e808]: 223,374
+        - table [ref=e809]:
+          - rowgroup [ref=e810]:
+            - row "Administration Fees (Incl. Taxes) Year 1 Year 2 Year 3 Year 4 Total" [ref=e811]:
+              - columnheader "Administration Fees (Incl. Taxes)" [ref=e812]:
+                - generic [ref=e813]: Administration Fees (Incl. Taxes)
+              - columnheader "Year 1" [ref=e814]
+              - columnheader "Year 2" [ref=e815]
+              - columnheader "Year 3" [ref=e816]
+              - columnheader "Year 4" [ref=e817]
+              - columnheader "Total" [ref=e818]
+          - rowgroup [ref=e819]:
+            - row "Program Management 7,778 6,578 6,778 5,577 26,711" [ref=e820]:
+              - cell "Program Management" [ref=e821]:
+                - generic [ref=e822]: Program Management
+              - cell "7,778" [ref=e823]:
+                - generic [ref=e824]: 7,778
+              - cell "6,578" [ref=e825]:
+                - generic [ref=e826]: 6,578
+              - cell "6,778" [ref=e827]:
+                - generic [ref=e828]: 6,778
+              - cell "5,577" [ref=e829]:
+                - generic [ref=e830]: 5,577
+              - cell "26,711" [ref=e831]:
+                - generic [ref=e832]: 26,711
+            - row "Career Development 820 820 820 1,640 4,100" [ref=e833]:
+              - cell "Career Development" [ref=e834]:
+                - generic [ref=e835]: Career Development
+              - cell "820" [ref=e836]:
+                - generic [ref=e837]: "820"
+              - cell "820" [ref=e838]:
+                - generic [ref=e839]: "820"
+              - cell "820" [ref=e840]:
+                - generic [ref=e841]: "820"
+              - cell "1,640" [ref=e842]:
+                - generic [ref=e843]: 1,640
+              - cell "4,100" [ref=e844]:
+                - generic [ref=e845]: 4,100
+            - row "Total Admin Fees 8,598 7,398 7,598 7,217 30,811" [ref=e846]:
+              - cell "Total Admin Fees" [ref=e847]:
+                - generic [ref=e848]: Total Admin Fees
+              - cell "8,598" [ref=e849]:
+                - generic [ref=e850]: 8,598
+              - cell "7,398" [ref=e851]:
+                - generic [ref=e852]: 7,398
+              - cell "7,598" [ref=e853]:
+                - generic [ref=e854]: 7,598
+              - cell "7,217" [ref=e855]:
+                - generic [ref=e856]: 7,217
+              - cell "30,811" [ref=e857]:
+                - generic [ref=e858]: 30,811
+        - table [ref=e859]:
+          - rowgroup [ref=e860]:
+            - row "Total Fees 71,292 68,692 64,292 49,910 254,185" [ref=e861]:
+              - cell "Total Fees" [ref=e862]:
+                - generic [ref=e863]: Total Fees
+              - cell "71,292" [ref=e864]:
+                - generic [ref=e865]: 71,292
+              - cell "68,692" [ref=e866]:
+                - generic [ref=e867]: 68,692
+              - cell "64,292" [ref=e868]:
+                - generic [ref=e869]: 64,292
+              - cell "49,910" [ref=e870]:
+                - generic [ref=e871]: 49,910
+              - cell "254,185" [ref=e872]:
+                - generic [ref=e873]: 254,185
+    - generic [ref=e876]:
+      - img "Tetr"
+      - generic [ref=e877]:
+        - generic [ref=e878]:
+          - heading "Living Costs at a Glance" [level=2] [ref=e879]
+          - paragraph [ref=e880]: Planning your finances is an important part of your academic journey. Here's a breakdown of living and immigration costs across the years to help you budget efficiently.
+        - generic [ref=e881]:
+          - generic [ref=e882]:
+            - img "Icon" [ref=e883]
+            - generic [ref=e884]:
+              - heading "Residential and Amenities Costs" [level=3] [ref=e885]
+              - list [ref=e886]:
+                - listitem [ref=e887]:
+                  - paragraph [ref=e888]: "Annually: $8,854 | Total (4 Years): $35,415"
+          - generic [ref=e889]:
+            - img "Icon" [ref=e890]
+            - generic [ref=e891]:
+              - heading "Immigration, Travel & Local Charges" [level=3] [ref=e892]
+              - list [ref=e893]:
+                - listitem [ref=e894]:
+                  - paragraph [ref=e895]: "Annually: 2,050 | Total (4 Years): $8,200"
+          - generic [ref=e896]:
+            - img "Icon" [ref=e897]
+            - generic [ref=e898]:
+              - heading "Total Living Expenses" [level=3] [ref=e899]
+              - list [ref=e900]:
+                - listitem [ref=e901]:
+                  - paragraph [ref=e902]:
+                    - text: "Annually:"
+                    - generic [ref=e903]: "$10,904 | Total (4 Years): $43,615"
+        - paragraph [ref=e904]: "*The above mentioned costs are indicative, do not account for food and personal preferences. These costs are handled by Tetr and collected as part of the fees."
+    - generic [ref=e906]:
+      - generic [ref=e907]:
+        - heading "Empowering Dreams Through Scholarships" [level=2] [ref=e908]
+        - paragraph [ref=e909]:
+          - text: At Tetr, we never let financial hardships stand in the way of quality education. Scholarships will cover up
+          - text: to 100% of the tuition for Bachelors and Masters Program in Management & Technology.
+      - generic [ref=e910]:
+        - generic [ref=e911]:
+          - img "Tetr Students"
+        - generic [ref=e913]:
+          - generic [ref=e914]:
+            - heading "The Outliers Scholarship" [level=3] [ref=e916] [cursor=pointer]
+            - generic [ref=e920]:
+              - paragraph [ref=e921]: Celebrating exceptional talents beyond academics. If you're leading in fields like dance, space science, or robotics, this scholarship is designed to propel your unique journey forward at Tetr.
+              - list [ref=e922]:
+                - listitem [ref=e923]:
+                  - img "Icon" [ref=e924]
+                  - paragraph [ref=e925]: "Eligibility Criteria: Recognized in the top 1% in any field."
+          - generic [ref=e926]:
+            - heading "The Community Leaders Scholarship" [level=3] [ref=e928] [cursor=pointer]
+            - generic:
+              - paragraph [ref=e932]: Recognizing emerging leaders of tomorrow. If you've demonstrated exceptional leadership potential in any sphere, Tetr's Leadership Scholarship aims to nurture and develop your innate ability to inspire and lead.
+              - list [ref=e933]:
+                - listitem [ref=e934]:
+                  - img "Icon" [ref=e935]
+                  - paragraph [ref=e936]: "Eligibility Criteria: Demonstrated exceptional leadership abilities."
+          - generic [ref=e937]:
+            - heading "The Entrepreneur & Innovation Scholarship" [level=3] [ref=e939] [cursor=pointer]
+            - generic:
+              - paragraph [ref=e943]: For the visionaries who dream of launching groundbreaking ventures. This scholarship supports budding entrepreneurs ready to turn their innovative ideas into reality with Tetr's entrepreneurial ecosystem.
+              - list [ref=e944]:
+                - listitem [ref=e945]:
+                  - img "Icon" [ref=e946]
+                  - paragraph [ref=e947]: "Eligibility Criteria: Aspiring or current entrepreneurs."
+          - generic [ref=e948]:
+            - heading "The SAT Merit Scholarship" [level=3] [ref=e950] [cursor=pointer]
+            - generic:
+              - paragraph [ref=e954]: If your SAT scores place you among the top percentile, Tetr's SAT Scholarship is here to acknowledge your hard work and academic prowess, easing your path to a global business education. Our SAT Designated Institution (DI) Code is 45549. Please use this code to send your official SAT scores directly to us.
+              - list [ref=e955]:
+                - listitem [ref=e956]:
+                  - img "Icon" [ref=e957]
+                  - paragraph [ref=e958]: "Eligibility Criteria: Top percentile SAT scorers."
+          - generic [ref=e959]:
+            - heading "The Pathfinders Scholarship" [level=3] [ref=e961] [cursor=pointer]
+            - generic:
+              - paragraph [ref=e965]: For the daring souls turning down traditional top-tier offers for the unparalleled experience at Tetr. This scholarship honors your courageous decision to chart a unique educational path with us.
+              - list [ref=e966]:
+                - listitem [ref=e967]:
+                  - img "Icon" [ref=e968]
+                  - paragraph [ref=e969]: "Eligibility Criteria: Declined offers from a top-tier university in any country to attend Tetr."
+          - generic [ref=e970]:
+            - heading "The Transfer Students Scholarship" [level=3] [ref=e972] [cursor=pointer]
+            - generic:
+              - paragraph [ref=e976]: Embrace a new path with Tetr. Designed for students seeking to pivot their academic journey from their current institution, this scholarship supports your bold move towards a transformative education.
+              - list [ref=e977]:
+                - listitem [ref=e978]:
+                  - img "Icon" [ref=e979]
+                  - paragraph [ref=e980]: "Eligibility Criteria: Open to students transferring from another institution to join Tetr."
+          - generic [ref=e981]:
+            - heading "The Aspire Grant" [level=3] [ref=e983] [cursor=pointer]
+            - generic:
+              - paragraph [ref=e987]: For those who have faced and overcome financial challenges in pursuit of their education.
+              - list [ref=e988]:
+                - listitem [ref=e989]:
+                  - img "Icon" [ref=e990]
+                  - generic [ref=e991]: "Eligibility Criteria: Applicants must provide documentation to substantiate their financial needs and a personal statement detailing the challenges they have faced."
+    - generic [ref=e994]:
+      - heading "Career Labs at Tetr" [level=2] [ref=e996]:
+        - generic [ref=e997]:
+          - text: Career Labs
+          - text: at Tetr
+      - generic [ref=e998]:
+        - generic [ref=e1000]:
+          - img "Icon" [ref=e1001]
+          - generic [ref=e1002]:
+            - generic [ref=e1003]: Shadow Top CXOs & Teams
+            - paragraph [ref=e1004]: In each country, actually work with business leaders and companies while enriching your resume.
+        - generic [ref=e1006]:
+          - img "Icon" [ref=e1007]
+          - generic [ref=e1008]:
+            - generic [ref=e1009]: Work on Real Life Assignments
+            - paragraph [ref=e1010]: From EV mobility to large real estate deals, witness the world change firsthand.
+        - generic [ref=e1012]:
+          - img "Icon" [ref=e1013]
+          - generic [ref=e1014]:
+            - generic [ref=e1015]: Not Just in the Summer
+            - paragraph [ref=e1016]: Get the opportunity to intern during the term in the evenings and weekends.
+    - generic [ref=e1019]:
+      - generic [ref=e1020]:
+        - generic [ref=e1021]:
+          - heading "In Term Internships" [level=2] [ref=e1022]
+          - paragraph [ref=e1023]: Internships go beyond the job title. Students collaborate with cross-functional teams in areas like marketing, finance, product management, and business development, gaining a well-rounded understanding of how businesses thrive.
+        - generic [ref=e1024]:
+          - generic [ref=e1025]:
+            - paragraph [ref=e1026]: 131,760+ USD
+            - paragraph [ref=e1027]: Cumulative Stipend (in the first year)
+          - generic [ref=e1028]:
+            - generic [ref=e1029]:
+              - paragraph [ref=e1030]: 110+
+              - paragraph [ref=e1031]: Internships (in the first year)
+            - generic [ref=e1032]:
+              - paragraph [ref=e1033]: 15+
+              - paragraph [ref=e1034]: Countries
+        - link "VIEW CAREER LAB REPORT Icon" [ref=e1036] [cursor=pointer]:
+          - /url: javascript:void(0)
+          - text: VIEW CAREER LAB REPORT
+          - img "Icon" [ref=e1037]
+      - generic:
+        - img "function-pic"
+    - generic [ref=e1039]:
+      - heading "Access 100+ Eminent Recruiters and Hiring Partners" [level=2] [ref=e1040]:
+        - text: Access 100+ Eminent
+        - text: Recruiters and Hiring Partners
+      - generic [ref=e1041]:
+        - generic [ref=e1042]:
+          - img "Icon"
+        - generic [ref=e1043]:
+          - img "Icon"
+        - generic [ref=e1044]:
+          - img "Icon"
+        - generic [ref=e1045]:
+          - img "Microsoft"
+        - generic [ref=e1046]:
+          - img "Pepsi Brand"
+        - generic [ref=e1047]:
+          - img "Nestle"
+        - generic [ref=e1048]:
+          - img "Goldman Sachs"
+        - generic [ref=e1049]:
+          - img "KPMG"
+        - generic [ref=e1050]:
+          - img "Icon"
+        - generic [ref=e1051]:
+          - img "Deloitte"
+        - generic [ref=e1052]:
+          - img "Icon"
+        - generic [ref=e1053]:
+          - img "Siemens"
+        - generic [ref=e1054]:
+          - img "Uber"
+        - generic [ref=e1055]:
+          - img "Honeywell"
+    - generic [ref=e1058]:
+      - generic [ref=e1059]:
+        - heading "Tetr in the News" [level=2] [ref=e1060]
+        - generic [ref=e1061]:
+          - button "Previous slide" [disabled] [ref=e1062] [cursor=pointer]:
+            - img "Icon" [ref=e1063]
+          - button "Next slide" [ref=e1064] [cursor=pointer]:
+            - img "Icon" [ref=e1065]
+      - generic [ref=e1066]:
+        - generic [ref=e1067]:
+          - group "1 / 14":
+            - link "Pratham Mittal featured in Forbes India":
+              - /url: https://www.forbesindia.com/article/leadership/i-dont-think-entrepreneurship-is-risky-bschool-founder-pratham-mittal/94127/1
+              - img "Pratham Mittal featured in Forbes India"
+              - img [ref=e1069] [cursor=pointer]
+          - group "2 / 14":
+            - 'link "Entrepreneur article: Learn Business by Doing Business Across the Globe"':
+              - /url: https://www.entrepreneur.com/en-in/growth-strategies/learn-business-by-doing-business-across-the-globe-the-next/475529
+              - 'img "Entrepreneur article: Learn Business by Doing Business Across the Globe"'
+              - img [ref=e1073] [cursor=pointer]
+          - group "3 / 14":
+            - link "Tetr College global survey featured in Economic Times Education":
+              - /url: https://education.economictimes.indiatimes.com/news/industry/global-survey-by-tetr-college-of-business-unveils-key-gaps-in-business-education-and-growing-importance-of-founder-mode/117388219
+              - img "Tetr College global survey featured in Economic Times Education"
+              - img [ref=e1077] [cursor=pointer]
+          - group "4 / 14":
+            - link "Tetr College cross-border business programme featured in Gulf News":
+              - /url: https://gulfnews.com/gn-focus/tetr-college-of-business-introduces-a-cross-border-business-programme-across-7-countries-1.1715840083130
+              - img "Tetr College cross-border business programme featured in Gulf News"
+              - img [ref=e1081] [cursor=pointer]
+          - group "5 / 14":
+            - link "Professors from Harvard, MIT, and global CXOs to lead Tetr's undergraduate programme – Khaleej Times feature":
+              - /url: https://www.khaleejtimes.com/kt-network/professors-from-harvard-mit-and-global-cxos-to-spearhead-tetrs-global-undergraduate-programme
+              - img "Professors from Harvard, MIT, and global CXOs to lead Tetr's undergraduate programme – Khaleej Times feature"
+              - img [ref=e1085] [cursor=pointer]
+          - group "6 / 14":
+            - link "Tetr College introduces innovative global degree program – The Manila Times article":
+              - /url: https://www.manilatimes.net/2024/05/23/campus-press/tetr-biz-college-introduces-innovative-global-degree-program/1947985
+              - img "Tetr College introduces innovative global degree program – The Manila Times article"
+              - img [ref=e1089] [cursor=pointer]
+          - group "7 / 14":
+            - link "Tetr College's global degree program spans seven countries in four years – Daily Wire Asia feature":
+              - /url: https://dailywire.asia/seven-countries-in-four-years-tetr-college-of-business-charts-new-territory-in-learning-with-its-innovative-global-degree-program/
+              - img "Tetr College's global degree program spans seven countries in four years – Daily Wire Asia feature"
+              - img [ref=e1093] [cursor=pointer]
+          - group "8 / 14":
+            - link "Tetr College launches $10 million Tetr Under initiative – featured in Entrepreneur":
+              - /url: https://www.entrepreneur.com/en-in/news-and-trends/tetr-college-of-business-launches-usd-10-mn-tetr-under/481541
+              - img "Tetr College launches $10 million Tetr Under initiative – featured in Entrepreneur"
+              - img [ref=e1097] [cursor=pointer]
+          - group "9 / 14":
+            - link "Training students through real-world business exposure – Interview with Tetr College Founder in Economic Times":
+              - /url: https://m.economictimes.com/industry/services/education/training-students-through-exposure-to-real-world-businesses-is-important-tetr-college-of-business-founder-pratham-mittal/amp_articleshow/113226365.cms
+              - img "Training students through real-world business exposure – Interview with Tetr College Founder in Economic Times"
+              - img [ref=e1101] [cursor=pointer]
+          - group "10 / 14":
+            - link "Tetr College launches fund to support student entrepreneurs – VCCircle article":
+              - /url: https://www.vccircle.com/tetrcollege-launches-fund-to-back-student-entrepreneurs
+              - img "Tetr College launches fund to support student entrepreneurs – VCCircle article"
+              - img [ref=e1105] [cursor=pointer]
+          - group "11 / 14":
+            - link "Entrepreneurship Training School Tether Raises $2 Million in Scholarships for Korean Students":
+              - /url: https://magazine.hankyung.com/job-joy/article/202412031032d
+              - img "Entrepreneurship Training School Tether Raises $2 Million in Scholarships for Korean Students"
+              - img [ref=e1109] [cursor=pointer]
+          - group "12 / 14":
+            - link "Student shares experience of transformative global education at Tetr College – Indian Express article":
+              - /url: https://indianexpress.com/article/education/study-abroad/life-in-a-foreign-university-roundtable-discussions-masterclass-dubais-tetr-college-transformed-uni-education-for-me-9686006/
+              - img "Student shares experience of transformative global education at Tetr College – Indian Express article"
+              - img [ref=e1113] [cursor=pointer]
+          - group "13 / 14":
+            - link "Tetr College of Business introduces a cross-border bachelor's program across seven countries – Wallstreet Online article":
+              - /url: https://www.wallstreet-online.de/nachricht/18115549-tetr-college-of-business-introduces-a-cross-border-bachelors-program-across-seven-countries
+              - img "Tetr College of Business introduces a cross-border bachelor's program across seven countries – Wallstreet Online article"
+              - img [ref=e1117] [cursor=pointer]
+          - group "14 / 14" [ref=e1120]:
+            - link "Tetr College of Business launches innovative undergraduate programme – Times of India article" [ref=e1121] [cursor=pointer]:
+              - /url: https://timesofindia.indiatimes.com/education/tetr-college-of-business-launches-innovative-ug-programme/articleshow/113202934.cms
+              - img "Tetr College of Business launches innovative undergraduate programme – Times of India article" [ref=e1122]
+              - img [ref=e1124]
+        - link "View More Icon" [ref=e1129] [cursor=pointer]:
+          - /url: /news
+          - text: View More
+          - img "Icon" [ref=e1130]
+    - generic [ref=e1132]:
+      - heading "Any Questions?" [level=2] [ref=e1134]
+      - generic [ref=e1135]:
+        - generic [ref=e1136]:
+          - generic [ref=e1138] [cursor=pointer]: How long does the Tetr application process take?
+          - paragraph [ref=e1143]: The initial registration is a quick 30 minute process, followed by The Tetr Trial lasting approximately 75 minutes. The final interview, which is an essential part of the process, typically lasts around 30 minutes.
+        - generic [ref=e1146] [cursor=pointer]: Do I need to prepare for something before starting the application process?
+        - generic [ref=e1152] [cursor=pointer]: Are there opportunities for internships or work experience during the program?
+        - generic [ref=e1158] [cursor=pointer]: How are host countries selected?
+        - generic [ref=e1164] [cursor=pointer]: Does Tetr provide financial assistance?
+        - generic [ref=e1170] [cursor=pointer]: What kind of job support does Tetr provide?
+        - generic [ref=e1176] [cursor=pointer]: Will faculty travel with students to different countries?
+    - generic [ref=e1180]:
+      - generic [ref=e1181]:
+        - generic [ref=e1182] [cursor=pointer]:
+          - img [ref=e1184]
+          - text: Resources WhatsApp Instagram YouTube Close
+        - generic [ref=e1190]:
+          - img "close-icon" [ref=e1192] [cursor=pointer]
+          - generic [ref=e1193]:
+            - heading "We value your privacy" [level=2] [ref=e1194]
+            - generic [ref=e1195]:
+              - paragraph [ref=e1196]: We use cookies to improve your browsing experience, personalise content, and understand how our website is used. By clicking “Accept all cookies”, you agree to our use of cookies.
+              - paragraph [ref=e1197]:
+                - text: You can accept all cookies or reject all. Learn more in our
+                - link "Privacy Policy" [ref=e1198] [cursor=pointer]:
+                  - /url: /privacy-policy
+                - text: .
+            - generic [ref=e1199]:
+              - button "Reject all" [ref=e1200] [cursor=pointer]
+              - button "Accept all cookies" [ref=e1201] [cursor=pointer]
+        - generic [ref=e1202]:
+          - generic [ref=e1203]:
+            - link "tetr-footer-brand-image" [ref=e1204] [cursor=pointer]:
+              - /url: /
+              - img "tetr-footer-brand-image" [ref=e1205]
+            - link "APPLY NOW Icon" [ref=e1207] [cursor=pointer]:
+              - /url: /apply-now
+              - text: APPLY NOW
+              - img "Icon" [ref=e1208]
+          - generic [ref=e1209]:
+            - generic [ref=e1210]:
+              - link "About" [ref=e1211] [cursor=pointer]:
+                - /url: /about
+              - link "Faculty" [ref=e1212] [cursor=pointer]:
+                - /url: /faculty
+              - link "Blog" [ref=e1213] [cursor=pointer]:
+                - /url: /blog
+              - link "Events" [ref=e1214] [cursor=pointer]:
+                - /url: /events
+            - generic [ref=e1215]:
+              - link "Resources" [ref=e1216] [cursor=pointer]:
+                - /url: /resources
+              - link "News" [ref=e1217] [cursor=pointer]:
+                - /url: /news
+              - link "Reviews" [ref=e1218] [cursor=pointer]:
+                - /url: /reviews
+              - link "Career Labs" [ref=e1219] [cursor=pointer]:
+                - /url: /careers
+            - generic [ref=e1220]:
+              - generic [ref=e1221] [cursor=pointer]: Dropshipping Report
+              - generic [ref=e1222] [cursor=pointer]: D2C Report
+              - generic [ref=e1223] [cursor=pointer]: UG Brochure
+              - generic [ref=e1224] [cursor=pointer]: PG Brochure
+            - generic [ref=e1225]:
+              - link "Experiences at Tetr" [ref=e1226] [cursor=pointer]:
+                - /url: /experiences-at-tetr
+              - link "Kickstarter" [ref=e1227] [cursor=pointer]:
+                - /url: /kickstarter
+              - link "Dropshipping" [ref=e1228] [cursor=pointer]:
+                - /url: /dropshipping
+          - generic [ref=e1229]:
+            - generic [ref=e1231]:
+              - paragraph [ref=e1232]: QS Gold Winner
+              - paragraph [ref=e1233]: Most Innovative Business School of 2025
+            - generic [ref=e1234]:
+              - generic [ref=e1235]:
+                - link "instagram logo":
+                  - /url: https://www.instagram.com/tetr.college/
+                  - img "instagram logo"
+                - link "youtube logo":
+                  - /url: https://www.youtube.com/@tetrcollege
+                  - img "youtube logo"
+                - link "linkedin logo":
+                  - /url: https://www.linkedin.com/school/tetr-college-of-business/
+                  - img "linkedin logo"
+              - generic [ref=e1236]:
+                - text: "Email:"
+                - link "info@tetr.org" [ref=e1237] [cursor=pointer]:
+                  - /url: mailto:info@tetr.org
+            - generic [ref=e1238]:
+              - img [ref=e1239]
+              - img [ref=e1240]
+      - generic [ref=e1244]:
+        - generic [ref=e1245]:
+          - link "Contact Us" [ref=e1246] [cursor=pointer]:
+            - /url: /contact-us
+          - link "Refund Policy" [ref=e1247] [cursor=pointer]:
+            - /url: /refund-policy
+          - link "Privacy Policy" [ref=e1248] [cursor=pointer]:
+            - /url: /privacy-policy
+          - link "Terms & Conditions" [ref=e1249] [cursor=pointer]:
+            - /url: /terms-conditions
+        - generic [ref=e1250]:
+          - generic [ref=e1251]: "* Tetr reserves the right to adjust the program location for this term due to prevailing visa restrictions. Participants will be notified accordingly."
+          - generic [ref=e1252]: Copyright© 2026 Tetr. All rights reserved.

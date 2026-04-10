@@ -1,0 +1,390 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - 'heading "Round 3 Deadline: 20th April 2026" [level=3] [ref=e6]'
+      - link "Apply Now arrow up icon" [ref=e7] [cursor=pointer]:
+        - /url: /apply-now
+        - text: Apply Now
+        - img "arrow up icon" [ref=e8]
+    - banner [ref=e9]:
+      - generic [ref=e11]:
+        - link "tetr-logo" [ref=e12] [cursor=pointer]:
+          - /url: /
+          - img "tetr-logo" [ref=e13]
+        - generic [ref=e14]:
+          - generic [ref=e15]:
+            - button "Programs Programs Icon" [ref=e16] [cursor=pointer]:
+              - generic [ref=e17]: Programs
+              - generic [ref=e18]: Programs
+              - img "Icon" [ref=e19]
+            - link "Faculty Faculty" [ref=e20] [cursor=pointer]:
+              - /url: /faculty
+              - generic [ref=e21]: Faculty
+              - generic [ref=e22]: Faculty
+            - link "Student Life Student Life" [ref=e23] [cursor=pointer]:
+              - /url: /student-life
+              - generic [ref=e24]: Student Life
+              - generic [ref=e25]: Student Life
+            - button "About About Icon" [ref=e26] [cursor=pointer]:
+              - generic [ref=e27]: About
+              - generic [ref=e28]: About
+              - img "Icon" [ref=e29]
+          - generic [ref=e30]:
+            - link "APPLY NOW" [ref=e31] [cursor=pointer]:
+              - /url: /apply-now
+            - link "CONTACT US" [ref=e32] [cursor=pointer]:
+              - /url: /contact-us
+  - main [ref=e33]:
+    - generic [ref=e37]:
+      - heading "Linked by Ambition" [level=1] [ref=e38]
+      - paragraph [ref=e39]: Thought leadership, entrepreneurial insights, and growth stories driving the Tetr community on LinkedIn.
+    - generic [ref=e42]:
+      - generic [ref=e43]:
+        - link "linkedIn" [ref=e44] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/jojitpaolo_go-and-be-the-first-i-have-been-moved-and-activity-7260992773594501120-xDPX?utm_medium=ios_app&rcm=ACoAAE9fukEB_0go904h_Kl4YKT00ghqUaWCOb8
+          - img "linkedIn" [ref=e45]
+          - img [ref=e47]
+        - link "linkedIn" [ref=e50] [cursor=pointer]:
+          - /url: https://www.linkedin.com/feed/update/urn:li:activity:7327292080144216064/?actorCompanyId=100564479
+          - img "linkedIn" [ref=e51]
+          - img [ref=e53]
+        - link "linkedIn" [ref=e56] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/fiene-klemmer_your-idea-is-only-as-strong-as-the-feedback-activity-7372542729202896896-cLPL?utm_source=share&utm_medium=member_desktop&rcm=ACoAACJ67pwBFiqBbfZioGBiU6YqnOqdNBMAhIM
+          - img "linkedIn" [ref=e57]
+          - img [ref=e59]
+        - link "linkedIn" [ref=e62] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/vanesarxt_from-a-small-town-to-studying-across-the-ugcPost-7439038044499935232-zj7B/?utm_source=share&utm_medium=member_desktop&rcm=ACoAADHCBHwBFKfw2V2eQH5sBIFl6GnPULlVri8
+          - img "linkedIn" [ref=e63]
+          - img [ref=e65]
+        - link "linkedIn" [ref=e68] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/sithutin_softskills-education-ghana-ugcPost-7434287492838789120-sIy8/?utm_source=share&utm_medium=member_desktop&rcm=ACoAADHCBHwBFKfw2V2eQH5sBIFl6GnPULlVri8
+          - img "linkedIn" [ref=e69]
+          - img [ref=e71]
+        - link "linkedIn" [ref=e74] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/larsgodoy_after-4-months-in-india-heres-what-share-7326250947540606978-VVYZ/?utm_source=share&utm_medium=member_desktop&rcm=ACoAADHCBHwBFKfw2V2eQH5sBIFl6GnPULlVri8
+          - img "linkedIn" [ref=e75]
+          - img [ref=e77]
+        - link "linkedIn" [ref=e80] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/edgar-laiton-8ba5b752_empresas-emprendimiento-jovenes-ugcPost-7442614444867825665-TaiM/?utm_source=share&utm_medium=member_desktop&rcm=ACoAADHCBHwBFKfw2V2eQH5sBIFl6GnPULlVri8
+          - img "linkedIn" [ref=e81]
+          - img [ref=e83]
+        - link "linkedIn" [ref=e86] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/mira-jhala_this-generation-of-builders-is-far-ahead-ugcPost-7429029537713233920-T6tt/?utm_source=share&utm_medium=member_desktop&rcm=ACoAADHCBHwBFKfw2V2eQH5sBIFl6GnPULlVri8
+          - img "linkedIn" [ref=e87]
+          - img [ref=e89]
+        - link "linkedIn" [ref=e92] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/chaitya-shah-7862ab25b_builtbyexposure-learnbydoing-entrepreneurship-ugcPost-7429583741297008640-0Wni/?utm_source=share&utm_medium=member_desktop&rcm=ACoAADHCBHwBFKfw2V2eQH5sBIFl6GnPULlVri8
+          - img "linkedIn" [ref=e93]
+          - img [ref=e95]
+        - link "linkedIn" [ref=e98] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/snigdha-638101259_tetrcollege-parliamentvisit-leadershiplessons-ugcPost-7357825542580002816-tgoZ/?utm_source=share&utm_medium=member_desktop&rcm=ACoAADHCBHwBFKfw2V2eQH5sBIFl6GnPULlVri8
+          - img "linkedIn" [ref=e99]
+          - img [ref=e101]
+        - link "linkedIn" [ref=e104] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/sebasbula_tetr-businesseducation-networking-activity-7376673872902819840-tyD2?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE9fukEB_0go904h_Kl4YKT00ghqUaWCOb8
+          - img "linkedIn" [ref=e105]
+          - img [ref=e107]
+        - link "linkedIn" [ref=e110] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/carlosmerle_gitexglobal-innovation-networking-activity-7385304708913065984-My6i?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE9fukEB_0go904h_Kl4YKT00ghqUaWCOb8
+          - img "linkedIn" [ref=e111]
+          - img [ref=e113]
+        - link "linkedIn" [ref=e116] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/mariya-nazarova-9bb659383_emirates-x-tetr-college-of-business-pitched-activity-7393694138908426240-EWYE?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE9fukEB_0go904h_Kl4YKT00ghqUaWCOb8
+          - img "linkedIn" [ref=e117]
+          - img [ref=e119]
+        - link "linkedIn" [ref=e122] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/si-thu-tin-8482b718b_businesseducation-entrepreneurship-innovation-activity-7295046093006942208-VirW?utm_medium=ios_app&rcm=ACoAAE9fukEB_0go904h_Kl4YKT00ghqUaWCOb8&utm_source=social_share_send&utm_campaign=copy_link
+          - img "linkedIn" [ref=e123]
+          - img [ref=e125]
+        - link "linkedIn" [ref=e128] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/satish-singh-6a4b019a_i-had-the-opportunity-of-conducting-a-session-activity-7300079548648329217-p8B8?utm_source=share&utm_medium=member_desktop&rcm=ACoAACOwdCoBNRm_b2_ZK5uQPLE-pL8E2U7Kbjk
+          - img "linkedIn" [ref=e129]
+          - img [ref=e131]
+        - link "linkedIn" [ref=e134] [cursor=pointer]:
+          - /url: https://www.linkedin.com/feed/update/urn:li:activity:7305996125801439235?actorCompanyId=100564479&lipi=urn%3Ali%3Apage%3Ad_flagship3_university_admin%3Bsuj9BCRETVSuOuwzuF8F3g%3D%3D
+          - img "linkedIn" [ref=e135]
+          - img [ref=e137]
+        - link "linkedIn" [ref=e140] [cursor=pointer]:
+          - /url: https://www.linkedin.com/feed/update/urn:li:activity:7319937336299896833/?actorCompanyId=100564479
+          - img "linkedIn" [ref=e141]
+          - img [ref=e143]
+        - link "linkedIn" [ref=e146] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/carlosmerle_gitexglobal-innovation-networking-activity-7385304708913065984-My6i?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE9fukEB_0go904h_Kl4YKT00ghqUaWCOb8
+          - img "linkedIn" [ref=e147]
+          - img [ref=e149]
+        - link "linkedIn" [ref=e152] [cursor=pointer]:
+          - /url: https://www.linkedin.com/feed/update/urn:li:activity:7334090726470782978/?actorCompanyId=100564479
+          - img "linkedIn" [ref=e153]
+          - img [ref=e155]
+      - generic [ref=e158]:
+        - link "linkedIn" [ref=e159] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/hitarth-chauhan-060513314_yearinreview-learningbydoing-startups-ugcPost-7412064716098863104-1GYo/?utm_source=share&utm_medium=member_desktop&rcm=ACoAADHCBHwBFKfw2V2eQH5sBIFl6GnPULlVri8
+          - img "linkedIn" [ref=e160]
+          - img [ref=e162]
+        - link "linkedIn" [ref=e165] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/william-o-yeung-254918210_as-my-son-brennan-continues-to-pursue-his-activity-7399563031984340993-jqVM?utm_source=screenshot_social_share&utm_medium=android_app&rcm=ACoAAA4nIaUB8vt_Drn0t7lDThUIKmpQr7ZC-5g&utm_campaign=share_via
+          - img "linkedIn" [ref=e166]
+          - img [ref=e168]
+        - link "linkedIn" [ref=e171] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/cs-adv-kunal-sarpal-3b404635_100-students-from-50-countries-one-shared-share-7321151913264095232-y8J-/?utm_source=share&utm_medium=member_desktop&rcm=ACoAADHCBHwBFKfw2V2eQH5sBIFl6GnPULlVri8
+          - img "linkedIn" [ref=e172]
+          - img [ref=e174]
+        - link "linkedIn" [ref=e177] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/martin-illingworth_opportunities-are-everywhere-you-just-have-ugcPost-7379742108422914048-ZXIX/?utm_source=share&utm_medium=member_desktop&rcm=ACoAADHCBHwBFKfw2V2eQH5sBIFl6GnPULlVri8
+          - img "linkedIn" [ref=e178]
+          - img [ref=e180]
+        - link "linkedIn" [ref=e183] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/kartikeya-desai_they-say-the-world-is-a-book-and-if-you-don-ugcPost-7425882133795119104-mzGM/?utm_source=share&utm_medium=member_desktop&rcm=ACoAADHCBHwBFKfw2V2eQH5sBIFl6GnPULlVri8
+          - img "linkedIn" [ref=e184]
+          - img [ref=e186]
+        - link "linkedIn" [ref=e189] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/rasieshagarwal_journey-tetr-nevergiveup-ugcPost-7365425418931224576-LZ4p/?utm_source=share&utm_medium=member_desktop&rcm=ACoAADHCBHwBFKfw2V2eQH5sBIFl6GnPULlVri8
+          - img "linkedIn" [ref=e190]
+          - img [ref=e192]
+        - link "linkedIn" [ref=e195] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/vikkivik_peesafe-tetrbusinessschool-supplychain-ugcPost-7320077845655957504-zdUm/?utm_source=share&utm_medium=member_desktop&rcm=ACoAADHCBHwBFKfw2V2eQH5sBIFl6GnPULlVri8
+          - img "linkedIn" [ref=e196]
+          - img [ref=e198]
+        - link "linkedIn" [ref=e201] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/snehaguptagi_dropshipping-mentorship-ugcPost-7389685738096930816-AoT4/?utm_source=share&utm_medium=member_desktop&rcm=ACoAADHCBHwBFKfw2V2eQH5sBIFl6GnPULlVri8
+          - img "linkedIn" [ref=e202]
+          - img [ref=e204]
+        - link "linkedIn" [ref=e207] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/ashimkhanal_educationrevolution-globallearning-experientiallearning-ugcPost-7200670560119316480-NtqD/?utm_source=share&utm_medium=member_desktop&rcm=ACoAADHCBHwBFKfw2V2eQH5sBIFl6GnPULlVri8
+          - img "linkedIn" [ref=e208]
+          - img [ref=e210]
+        - link "linkedIn" [ref=e213] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/carlos-castrillon-álvarez_most-of-what-i-learned-this-semester-didn-ugcPost-7443921787039682560-AHM0/?utm_source=share&utm_medium=member_desktop&rcm=ACoAADHCBHwBFKfw2V2eQH5sBIFl6GnPULlVri8
+          - img "linkedIn" [ref=e214]
+          - img [ref=e216]
+        - link "linkedIn" [ref=e219] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/prerna-arora-protonlabs_learning-growth-journey-ugcPost-7373971076856369152-pXCJ/?utm_source=share&utm_medium=member_desktop&rcm=ACoAADHCBHwBFKfw2V2eQH5sBIFl6GnPULlVri8
+          - img "linkedIn" [ref=e220]
+          - img [ref=e222]
+        - link "linkedIn" [ref=e225] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/maria-regina-rosado-lopez-093825371_being-part-of-tetr-college-of-business-has-activity-7379625278366638080-Cehz?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE9fukEB_0go904h_Kl4YKT00ghqUaWCOb8
+          - img "linkedIn" [ref=e226]
+          - img [ref=e228]
+        - link "linkedIn" [ref=e231] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/ankurkul_%F0%9D%91%B0%F0%9D%92%94-%F0%9D%92%86%F0%9D%92%8F%F0%9D%92%88%F0%9D%92%82%F0%9D%92%88%F0%9D%92%8A%F0%9D%92%8F%F0%9D%92%88-%F0%9D%92%96%F0%9D%92%8F%F0%9D%92%85%F0%9D%92%86%F0%9D%92%93%F0%9D%92%88%F0%9D%92%93%F0%9D%92%82%F0%9D%92%85%F0%9D%92%94-activity-7387549365567066113-Z1wz?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE9fukEB_0go904h_Kl4YKT00ghqUaWCOb8
+          - img "linkedIn" [ref=e232]
+          - img [ref=e234]
+        - link "linkedIn" [ref=e237] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/carlosmerle_the-first-founders-connect-dubai-was-a-powerful-activity-7377674648110567424-JFml?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE9fukEB_0go904h_Kl4YKT00ghqUaWCOb8
+          - img "linkedIn" [ref=e238]
+          - img [ref=e240]
+        - link "linkedIn" [ref=e243] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/mariana-b%C3%A1rcenas-60a711284_arriving-at-tetr-college-of-business-still-activity-7379217467199348737-9I1H?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE9fukEB_0go904h_Kl4YKT00ghqUaWCOb8
+          - img "linkedIn" [ref=e244]
+          - img [ref=e246]
+        - link "linkedIn" [ref=e249] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/heedong-cho_learningbydoing-activity-7348042310716182528-r_JV?utm_medium=ios_app&rcm=ACoAAE9fukEB_0go904h_Kl4YKT00ghqUaWCOb8&utm_source=social_share_send&utm_campaign=copy_link
+          - img "linkedIn" [ref=e250]
+          - img [ref=e252]
+        - link "linkedIn" [ref=e255] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/renata-torres-figueroa-1280102a5_traveling-across-7-countries-studying-and-activity-7384503188793487360-5CUh?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAE9fukEB_0go904h_Kl4YKT00ghqUaWCOb8
+          - img "linkedIn" [ref=e256]
+          - img [ref=e258]
+        - link "linkedIn" [ref=e261] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/aslesha-agarwal_would-you-study-at-a-college-that-takes-you-activity-7300498339375001601-aK5B?utm_source=share&utm_medium=member_desktop&rcm=ACoAACOwdCoBNRm_b2_ZK5uQPLE-pL8E2U7Kbjk
+          - img "linkedIn" [ref=e262]
+          - img [ref=e264]
+        - link "linkedIn" [ref=e267] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/fittiitdelhi_tetrcollege-fitt-innovation-activity-7300079179088150528-BYYC?utm_source=share&utm_medium=member_desktop&rcm=ACoAACOwdCoBNRm_b2_ZK5uQPLE-pL8E2U7Kbjk
+          - img "linkedIn" [ref=e268]
+          - img [ref=e270]
+        - link "linkedIn" [ref=e273] [cursor=pointer]:
+          - /url: https://www.linkedin.com/feed/update/urn:li:activity:7320077924512985088?actorCompanyId=100564479&lipi=urn%3Ali%3Apage%3Aschool_admin_admin_notifications_filtered_notifications%3Bee328e22-2d12-4e48-9f87-0844ec5a4b62
+          - img "linkedIn" [ref=e274]
+          - img [ref=e276]
+        - link "linkedIn" [ref=e279] [cursor=pointer]:
+          - /url: https://www.linkedin.com/feed/update/urn:li:activity:7308527669325766656?actorCompanyId=100564479&lipi=urn%3Ali%3Apage%3Ad_flagship3_university_admin%3Bsuj9BCRETVSuOuwzuF8F3g%3D%3D
+          - img "linkedIn" [ref=e280]
+          - img [ref=e282]
+        - link "linkedIn" [ref=e285] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/ariv-bansal-9908ab212_dubai-tetr-studentfounders-activity-7376903328691232768-VC3f?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE9fukEB_0go904h_Kl4YKT00ghqUaWCOb8
+          - img "linkedIn" [ref=e286]
+          - img [ref=e288]
+      - generic [ref=e291]:
+        - link "linkedIn" [ref=e292] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/ankurkul_𝑰𝒔-𝒆𝒏𝒈𝒂𝒈𝒊𝒏𝒈-𝒖𝒏𝒅𝒆𝒓𝒈𝒓𝒂𝒅𝒔-ugcPost-7387549364262506497-xb88/?utm_source=share&utm_medium=member_desktop&rcm=ACoAADHCBHwBFKfw2V2eQH5sBIFl6GnPULlVri8
+          - img "linkedIn" [ref=e293]
+          - img [ref=e295]
+        - link "linkedIn" [ref=e298] [cursor=pointer]:
+          - /url: https://www.linkedin.com/feed/update/urn:li:activity:7441706479847636993/?actorCompanyId=100564479
+          - img "linkedIn" [ref=e299]
+          - img [ref=e301]
+        - link "linkedIn" [ref=e304] [cursor=pointer]:
+          - /url: https://www.linkedin.com/feed/update/urn:li:activity:7432221610239062016/?actorCompanyId=100564479
+          - img "linkedIn" [ref=e305]
+          - img [ref=e307]
+        - link "linkedIn" [ref=e310] [cursor=pointer]:
+          - /url: https://www.linkedin.com/feed/update/urn:li:activity:7440876075867389952/?actorCompanyId=100564479
+          - img "linkedIn" [ref=e311]
+          - img [ref=e313]
+        - link "linkedIn" [ref=e316] [cursor=pointer]:
+          - /url: https://www.linkedin.com/feed/update/urn:li:activity:7432221610239062016/?actorCompanyId=100564479
+          - img "linkedIn" [ref=e317]
+          - img [ref=e319]
+        - link "linkedIn" [ref=e322] [cursor=pointer]:
+          - /url: https://www.linkedin.com/feed/update/urn:li:activity:7443220121562722304/?actorCompanyId=100564479
+          - img "linkedIn" [ref=e323]
+          - img [ref=e325]
+        - link "linkedIn" [ref=e328] [cursor=pointer]:
+          - /url: https://www.linkedin.com/feed/update/urn:li:activity:7443220121562722304/?actorCompanyId=100564479
+          - img "linkedIn" [ref=e329]
+          - img [ref=e331]
+        - link "linkedIn" [ref=e334] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/ishaan-mickin-sheth_tetr-founderenergy-learnbybuilding-share-7353047849980297217-dylG/?utm_source=share&utm_medium=member_desktop&rcm=ACoAADHCBHwBFKfw2V2eQH5sBIFl6GnPULlVri8
+          - img "linkedIn" [ref=e335]
+          - img [ref=e337]
+        - link "linkedIn" [ref=e340] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/santiago-rivera-a284b51aa_dubai-studentabroad-tetr-activity-7289622303456317441-Gk7q?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE9fukEB_0go904h_Kl4YKT00ghqUaWCOb8
+          - img "linkedIn" [ref=e341]
+          - img [ref=e343]
+        - link "linkedIn" [ref=e346] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/ankit-agarwal-blob_educationreimagined-startupculture-youngentrepreneurs-activity-7318539072736489473-Rw4x?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE9fukEB_0go904h_Kl4YKT00ghqUaWCOb8
+          - img "linkedIn" [ref=e347]
+          - img [ref=e349]
+        - link "linkedIn" [ref=e352] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/emiliolozano-_tetrcollege-mbajourney-leadership-activity-7374449681264906240-StHp?utm_medium=ios_app&rcm=ACoAAE9fukEB_0go904h_Kl4YKT00ghqUaWCOb8&utm_source=social_share_send&utm_campaign=copy_link
+          - img "linkedIn" [ref=e353]
+          - img [ref=e355]
+        - link "linkedIn" [ref=e358] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/carlosmerle_forexexpo-dubai-dsig-activity-7381981930201985024-nz--?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE9fukEB_0go904h_Kl4YKT00ghqUaWCOb8
+          - img "linkedIn" [ref=e359]
+          - img [ref=e361]
+        - link "linkedIn" [ref=e364] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/sila-kaya_a-bit-of-a-late-post-but-this-experience-activity-7392061347313729536-_ctZ?utm_medium=ios_app&rcm=ACoAAE9fukEB_0go904h_Kl4YKT00ghqUaWCOb8&utm_source=social_share_send&utm_campaign=copy_link
+          - img "linkedIn" [ref=e365]
+          - img [ref=e367]
+        - link "linkedIn" [ref=e370] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/carlos-castrillon-%C3%A1lvarez_yesterday-i-had-the-chance-to-connect-with-activity-7377634347362959360-8E4R?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE9fukEB_0go904h_Kl4YKT00ghqUaWCOb8
+          - img "linkedIn" [ref=e371]
+          - img [ref=e373]
+        - link "linkedIn" [ref=e376] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/lilijana-abrell_entrepreneurlife-buildsomething-taketherisk-activity-7307321501781774336-gAON?utm_medium=ios_app&rcm=ACoAAE9fukEB_0go904h_Kl4YKT00ghqUaWCOb8&utm_source=social_share_send&utm_campaign=copy_link
+          - img "linkedIn" [ref=e377]
+          - img [ref=e379]
+        - link "linkedIn" [ref=e382] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/kaylanasywa_its-time-to-leave-my-beloved-country-and-activity-7376621125910372352-YJzN?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE9fukEB_0go904h_Kl4YKT00ghqUaWCOb8
+          - img "linkedIn"
+          - img [ref=e384]
+        - link "linkedIn" [ref=e387] [cursor=pointer]:
+          - /url: https://www.linkedin.com/feed/update/urn:li:activity:7317076290744844288?actorCompanyId=100564479&lipi=urn%3Ali%3Apage%3Ad_flagship3_university_admin%3Bj37CraRdTV6C%2BlusNptxMw%3D%3D
+          - img "linkedIn"
+          - img [ref=e389]
+        - link "linkedIn" [ref=e392] [cursor=pointer]:
+          - /url: https://www.linkedin.com/feed/update/urn:li:activity:7320693357909864448/?actorCompanyId=100564479
+          - img "linkedIn"
+          - img [ref=e394]
+        - link "linkedIn" [ref=e397] [cursor=pointer]:
+          - /url: https://www.linkedin.com/feed/update/urn:li:activity:7325036839969398785/?actorCompanyId=100564479
+          - img "linkedIn"
+          - img [ref=e399]
+        - link "linkedIn" [ref=e402] [cursor=pointer]:
+          - /url: https://www.linkedin.com/feed/update/urn:li:activity:7336994239685320704/?actorCompanyId=100564479
+          - img "linkedIn"
+          - img [ref=e404]
+        - link "linkedIn" [ref=e407] [cursor=pointer]:
+          - /url: https://www.linkedin.com/feed/update/urn:li:activity:7338956202481020947/?actorCompanyId=100564479
+          - img "linkedIn"
+          - img [ref=e409]
+        - link "linkedIn" [ref=e412] [cursor=pointer]:
+          - /url: https://www.linkedin.com/feed/update/urn:li:activity:7341514173190737920/?actorCompanyId=100564479
+          - img "linkedIn"
+          - img [ref=e414]
+  - contentinfo [ref=e417]:
+    - generic [ref=e418]:
+      - generic [ref=e419] [cursor=pointer]:
+        - img [ref=e421]
+        - text: Resources WhatsApp Instagram YouTube Close
+      - generic [ref=e427]:
+        - img "close-icon" [ref=e429] [cursor=pointer]
+        - generic [ref=e430]:
+          - heading "We value your privacy" [level=2] [ref=e431]
+          - generic [ref=e432]:
+            - paragraph [ref=e433]: We use cookies to improve your browsing experience, personalise content, and understand how our website is used. By clicking “Accept all cookies”, you agree to our use of cookies.
+            - paragraph [ref=e434]:
+              - text: You can accept all cookies or reject all. Learn more in our
+              - link "Privacy Policy" [ref=e435] [cursor=pointer]:
+                - /url: /privacy-policy
+              - text: .
+          - generic [ref=e436]:
+            - button "Reject all" [ref=e437] [cursor=pointer]
+            - button "Accept all cookies" [ref=e438] [cursor=pointer]
+      - generic [ref=e439]:
+        - generic [ref=e440]:
+          - link "tetr-footer-brand-image" [ref=e441] [cursor=pointer]:
+            - /url: /
+            - img "tetr-footer-brand-image" [ref=e442]
+          - link "APPLY NOW Icon" [ref=e444] [cursor=pointer]:
+            - /url: /apply-now
+            - text: APPLY NOW
+            - img "Icon" [ref=e445]
+        - generic [ref=e446]:
+          - generic [ref=e447]:
+            - link "About" [ref=e448] [cursor=pointer]:
+              - /url: /about
+            - link "Faculty" [ref=e449] [cursor=pointer]:
+              - /url: /faculty
+            - link "Blog" [ref=e450] [cursor=pointer]:
+              - /url: /blog
+            - link "Events" [ref=e451] [cursor=pointer]:
+              - /url: /events
+          - generic [ref=e452]:
+            - link "Resources" [ref=e453] [cursor=pointer]:
+              - /url: /resources
+            - link "News" [ref=e454] [cursor=pointer]:
+              - /url: /news
+            - link "Reviews" [ref=e455] [cursor=pointer]:
+              - /url: /reviews
+            - link "Career Labs" [ref=e456] [cursor=pointer]:
+              - /url: /careers
+          - generic [ref=e457]:
+            - generic [ref=e458] [cursor=pointer]: Dropshipping Report
+            - generic [ref=e459] [cursor=pointer]: D2C Report
+            - generic [ref=e460] [cursor=pointer]: UG Brochure
+            - generic [ref=e461] [cursor=pointer]: PG Brochure
+          - generic [ref=e462]:
+            - link "Experiences at Tetr" [ref=e463] [cursor=pointer]:
+              - /url: /experiences-at-tetr
+            - link "Kickstarter" [ref=e464] [cursor=pointer]:
+              - /url: /kickstarter
+            - link "Dropshipping" [ref=e465] [cursor=pointer]:
+              - /url: /dropshipping
+        - generic [ref=e466]:
+          - generic [ref=e468]:
+            - paragraph [ref=e469]: QS Gold Winner
+            - paragraph [ref=e470]: Most Innovative Business School of 2025
+          - generic [ref=e471]:
+            - generic [ref=e472]:
+              - link "instagram logo" [ref=e473] [cursor=pointer]:
+                - /url: https://www.instagram.com/tetr.college/
+                - img "instagram logo" [ref=e474]
+              - link "youtube logo" [ref=e475] [cursor=pointer]:
+                - /url: https://www.youtube.com/@tetrcollege
+                - img "youtube logo" [ref=e476]
+              - link "linkedin logo" [ref=e477] [cursor=pointer]:
+                - /url: https://www.linkedin.com/school/tetr-college-of-business/
+                - img "linkedin logo" [ref=e478]
+            - generic [ref=e479]:
+              - text: "Email:"
+              - link "info@tetr.org" [ref=e480] [cursor=pointer]:
+                - /url: mailto:info@tetr.org
+          - generic [ref=e481]:
+            - img [ref=e482]
+            - img [ref=e483]
+    - generic [ref=e487]:
+      - generic [ref=e488]:
+        - link "Contact Us" [ref=e489] [cursor=pointer]:
+          - /url: /contact-us
+        - link "Refund Policy" [ref=e490] [cursor=pointer]:
+          - /url: /refund-policy
+        - link "Privacy Policy" [ref=e491] [cursor=pointer]:
+          - /url: /privacy-policy
+        - link "Terms & Conditions" [ref=e492] [cursor=pointer]:
+          - /url: /terms-conditions
+      - generic [ref=e493]:
+        - generic [ref=e494]: "* Tetr reserves the right to adjust the program location for this term due to prevailing visa restrictions. Participants will be notified accordingly."
+        - generic [ref=e495]: Copyright© 2026 Tetr. All rights reserved.

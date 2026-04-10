@@ -1,0 +1,656 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - 'heading "Round 3 Deadline: 20th April 2026" [level=3] [ref=e6]'
+      - link "Apply Now arrow up icon" [ref=e7] [cursor=pointer]:
+        - /url: /apply-now
+        - text: Apply Now
+        - img "arrow up icon" [ref=e8]
+    - banner [ref=e9]:
+      - generic [ref=e11]:
+        - link "tetr-logo" [ref=e12] [cursor=pointer]:
+          - /url: /
+          - img "tetr-logo" [ref=e13]
+        - generic [ref=e14]:
+          - generic [ref=e15]:
+            - button "Programs Programs Icon" [ref=e16] [cursor=pointer]:
+              - generic [ref=e17]: Programs
+              - generic [ref=e18]: Programs
+              - img "Icon" [ref=e19]
+            - link "Faculty Faculty" [ref=e20] [cursor=pointer]:
+              - /url: /faculty
+              - generic [ref=e21]: Faculty
+              - generic [ref=e22]: Faculty
+            - link "Student Life Student Life" [ref=e23] [cursor=pointer]:
+              - /url: /student-life
+              - generic [ref=e24]: Student Life
+              - generic [ref=e25]: Student Life
+            - button "About About Icon" [ref=e26] [cursor=pointer]:
+              - generic [ref=e27]: About
+              - generic [ref=e28]: About
+              - img "Icon" [ref=e29]
+          - generic [ref=e30]:
+            - link "APPLY NOW" [ref=e31] [cursor=pointer]:
+              - /url: /apply-now
+            - link "CONTACT US" [ref=e32] [cursor=pointer]:
+              - /url: /contact-us
+  - main [ref=e33]:
+    - generic [ref=e39]:
+      - heading "Career Labs at Tetr" [level=2] [ref=e41]:
+        - generic [ref=e42]:
+          - text: Career Labs
+          - text: at Tetr
+      - generic [ref=e44]:
+        - generic [ref=e45]:
+          - paragraph [ref=e46]: 131,760+ USD
+          - paragraph [ref=e47]: Cumulative Stipend (in the first year)
+        - generic [ref=e49]:
+          - paragraph [ref=e50]: 110+
+          - paragraph [ref=e51]: Internships (in the first year)
+        - generic [ref=e53]:
+          - paragraph [ref=e54]: 15+
+          - paragraph [ref=e55]: Countries
+    - generic [ref=e58]:
+      - generic [ref=e59]:
+        - heading "Building Careers in Real Time - Hear From the Students" [level=1] [ref=e60]:
+          - text: Building Careers in Real Time
+          - text: "- Hear From the Students"
+        - paragraph [ref=e61]: From Dubai to Tokyo, Zurich to South Africa, our students gain global exposure through immersive internships, one-on-one mentorship, and career-defining experiences
+        - link "VIEW CAREER LABS REPORT Icon" [ref=e63] [cursor=pointer]:
+          - /url: javascript:void(0)
+          - text: VIEW CAREER LABS REPORT
+          - img "Icon" [ref=e64]
+      - img "Icon" [ref=e66]
+    - generic [ref=e72]:
+      - heading "Looking to Hire? Lets Connect" [level=2] [ref=e74]:
+        - text: Looking to Hire?
+        - text: Lets Connect
+      - generic [ref=e77]:
+        - textbox "Enter Organization" [ref=e78]
+        - textbox "Enter Your Name*" [ref=e79]
+        - textbox "Enter Your Email*" [ref=e80]
+        - generic [ref=e81]:
+          - combobox [ref=e82]:
+            - option "Select" [disabled] [selected]
+            - option "+1"
+            - option "+7"
+            - option "+20"
+            - option "+27"
+            - option "+30"
+            - option "+31"
+            - option "+32"
+            - option "+33"
+            - option "+34"
+            - option "+36"
+            - option "+39"
+            - option "+40"
+            - option "+41"
+            - option "+42"
+            - option "+43"
+            - option "+44"
+            - option "+45"
+            - option "+46"
+            - option "+86"
+            - option "+243"
+            - option "+679"
+            - option "+592"
+            - option "+81"
+            - option "+686"
+            - option "+996"
+            - option "+692"
+            - option "+691"
+            - option "+976"
+            - option "+674"
+            - option "+64"
+            - option "+850"
+            - option "+680"
+            - option "+675"
+            - option "+685"
+            - option "+239"
+            - option "+677"
+            - option "+82"
+            - option "+597"
+            - option "+992"
+            - option "+676"
+            - option "+993"
+            - option "+688"
+            - option "+998"
+            - option "+678"
+            - option "+47"
+            - option "+48"
+            - option "+49"
+            - option "+51"
+            - option "+52"
+            - option "+53"
+            - option "+54"
+            - option "+55"
+            - option "+56"
+            - option "+57"
+            - option "+58"
+            - option "+60"
+            - option "+61"
+            - option "+62"
+            - option "+63"
+            - option "+64"
+            - option "+65"
+            - option "+66"
+            - option "+81"
+            - option "+82"
+            - option "+84"
+            - option "+86"
+            - option "+90"
+            - option "+91"
+            - option "+92"
+            - option "+94"
+            - option "+95"
+            - option "+98"
+            - option "+212"
+            - option "+213"
+            - option "+216"
+            - option "+218"
+            - option "+220"
+            - option "+221"
+            - option "+222"
+            - option "+223"
+            - option "+224"
+            - option "+226"
+            - option "+227"
+            - option "+228"
+            - option "+229"
+            - option "+231"
+            - option "+232"
+            - option "+233"
+            - option "+234"
+            - option "+236"
+            - option "+237"
+            - option "+238"
+            - option "+239"
+            - option "+240"
+            - option "+241"
+            - option "+242"
+            - option "+244"
+            - option "+245"
+            - option "+248"
+            - option "+249"
+            - option "+250"
+            - option "+251"
+            - option "+252"
+            - option "+253"
+            - option "+254"
+            - option "+256"
+            - option "+257"
+            - option "+258"
+            - option "+260"
+            - option "+261"
+            - option "+262"
+            - option "+263"
+            - option "+264"
+            - option "+265"
+            - option "+266"
+            - option "+267"
+            - option "+268"
+            - option "+269"
+            - option "+269"
+            - option "+290"
+            - option "+291"
+            - option "+297"
+            - option "+298"
+            - option "+299"
+            - option "+350"
+            - option "+351"
+            - option "+352"
+            - option "+353"
+            - option "+354"
+            - option "+356"
+            - option "+357"
+            - option "+358"
+            - option "+359"
+            - option "+370"
+            - option "+371"
+            - option "+372"
+            - option "+373"
+            - option "+374"
+            - option "+375"
+            - option "+376"
+            - option "+377"
+            - option "+378"
+            - option "+379"
+            - option "+380"
+            - option "+381"
+            - option "+385"
+            - option "+386"
+            - option "+387"
+            - option "+389"
+            - option "+417"
+            - option "+421"
+            - option "+500"
+            - option "+501"
+            - option "+502"
+            - option "+503"
+            - option "+504"
+            - option "+505"
+            - option "+506"
+            - option "+507"
+            - option "+509"
+            - option "+590"
+            - option "+591"
+            - option "+592"
+            - option "+593"
+            - option "+594"
+            - option "+595"
+            - option "+596"
+            - option "+597"
+            - option "+598"
+            - option "+670"
+            - option "+671"
+            - option "+672"
+            - option "+673"
+            - option "+674"
+            - option "+675"
+            - option "+676"
+            - option "+677"
+            - option "+678"
+            - option "+679"
+            - option "+680"
+            - option "+681"
+            - option "+682"
+            - option "+683"
+            - option "+686"
+            - option "+687"
+            - option "+688"
+            - option "+689"
+            - option "+691"
+            - option "+692"
+            - option "+850"
+            - option "+852"
+            - option "+853"
+            - option "+855"
+            - option "+856"
+            - option "+880"
+            - option "+886"
+            - option "+960"
+            - option "+961"
+            - option "+962"
+            - option "+963"
+            - option "+964"
+            - option "+965"
+            - option "+966"
+            - option "+967"
+            - option "+968"
+            - option "+969"
+            - option "+971"
+            - option "+972"
+            - option "+973"
+            - option "+974"
+            - option "+975"
+            - option "+976"
+            - option "+977"
+            - option "+993"
+            - option "+994"
+            - option "+996"
+            - option "+1242"
+            - option "+1246"
+            - option "+1264"
+            - option "+1268"
+            - option "+1284"
+            - option "+1340"
+            - option "+1345"
+            - option "+1441"
+            - option "+1473"
+            - option "+1649"
+            - option "+1664"
+            - option "+1758"
+            - option "+1787"
+            - option "+1809"
+            - option "+1809"
+            - option "+1868"
+            - option "+1869"
+            - option "+1876"
+            - option "+7880"
+            - option "+90392"
+          - textbox "Please enter atleast 8 digits" [ref=e83]:
+            - /placeholder: Enter Mobile No
+        - combobox [ref=e84]:
+          - option "Type of Partnership Interested In" [disabled] [selected]
+          - option "Internship"
+          - option "Full Time Recruitment"
+          - option "Live Projects from the Industry"
+        - textbox "Additional Comments..." [ref=e85]
+        - generic [ref=e86]:
+          - checkbox [ref=e87] [cursor=pointer]
+          - generic [ref=e88]:
+            - text: I agree to my details being processed in accordance with Tetr’s
+            - link "Privacy Policy" [ref=e89] [cursor=pointer]:
+              - /url: /privacy-policy
+            - text: ", and for Tetr and its affiliates to use my personal data to provide me with further information."
+        - button "SUBMIT Icon" [ref=e91] [cursor=pointer]:
+          - text: SUBMIT
+          - img "Icon" [ref=e92]
+    - generic [ref=e95]:
+      - generic [ref=e96]:
+        - heading "Inside the Labs" [level=2] [ref=e97]
+        - generic [ref=e98]:
+          - list [ref=e99] [cursor=pointer]:
+            - listitem [ref=e100]: Global Internships
+            - listitem [ref=e101]: CXO Connect
+            - listitem [ref=e102]: Career Prep
+          - paragraph [ref=e103]: Students are exposed to global opportunities all year round both In-term and during the summer break. The first cohort is interning in 15+ countries and earning $131,760+ in stipends.
+      - img "insideLabs" [ref=e106]
+    - generic [ref=e107]:
+      - 'heading "Internship Diaries: In-Term and Summer Opportunities" [level=2] [ref=e109]':
+        - text: "Internship Diaries:"
+        - text: In-Term and Summer Opportunities
+      - generic [ref=e111]:
+        - generic [ref=e113]:
+          - paragraph [ref=e116]: Dua Zafar
+          - generic [ref=e119]:
+            - paragraph [ref=e120]: Internship Org - Niche World
+            - paragraph [ref=e121]: Problem Statement - Fundraising & R&D Manager
+            - paragraph [ref=e122]: Impact - Creating a Funding Pipeline, Raising $150,000 in pre-seed Supplier & Client Database Management Researching regulatory frameworks in Germany & UAE Financial projections and revenue stream generation
+            - paragraph [ref=e123]: Region - Dubai | Timeline - 6 Months
+        - generic [ref=e125]:
+          - paragraph [ref=e128]: Nicoleta
+          - generic [ref=e131]:
+            - paragraph [ref=e132]: Internship Org - Emeritus
+            - paragraph [ref=e133]: Problem Statement - Understanding market needs in professional education.
+            - paragraph [ref=e134]: Impact - Creating a proposal for a graduate development program based on the new trends.
+            - paragraph [ref=e135]: Region - Dubai | Timeline - 3 Months
+        - generic [ref=e137]:
+          - paragraph [ref=e140]: Fiene
+          - generic [ref=e143]:
+            - paragraph [ref=e144]: Internship Org - Nivia Sports
+            - paragraph [ref=e145]: Problem Statement - Digital Marketing Strategist + Market Researcher.
+            - paragraph [ref=e146]: Impact - Branding, Amazon Strategist, Influencer marketing, market research, digital marketing.
+            - paragraph [ref=e147]: Region - India | Timeline - 2 Months
+        - generic [ref=e149]:
+          - paragraph [ref=e152]: Samia
+          - generic [ref=e155]:
+            - paragraph [ref=e156]: Internship Org - GITEX
+            - paragraph [ref=e157]: Problem Statement - Media Production Assistant
+            - paragraph [ref=e158]: Impact - Interviewing Ted Ross (Chief Information Officer, City of Los Angeles), Interviewing Dr. Dugra Prasad Dubey (Executive Vice President-Reliance Industries Limited), Media Production, Interviewing, Content Strategy.
+            - paragraph [ref=e159]: Region - Dubai | Timeline - 2 Months
+        - generic [ref=e161]:
+          - paragraph [ref=e164]: Dennis
+          - generic [ref=e167]:
+            - paragraph [ref=e168]: Internship Org - Pee Safe
+            - paragraph [ref=e169]: Problem Statement - Marketing and Sales
+            - paragraph [ref=e170]: Impact - Work on real-world projects and develop essential skills branding, sales strategy and customer engagement.
+            - paragraph [ref=e171]: Region - India | Timeline - 2 Months
+        - generic [ref=e173]:
+          - paragraph [ref=e176]: Linda Sangwe
+          - generic [ref=e179]:
+            - paragraph [ref=e180]: Internship Org - Tech Safari
+            - paragraph [ref=e181]: Problem Statement - The organization needed streamlined operational support to manage internal workflows and event logistics efficiently across remote teams.
+            - paragraph [ref=e182]: Impact - Contributing across operations, finance, sales, events, media, growth and strategy. Support priority workflows, shadow on cross-functional calls, and help us build internal processes as we grow.
+            - paragraph [ref=e183]: Region - Ghana | Timeline - 3 Months
+        - generic [ref=e185]:
+          - paragraph [ref=e188]: Ansh Narayn Gupta
+          - generic [ref=e191]:
+            - paragraph [ref=e192]: Internship Org - Nas Daily
+            - paragraph [ref=e193]: Problem Statement - Information silos and uncoordinated workflows were impeding timely project completion and quality decision-making across departments.
+            - paragraph [ref=e194]: Impact - Implementation of streamlined communication, comprehensive documentation and proactive monitoring resulted in 95% on-time project completion and enhanced cross-departmental decision quality.
+            - paragraph [ref=e195]: Region - Dubai | Timeline - 3 Months
+        - generic [ref=e197]:
+          - paragraph [ref=e200]: Shidqie
+          - generic [ref=e203]:
+            - paragraph [ref=e204]: Internship Org - Dubai International Financial Centre
+            - paragraph [ref=e205]: Problem Statement - The organization needed to boost its brand visibility and engagement on Instagram through consistent, high-quality, and strategically aligned content.
+            - paragraph [ref=e206]: Impact - Develop and execute a content calendar with original posts, stories, and reels tailored to the brand's voice, resulting in measurable growth in followers, reach, and engagement.
+            - paragraph [ref=e207]: Region - Dubai | Timeline - 3 Months
+    - generic [ref=e209]:
+      - heading "Direct Access to Top CXOs & Expert Mentors" [level=2] [ref=e210]:
+        - text: Direct Access to
+        - text: Top CXOs & Expert Mentors
+      - paragraph [ref=e211]:
+        - text: With over 100+ CXO interactions and more than 600+ hours of one-on-one mentorship in just one year, Tetr connects students with global
+        - text: industry leaders who guide their projects, refine their ideas, and help them excel.
+      - list [ref=e212]:
+        - listitem [ref=e213] [cursor=pointer]: All
+        - listitem [ref=e214] [cursor=pointer]: CXOs
+        - listitem [ref=e215] [cursor=pointer]: Mentorships
+      - generic [ref=e218]:
+        - listitem [ref=e219]:
+          - generic [ref=e220]:
+            - img "Yusuf Sabar" [ref=e221]
+            - generic [ref=e223]: Yusuf Sabar
+          - generic [ref=e225]: Ex-Head of Data, Careem Dubai
+        - listitem [ref=e226]:
+          - generic [ref=e227]:
+            - img "Manish Mathur" [ref=e228]
+            - generic [ref=e230]: Manish Mathur
+          - generic [ref=e232]: CFO and Head of Sub Saharan Africa Business, Dabur International
+        - listitem [ref=e233]:
+          - generic [ref=e234]:
+            - img "Mr. Thomas Kuruvilla" [ref=e235]
+            - generic [ref=e237]: Mr. Thomas Kuruvilla
+          - generic [ref=e239]: Managing Partner, Arthur D. Little
+        - listitem [ref=e240]:
+          - generic [ref=e241]:
+            - img "Jeff Strachan" [ref=e242]
+            - generic [ref=e244]: Jeff Strachan
+          - generic [ref=e246]: AVP Dubai Economy & Tourism
+        - listitem [ref=e247]:
+          - generic [ref=e248]:
+            - img "Akhil Koka" [ref=e249]
+            - generic [ref=e251]: Akhil Koka
+          - generic [ref=e253]: Head of Growth - DIFC
+        - listitem [ref=e254]:
+          - generic [ref=e255]:
+            - img "Zaid Shaltuni" [ref=e256]
+            - generic [ref=e258]: Zaid Shaltuni
+          - generic [ref=e260]: CCO - REALM
+        - listitem [ref=e261]:
+          - generic [ref=e262]:
+            - img "Michael Pereira" [ref=e263]
+            - generic [ref=e265]: Michael Pereira
+          - generic [ref=e267]: GCC Market Head - BNP Paribas
+        - listitem [ref=e268]:
+          - generic [ref=e269]:
+            - img "Kanika Agarwal" [ref=e270]
+            - generic [ref=e272]: Kanika Agarwal
+          - generic [ref=e274]: Founder - Mindpeers
+        - listitem [ref=e275]:
+          - generic [ref=e276]:
+            - img "Anshita Mehrotra" [ref=e277]
+            - generic [ref=e279]: Anshita Mehrotra
+          - generic [ref=e281]: Founder - Fix My Curls
+        - listitem [ref=e282]:
+          - generic [ref=e283]:
+            - img "Nishant Sukumaran" [ref=e284]
+            - generic [ref=e286]: Nishant Sukumaran
+          - generic [ref=e288]: International Marketing Head at Dabur
+        - listitem [ref=e289]:
+          - generic [ref=e290]:
+            - img "Kunal Bahl" [ref=e291]
+            - generic [ref=e293]: Kunal Bahl
+          - generic [ref=e295]: Former Faculty Fellow, MIT Sloan
+        - listitem [ref=e296]:
+          - generic [ref=e297]:
+            - img "Bikram Singh Bedi" [ref=e298]
+            - generic [ref=e300]: Bikram Singh Bedi
+          - generic [ref=e302]: Managing Director, Google Cloud India
+        - listitem [ref=e303]:
+          - generic [ref=e304]:
+            - img "Sandra Pappas" [ref=e305]
+            - generic [ref=e307]: Sandra Pappas
+          - generic [ref=e309]: Career Coach & Advisor
+        - listitem [ref=e310]:
+          - generic [ref=e311]:
+            - img "Sameer Rana" [ref=e312]
+            - generic [ref=e314]: Sameer Rana
+          - generic [ref=e316]: Group Chief Marketing Officer, Beyond ONE
+        - listitem [ref=e317]:
+          - generic [ref=e318]:
+            - img "Claudia Pinto" [ref=e319]
+            - generic [ref=e321]: Claudia Pinto
+          - generic [ref=e323]: Head of Philanthropy & Sustainability Forbes 50 Under 50
+        - listitem [ref=e324]:
+          - generic [ref=e325]:
+            - img "Ms. Balsam Madi" [ref=e326]
+            - generic [ref=e328]: Ms. Balsam Madi
+          - generic [ref=e330]: Design Director, BMStudio
+        - listitem [ref=e331]:
+          - generic [ref=e332]:
+            - img "Ms. Jolandi Uys" [ref=e333]
+            - generic [ref=e335]: Ms. Jolandi Uys
+          - generic [ref=e337]: Ex - L&D Specialist, Blooomberg LP
+        - listitem [ref=e338]:
+          - generic [ref=e339]:
+            - img "Enzo Tolino" [ref=e340]
+            - generic [ref=e342]: Enzo Tolino
+          - generic [ref=e344]: Senior Vice President Finance EMEA region, Oracle
+        - listitem [ref=e345]:
+          - generic [ref=e346]:
+            - img "Sylvain Perret" [ref=e347]
+            - generic [ref=e349]: Sylvain Perret
+          - generic [ref=e351]: Co-Founder of The Healthy Ice Cream Company
+        - listitem [ref=e352]:
+          - generic [ref=e353]:
+            - img "Maryam Shahin" [ref=e354]
+            - generic [ref=e356]: Maryam Shahin
+          - generic [ref=e358]: Head of Marketing & Communication at the UAE Ministry of Education
+      - link "VIEW MORE Icon" [ref=e360] [cursor=pointer]:
+        - /url: /faculty#meetMasters
+        - text: VIEW MORE
+        - img "Icon" [ref=e361]
+    - generic [ref=e362]:
+      - generic:
+        - img "Icon" [ref=e363]
+        - img "Icon" [ref=e364]
+      - generic [ref=e366]:
+        - heading "Hear from Our Industry Partners" [level=2] [ref=e367]
+        - generic [ref=e368]:
+          - generic [ref=e369]:
+            - generic [ref=e370]:
+              - img "insideLabs" [ref=e371]
+              - text: "|"
+              - generic [ref=e372]: Singapore
+            - paragraph [ref=e374]: “Ansh turned his unpaid role at global media brand Nas Company into a paid opportunity, showcasing initiative and a strong sense of ownership. He earned one of the most detailed and positive evaluations from the Nas Daily team, who praised his creativity, diligence, and ability to work independently in a fast-paced environment.”
+          - generic [ref=e375]:
+            - generic [ref=e376]:
+              - img "insideLabs" [ref=e377]
+              - text: "|"
+              - generic [ref=e378]: Dubai
+            - paragraph [ref=e380]: “Natalia completed a 6-week paid internship with Nexus Climate, contributing to the design of a carbon compliance product and its go-to-market strategy. She successfully delivered detailed market research, analyzed UAE’s NDC 3.0, and explored blockchain solutions for supply chain transparency. Her work with regional startups and sustainability reports reflected strong analytical skills and initiative.”
+          - generic [ref=e381]:
+            - generic [ref=e382]:
+              - img "insideLabs" [ref=e383]
+              - text: "|"
+              - generic [ref=e384]: Japan
+            - paragraph [ref=e386]: "”I must tell you that some of the candidates have completely blown my mind! I am so amazed at the young talent you have at TETR: and am so glad we were able to cross paths!” – Tanya Malik, founder of Mirai Minds.\""
+          - generic [ref=e387]:
+            - generic [ref=e388]:
+              - img "insideLabs" [ref=e389]
+              - text: "|"
+              - generic [ref=e390]: South Africa
+            - paragraph [ref=e392]: ”During her Go-To-Market internship at Emeritus, a leading global ed-tech company, Haneen played a key role in launching a new flagship product. Her sincerity, enthusiasm and strong engagement stood out, particularly impressive given the challenges of a fully remote setup."
+    - heading "Global Internship Across 5 Continents" [level=2] [ref=e396]
+    - generic [ref=e397]:
+      - img "Icon" [ref=e398]
+      - 'heading "Life at Tetr: Real-World Learning in Action" [level=2] [ref=e400]':
+        - text: "Life at Tetr:"
+        - text: Real-World Learning in Action
+      - generic [ref=e403]:
+        - generic [ref=e404]:
+          - paragraph [ref=e406]: Learning & Networking 101
+          - paragraph [ref=e407]: From CXO-led masterclasses to networking with founders in vibrant, relaxed settings, Tetr offers the perfect platform for students to elevate their potential and connect with industry leaders.
+        - generic [ref=e408]:
+          - generic [ref=e409]:
+            - generic [ref=e410] [cursor=pointer]: Masterclass
+            - generic [ref=e411] [cursor=pointer]: Mentorship Roundtable
+            - generic [ref=e412] [cursor=pointer]: Fireside
+          - img "realWorldImage" [ref=e414]
+    - generic [ref=e415]:
+      - generic [ref=e416]:
+        - generic [ref=e417] [cursor=pointer]:
+          - img [ref=e419]
+          - text: Resources WhatsApp Instagram YouTube Close
+        - generic [ref=e425]:
+          - img "close-icon" [ref=e427] [cursor=pointer]
+          - generic [ref=e428]:
+            - heading "We value your privacy" [level=2] [ref=e429]
+            - generic [ref=e430]:
+              - paragraph [ref=e431]: We use cookies to improve your browsing experience, personalise content, and understand how our website is used. By clicking “Accept all cookies”, you agree to our use of cookies.
+              - paragraph [ref=e432]:
+                - text: You can accept all cookies or reject all. Learn more in our
+                - link "Privacy Policy" [ref=e433] [cursor=pointer]:
+                  - /url: /privacy-policy
+                - text: .
+            - generic [ref=e434]:
+              - button "Reject all" [ref=e435] [cursor=pointer]
+              - button "Accept all cookies" [ref=e436] [cursor=pointer]
+        - generic [ref=e437]:
+          - generic [ref=e438]:
+            - link "tetr-footer-brand-image" [ref=e439] [cursor=pointer]:
+              - /url: /
+              - img "tetr-footer-brand-image" [ref=e440]
+            - link "APPLY NOW Icon" [ref=e442] [cursor=pointer]:
+              - /url: /apply-now
+              - text: APPLY NOW
+              - img "Icon" [ref=e443]
+          - generic [ref=e444]:
+            - generic [ref=e445]:
+              - link "About" [ref=e446] [cursor=pointer]:
+                - /url: /about
+              - link "Faculty" [ref=e447] [cursor=pointer]:
+                - /url: /faculty
+              - link "Blog" [ref=e448] [cursor=pointer]:
+                - /url: /blog
+              - link "Events" [ref=e449] [cursor=pointer]:
+                - /url: /events
+            - generic [ref=e450]:
+              - link "Resources" [ref=e451] [cursor=pointer]:
+                - /url: /resources
+              - link "News" [ref=e452] [cursor=pointer]:
+                - /url: /news
+              - link "Reviews" [ref=e453] [cursor=pointer]:
+                - /url: /reviews
+              - link "Career Labs" [ref=e454] [cursor=pointer]:
+                - /url: /careers
+            - generic [ref=e455]:
+              - generic [ref=e456] [cursor=pointer]: Dropshipping Report
+              - generic [ref=e457] [cursor=pointer]: D2C Report
+              - generic [ref=e458] [cursor=pointer]: UG Brochure
+              - generic [ref=e459] [cursor=pointer]: PG Brochure
+            - generic [ref=e460]:
+              - link "Experiences at Tetr" [ref=e461] [cursor=pointer]:
+                - /url: /experiences-at-tetr
+              - link "Kickstarter" [ref=e462] [cursor=pointer]:
+                - /url: /kickstarter
+              - link "Dropshipping" [ref=e463] [cursor=pointer]:
+                - /url: /dropshipping
+          - generic [ref=e464]:
+            - generic [ref=e466]:
+              - paragraph [ref=e467]: QS Gold Winner
+              - paragraph [ref=e468]: Most Innovative Business School of 2025
+            - generic [ref=e469]:
+              - generic [ref=e470]:
+                - link "instagram logo":
+                  - /url: https://www.instagram.com/tetr.college/
+                  - img "instagram logo"
+                - link "youtube logo":
+                  - /url: https://www.youtube.com/@tetrcollege
+                  - img "youtube logo"
+                - link "linkedin logo":
+                  - /url: https://www.linkedin.com/school/tetr-college-of-business/
+                  - img "linkedin logo"
+              - generic [ref=e471]:
+                - text: "Email:"
+                - link "info@tetr.org" [ref=e472] [cursor=pointer]:
+                  - /url: mailto:info@tetr.org
+            - generic [ref=e473]:
+              - img [ref=e474]
+              - img [ref=e475]
+      - generic [ref=e479]:
+        - generic [ref=e480]:
+          - link "Contact Us" [ref=e481] [cursor=pointer]:
+            - /url: /contact-us
+          - link "Refund Policy" [ref=e482] [cursor=pointer]:
+            - /url: /refund-policy
+          - link "Privacy Policy" [ref=e483] [cursor=pointer]:
+            - /url: /privacy-policy
+          - link "Terms & Conditions" [ref=e484] [cursor=pointer]:
+            - /url: /terms-conditions
+        - generic [ref=e485]:
+          - generic [ref=e486]: "* Tetr reserves the right to adjust the program location for this term due to prevailing visa restrictions. Participants will be notified accordingly."
+          - generic [ref=e487]: Copyright© 2026 Tetr. All rights reserved.

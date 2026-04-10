@@ -1,0 +1,233 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - 'heading "Round 3 Deadline: 20th April 2026" [level=3] [ref=e6]'
+      - link "Apply Now arrow up icon" [ref=e7] [cursor=pointer]:
+        - /url: /apply-now
+        - text: Apply Now
+        - img "arrow up icon" [ref=e8]
+    - banner [ref=e9]:
+      - generic [ref=e11]:
+        - link "tetr-logo" [ref=e12] [cursor=pointer]:
+          - /url: /
+          - img "tetr-logo" [ref=e13]
+        - generic [ref=e14]:
+          - generic [ref=e15]:
+            - button "Programs Programs Icon" [ref=e16] [cursor=pointer]:
+              - generic [ref=e17]: Programs
+              - generic [ref=e18]: Programs
+              - img "Icon" [ref=e19]
+            - link "Faculty Faculty" [ref=e20] [cursor=pointer]:
+              - /url: /faculty
+              - generic [ref=e21]: Faculty
+              - generic [ref=e22]: Faculty
+            - link "Student Life Student Life" [ref=e23] [cursor=pointer]:
+              - /url: /student-life
+              - generic [ref=e24]: Student Life
+              - generic [ref=e25]: Student Life
+            - button "About About Icon" [ref=e26] [cursor=pointer]:
+              - generic [ref=e27]: About
+              - generic [ref=e28]: About
+              - img "Icon" [ref=e29]
+          - generic [ref=e30]:
+            - link "APPLY NOW" [ref=e31] [cursor=pointer]:
+              - /url: /apply-now
+            - link "CONTACT US" [ref=e32] [cursor=pointer]:
+              - /url: /contact-us
+  - main [ref=e33]:
+    - generic [ref=e36]:
+      - generic [ref=e37]:
+        - 'heading "The Tetr Collective: Innovative Products, Built by the Tribe" [level=1] [ref=e38]'
+        - paragraph [ref=e39]: Explore the Tetr Tribe’s dropshipping brands developed in just 8 weeks. From hands-free POV cameras, solar-powered chargers, elegant diffusers, retro cameras, heated jackets, minimalist eyewear, baby gear upgrades - discover a curated selection of essentials designed to elevate your everyday life.
+        - paragraph [ref=e40]:
+          - text: Exclusive Black Friday Sale
+          - text: Don’t miss out on the chance to grab these fun products! With every purchase, you’re not just getting seriously cool stuff - you’re helping Tetr students get one step closer to building the next big brands.
+        - paragraph [ref=e42]: "Use Code: TETR20. Enjoy 20% off on all products. Limited time only!"
+      - link "Icon" [ref=e45] [cursor=pointer]:
+        - /url: javascript:void()
+        - img "Icon" [ref=e46]
+    - generic [ref=e49]:
+      - link "Yunova Yunova's Flame Aroma Diffuser A Gift of Warmth, Craft, and Connection (Free shipping globally)" [ref=e50] [cursor=pointer]:
+        - /url: https://yunova.store/
+        - generic [ref=e51]:
+          - generic [ref=e52]:
+            - img [ref=e54]
+            - paragraph [ref=e58]: Yunova
+          - generic [ref=e59]:
+            - paragraph [ref=e60]: Yunova's Flame Aroma Diffuser
+            - paragraph [ref=e61]: A Gift of Warmth, Craft, and Connection (Free shipping globally)
+      - link "The High Five POV Vizion PRO Compact 4K hands-free action camera built to capture your adventures exactly as you see them." [ref=e62] [cursor=pointer]:
+        - /url: https://illurex.com
+        - generic [ref=e63]:
+          - generic [ref=e64]:
+            - img [ref=e66]
+            - paragraph [ref=e70]: The High Five
+          - generic [ref=e71]:
+            - paragraph [ref=e72]: POV Vizion PRO
+            - paragraph [ref=e73]: Compact 4K hands-free action camera built to capture your adventures exactly as you see them.
+      - link "Nexo Alura Fluxwear Heated Jacket Electrical coil heating jacket with adjustable 3 heat settings. Control your warmth with a push of a button." [ref=e74] [cursor=pointer]:
+        - /url: https://aluraonline.org/
+        - generic [ref=e75]:
+          - generic [ref=e76]:
+            - img [ref=e78]
+            - paragraph [ref=e82]: Nexo
+          - generic [ref=e83]:
+            - paragraph [ref=e84]: Alura Fluxwear Heated Jacket
+            - paragraph [ref=e85]: Electrical coil heating jacket with adjustable 3 heat settings. Control your warmth with a push of a button.
+      - link "Kaboom Orystocrat Our sunglasses are designed with a flexible, lightweight frame and adjustable nose pads to ensure a perfect, pressure-free fit on any face size or shape." [ref=e86] [cursor=pointer]:
+        - /url: https://orysofficial.com/
+        - generic [ref=e87]:
+          - generic [ref=e88]:
+            - img [ref=e90]
+            - paragraph [ref=e94]: Kaboom
+          - generic [ref=e95]:
+            - paragraph [ref=e96]: Orystocrat
+            - paragraph [ref=e97]: Our sunglasses are designed with a flexible, lightweight frame and adjustable nose pads to ensure a perfect, pressure-free fit on any face size or shape.
+      - link "NexRoot MemoriaVita Sphere Handcrafted memory globe that stores your photos and videos in one elegant keepsake, built to preserve moments that actually matter." [ref=e98] [cursor=pointer]:
+        - /url: https://www.memoria-vita.com/
+        - generic [ref=e99]:
+          - generic [ref=e100]:
+            - img [ref=e102]
+            - paragraph [ref=e106]: NexRoot
+          - generic [ref=e107]:
+            - paragraph [ref=e108]: MemoriaVita Sphere
+            - paragraph [ref=e109]: Handcrafted memory globe that stores your photos and videos in one elegant keepsake, built to preserve moments that actually matter.
+      - link "World Wide Team Alune Air Mouse Compact, multifunctional “smart mouse + presentation remote” that doubles as a touchpad, laser pointer and a voice-recording & ChatGPT-powered meeting assistant." [ref=e110] [cursor=pointer]:
+        - /url: https://www.aluneco.com/?srsltid=AfmBOoqjkBZutjhjgL6qhkv8LVWwLTQOkn7Hw1ytVmZhJxKn2qMCrKTt
+        - generic [ref=e111]:
+          - generic [ref=e112]:
+            - img [ref=e114]
+            - paragraph [ref=e118]: World Wide Team
+          - generic [ref=e119]:
+            - paragraph [ref=e120]: Alune Air Mouse
+            - paragraph [ref=e121]: Compact, multifunctional “smart mouse + presentation remote” that doubles as a touchpad, laser pointer and a voice-recording & ChatGPT-powered meeting assistant.
+      - 'link "Clicknship Multi-Function Station Diffuser The ultimate room companion: humidifies, diffuses, plays music, lights your space, wakes you up, and charges your phone." [ref=e122] [cursor=pointer]':
+        - /url: https://www.scentsationshop.com/
+        - generic [ref=e123]:
+          - generic [ref=e124]:
+            - img [ref=e126]
+            - paragraph [ref=e130]: Clicknship
+          - generic [ref=e131]:
+            - paragraph [ref=e132]: Multi-Function Station Diffuser
+            - paragraph [ref=e133]: "The ultimate room companion: humidifies, diffuses, plays music, lights your space, wakes you up, and charges your phone."
+      - link "Sunergy Sunergy Nova Power Bank A power bank that charges itself using the sunlight for efficient energy, anywhere, anytime." [ref=e134] [cursor=pointer]:
+        - /url: http://www.shopsunergy.com
+        - generic [ref=e135]:
+          - generic [ref=e136]:
+            - img [ref=e138]
+            - paragraph [ref=e142]: Sunergy
+          - generic [ref=e143]:
+            - paragraph [ref=e144]: Sunergy Nova Power Bank
+            - paragraph [ref=e145]: A power bank that charges itself using the sunlight for efficient energy, anywhere, anytime.
+      - link "MIZAA Y2K Camcorder A retro-styled digital camcorder that gives your videos that authentic 2000s aesthetic everyone loves." [ref=e146] [cursor=pointer]:
+        - /url: https://y2ktape.com
+        - generic [ref=e147]:
+          - generic [ref=e148]:
+            - img [ref=e150]
+            - paragraph [ref=e154]: MIZAA
+          - generic [ref=e155]:
+            - paragraph [ref=e156]: Y2K Camcorder
+            - paragraph [ref=e157]: A retro-styled digital camcorder that gives your videos that authentic 2000s aesthetic everyone loves.
+      - link "Wrapidos Cam-Lix Screen Free Digital Camera Designed to make users live the moment, its screen-free, minimalist, retro design its excelent for camera lovers that wish to be more present in the moment and less time spent in a screen." [ref=e158] [cursor=pointer]:
+        - /url: https://camlix.store/
+        - generic [ref=e159]:
+          - generic [ref=e160]:
+            - img [ref=e162]
+            - paragraph [ref=e166]: Wrapidos
+          - generic [ref=e167]:
+            - paragraph [ref=e168]: Cam-Lix Screen Free Digital Camera
+            - paragraph [ref=e169]: Designed to make users live the moment, its screen-free, minimalist, retro design its excelent for camera lovers that wish to be more present in the moment and less time spent in a screen.
+  - contentinfo [ref=e170]:
+    - generic [ref=e171]:
+      - generic [ref=e172] [cursor=pointer]:
+        - img [ref=e174]
+        - text: Resources WhatsApp Instagram YouTube Close
+      - generic [ref=e180]:
+        - img "close-icon" [ref=e182] [cursor=pointer]
+        - generic [ref=e183]:
+          - heading "We value your privacy" [level=2] [ref=e184]
+          - generic [ref=e185]:
+            - paragraph [ref=e186]: We use cookies to improve your browsing experience, personalise content, and understand how our website is used. By clicking “Accept all cookies”, you agree to our use of cookies.
+            - paragraph [ref=e187]:
+              - text: You can accept all cookies or reject all. Learn more in our
+              - link "Privacy Policy" [ref=e188] [cursor=pointer]:
+                - /url: /privacy-policy
+              - text: .
+          - generic [ref=e189]:
+            - button "Reject all" [ref=e190] [cursor=pointer]
+            - button "Accept all cookies" [ref=e191] [cursor=pointer]
+      - generic [ref=e192]:
+        - generic [ref=e193]:
+          - link "tetr-footer-brand-image" [ref=e194] [cursor=pointer]:
+            - /url: /
+            - img "tetr-footer-brand-image" [ref=e195]
+          - link "APPLY NOW Icon" [ref=e197] [cursor=pointer]:
+            - /url: /apply-now
+            - text: APPLY NOW
+            - img "Icon" [ref=e198]
+        - generic [ref=e199]:
+          - generic [ref=e200]:
+            - link "About" [ref=e201] [cursor=pointer]:
+              - /url: /about
+            - link "Faculty" [ref=e202] [cursor=pointer]:
+              - /url: /faculty
+            - link "Blog" [ref=e203] [cursor=pointer]:
+              - /url: /blog
+            - link "Events" [ref=e204] [cursor=pointer]:
+              - /url: /events
+          - generic [ref=e205]:
+            - link "Resources" [ref=e206] [cursor=pointer]:
+              - /url: /resources
+            - link "News" [ref=e207] [cursor=pointer]:
+              - /url: /news
+            - link "Reviews" [ref=e208] [cursor=pointer]:
+              - /url: /reviews
+            - link "Career Labs" [ref=e209] [cursor=pointer]:
+              - /url: /careers
+          - generic [ref=e210]:
+            - generic [ref=e211] [cursor=pointer]: Dropshipping Report
+            - generic [ref=e212] [cursor=pointer]: D2C Report
+            - generic [ref=e213] [cursor=pointer]: UG Brochure
+            - generic [ref=e214] [cursor=pointer]: PG Brochure
+          - generic [ref=e215]:
+            - link "Experiences at Tetr" [ref=e216] [cursor=pointer]:
+              - /url: /experiences-at-tetr
+            - link "Kickstarter" [ref=e217] [cursor=pointer]:
+              - /url: /kickstarter
+            - link "Dropshipping" [ref=e218] [cursor=pointer]:
+              - /url: /dropshipping
+        - generic [ref=e219]:
+          - generic [ref=e221]:
+            - paragraph [ref=e222]: QS Gold Winner
+            - paragraph [ref=e223]: Most Innovative Business School of 2025
+          - generic [ref=e224]:
+            - generic [ref=e225]:
+              - link "instagram logo" [ref=e226] [cursor=pointer]:
+                - /url: https://www.instagram.com/tetr.college/
+                - img "instagram logo" [ref=e227]
+              - link "youtube logo" [ref=e228] [cursor=pointer]:
+                - /url: https://www.youtube.com/@tetrcollege
+                - img "youtube logo" [ref=e229]
+              - link "linkedin logo" [ref=e230] [cursor=pointer]:
+                - /url: https://www.linkedin.com/school/tetr-college-of-business/
+                - img "linkedin logo" [ref=e231]
+            - generic [ref=e232]:
+              - text: "Email:"
+              - link "info@tetr.org" [ref=e233] [cursor=pointer]:
+                - /url: mailto:info@tetr.org
+          - generic [ref=e234]:
+            - img [ref=e235]
+            - img [ref=e236]
+    - generic [ref=e240]:
+      - generic [ref=e241]:
+        - link "Contact Us" [ref=e242] [cursor=pointer]:
+          - /url: /contact-us
+        - link "Refund Policy" [ref=e243] [cursor=pointer]:
+          - /url: /refund-policy
+        - link "Privacy Policy" [ref=e244] [cursor=pointer]:
+          - /url: /privacy-policy
+        - link "Terms & Conditions" [ref=e245] [cursor=pointer]:
+          - /url: /terms-conditions
+      - generic [ref=e246]:
+        - generic [ref=e247]: "* Tetr reserves the right to adjust the program location for this term due to prevailing visa restrictions. Participants will be notified accordingly."
+        - generic [ref=e248]: Copyright© 2026 Tetr. All rights reserved.

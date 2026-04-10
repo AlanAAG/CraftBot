@@ -1,0 +1,292 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e6]:
+        - term [ref=e7]: language
+        - definition [ref=e8]:
+          - link "english" [ref=e9] [cursor=pointer]:
+            - /url: "#"
+            - img "english" [ref=e10]
+      - link "法人会員用ログイン" [ref=e12] [cursor=pointer]:
+        - /url: https://nihongo-student.alc.co.jp/jp/user/enterprise_student_login
+      - link "一般会員用ログイン" [ref=e14] [cursor=pointer]:
+        - /url: https://nihongo-student.alc.co.jp/jp/user/login
+      - link "アルク研修事業サイトへ戻る" [ref=e16] [cursor=pointer]:
+        - /url: https://www.alc-education.co.jp/
+      - link [ref=e19] [cursor=pointer]:
+        - /url: /
+    - list [ref=e22]:
+      - listitem [ref=e23]:
+        - link "HOME" [ref=e24] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e25]: HOME
+      - listitem [ref=e26]:
+        - link "コース一覧" [ref=e27] [cursor=pointer]:
+          - /url: /pages/lesson_list
+          - generic [ref=e28]: コース一覧
+      - listitem [ref=e29]:
+        - link "講師紹介" [ref=e30] [cursor=pointer]:
+          - /url: /home/teacher_list
+          - generic [ref=e31]: 講師紹介
+      - listitem [ref=e32]:
+        - link "料金体系" [ref=e33] [cursor=pointer]:
+          - /url: /pages/price
+          - generic [ref=e34]: 料金体系
+      - listitem [ref=e35]:
+        - link "受講までの流れ" [ref=e36] [cursor=pointer]:
+          - /url: /pages/step
+          - generic [ref=e37]: 受講までの流れ
+      - listitem [ref=e38]:
+        - link "受講生の声" [ref=e39] [cursor=pointer]:
+          - /url: /home/student_voice
+          - generic [ref=e40]: 受講生の声
+      - listitem [ref=e41]:
+        - link "よくあるご質問" [ref=e42] [cursor=pointer]:
+          - /url: /home/faq_question
+          - generic [ref=e43]: よくあるご質問
+      - listitem [ref=e44]:
+        - link "法人の方へ" [ref=e45] [cursor=pointer]:
+          - /url: /pages/company
+          - generic [ref=e46]: 法人の方へ
+  - img "main" [ref=e49]
+  - generic [ref=e51]:
+    - generic [ref=e53]:
+      - generic [ref=e54]:
+        - generic [ref=e55]:
+          - generic [ref=e56]: Internet
+          - generic [ref=e57]: +Microsoft Teams
+        - generic [ref=e58]:
+          - heading "いつでも、どこでも" [level=2] [ref=e59]
+          - generic [ref=e60]: Microsoft Teams（個人無料版）を使用し、オンラインで日本語の学習ができます。パソコンとインターネットがあれば、いつでもどこでも受講可能です。近くに日本語学校がない、学校に通う時間ない、といった方でも気軽に日本語を学習することができます。
+      - generic [ref=e61]:
+        - generic [ref=e63]: 1on1
+        - generic [ref=e64]:
+          - heading "１on１レッスン" [level=2] [ref=e65]
+          - generic [ref=e66]: 「日本語についての知識はあるのに話せない」、それは日本語で話す絶対量が不足しているからです。アルクオンライン日本語スクールは、全て１on１レッスン。学習者の自発的な発話を促しながら、学習を進めていきますので、集合型のクラスレッスンとは、発話量が断然違います。
+      - generic [ref=e67]:
+        - generic [ref=e68]:
+          - generic [ref=e69]: Native
+          - generic [ref=e70]: Japanese
+        - generic [ref=e71]:
+          - heading "日本語が母語の講師" [level=2] [ref=e72]
+          - generic [ref=e73]: 講師は全て日本語教育に関する専門的知識と実践能力を兼ね備えた日本人講師。厳しい採用基準に合格し、さらに研修を重ねた優秀な講師ばかりです。日本の最新の話題や、日本事情なども織り交ぜながら学習を進めるので、日本語だけでなく、日本文化も理解しながら学習を進めることができます。
+    - generic [ref=e74]:
+      - heading "レッスンに必要なものはこの４つのみ" [level=2] [ref=e75]
+      - link "受講の流れ" [ref=e76] [cursor=pointer]:
+        - /url: /pages/step
+    - generic [ref=e77]:
+      - generic:
+        - generic [ref=e78]:
+          - heading "インターネット" [level=2] [ref=e79]
+          - img "インターネット" [ref=e80]
+        - generic [ref=e81]:
+          - heading "WEBカメラ" [level=2] [ref=e82]
+          - img "WEBカメラ" [ref=e83]
+        - generic [ref=e84]:
+          - heading "マイク" [level=2] [ref=e85]
+          - img "マイク" [ref=e86]
+        - generic [ref=e88]:
+          - text: Microsoft
+          - text: Teams
+      - generic [ref=e89]: レッスンに必要なものは、Microsoft Teams（個人無料版）が使える環境と、マイク付きヘッドフォン、WEBカメラだけです。自宅でも職場でも受講可能ですので、通学時間が省略できます。テキストは、ウェブサイトから無料でダウンロードできますので、購入する必要がありません。アルクオンライン日本語スクールなら、気軽に日本人講師との１on１レッスンをスタートすることができます。
+    - heading "アルクオンライン日本語スクールはこんな方におすすめです" [level=2] [ref=e91]
+    - generic [ref=e93]:
+      - generic [ref=e94]:
+        - heading "日本語研修を検討中の法人の皆さま" [level=3] [ref=e95]
+        - generic [ref=e96]:
+          - img "ビジネスシーンを想定したレッスン内容" [ref=e97]
+          - paragraph [ref=e98]: ビジネスシーンを想定したレッスン内容
+          - paragraph [ref=e99]:
+            - text: アルクオンライン日本語スクールでは、ビジネス電話応対、ビジネス敬語、ビジネスマナー、ビジネスメールなど、ビジネスに特化したコースをご用意しています。リアルなビジネスシーンを想定した内容を１on１でレッスンしますので、短期間で業務に必要な会話力の向上が実現できます。また、御社のニーズに合わせたカスタマイズレッスンも可能ですので、外国人社員の日本語力向上をご検討中の研修ご担当者様、お気軽にご相談ください。
+            - link "more" [ref=e100] [cursor=pointer]:
+              - /url: /pages/company
+      - generic [ref=e101]:
+        - heading "日常会話やビジネスで日本語能力を向上させたい個人の皆さま" [level=3] [ref=e102]
+        - generic [ref=e103]:
+          - img "１on１レッスンで徹底した会話練習" [ref=e104]
+          - paragraph [ref=e105]: １on１で徹底した会話練習
+          - paragraph [ref=e106]:
+            - text: 近くに日本語学校がない、仕事や家事が忙しくて学校に通う時間がない、クラスレッスンだと話す量が少なくて不満、そんな悩みをお持ちの皆さんには、アルクオンライン日本語スクールがぴったりです。パソコンやスマートフォン、タブレット端末から好きな時間にレッスンを予約することができます。レッスンはMicrosoft Teams（個人無料版）を利用するので自宅で受講できます。１回50分のレッスンは全て１on１ですので、レッスン後には達成感、充実感を味わうことができるでしょう。
+            - link "more" [ref=e107] [cursor=pointer]:
+              - /url: /pages/lesson_list
+    - heading "コースラインナップ" [level=2] [ref=e109]
+    - generic [ref=e111]:
+      - link "日本語入門20回コース 1回50分/全20回 このコースはこれから日本語の勉強を始める方や、日本での生活に必要な日本語を短い時間で学習したい初学者向けのコースです。 買い物やレストランなどでよく使う日本語のフレーズを英語のサポート付きで学ぶことができます。その時、その場面で必要な日本語から効率的に学ぶので、レッスン直後から覚えた日本語表現が使えるようになります。" [ref=e113] [cursor=pointer]:
+        - /url: /pages/lesson15
+        - paragraph [ref=e115]:
+          - text: 日本語入門20回コース
+          - generic [ref=e116]: 1回50分/全20回
+        - paragraph [ref=e118]:
+          - text: このコースはこれから日本語の勉強を始める方や、日本での生活に必要な日本語を短い時間で学習したい初学者向けのコースです。
+          - text: 買い物やレストランなどでよく使う日本語のフレーズを英語のサポート付きで学ぶことができます。その時、その場面で必要な日本語から効率的に学ぶので、レッスン直後から覚えた日本語表現が使えるようになります。
+      - link "日本語初級Ⅰコース 1回50分/全20回 本コースは「日本語入門コース」の次のレベルのコースとなります。日常生活の場面で使える決まったフレーズだけでなく、友人や同僚と週末の出来事について話したり、手伝いを申し出たりするなど、自ら話すことができるようになる日本語の基礎を学習します。" [ref=e120] [cursor=pointer]:
+        - /url: /pages/lesson11
+        - paragraph [ref=e122]:
+          - text: 日本語初級Ⅰコース
+          - generic [ref=e123]: 1回50分/全20回
+        - paragraph [ref=e125]: 本コースは「日本語入門コース」の次のレベルのコースとなります。日常生活の場面で使える決まったフレーズだけでなく、友人や同僚と週末の出来事について話したり、手伝いを申し出たりするなど、自ら話すことができるようになる日本語の基礎を学習します。
+      - link "日本語初級Ⅱコース 1回50分/全20回 本コースは「日本語初級Ⅰコース」の次のレベルのコースです。友人や同僚に自身が知っていることについて簡単なアドバイスをする表現や、困った時に状況を簡単に説明でき、問題解決できるようになるための表現などを学びます。日本語の基礎の学習を積み重ねながら、これまで学習した表現を応用して話す練習を行っていきますので、着実に日本語力をつけることができます。" [ref=e127] [cursor=pointer]:
+        - /url: /pages/lesson12
+        - paragraph [ref=e129]:
+          - text: 日本語初級Ⅱコース
+          - generic [ref=e130]: 1回50分/全20回
+        - paragraph [ref=e132]: 本コースは「日本語初級Ⅰコース」の次のレベルのコースです。友人や同僚に自身が知っていることについて簡単なアドバイスをする表現や、困った時に状況を簡単に説明でき、問題解決できるようになるための表現などを学びます。日本語の基礎の学習を積み重ねながら、これまで学習した表現を応用して話す練習を行っていきますので、着実に日本語力をつけることができます。
+      - link "ビジネス日本語中級Ⅰコース 1回50分/全20回 本コースは「日本語初級Ⅱコース」の次のレベルのコースです。同僚や上司との職場での日常的なやり取りや、ビジネス会話の基礎的な表現などを学びます。初級レベルの知識を復習しながら、中級前半の文型、語彙、表現を積み重ねていきますので、少し込み入った話題について話したり、やり取りが多くなる場面でも日本語で問題解決できるようになります。" [ref=e134] [cursor=pointer]:
+        - /url: /pages/lesson16
+        - paragraph [ref=e136]:
+          - text: ビジネス日本語中級Ⅰコース
+          - generic [ref=e137]: 1回50分/全20回
+        - paragraph [ref=e139]: 本コースは「日本語初級Ⅱコース」の次のレベルのコースです。同僚や上司との職場での日常的なやり取りや、ビジネス会話の基礎的な表現などを学びます。初級レベルの知識を復習しながら、中級前半の文型、語彙、表現を積み重ねていきますので、少し込み入った話題について話したり、やり取りが多くなる場面でも日本語で問題解決できるようになります。
+      - link "ビジネス日本語中級Ⅱコース 1回50分/全20回 本コースは中級前半レベルの会話力を身に付けた方が、状況や相手に合わせた敬語や表現を使いながら、少し高度なコミュニケーションが取れるようになることを目標にしています。日本語で円滑な業務が行えるように会社の同僚との日常的なやりとりの他、社内・社外の人とのビジネス場面でのやりとりなどの日本語を学びます。" [ref=e141] [cursor=pointer]:
+        - /url: /pages/lesson06
+        - paragraph [ref=e143]:
+          - text: ビジネス日本語中級Ⅱコース
+          - generic [ref=e144]: 1回50分/全20回
+        - paragraph [ref=e146]: 本コースは中級前半レベルの会話力を身に付けた方が、状況や相手に合わせた敬語や表現を使いながら、少し高度なコミュニケーションが取れるようになることを目標にしています。日本語で円滑な業務が行えるように会社の同僚との日常的なやりとりの他、社内・社外の人とのビジネス場面でのやりとりなどの日本語を学びます。
+      - link "一般ビジネス日本語20回コース 1回50分/全20回 日本のビジネスシーンにおいて欠かせない基礎的なマナーや敬語表現、社内外の連絡のしかたなどを包括的に学ぶコースです。円滑なコミュニケーションを図るために必要な日本的なマナーと、メールや電話などで用いる実用的な日本語表現をバランスよく身につけることを目指しています。また、日本語ブラッシュアップでは発音、文法などを復習、練習し、日本語の基礎力をあげるとともに、ミニスピーチでは分かりやすく話す方法も学びます。" [ref=e148] [cursor=pointer]:
+        - /url: /pages/lesson08
+        - paragraph [ref=e150]:
+          - text: 一般ビジネス日本語20回コース
+          - generic [ref=e151]: 1回50分/全20回
+        - paragraph [ref=e153]: 日本のビジネスシーンにおいて欠かせない基礎的なマナーや敬語表現、社内外の連絡のしかたなどを包括的に学ぶコースです。円滑なコミュニケーションを図るために必要な日本的なマナーと、メールや電話などで用いる実用的な日本語表現をバランスよく身につけることを目指しています。また、日本語ブラッシュアップでは発音、文法などを復習、練習し、日本語の基礎力をあげるとともに、ミニスピーチでは分かりやすく話す方法も学びます。
+      - link "一般ビジネス日本語10回コース 1回50分/全10回 日本のビジネスシーンにおいて、よく求められるコミュニケーションを包括的に学ぶコースです。自己紹介、ビジネス電話応対、ビジネス敬語、ビジネスメール、ビジネスマナーに関する基礎的な日本語の表現を学習します。また、ミニ・スピーチに取り組み、簡潔に分かりやすく伝える方法を学習します。" [ref=e155] [cursor=pointer]:
+        - /url: /pages/lesson01
+        - paragraph [ref=e157]:
+          - text: 一般ビジネス日本語10回コース
+          - generic [ref=e158]: 1回50分/全10回
+        - paragraph [ref=e160]: 日本のビジネスシーンにおいて、よく求められるコミュニケーションを包括的に学ぶコースです。自己紹介、ビジネス電話応対、ビジネス敬語、ビジネスメール、ビジネスマナーに関する基礎的な日本語の表現を学習します。また、ミニ・スピーチに取り組み、簡潔に分かりやすく伝える方法を学習します。
+      - link "ビジネス電話応対コース 1回50分/全10回 ビジネスでの電話応対の仕方（掛け方、受け方、取り次ぎ方など）を集中的に学ぶコースです。担当者が不在のとき、電話を取り次いでもらうとき、伝言を受けるときなどに求められるとっさの対応についても学ぶことができます。また、ミニ・スピーチに取り組み、簡潔に分かりやすく伝える方法を学習します。" [ref=e162] [cursor=pointer]:
+        - /url: /pages/lesson02
+        - paragraph [ref=e164]:
+          - text: ビジネス電話応対コース
+          - generic [ref=e165]: 1回50分/全10回
+        - paragraph [ref=e167]: ビジネスでの電話応対の仕方（掛け方、受け方、取り次ぎ方など）を集中的に学ぶコースです。担当者が不在のとき、電話を取り次いでもらうとき、伝言を受けるときなどに求められるとっさの対応についても学ぶことができます。また、ミニ・スピーチに取り組み、簡潔に分かりやすく伝える方法を学習します。
+      - link "新ビジネス敬語コース 1回50分/全10回 これまでの「ビジネス敬語コース」を全面改訂し、すべて新しいテキスト、内容にリニューアルしました。日本のビジネスシーンに欠かせない敬語の知識から、実際のビジネスシーンでの使い方まで、体系的に学べる実用的なコースです。" [ref=e169] [cursor=pointer]:
+        - /url: /pages/lesson03
+        - paragraph [ref=e171]:
+          - text: 新ビジネス敬語コース
+          - generic [ref=e172]: 1回50分/全10回
+        - paragraph [ref=e174]: これまでの「ビジネス敬語コース」を全面改訂し、すべて新しいテキスト、内容にリニューアルしました。日本のビジネスシーンに欠かせない敬語の知識から、実際のビジネスシーンでの使い方まで、体系的に学べる実用的なコースです。
+      - link "ビジネスマナーコース 1回50分/全10回 ビジネスシーンで使用する便利な言い回しやあいさつなどの言葉遣いに関するマナー、接客や身だしなみなどの行動面でのマナーを学びます。正しい名刺交換の仕方や来客・接客時のマナー、各場面での席次など、日本における「社会人」としての適切な振る舞いの習得を目標としたコースです。" [ref=e176] [cursor=pointer]:
+        - /url: /pages/lesson04
+        - paragraph [ref=e178]:
+          - text: ビジネスマナーコース
+          - generic [ref=e179]: 1回50分/全10回
+        - paragraph [ref=e181]: ビジネスシーンで使用する便利な言い回しやあいさつなどの言葉遣いに関するマナー、接客や身だしなみなどの行動面でのマナーを学びます。正しい名刺交換の仕方や来客・接客時のマナー、各場面での席次など、日本における「社会人」としての適切な振る舞いの習得を目標としたコースです。
+      - link "ビジネスメールコース 1回50分/全10回 最初に、日本のビジネスシーンでよく使われる「メールの型」を学びます。その後、メールでの依頼や問い合わせ、報告、謝礼、断りなどのシーンを想定したメール文について、社内メールと社外メールとの違いなどについても学習します。さらに、案内状や送り状など、ビジネスで使われる文書の基本を学ぶことができます。" [ref=e183] [cursor=pointer]:
+        - /url: /pages/lesson05
+        - paragraph [ref=e185]:
+          - text: ビジネスメールコース
+          - generic [ref=e186]: 1回50分/全10回
+        - paragraph [ref=e188]: 最初に、日本のビジネスシーンでよく使われる「メールの型」を学びます。その後、メールでの依頼や問い合わせ、報告、謝礼、断りなどのシーンを想定したメール文について、社内メールと社外メールとの違いなどについても学習します。さらに、案内状や送り状など、ビジネスで使われる文書の基本を学ぶことができます。
+      - link "ビジネス日本語上級コース 1回50分/全10回 上級レベルのビジネス日本語スキルを磨くコースです。前半では、論理的に分かりやすく説明する力を強化し、後半ではプレゼンテーション、議事録作成、交渉・調整といった実務で頻出する場面に対応する表現やテクニックを学びます。実践的な演習を通じて、業務に直結する高度な日本語力を身につけることを目指します。" [ref=e190] [cursor=pointer]:
+        - /url: /pages/lesson17
+        - paragraph [ref=e192]:
+          - text: ビジネス日本語上級コース
+          - generic [ref=e193]: 1回50分/全10回
+        - paragraph [ref=e195]: 上級レベルのビジネス日本語スキルを磨くコースです。前半では、論理的に分かりやすく説明する力を強化し、後半ではプレゼンテーション、議事録作成、交渉・調整といった実務で頻出する場面に対応する表現やテクニックを学びます。実践的な演習を通じて、業務に直結する高度な日本語力を身につけることを目指します。
+      - link "ビジネス日本語実践Ⅰコース 1回50分/全10回 社内での日常業務や、社外との調整、交渉などの場面で、相手に配慮した行動を考え、より洗練された日本語表現を使えるようになることを目指します。また、ビジネス場面でよく使われる慣用句や、場にふさわしい改まった表現などについても学び、日本語力アップに繋げます。" [ref=e197] [cursor=pointer]:
+        - /url: /pages/lesson13
+        - paragraph [ref=e199]:
+          - text: ビジネス日本語実践Ⅰコース
+          - generic [ref=e200]: 1回50分/全10回
+        - paragraph [ref=e202]: 社内での日常業務や、社外との調整、交渉などの場面で、相手に配慮した行動を考え、より洗練された日本語表現を使えるようになることを目指します。また、ビジネス場面でよく使われる慣用句や、場にふさわしい改まった表現などについても学び、日本語力アップに繋げます。
+      - link "カスタマイズコース（JLPT対策等） 1回50分 ※回数はご相談ください 法人様のご希望に合わせたコースを作成し、ご提供します。JLPT対策レッスンや、営業担当者向けレッスン、エグゼクティブ向けレッスンなど、担任制レッスンで細かなご要望にお応えします。" [ref=e204] [cursor=pointer]:
+        - /url: /pages/lesson09
+        - paragraph [ref=e206]:
+          - text: カスタマイズコース（JLPT対策等）
+          - generic [ref=e207]: 1回50分 ※回数はご相談ください
+        - paragraph [ref=e209]: 法人様のご希望に合わせたコースを作成し、ご提供します。JLPT対策レッスンや、営業担当者向けレッスン、エグゼクティブ向けレッスンなど、担任制レッスンで細かなご要望にお応えします。
+    - generic [ref=e210]:
+      - heading "アルクは55年以上の実績をもつ日本の語学教育総合カンパニーです" [level=2] [ref=e211]
+      - link "会社概要を見る" [ref=e212] [cursor=pointer]:
+        - /url: http://www.alc.co.jp/company/
+    - generic [ref=e216]:
+      - text: 誰もが国境を越え、「地球はひとつ」だと実感できる時代。アルクは55年以上前からこのような未来を見据えて、語学教育に取り組んできました。外国人向けの日本語教育に関しては40年近い実績があり、通信講座による日本語教師養成プログラムの受講者数は８万人を超え、優秀な人材を日本語教育界に輩出しています。また、出版事業にも力を入れ、学習者向け、教師向けのテキストは120点に及び、多くの日本語教育機関で採用されています。さらに電話を使った日本語スピーキングテスト
+      - link "「JSST」" [ref=e217] [cursor=pointer]:
+        - /url: https://www.alc-education.co.jp/business/jsst/
+      - text: も開発・運営しています。ペーパーテストでは測りにくい会話能力を10段階で評価しますので、企業における外国人材の採用や研修などにご活用いただいています。世界の日本・日本文化に対する注目が高まる中、アルクは、今後も新たな学習コンテンツ、ツール、サポートの創造に取り組んでいきます。
+  - generic [ref=e219]:
+    - generic [ref=e220]:
+      - heading "Information" [level=2] [ref=e221]
+      - link "一覧を見る" [ref=e222] [cursor=pointer]:
+        - /url: /home/news_list
+    - generic [ref=e223]:
+      - list [ref=e224]:
+        - listitem [ref=e225]: 2026/02/02
+        - listitem [ref=e226]:
+          - link "新コースリリース「ビジネス日本語上級コース」" [ref=e227] [cursor=pointer]:
+            - /url: /home/news_detail/20260202_2
+      - list [ref=e228]:
+        - listitem [ref=e229]: 2026/02/02
+        - listitem [ref=e230]:
+          - link "アルク・アルクエデュケーション合併のお知らせ" [ref=e231] [cursor=pointer]:
+            - /url: /home/news_detail/20260202_1
+      - list [ref=e232]:
+        - listitem [ref=e233]: 2025/12/16
+        - listitem [ref=e234]:
+          - link "★重要★年末年始のお問い合わせにつきまして" [ref=e235] [cursor=pointer]:
+            - /url: /home/news_detail/20251216
+      - list [ref=e236]:
+        - listitem [ref=e237]: 2025/10/08
+        - listitem [ref=e238]:
+          - link "10周年記念 割引キャンペーン（個人申込のお客様対象）" [ref=e239] [cursor=pointer]:
+            - /url: /home/news_detail/20251008
+      - list [ref=e240]:
+        - listitem [ref=e241]: 2025/04/02
+        - listitem [ref=e242]:
+          - link "★重要★レッスンツール変更につきまして" [ref=e243] [cursor=pointer]:
+            - /url: /home/news_detail/20250402
+  - heading "法人様のお問い合わせはこちらへ >>" [level=2] [ref=e246]:
+    - link "法人様のお問い合わせはこちらへ >>" [ref=e247] [cursor=pointer]:
+      - /url: /pages/company/lp/apply/
+  - generic [ref=e248]:
+    - generic [ref=e250]:
+      - list [ref=e252]:
+        - listitem [ref=e253]:
+          - link "ホーム" [ref=e254] [cursor=pointer]:
+            - /url: /
+      - list [ref=e258]:
+        - listitem [ref=e259]:
+          - link "コース一覧" [ref=e260] [cursor=pointer]:
+            - /url: /pages/lesson_list
+        - listitem [ref=e261]:
+          - link "講師紹介" [ref=e262] [cursor=pointer]:
+            - /url: /home/teacher_list
+        - listitem [ref=e263]:
+          - link "料金体系" [ref=e264] [cursor=pointer]:
+            - /url: /pages/price
+        - listitem [ref=e265]:
+          - link "受講までの流れ" [ref=e266] [cursor=pointer]:
+            - /url: /pages/step
+        - listitem [ref=e267]:
+          - link "受講生の声" [ref=e268] [cursor=pointer]:
+            - /url: /home/student_voice
+        - listitem [ref=e269]:
+          - link "FAQ" [ref=e270] [cursor=pointer]:
+            - /url: /home/faq_question
+        - listitem [ref=e271]:
+          - link "法人の方へ" [ref=e272] [cursor=pointer]:
+            - /url: /pages/company
+        - listitem [ref=e273]:
+          - link "特定商取引法に関する表示" [ref=e274] [cursor=pointer]:
+            - /url: /pages/tokutei
+        - listitem [ref=e275]:
+          - link "会社概要" [ref=e276] [cursor=pointer]:
+            - /url: https://www.alc.co.jp/company
+        - listitem [ref=e277]:
+          - link "ご利用規約" [ref=e278] [cursor=pointer]:
+            - /url: /pages/rules
+        - listitem [ref=e279]:
+          - link "プライバシーポリシー" [ref=e280] [cursor=pointer]:
+            - /url: https://www.alc.co.jp/policy/privacy
+        - listitem [ref=e281]:
+          - link "お問い合わせ" [ref=e282] [cursor=pointer]:
+            - /url: /user/contact
+    - generic [ref=e283]:
+      - term [ref=e284]: language
+      - definition [ref=e285]:
+        - link "english" [ref=e286] [cursor=pointer]:
+          - /url: "#"
+          - img "english" [ref=e287]
+  - paragraph [ref=e290]: © 2026 ALC PRESS INC.

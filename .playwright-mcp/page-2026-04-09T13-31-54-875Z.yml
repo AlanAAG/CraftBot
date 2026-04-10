@@ -1,0 +1,363 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - 'heading "Round 3 Deadline: 20th April 2026" [level=3] [ref=e6]'
+      - link "Apply Now arrow up icon" [ref=e7] [cursor=pointer]:
+        - /url: /apply-now
+        - text: Apply Now
+        - img "arrow up icon" [ref=e8]
+    - banner [ref=e9]:
+      - generic [ref=e11]:
+        - link "tetr-logo" [ref=e12] [cursor=pointer]:
+          - /url: /
+          - img "tetr-logo" [ref=e13]
+        - generic [ref=e14]:
+          - generic [ref=e15]:
+            - button "Programs Programs Icon" [ref=e16] [cursor=pointer]:
+              - generic [ref=e17]: Programs
+              - generic [ref=e18]: Programs
+              - img "Icon" [ref=e19]
+            - link "Faculty Faculty" [ref=e20] [cursor=pointer]:
+              - /url: /faculty
+              - generic [ref=e21]: Faculty
+              - generic [ref=e22]: Faculty
+            - link "Student Life Student Life" [ref=e23] [cursor=pointer]:
+              - /url: /student-life
+              - generic [ref=e24]: Student Life
+              - generic [ref=e25]: Student Life
+            - button "About About Icon" [ref=e26] [cursor=pointer]:
+              - generic [ref=e27]: About
+              - generic [ref=e28]: About
+              - img "Icon" [ref=e29]
+          - generic [ref=e30]:
+            - link "APPLY NOW" [ref=e31] [cursor=pointer]:
+              - /url: /apply-now
+            - link "CONTACT US" [ref=e32] [cursor=pointer]:
+              - /url: /contact-us
+  - main [ref=e33]:
+    - generic [ref=e36]:
+      - generic [ref=e37]:
+        - 'heading "Kickstarter Showdown: The Crowdfunding Clash" [level=1] [ref=e38]':
+          - text: "Kickstarter Showdown:"
+          - text: The Crowdfunding Clash
+        - paragraph [ref=e39]: At Tetr, the world is a classroom for our students. Through Kickstarter, our students take their ventures from concept to creation, pitching their ideas to real audiences and experiencing what it takes to launch in the real world. Together, they aim to raise over $75,000 in funding across their campaigns.
+        - generic [ref=e40]:
+          - generic [ref=e41]:
+            - paragraph [ref=e42]: 110+
+            - paragraph [ref=e43]: Students
+          - generic [ref=e45]:
+            - paragraph [ref=e46]: "18"
+            - paragraph [ref=e47]: Teams
+          - generic [ref=e49]:
+            - paragraph [ref=e50]: 45+
+            - paragraph [ref=e51]: Nationalities
+      - img "Icon" [ref=e55] [cursor=pointer]
+    - generic [ref=e58]:
+      - 'link "Huodong Singapore Motion-Kettlebell A foldable, portable, water-fillable kettlebell Funding Goal: €2000" [ref=e59] [cursor=pointer]':
+        - /url: https://www.kickstarter.com/projects/motionkettlebell/motion-the-travel-ready-kettlebell-made-to-move-with-you
+        - generic [ref=e60]:
+          - generic [ref=e61]:
+            - img [ref=e63]
+            - generic [ref=e66]:
+              - paragraph [ref=e67]: Huodong
+              - generic [ref=e68]: Singapore
+          - generic [ref=e69]:
+            - paragraph [ref=e70]: Motion-Kettlebell
+            - paragraph [ref=e71]: A foldable, portable, water-fillable kettlebell
+            - generic [ref=e72]: "Funding Goal: €2000"
+      - 'link "Infinity Singapore Clickbuddy Remote shutter for instax mini 12 Funding Goal: $2,000" [ref=e73] [cursor=pointer]':
+        - /url: https://www.kickstarter.com/projects/clickbuddy/clickbuddy-your-instax-minis-companion
+        - generic [ref=e74]:
+          - generic [ref=e75]:
+            - img [ref=e77]
+            - generic [ref=e80]:
+              - paragraph [ref=e81]: "Infinity"
+              - generic [ref=e82]: Singapore
+          - generic [ref=e83]:
+            - paragraph [ref=e84]: Clickbuddy
+            - paragraph [ref=e85]: Remote shutter for instax mini 12
+            - generic [ref=e86]: "Funding Goal: $2,000"
+      - 'link "Kick Billion$ Edmonton, Canada AETHER portafolio Leather photo book Funding Goal: 3,000 CAD" [ref=e87] [cursor=pointer]':
+        - /url: https://www.kickstarter.com/projects/1695336843/aether-genuine-leather-photobook
+        - generic [ref=e88]:
+          - generic [ref=e89]:
+            - img [ref=e91]
+            - generic [ref=e94]:
+              - paragraph [ref=e95]: Kick Billion$
+              - generic [ref=e96]: Edmonton, Canada
+          - generic [ref=e97]:
+            - paragraph [ref=e98]: AETHER portafolio
+            - paragraph [ref=e99]: Leather photo book
+            - generic [ref=e100]: "Funding Goal: 3,000 CAD"
+      - 'link "Apex Alliance Texas, USA Chad Roast Bot The AI that is brutally honest Funding Goal: $3,750" [ref=e101] [cursor=pointer]':
+        - /url: https://www.kickstarter.com/projects/apexalliance/chad-roast-bot
+        - generic [ref=e102]:
+          - generic [ref=e103]:
+            - img [ref=e105]
+            - generic [ref=e108]:
+              - paragraph [ref=e109]: Apex Alliance
+              - generic [ref=e110]: Texas, USA
+          - generic [ref=e111]:
+            - paragraph [ref=e112]: Chad Roast Bot
+            - paragraph [ref=e113]: The AI that is brutally honest
+            - generic [ref=e114]: "Funding Goal: $3,750"
+      - 'link "Serve Florida, USA ServeTap Instantly connect with players - Play. Tap. Connect. Funding Goal: $3,000" [ref=e115] [cursor=pointer]':
+        - /url: https://www.kickstarter.com/projects/serveclub/servetap-socializing-sticker-for-racket-sports
+        - generic [ref=e116]:
+          - generic [ref=e117]:
+            - img [ref=e119]
+            - generic [ref=e122]:
+              - paragraph [ref=e123]: Serve
+              - generic [ref=e124]: Florida, USA
+          - generic [ref=e125]:
+            - paragraph [ref=e126]: ServeTap
+            - paragraph [ref=e127]: Instantly connect with players - Play. Tap. Connect.
+            - generic [ref=e128]: "Funding Goal: $3,000"
+      - 'link "8 Billion Project (8BP) Germany SlidePass The passport wallet designed for speed Funding Goal: $1,747" [ref=e129] [cursor=pointer]':
+        - /url: https://www.kickstarter.com/projects/slidepass/slidepass-the-passport-wallet-designed-for-speed
+        - generic [ref=e130]:
+          - generic [ref=e131]:
+            - img [ref=e133]
+            - generic [ref=e136]:
+              - paragraph [ref=e137]: 8 Billion Project (8BP)
+              - generic [ref=e138]: Germany
+          - generic [ref=e139]:
+            - paragraph [ref=e140]: SlidePass
+            - paragraph [ref=e141]: The passport wallet designed for speed
+            - generic [ref=e142]: "Funding Goal: $1,747"
+      - 'link "Horizon Singapore Critter Chaos Fast, funny, unpredictable party card game Funding Goal: $2,329" [ref=e143] [cursor=pointer]':
+        - /url: https://www.kickstarter.com/projects/cc-c/critter-chaos-embrace-the-chaos?ref=discovery&term=Critter%20chaos&total_hits=2&category_id=273
+        - generic [ref=e144]:
+          - generic [ref=e145]:
+            - img [ref=e147]
+            - generic [ref=e150]:
+              - paragraph [ref=e151]: Horizon
+              - generic [ref=e152]: Singapore
+          - generic [ref=e153]:
+            - paragraph [ref=e154]: Critter Chaos
+            - paragraph [ref=e155]: Fast, funny, unpredictable party card game
+            - generic [ref=e156]: "Funding Goal: $2,329"
+      - 'link "Bratz Sterling, Virginia The Last Code Ai future survival, strategy, and intense game. Funding Goal: $5,000" [ref=e157] [cursor=pointer]':
+        - /url: https://www.kickstarter.com/projects/thelastcode/last-code-strategic-board-game-of-ai-and-survival
+        - generic [ref=e158]:
+          - generic [ref=e159]:
+            - img [ref=e161]
+            - generic [ref=e164]:
+              - paragraph [ref=e165]: Bratz
+              - generic [ref=e166]: Sterling, Virginia
+          - generic [ref=e167]:
+            - paragraph [ref=e168]: The Last Code
+            - paragraph [ref=e169]: Ai future survival, strategy, and intense game.
+            - generic [ref=e170]: "Funding Goal: $5,000"
+      - 'link "Money Printer Singapore Brett Titanium Finger tip callus builder Funding Goal: $4,543" [ref=e171] [cursor=pointer]':
+        - /url: https://www.kickstarter.com/projects/br3ttbuildscallus/1742702374?ref=f3jh18&token=ad3506c9
+        - generic [ref=e172]:
+          - generic [ref=e173]:
+            - img [ref=e175]
+            - generic [ref=e178]:
+              - paragraph [ref=e179]: Money Printer
+              - generic [ref=e180]: Singapore
+          - generic [ref=e181]:
+            - paragraph [ref=e182]: Brett
+            - paragraph [ref=e183]: Titanium Finger tip callus builder
+            - generic [ref=e184]: "Funding Goal: $4,543"
+      - 'link "Startkicker Copenhagen, Denmark Kando A Physical Kanban for Productivity Funding Goal: $1,163" [ref=e185] [cursor=pointer]':
+        - /url: https://www.kickstarter.com/projects/kandoboard/kando-a-physical-kanban-for-productivity
+        - generic [ref=e186]:
+          - generic [ref=e187]:
+            - img [ref=e189]
+            - generic [ref=e192]:
+              - paragraph [ref=e193]: Startkicker
+              - generic [ref=e194]: Copenhagen, Denmark
+          - generic [ref=e195]:
+            - paragraph [ref=e196]: Kando
+            - paragraph [ref=e197]: A Physical Kanban for Productivity
+            - generic [ref=e198]: "Funding Goal: $1,163"
+      - 'link "Top J Singapore Krashh A market and trading card game Funding Goal: $1,545" [ref=e199] [cursor=pointer]':
+        - /url: https://www.kickstarter.com/projects/krashh/krashh-play-the-market
+        - generic [ref=e200]:
+          - generic [ref=e201]:
+            - img [ref=e203]
+            - generic [ref=e206]:
+              - paragraph [ref=e207]: Top J
+              - generic [ref=e208]: Singapore
+          - generic [ref=e209]:
+            - paragraph [ref=e210]: Krashh
+            - paragraph [ref=e211]: A market and trading card game
+            - generic [ref=e212]: "Funding Goal: $1,545"
+      - 'link "Hong Kong Munich, Germany Meridian The Titanium Electric Cup That Does It All Funding Goal: $2,329" [ref=e213] [cursor=pointer]':
+        - /url: https://www.kickstarter.com/projects/oribox/meridian-0
+        - generic [ref=e214]:
+          - generic [ref=e215]:
+            - img [ref=e217]
+            - generic [ref=e220]:
+              - paragraph [ref=e221]: Hong Kong
+              - generic [ref=e222]: Munich, Germany
+          - generic [ref=e223]:
+            - paragraph [ref=e224]: Meridian
+            - paragraph [ref=e225]: The Titanium Electric Cup That Does It All
+            - generic [ref=e226]: "Funding Goal: $2,329"
+      - 'link "Pina Coladas Kochi-Shi, Japan The Hive Mat Build your own hangout Funding Goal: $5,319" [ref=e227] [cursor=pointer]':
+        - /url: https://www.kickstarter.com/projects/thegreateroutdoors/the-hive-mat-build-your-own-hangout
+        - generic [ref=e228]:
+          - generic [ref=e229]:
+            - img [ref=e231]
+            - generic [ref=e234]:
+              - paragraph [ref=e235]: Pina Coladas
+              - generic [ref=e236]: Kochi-Shi, Japan
+          - generic [ref=e237]:
+            - paragraph [ref=e238]: The Hive Mat
+            - paragraph [ref=e239]: Build your own hangout
+            - generic [ref=e240]: "Funding Goal: $5,319"
+      - 'link "Spartans Germany KO Coasters Set of magnetic coasters that become an art piece Funding Goal: $2,329" [ref=e241] [cursor=pointer]':
+        - /url: https://www.kickstarter.com/projects/koaster/meet-koaster-coasters-that-turn-into-art
+        - generic [ref=e242]:
+          - generic [ref=e243]:
+            - img [ref=e245]
+            - generic [ref=e248]:
+              - paragraph [ref=e249]: Spartans
+              - generic [ref=e250]: Germany
+          - generic [ref=e251]:
+            - paragraph [ref=e252]: KO Coasters
+            - paragraph [ref=e253]: Set of magnetic coasters that become an art piece
+            - generic [ref=e254]: "Funding Goal: $2,329"
+      - 'link "John Singapore Taowist cards Glow in the dark poker cards with taoist inspired design Funding Goal: $824" [ref=e255] [cursor=pointer]':
+        - /url: https://www.kickstarter.com/projects/taowistcards/taowist-glow-in-the-dark-cards
+        - generic [ref=e256]:
+          - generic [ref=e257]:
+            - img [ref=e259]
+            - generic [ref=e262]:
+              - paragraph [ref=e263]: John
+              - generic [ref=e264]: Singapore
+          - generic [ref=e265]:
+            - paragraph [ref=e266]: Taowist cards
+            - paragraph [ref=e267]: Glow in the dark poker cards with taoist inspired design
+            - generic [ref=e268]: "Funding Goal: $824"
+      - 'link "Singapore Singapore BendNGo Flexible phone and tablet holder for any situation Funding Goal: $2318" [ref=e269] [cursor=pointer]':
+        - /url: https://www.kickstarter.com/projects/1497247666/bendngo
+        - generic [ref=e270]:
+          - generic [ref=e271]:
+            - img [ref=e273]
+            - generic [ref=e276]:
+              - paragraph [ref=e277]: Singapore
+              - generic [ref=e278]: Singapore
+          - generic [ref=e279]:
+            - paragraph [ref=e280]: BendNGo
+            - paragraph [ref=e281]: Flexible phone and tablet holder for any situation
+            - generic [ref=e282]: "Funding Goal: $2318"
+      - 'link "Trackon Australia Exposed Card game A social card game Funding Goal: $660" [ref=e283] [cursor=pointer]':
+        - /url: https://www.kickstarter.com/projects/exposedcards/exposed-the-unfiltered-party-card-game
+        - generic [ref=e284]:
+          - generic [ref=e285]:
+            - img [ref=e287]
+            - generic [ref=e290]:
+              - paragraph [ref=e291]: Trackon
+              - generic [ref=e292]: Australia
+          - generic [ref=e293]:
+            - paragraph [ref=e294]: Exposed Card game
+            - paragraph [ref=e295]: A social card game
+            - generic [ref=e296]: "Funding Goal: $660"
+      - generic [ref=e297]:
+        - generic [ref=e298]:
+          - generic [ref=e299]: Coming Soon
+          - generic [ref=e300]:
+            - paragraph [ref=e301]: One White Guy
+            - generic [ref=e302]: Kanagawa, Japan
+        - generic [ref=e303]:
+          - paragraph [ref=e304]: Wallex
+          - paragraph [ref=e305]: 6-in-1 Powerbank Wallet That Charges, Tracks, Stores
+          - generic [ref=e306]: "Funding Goal: $7,853"
+  - contentinfo [ref=e307]:
+    - generic [ref=e308]:
+      - generic [ref=e309] [cursor=pointer]:
+        - img [ref=e311]
+        - text: Resources WhatsApp Instagram YouTube Close
+      - generic [ref=e317]:
+        - img "close-icon" [ref=e319] [cursor=pointer]
+        - generic [ref=e320]:
+          - heading "We value your privacy" [level=2] [ref=e321]
+          - generic [ref=e322]:
+            - paragraph [ref=e323]: We use cookies to improve your browsing experience, personalise content, and understand how our website is used. By clicking “Accept all cookies”, you agree to our use of cookies.
+            - paragraph [ref=e324]:
+              - text: You can accept all cookies or reject all. Learn more in our
+              - link "Privacy Policy" [ref=e325] [cursor=pointer]:
+                - /url: /privacy-policy
+              - text: .
+          - generic [ref=e326]:
+            - button "Reject all" [ref=e327] [cursor=pointer]
+            - button "Accept all cookies" [ref=e328] [cursor=pointer]
+      - generic [ref=e329]:
+        - generic [ref=e330]:
+          - link "tetr-footer-brand-image" [ref=e331] [cursor=pointer]:
+            - /url: /
+            - img "tetr-footer-brand-image" [ref=e332]
+          - link "APPLY NOW Icon" [ref=e334] [cursor=pointer]:
+            - /url: /apply-now
+            - text: APPLY NOW
+            - img "Icon" [ref=e335]
+        - generic [ref=e336]:
+          - generic [ref=e337]:
+            - link "About" [ref=e338] [cursor=pointer]:
+              - /url: /about
+            - link "Faculty" [ref=e339] [cursor=pointer]:
+              - /url: /faculty
+            - link "Blog" [ref=e340] [cursor=pointer]:
+              - /url: /blog
+            - link "Events" [ref=e341] [cursor=pointer]:
+              - /url: /events
+          - generic [ref=e342]:
+            - link "Resources" [ref=e343] [cursor=pointer]:
+              - /url: /resources
+            - link "News" [ref=e344] [cursor=pointer]:
+              - /url: /news
+            - link "Reviews" [ref=e345] [cursor=pointer]:
+              - /url: /reviews
+            - link "Career Labs" [ref=e346] [cursor=pointer]:
+              - /url: /careers
+          - generic [ref=e347]:
+            - generic [ref=e348] [cursor=pointer]: Dropshipping Report
+            - generic [ref=e349] [cursor=pointer]: D2C Report
+            - generic [ref=e350] [cursor=pointer]: UG Brochure
+            - generic [ref=e351] [cursor=pointer]: PG Brochure
+          - generic [ref=e352]:
+            - link "Experiences at Tetr" [ref=e353] [cursor=pointer]:
+              - /url: /experiences-at-tetr
+            - link "Kickstarter" [ref=e354] [cursor=pointer]:
+              - /url: /kickstarter
+            - link "Dropshipping" [ref=e355] [cursor=pointer]:
+              - /url: /dropshipping
+        - generic [ref=e356]:
+          - generic [ref=e358]:
+            - paragraph [ref=e359]: QS Gold Winner
+            - paragraph [ref=e360]: Most Innovative Business School of 2025
+          - generic [ref=e361]:
+            - generic [ref=e362]:
+              - link "instagram logo" [ref=e363] [cursor=pointer]:
+                - /url: https://www.instagram.com/tetr.college/
+                - img "instagram logo" [ref=e364]
+              - link "youtube logo" [ref=e365] [cursor=pointer]:
+                - /url: https://www.youtube.com/@tetrcollege
+                - img "youtube logo" [ref=e366]
+              - link "linkedin logo" [ref=e367] [cursor=pointer]:
+                - /url: https://www.linkedin.com/school/tetr-college-of-business/
+                - img "linkedin logo" [ref=e368]
+            - generic [ref=e369]:
+              - text: "Email:"
+              - link "info@tetr.org" [ref=e370] [cursor=pointer]:
+                - /url: mailto:info@tetr.org
+          - generic [ref=e371]:
+            - img [ref=e372]
+            - img [ref=e373]
+    - generic [ref=e377]:
+      - generic [ref=e378]:
+        - link "Contact Us" [ref=e379] [cursor=pointer]:
+          - /url: /contact-us
+        - link "Refund Policy" [ref=e380] [cursor=pointer]:
+          - /url: /refund-policy
+        - link "Privacy Policy" [ref=e381] [cursor=pointer]:
+          - /url: /privacy-policy
+        - link "Terms & Conditions" [ref=e382] [cursor=pointer]:
+          - /url: /terms-conditions
+      - generic [ref=e383]:
+        - generic [ref=e384]: "* Tetr reserves the right to adjust the program location for this term due to prevailing visa restrictions. Participants will be notified accordingly."
+        - generic [ref=e385]: Copyright© 2026 Tetr. All rights reserved.

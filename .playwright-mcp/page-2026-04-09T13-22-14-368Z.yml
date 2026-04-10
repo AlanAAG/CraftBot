@@ -1,0 +1,627 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - 'heading "Round 3 Deadline: 20th April 2026" [level=3] [ref=e6]'
+      - link "Apply Now arrow up icon" [ref=e7] [cursor=pointer]:
+        - /url: /apply-now
+        - text: Apply Now
+        - img "arrow up icon" [ref=e8]
+    - banner [ref=e9]:
+      - generic [ref=e11]:
+        - link "tetr-logo" [ref=e12] [cursor=pointer]:
+          - /url: /
+          - img "tetr-logo" [ref=e13]
+        - generic [ref=e14]:
+          - generic [ref=e15]:
+            - button "Programs Programs Icon" [ref=e16] [cursor=pointer]:
+              - generic [ref=e17]: Programs
+              - generic [ref=e18]: Programs
+              - img "Icon" [ref=e19]
+            - link "Faculty Faculty" [ref=e20] [cursor=pointer]:
+              - /url: /faculty
+              - generic [ref=e21]: Faculty
+              - generic [ref=e22]: Faculty
+            - link "Student Life Student Life" [ref=e23] [cursor=pointer]:
+              - /url: /student-life
+              - generic [ref=e24]: Student Life
+              - generic [ref=e25]: Student Life
+            - button "About About Icon" [ref=e26] [cursor=pointer]:
+              - generic [ref=e27]: About
+              - generic [ref=e28]: About
+              - img "Icon" [ref=e29]
+          - generic [ref=e30]:
+            - link "APPLY NOW" [ref=e31] [cursor=pointer]:
+              - /url: /apply-now
+            - link "CONTACT US" [ref=e32] [cursor=pointer]:
+              - /url: /contact-us
+  - main [ref=e33]:
+    - generic [ref=e38]:
+      - generic [ref=e39]:
+        - heading "The Tetr Experience" [level=1] [ref=e40]
+        - paragraph [ref=e41]: Where Entrepreneurs Are Made
+      - paragraph [ref=e43]: Join Tetr's global events, online webinars, and workshops to learn from world-class professors and top entrepreneurs, preparing you to lead, innovate and thrive.
+    - generic [ref=e45]:
+      - generic [ref=e46]:
+        - generic [ref=e47]:
+          - generic [ref=e48]:
+            - text: Upcoming
+            - generic [ref=e49]: Events
+          - generic [ref=e50]:
+            - button "Previous slide" [disabled] [ref=e51] [cursor=pointer]:
+              - img "Icon" [ref=e52]
+            - button "Next slide" [disabled] [ref=e53] [cursor=pointer]:
+              - img "Icon" [ref=e54]
+        - paragraph [ref=e56]: No upcoming events available.
+      - generic [ref=e57]:
+        - generic [ref=e58]:
+          - generic [ref=e59]:
+            - text: Past
+            - generic [ref=e60]: Events
+          - generic [ref=e61]:
+            - button "Previous slide" [disabled] [ref=e62] [cursor=pointer]:
+              - img "Icon" [ref=e63]
+            - button "Next slide" [ref=e64] [cursor=pointer]:
+              - img "Icon" [ref=e65]
+        - generic [ref=e67]:
+          - group "1 / 30" [ref=e68]:
+            - generic [ref=e69]:
+              - img "Event Image" [ref=e70]
+              - generic [ref=e72]: Online
+            - generic [ref=e73]:
+              - heading "AMA - Tetr Summer Programs" [level=4] [ref=e74]
+              - paragraph [ref=e75]: Join us for an Ask Me Anything session about the Tetr Summer Programs. This session will give you a clear overview of the experience, the hands on activities, and what students can expect during the program. Speak directly with the team, ask questions about the schedule, learning outcomes, and overall structure, and understand how the Tetr Summer Programs help students explore business, leadership, and real world problem solving.
+              - generic [ref=e76]:
+                - img [ref=e77]
+                - paragraph [ref=e78]: 02:30 PM - 03:15 PM (GMT)
+              - generic [ref=e79]:
+                - img [ref=e80]
+                - paragraph [ref=e81]: Fri, Mar 20, 2026
+          - group "2 / 30" [ref=e82]:
+            - generic [ref=e83]:
+              - img "Event Image" [ref=e84]
+              - generic [ref=e86]: Offline
+            - generic [ref=e87]:
+              - 'heading "Tetr Connect: Colombo Edition" [level=4] [ref=e88]'
+              - paragraph [ref=e89]: Spend a day discovering what life at Tetr feels like. Engage with our team, explore our immersive 7-country curriculum, and experience how learning by doing shapes global leaders. One day is all it takes to see what your future at Tetr could look like.
+              - generic [ref=e90]:
+                - img [ref=e91]
+                - paragraph [ref=e92]: 11:00 AM - 01:00 PM (GMT)
+              - generic [ref=e93]:
+                - img [ref=e94]
+                - paragraph [ref=e95]: Sat, Feb 28, 2026
+              - generic [ref=e96]:
+                - img [ref=e97]
+                - paragraph [ref=e98]: To be decided closer to the event
+          - group "3 / 30" [ref=e99]:
+            - generic [ref=e100]:
+              - img "Event Image" [ref=e101]
+              - generic [ref=e103]: Offline
+            - generic [ref=e104]:
+              - 'heading "Tetr Connect: Madrid Edition" [level=4] [ref=e105]'
+              - paragraph [ref=e106]: Spend a day discovering what life at Tetr feels like. Engage with our team, explore our immersive 7-country curriculum, and experience how learning by doing shapes global leaders. One day is all it takes to see what your future at Tetr could look like.
+              - generic [ref=e107]:
+                - img [ref=e108]
+                - paragraph [ref=e109]: 06:00 PM - 08:00 PM (CET)
+              - generic [ref=e110]:
+                - img [ref=e111]
+                - paragraph [ref=e112]: Tue, Feb 17, 2026
+              - generic [ref=e113]:
+                - img [ref=e114]
+                - paragraph [ref=e115]: Hotel Vincci Soma, Salamanca, 28001 Madrid, Spain
+          - group "4 / 30" [ref=e116]:
+            - generic [ref=e117]:
+              - img "Event Image" [ref=e118]
+              - generic [ref=e120]: Offline
+            - generic [ref=e121]:
+              - 'heading "Tetr Connect: Doha, Qatar Edition" [level=4] [ref=e122]'
+              - paragraph [ref=e123]: Spend a day discovering what life at Tetr feels like. Engage with our team, explore our immersive 7-country curriculum, and experience how learning by doing shapes global leaders. One day is all it takes to see what your future at Tetr could look like.
+              - generic [ref=e124]:
+                - img [ref=e125]
+                - paragraph [ref=e126]: 03:00 PM - 06:00 PM (GST)
+              - generic [ref=e127]:
+                - img [ref=e128]
+                - paragraph [ref=e129]: Fri, Feb 13, 2026
+              - generic [ref=e130]:
+                - img [ref=e131]
+                - paragraph [ref=e132]: Wyndham Grand Doha West Bay Beach
+          - group "5 / 30" [ref=e133]:
+            - generic [ref=e134]:
+              - img "Event Image" [ref=e135]
+              - generic [ref=e137]: Offline
+            - generic [ref=e138]:
+              - 'heading "Tetr Connect: Berlin Edition" [level=4] [ref=e139]'
+              - paragraph [ref=e140]: Spend a day discovering what life at Tetr feels like. Engage with our team, explore our immersive 7-country curriculum, and experience how learning by doing shapes global leaders. One day is all it takes to see what your future at Tetr could look like.
+              - generic [ref=e141]:
+                - img [ref=e142]
+                - paragraph [ref=e143]: 12:00 PM - 04:00 PM (CET)
+              - generic [ref=e144]:
+                - img [ref=e145]
+                - paragraph [ref=e146]: Sun, Feb 8, 2026
+              - generic [ref=e147]:
+                - img [ref=e148]
+                - paragraph [ref=e149]: Crowne Plaza Berlin City Centre
+          - group "6 / 30" [ref=e150]:
+            - generic [ref=e151]:
+              - img "Event Image" [ref=e152]
+              - generic [ref=e154]: Online
+            - generic [ref=e155]:
+              - 'heading "Tetr Connect: Bangladesh Edition" [level=4] [ref=e156]'
+              - paragraph [ref=e157]: Spend a day discovering what life at Tetr feels like. Engage with our team, explore our immersive 7-country curriculum, and experience how learning by doing shapes global leaders. One day is all it takes to see what your future at Tetr could look like.
+              - generic [ref=e158]:
+                - img [ref=e159]
+                - paragraph [ref=e160]: 03:00 PM - 05:00 PM (BST)
+              - generic [ref=e161]:
+                - img [ref=e162]
+                - paragraph [ref=e163]: Sat, Feb 7, 2026
+          - group "7 / 30" [ref=e164]:
+            - generic [ref=e165]:
+              - img "Event Image" [ref=e166]
+              - generic [ref=e168]: Offline
+            - generic [ref=e169]:
+              - 'heading "Tetr Connect: Paris Edition" [level=4] [ref=e170]'
+              - paragraph [ref=e171]: Spend a day discovering what life at Tetr feels like. Engage with our team, explore our immersive 7-country curriculum, and experience how learning by doing shapes global leaders. One day is all it takes to see what your future at Tetr could look like.
+              - generic [ref=e172]:
+                - img [ref=e173]
+                - paragraph [ref=e174]: 03:00 PM - 06:00 PM (CET)
+              - generic [ref=e175]:
+                - img [ref=e176]
+                - paragraph [ref=e177]: Sat, Feb 7, 2026
+              - generic [ref=e178]:
+                - img [ref=e179]
+                - paragraph [ref=e180]: Hôtel Grand Amour, 18 Rue de la Fidélité, 75010 Paris
+          - group "8 / 30" [ref=e181]:
+            - generic [ref=e182]:
+              - img "Event Image" [ref=e183]
+              - generic [ref=e185]: Offline
+            - generic [ref=e186]:
+              - 'heading "Tetr Connect: Abu Dhabi Edition" [level=4] [ref=e187]'
+              - paragraph [ref=e188]: Spend a day discovering what life at Tetr feels like. Engage with our team, explore our immersive 7-country curriculum, and experience how learning by doing shapes global leaders. One day is all it takes to see what your future at Tetr could look like.
+              - generic [ref=e189]:
+                - img [ref=e190]
+                - paragraph [ref=e191]: 03:00 PM - 06:00 PM (GST)
+              - generic [ref=e192]:
+                - img [ref=e193]
+                - paragraph [ref=e194]: Sat, Feb 7, 2026
+              - generic [ref=e195]:
+                - img [ref=e196]
+                - paragraph [ref=e197]: VOGO Abu Dhabi Golf Resort
+          - group "9 / 30" [ref=e198]:
+            - generic [ref=e199]:
+              - img "Event Image" [ref=e200]
+              - generic [ref=e202]: Offline
+            - generic [ref=e203]:
+              - 'heading "Tetr Connect: Guadalajara Edition" [level=4] [ref=e204]'
+              - paragraph [ref=e205]: Spend a day discovering what life at Tetr feels like. Engage with our team, explore our immersive 7-country curriculum, and experience how learning by doing shapes global leaders. One day is all it takes to see what your future at Tetr could look like.
+              - generic [ref=e206]:
+                - img [ref=e207]
+                - paragraph [ref=e208]: 10:00 AM - 12:00 PM (CST)
+              - generic [ref=e209]:
+                - img [ref=e210]
+                - paragraph [ref=e211]: Sat, Feb 7, 2026
+              - generic [ref=e212]:
+                - img [ref=e213]
+                - paragraph [ref=e214]: "IOS OFFICES Torre Americas 1500: Av. de las Américas 1500, Col-piso 17, Country Club, 44610 Guadalajara, Jal."
+          - group "10 / 30" [ref=e215]:
+            - generic [ref=e216]:
+              - img "Event Image" [ref=e217]
+              - generic [ref=e219]: Online
+            - generic [ref=e220]:
+              - 'heading "Tetr Summer Programs: Q&A" [level=4] [ref=e221]'
+              - paragraph [ref=e222]: Tetr Summer Programs offer immersive global entrepreneurship experiences for aspiring founders, combining hands on startup building, mentorship, industry exposure, and cultural immersion across leading innovation hubs like Dubai, Singapore, and Shanghai. Designed to build real world skills, these programs help participants ideate, execute, and grow in dynamic global ecosystems.
+              - generic [ref=e223]:
+                - img [ref=e224]
+                - paragraph [ref=e225]: 02:00 PM - 03:00 PM (GMT)
+              - generic [ref=e226]:
+                - img [ref=e227]
+                - paragraph [ref=e228]: Fri, Feb 6, 2026
+          - group "11 / 30" [ref=e229]:
+            - generic [ref=e230]:
+              - img "Event Image" [ref=e231]
+              - generic [ref=e233]: Offline
+            - generic [ref=e234]:
+              - 'heading "Tetr Connect: Mumbai Edition" [level=4] [ref=e235]'
+              - paragraph [ref=e236]: Spend a day discovering what life at Tetr feels like. Engage with our team, explore our immersive 7-country curriculum, and experience how learning by doing shapes global leaders. One day is all it takes to see what your future at Tetr could look like.
+              - generic [ref=e237]:
+                - img [ref=e238]
+                - paragraph [ref=e239]: 03:00 PM - 05:00 PM (IST)
+              - generic [ref=e240]:
+                - img [ref=e241]
+                - paragraph [ref=e242]: Sun, Feb 1, 2026
+              - generic [ref=e243]:
+                - img [ref=e244]
+                - paragraph [ref=e245]: Vatika Business Centre & Co-working Spaces, Trade Centre Bkc, Kalina, Bandra East, Mumbai
+          - group "12 / 30" [ref=e246]:
+            - generic [ref=e247]:
+              - img "Event Image" [ref=e248]
+              - generic [ref=e250]: Offline
+            - generic [ref=e251]:
+              - 'heading "Tetr Connect: Pune Edition" [level=4] [ref=e252]'
+              - paragraph [ref=e253]: Spend a day discovering what life at Tetr feels like. Engage with our team, explore our immersive 7-country curriculum, and experience how learning by doing shapes global leaders. One day is all it takes to see what your future at Tetr could look like.
+              - generic [ref=e254]:
+                - img [ref=e255]
+                - paragraph [ref=e256]: 03:00 PM - 05:00 PM (IST)
+              - generic [ref=e257]:
+                - img [ref=e258]
+                - paragraph [ref=e259]: Sat, Jan 31, 2026
+              - generic [ref=e260]:
+                - img [ref=e261]
+                - paragraph [ref=e262]: Vatika Business Centres Private Limited Level-5, C Wing, Tech Park-1, Airport Road,Yerwada, Pune - 411 006
+          - group "13 / 30" [ref=e263]:
+            - generic [ref=e264]:
+              - img "Event Image" [ref=e265]
+              - generic [ref=e267]: Offline
+            - generic [ref=e268]:
+              - 'heading "Tetr Connect: Hyderabad Edition" [level=4] [ref=e269]'
+              - paragraph [ref=e270]: Spend a day discovering what life at Tetr feels like. Engage with our team, explore our immersive 7-country curriculum, and experience how learning by doing shapes global leaders. One day is all it takes to see what your future at Tetr could look like.
+              - generic [ref=e271]:
+                - img [ref=e272]
+                - paragraph [ref=e273]: 03:00 PM - 05:00 PM (IST)
+              - generic [ref=e274]:
+                - img [ref=e275]
+                - paragraph [ref=e276]: Sat, Jan 31, 2026
+              - generic [ref=e277]:
+                - img [ref=e278]
+                - paragraph [ref=e279]: Lemon Tree Premier, HITEC City, Hyderabad
+          - group "14 / 30" [ref=e280]:
+            - generic [ref=e281]:
+              - img "Event Image" [ref=e282]
+              - generic [ref=e284]: Offline
+            - generic [ref=e285]:
+              - 'heading "Tetr Connect: Chennai Edition" [level=4] [ref=e286]'
+              - paragraph [ref=e287]: Spend a day discovering what life at Tetr feels like. Engage with our team, explore our immersive 7-country curriculum, and experience how learning by doing shapes global leaders. One day is all it takes to see what your future at Tetr could look like.
+              - generic [ref=e288]:
+                - img [ref=e289]
+                - paragraph [ref=e290]: 03:00 PM - 05:00 PM (IST)
+              - generic [ref=e291]:
+                - img [ref=e292]
+                - paragraph [ref=e293]: Sat, Jan 24, 2026
+              - generic [ref=e294]:
+                - img [ref=e295]
+                - paragraph [ref=e296]: TGIF Amphi, The Executive Zone | TGIF Amphitheater | Anna Salai
+          - group "15 / 30" [ref=e297]:
+            - generic [ref=e298]:
+              - img "Event Image" [ref=e299]
+              - generic [ref=e301]: Offline
+            - generic [ref=e302]:
+              - 'heading "Tetr Connect: Kathmandu Edition" [level=4] [ref=e303]'
+              - paragraph [ref=e304]: Spend a day discovering what life at Tetr feels like. Engage with our team, explore our immersive 7-country curriculum, and experience how learning by doing shapes global leaders. One day is all it takes to see what your future at Tetr could look like.
+              - generic [ref=e305]:
+                - img [ref=e306]
+                - paragraph [ref=e307]: 03:00 PM - 05:00 PM (NPT)
+              - generic [ref=e308]:
+                - img [ref=e309]
+                - paragraph [ref=e310]: Sat, Jan 24, 2026
+              - generic [ref=e311]:
+                - img [ref=e312]
+                - paragraph [ref=e313]: Raya Space, Pipal Marg, Kathmandu 44600, Nepal
+          - group "16 / 30" [ref=e314]:
+            - generic [ref=e315]:
+              - img "Event Image"
+              - generic [ref=e317]: Offline
+            - generic [ref=e318]:
+              - 'heading "Tetr Connect: Dubai Edition" [level=4] [ref=e319]'
+              - paragraph [ref=e320]: Spend a day discovering what life at Tetr feels like. Engage with our team, explore our immersive 7-country curriculum, and experience how learning by doing shapes global leaders. One day is all it takes to see what your future at Tetr could look like.
+              - generic [ref=e321]:
+                - img [ref=e322]
+                - paragraph [ref=e323]: 03:00 PM - 05:00 PM (GST)
+              - generic [ref=e324]:
+                - img [ref=e325]
+                - paragraph [ref=e326]: Sat, Jan 24, 2026
+              - generic [ref=e327]:
+                - img [ref=e328]
+                - paragraph [ref=e329]: University of Europe for Applied Sciences (Campus Dubai)
+          - group "17 / 30" [ref=e330]:
+            - generic [ref=e331]:
+              - img "Event Image"
+              - generic [ref=e333]: Offline
+            - generic [ref=e334]:
+              - 'heading "Tetr Connect: Mexico City Edition" [level=4] [ref=e335]'
+              - paragraph [ref=e336]: Spend a day discovering what life at Tetr feels like. Engage with our team, explore our immersive 7-country curriculum, and experience how learning by doing shapes global leaders. One day is all it takes to see what your future at Tetr could look like.
+              - generic [ref=e337]:
+                - img [ref=e338]
+                - paragraph [ref=e339]: 06:30 PM - 08:30 PM (CST)
+              - generic [ref=e340]:
+                - img [ref=e341]
+                - paragraph [ref=e342]: Thu, Jan 22, 2026
+              - generic [ref=e343]:
+                - img [ref=e344]
+                - paragraph [ref=e345]: Hotel Galería Plaza Reforma, Hamburgo 195, Juárez, CDMX, Mexico
+          - group "18 / 30" [ref=e346]:
+            - generic [ref=e347]:
+              - img "Event Image"
+              - generic [ref=e349]: Offline
+            - generic [ref=e350]:
+              - 'heading "Tetr Connect: Houston Edition" [level=4] [ref=e351]'
+              - paragraph [ref=e352]: Spend a day discovering what life at Tetr feels like. Engage with our team, explore our immersive 7-country curriculum, and experience how learning by doing shapes global leaders. One day is all it takes to see what your future at Tetr could look like.
+              - generic [ref=e353]:
+                - img [ref=e354]
+                - paragraph [ref=e355]: 02:00 PM - 04:00 PM (CST)
+              - generic [ref=e356]:
+                - img [ref=e357]
+                - paragraph [ref=e358]: Sat, Jan 17, 2026
+              - generic [ref=e359]:
+                - img [ref=e360]
+                - paragraph [ref=e361]: TBD
+          - group "19 / 30" [ref=e362]:
+            - generic [ref=e363]:
+              - img "Event Image"
+              - generic [ref=e365]: Offline
+            - generic [ref=e366]:
+              - 'heading "Tetr Connect: Kolkata Edition" [level=4] [ref=e367]'
+              - paragraph [ref=e368]: Spend a day discovering what life at Tetr feels like. Engage with our team, explore our immersive 7-country curriculum, and experience how learning by doing shapes global leaders. One day is all it takes to see what your future at Tetr could look like.
+              - generic [ref=e369]:
+                - img [ref=e370]
+                - paragraph [ref=e371]: 03:00 PM - 05:00 PM (IST)
+              - generic [ref=e372]:
+                - img [ref=e373]
+                - paragraph [ref=e374]: Sat, Jan 17, 2026
+              - generic [ref=e375]:
+                - img [ref=e376]
+                - paragraph [ref=e377]: TBD
+          - group "20 / 30" [ref=e378]:
+            - generic [ref=e379]:
+              - img "Event Image"
+              - generic [ref=e381]: Offline
+            - generic [ref=e382]:
+              - 'heading "Tetr Connect: Monterrey, Mexico Edition" [level=4] [ref=e383]'
+              - paragraph [ref=e384]: Spend a day discovering what life at Tetr feels like. Engage with our team, explore our immersive 7-country curriculum, and experience how learning by doing shapes global leaders. One day is all it takes to see what your future at Tetr could look like.
+              - generic [ref=e385]:
+                - img [ref=e386]
+                - paragraph [ref=e387]: 10:00 AM - 12:00 PM (CST)
+              - generic [ref=e388]:
+                - img [ref=e389]
+                - paragraph [ref=e390]: Sat, Jan 17, 2026
+              - generic [ref=e391]:
+                - img [ref=e392]
+                - paragraph [ref=e393]: Hotel - NH Collection Monterrey San Pedro
+          - group "21 / 30" [ref=e394]:
+            - generic [ref=e395]:
+              - img "Event Image"
+              - generic [ref=e397]: Offline
+            - generic [ref=e398]:
+              - 'heading "Tetr Connect: Ahemdabad Edition" [level=4] [ref=e399]'
+              - paragraph [ref=e400]: Spend a day discovering what life at Tetr feels like. Engage with our team, explore our immersive 7-country curriculum, and experience how learning by doing shapes global leaders. One day is all it takes to see what your future at Tetr could look like.
+              - generic [ref=e401]:
+                - img [ref=e402]
+                - paragraph [ref=e403]: 11:00 AM - 01:00 PM (IST)
+              - generic [ref=e404]:
+                - img [ref=e405]
+                - paragraph [ref=e406]: Sun, Jan 11, 2026
+              - generic [ref=e407]:
+                - img [ref=e408]
+                - paragraph [ref=e409]: "Paragraph Coworking space, Address: Mondeal Heights, B Wing, 6th Floor, Sarkhej - Gandhinagar Hwy, near Novotel Hotel, Ahmedabad, Gujarat 380015"
+          - group "22 / 30" [ref=e410]:
+            - generic [ref=e411]:
+              - img "Event Image"
+              - generic [ref=e413]: Offline
+            - generic [ref=e414]:
+              - 'heading "Tetr Connect: Bengaluru, India Edition" [level=4] [ref=e415]'
+              - paragraph [ref=e416]: Spend a day discovering what life at Tetr feels like. Engage with our team, explore our immersive 7-country curriculum, and experience how learning by doing shapes global leaders. One day is all it takes to see what your future at Tetr could look like.
+              - generic [ref=e417]:
+                - img [ref=e418]
+                - paragraph [ref=e419]: 03:00 PM - 05:00 PM (IST)
+              - generic [ref=e420]:
+                - img [ref=e421]
+                - paragraph [ref=e422]: Sat, Jan 10, 2026
+              - generic [ref=e423]:
+                - img [ref=e424]
+                - paragraph [ref=e425]: CorporatEdge - Prestige Trade Tower Bengaluru (3rd Floor)
+          - group "23 / 30" [ref=e426]:
+            - generic [ref=e427]:
+              - img "Event Image"
+              - generic [ref=e429]: Offline
+            - generic [ref=e430]:
+              - 'heading "Tetr Connect: Bali, Indonesia Edition" [level=4] [ref=e431]'
+              - paragraph [ref=e432]: Spend a day discovering what life at Tetr feels like. Engage with our team, explore our immersive 7-country curriculum, and experience how learning by doing shapes global leaders. One day is all it takes to see what your future at Tetr could look like.
+              - generic [ref=e433]:
+                - img [ref=e434]
+                - paragraph [ref=e435]: 02:00 PM - 04:00 PM (WITA)
+              - generic [ref=e436]:
+                - img [ref=e437]
+                - paragraph [ref=e438]: Sat, Jan 10, 2026
+              - generic [ref=e439]:
+                - img [ref=e440]
+                - paragraph [ref=e441]: Four Star by Trans Hotel, Kota Denpasar, Bali
+          - group "24 / 30" [ref=e442]:
+            - generic [ref=e443]:
+              - img "Event Image"
+              - generic [ref=e445]: Offline
+            - generic [ref=e446]:
+              - 'heading "Tetr Connect: Katy, Texas Edition" [level=4] [ref=e447]'
+              - paragraph [ref=e448]: Spend a day discovering what life at Tetr feels like. Engage with our team, explore our immersive 7-country curriculum, and experience how learning by doing shapes global leaders. One day is all it takes to see what your future at Tetr could look like.
+              - generic [ref=e449]:
+                - img [ref=e450]
+                - paragraph [ref=e451]: 04:00 PM - 06:00 PM (CST)
+              - generic [ref=e452]:
+                - img [ref=e453]
+                - paragraph [ref=e454]: Sat, Jan 10, 2026
+              - generic [ref=e455]:
+                - img [ref=e456]
+                - paragraph [ref=e457]: TBD
+          - group "25 / 30" [ref=e458]:
+            - generic [ref=e459]:
+              - img "Event Image"
+              - generic [ref=e461]: Offline
+            - generic [ref=e462]:
+              - 'heading "Tetr Connect: Bogota Edition" [level=4] [ref=e463]'
+              - paragraph [ref=e464]: Spend a day discovering what life at Tetr feels like. Engage with our team, explore our immersive 7-country curriculum, and experience how learning by doing shapes global leaders. One day is all it takes to see what your future at Tetr could look like.
+              - generic [ref=e465]:
+                - img [ref=e466]
+                - paragraph [ref=e467]: 09:30 AM - 11:30 AM (COT)
+              - generic [ref=e468]:
+                - img [ref=e469]
+                - paragraph [ref=e470]: Sat, Dec 13, 2025
+              - generic [ref=e471]:
+                - img [ref=e472]
+                - paragraph [ref=e473]: NH Collection Bogotá WTC Royal (Carrera 8A, 99-55,Bogotá,Distrito Capital,CO )
+          - group "26 / 30" [ref=e474]:
+            - generic [ref=e475]:
+              - img "Event Image"
+              - generic [ref=e477]: Online
+            - generic [ref=e478]:
+              - heading "Life and Opportunities in Dubai Student and Career AMA" [level=4] [ref=e479]
+              - paragraph [ref=e480]: This is your chance to picture your transition clearly, feel the vibe of your new home and understand why starting in Dubai gives you a powerful head start.
+              - generic [ref=e481]:
+                - img [ref=e482]
+                - paragraph [ref=e483]: 08:30 PM - 09:30 PM (IST)
+              - generic [ref=e484]:
+                - img [ref=e485]
+                - paragraph [ref=e486]: Mon, Dec 8, 2025
+          - group "27 / 30" [ref=e487]:
+            - generic [ref=e488]:
+              - img "Event Image"
+              - generic [ref=e490]: Offline
+            - generic [ref=e491]:
+              - 'heading "Tetr Connect: Jakarta Edition" [level=4] [ref=e492]'
+              - paragraph [ref=e493]: Spend a day discovering what life at Tetr feels like. Engage with our team, explore our immersive 7-country curriculum, and experience how learning by doing shapes global leaders. One day is all it takes to see what your future at Tetr could look like.
+              - generic [ref=e494]:
+                - img [ref=e495]
+                - paragraph [ref=e496]: 04:00 PM - 06:00 PM (WIB)
+              - generic [ref=e497]:
+                - img [ref=e498]
+                - paragraph [ref=e499]: Sun, Dec 7, 2025
+              - generic [ref=e500]:
+                - img [ref=e501]
+                - paragraph [ref=e502]: Novotel Jakarta Mangga Dua Square, Jakarta
+          - group "28 / 30" [ref=e503]:
+            - generic [ref=e504]:
+              - img "Event Image"
+              - generic [ref=e506]: Offline
+            - generic [ref=e507]:
+              - 'heading "Tetr Connect: Mumbai (India) Edition" [level=4] [ref=e508]'
+              - paragraph [ref=e509]: Spend a day discovering what life at Tetr feels like. Engage with our team, explore our immersive 7-country curriculum, and experience how learning by doing shapes global leaders. One day is all it takes to see what your future at Tetr could look like.
+              - generic [ref=e510]:
+                - img [ref=e511]
+                - paragraph [ref=e512]: 04:00 PM - 06:00 PM (IST)
+              - generic [ref=e513]:
+                - img [ref=e514]
+                - paragraph [ref=e515]: Sat, Dec 6, 2025
+              - generic [ref=e516]:
+                - img [ref=e517]
+                - paragraph [ref=e518]: Vatika Business Center Pvt Ltd, Bandra-Kurla Complex, Bandra East, Mumbai- 400051
+          - group "29 / 30" [ref=e519]:
+            - generic [ref=e520]:
+              - img "Event Image"
+              - generic [ref=e522]: Offline
+            - generic [ref=e523]:
+              - 'heading "Tetr Connect: Lima (Peru) Edition" [level=4] [ref=e524]'
+              - paragraph [ref=e525]: Spend a day discovering what life at Tetr feels like. Engage with our team, explore our immersive 7-country curriculum, and experience how learning by doing shapes global leaders. One day is all it takes to see what your future at Tetr could look like
+              - generic [ref=e526]:
+                - img [ref=e527]
+                - paragraph [ref=e528]: 09:30 AM - 11:30 AM (PET)
+              - generic [ref=e529]:
+                - img [ref=e530]
+                - paragraph [ref=e531]: Sat, Dec 6, 2025
+              - generic [ref=e532]:
+                - img [ref=e533]
+                - paragraph [ref=e534]: Casa Andina Select Miraflores (Calle Schell 452, Miraflores,Lima,Lima,PE )
+          - group "30 / 30" [ref=e535]:
+            - generic [ref=e536]:
+              - img "Event Image"
+              - generic [ref=e538]: Offline
+            - generic [ref=e539]:
+              - 'heading "Tetr Connect: Hanoi Edition" [level=4] [ref=e540]'
+              - paragraph [ref=e541]: Spend a day discovering what life at Tetr feels like. Engage with our team, explore our immersive 7-country curriculum, and experience how learning by doing shapes global leaders. One day is all it takes to see what your future at Tetr could look like.
+              - generic [ref=e542]:
+                - img [ref=e543]
+                - paragraph [ref=e544]: 04:00 PM - 06:00 PM (ICT)
+              - generic [ref=e545]:
+                - img [ref=e546]
+                - paragraph [ref=e547]: Sat, Dec 6, 2025
+              - generic [ref=e548]:
+                - img [ref=e549]
+                - paragraph [ref=e550]: The wiselands coffee, Hanoi (17 Xóm Hà Hồi, Trần Hưng Đạo, Hoàn Kiếm, Hà Nội, Vietnam)
+  - contentinfo [ref=e551]:
+    - generic [ref=e552]:
+      - generic [ref=e553] [cursor=pointer]:
+        - img [ref=e555]
+        - text: Resources WhatsApp Instagram YouTube Close
+      - generic [ref=e561]:
+        - img "close-icon" [ref=e563] [cursor=pointer]
+        - generic [ref=e564]:
+          - heading "We value your privacy" [level=2] [ref=e565]
+          - generic [ref=e566]:
+            - paragraph [ref=e567]: We use cookies to improve your browsing experience, personalise content, and understand how our website is used. By clicking “Accept all cookies”, you agree to our use of cookies.
+            - paragraph [ref=e568]:
+              - text: You can accept all cookies or reject all. Learn more in our
+              - link "Privacy Policy" [ref=e569] [cursor=pointer]:
+                - /url: /privacy-policy
+              - text: .
+          - generic [ref=e570]:
+            - button "Reject all" [ref=e571] [cursor=pointer]
+            - button "Accept all cookies" [ref=e572] [cursor=pointer]
+      - generic [ref=e573]:
+        - generic [ref=e574]:
+          - link "tetr-footer-brand-image" [ref=e575] [cursor=pointer]:
+            - /url: /
+            - img "tetr-footer-brand-image" [ref=e576]
+          - link "APPLY NOW Icon" [ref=e578] [cursor=pointer]:
+            - /url: /apply-now
+            - text: APPLY NOW
+            - img "Icon" [ref=e579]
+        - generic [ref=e580]:
+          - generic [ref=e581]:
+            - link "About" [ref=e582] [cursor=pointer]:
+              - /url: /about
+            - link "Faculty" [ref=e583] [cursor=pointer]:
+              - /url: /faculty
+            - link "Blog" [ref=e584] [cursor=pointer]:
+              - /url: /blog
+            - link "Events" [ref=e585] [cursor=pointer]:
+              - /url: /events
+          - generic [ref=e586]:
+            - link "Resources" [ref=e587] [cursor=pointer]:
+              - /url: /resources
+            - link "News" [ref=e588] [cursor=pointer]:
+              - /url: /news
+            - link "Reviews" [ref=e589] [cursor=pointer]:
+              - /url: /reviews
+            - link "Career Labs" [ref=e590] [cursor=pointer]:
+              - /url: /careers
+          - generic [ref=e591]:
+            - generic [ref=e592] [cursor=pointer]: Dropshipping Report
+            - generic [ref=e593] [cursor=pointer]: D2C Report
+            - generic [ref=e594] [cursor=pointer]: UG Brochure
+            - generic [ref=e595] [cursor=pointer]: PG Brochure
+          - generic [ref=e596]:
+            - link "Experiences at Tetr" [ref=e597] [cursor=pointer]:
+              - /url: /experiences-at-tetr
+            - link "Kickstarter" [ref=e598] [cursor=pointer]:
+              - /url: /kickstarter
+            - link "Dropshipping" [ref=e599] [cursor=pointer]:
+              - /url: /dropshipping
+        - generic [ref=e600]:
+          - generic [ref=e602]:
+            - paragraph [ref=e603]: QS Gold Winner
+            - paragraph [ref=e604]: Most Innovative Business School of 2025
+          - generic [ref=e605]:
+            - generic [ref=e606]:
+              - link "instagram logo" [ref=e607] [cursor=pointer]:
+                - /url: https://www.instagram.com/tetr.college/
+                - img "instagram logo" [ref=e608]
+              - link "youtube logo" [ref=e609] [cursor=pointer]:
+                - /url: https://www.youtube.com/@tetrcollege
+                - img "youtube logo" [ref=e610]
+              - link "linkedin logo" [ref=e611] [cursor=pointer]:
+                - /url: https://www.linkedin.com/school/tetr-college-of-business/
+                - img "linkedin logo" [ref=e612]
+            - generic [ref=e613]:
+              - text: "Email:"
+              - link "info@tetr.org" [ref=e614] [cursor=pointer]:
+                - /url: mailto:info@tetr.org
+          - generic [ref=e615]:
+            - img [ref=e616]
+            - img [ref=e617]
+    - generic [ref=e621]:
+      - generic [ref=e622]:
+        - link "Contact Us" [ref=e623] [cursor=pointer]:
+          - /url: /contact-us
+        - link "Refund Policy" [ref=e624] [cursor=pointer]:
+          - /url: /refund-policy
+        - link "Privacy Policy" [ref=e625] [cursor=pointer]:
+          - /url: /privacy-policy
+        - link "Terms & Conditions" [ref=e626] [cursor=pointer]:
+          - /url: /terms-conditions
+      - generic [ref=e627]:
+        - generic [ref=e628]: "* Tetr reserves the right to adjust the program location for this term due to prevailing visa restrictions. Participants will be notified accordingly."
+        - generic [ref=e629]: Copyright© 2026 Tetr. All rights reserved.

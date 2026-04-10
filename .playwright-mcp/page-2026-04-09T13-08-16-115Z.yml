@@ -1,0 +1,509 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - 'heading "Round 3 Deadline: 20th April 2026" [level=3] [ref=e6]'
+      - link "Apply Now arrow up icon" [ref=e7] [cursor=pointer]:
+        - /url: /apply-now
+        - text: Apply Now
+        - img "arrow up icon" [ref=e8]
+    - banner [ref=e9]:
+      - generic [ref=e11]:
+        - link "tetr-logo" [ref=e12] [cursor=pointer]:
+          - /url: /
+          - img "tetr-logo" [ref=e13]
+        - generic [ref=e14]:
+          - generic [ref=e15]:
+            - button "Programs Programs Icon" [ref=e16] [cursor=pointer]:
+              - generic [ref=e17]: Programs
+              - generic [ref=e18]: Programs
+              - img "Icon" [ref=e19]
+            - link "Faculty Faculty" [ref=e20] [cursor=pointer]:
+              - /url: /faculty
+              - generic [ref=e21]: Faculty
+              - generic [ref=e22]: Faculty
+            - link "Student Life Student Life" [ref=e23] [cursor=pointer]:
+              - /url: /student-life
+              - generic [ref=e24]: Student Life
+              - generic [ref=e25]: Student Life
+            - button "About About Icon" [ref=e26] [cursor=pointer]:
+              - generic [ref=e27]: About
+              - generic [ref=e28]: About
+              - img "Icon" [ref=e29]
+          - generic [ref=e30]:
+            - link "APPLY NOW" [ref=e31] [cursor=pointer]:
+              - /url: /apply-now
+            - link "CONTACT US" [ref=e32] [cursor=pointer]:
+              - /url: /contact-us
+  - generic [ref=e33]:
+    - generic [ref=e37]:
+      - generic [ref=e38]:
+        - paragraph [ref=e40]: QS Gold Winner
+        - paragraph [ref=e41]: Most Innovative Business School of 2025
+      - generic [ref=e42]:
+        - paragraph [ref=e43]: This prestigious award places Tetr College among the top innovators globally, selected from more than 1,600 submissions across 18 categories.
+        - button "Hear from the Founder Icon" [ref=e44] [cursor=pointer]:
+          - text: Hear from the Founder
+          - img "Icon" [ref=e45]
+    - generic [ref=e47]:
+      - generic [ref=e48]:
+        - 'heading "Tetr Transformation Layers: Rooted in Science & First Principles" [level=2] [ref=e49]':
+          - text: "Tetr Transformation Layers:"
+          - text: Rooted in Science & First Principles
+        - paragraph [ref=e50]: Our curriculum is structured around four key tenets.
+      - generic [ref=e51]:
+        - generic [ref=e52]:
+          - generic [ref=e53] [cursor=pointer]:
+            - generic [ref=e54]:
+              - generic [ref=e55]: Values
+              - generic [ref=e56]: Nurtures Mindsets
+            - generic [ref=e57]: "4"
+          - generic [ref=e59] [cursor=pointer]:
+            - generic [ref=e60]:
+              - generic [ref=e61]: Exposure
+              - generic [ref=e62]: Cultivates Perspective
+            - generic [ref=e63]: "3"
+          - generic [ref=e65] [cursor=pointer]:
+            - generic [ref=e66]:
+              - generic [ref=e67]: Experiences
+              - generic [ref=e68]: Helps Internalization
+            - generic [ref=e69]: "2"
+          - generic [ref=e71] [cursor=pointer]:
+            - generic [ref=e72]:
+              - generic [ref=e73]: Skills
+              - generic [ref=e74]: Build Employability
+            - generic [ref=e75]: "1"
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - generic [ref=e79]: Skills
+            - heading "Focus on applicable skills instead of rote memorization" [level=2] [ref=e80]:
+              - text: Focus on applicable skills instead
+              - text: of rote memorization
+            - paragraph [ref=e81]:
+              - text: Tetr's curriculum is rooted in Workshops, where students learn applied skills in a real
+              - text: world context from experienced practitioners.
+            - list [ref=e82]:
+              - listitem [ref=e83]:
+                - img "Favicon" [ref=e84]
+                - text: Students enroll in gamified & engaging workshops, rather than long theoretical courses
+              - listitem [ref=e85]:
+                - img "Favicon" [ref=e86]
+                - text: Inspiring practitioners teach what they hire for and what they practice everyday
+              - listitem [ref=e87]:
+                - img "Favicon" [ref=e88]
+                - text: Learning is driven by real life applicability, rather than by an outdated syllabi & exams
+            - generic [ref=e91]:
+              - group "1 / 3" [ref=e92]:
+                - generic [ref=e93]:
+                  - img "Tetr Balance Sheet" [ref=e94]
+                  - generic [ref=e96]: Learn how to find frauds in real balance sheets from a Goldman Sachs Banker
+              - group "2 / 3" [ref=e97]:
+                - generic [ref=e98]:
+                  - img "Tetr" [ref=e99]
+                  - generic [ref=e101]: Dive into how to build viral IG campaigns with Tinder's content strategist
+              - group "3 / 3" [ref=e102]:
+                - generic [ref=e103]:
+                  - img "Tetr Skills" [ref=e104]
+                  - generic [ref=e106]: Explore how to build AI driven products with OpenAI's Engineering Lead
+          - generic [ref=e107]:
+            - generic [ref=e108]: Experience
+            - heading "Internalize your learnings by applying your skills in a real world setting" [level=2] [ref=e109]:
+              - text: Internalize your learnings by applying your
+              - text: skills in a real world setting
+            - paragraph [ref=e110]:
+              - text: In each term, Tetr students apply what they learn in class by building real businesses -
+              - text: they work with real customers, create live campaigns, maintain books of accounts and
+              - text: truly get their hands dirty.
+            - generic [ref=e111]:
+              - generic [ref=e113]:
+                - group "1 / 5" [ref=e114]:
+                  - generic [ref=e115]:
+                    - img "Tetr Team" [ref=e116]
+                    - generic [ref=e118]: Build a eCommerce business selling globally sourced products in Middle East [Term 1]
+                - group "2 / 5" [ref=e119]:
+                  - generic [ref=e120]:
+                    - img "Tetr Team" [ref=e121]
+                    - generic [ref=e123]: Launch a D2C brand in fashion accessories catering to rural markets in India [Term 2]
+                - group "3 / 5" [ref=e124]:
+                  - generic [ref=e125]:
+                    - img "Tetr Discussion" [ref=e126]
+                    - generic [ref=e128]: Build a Youtube channel in a niche like personal care or tech & build a loyal community [Term 7]
+                - group "4 / 5" [ref=e129]:
+                  - generic [ref=e130]:
+                    - img "Tetr Team" [ref=e131]
+                    - generic [ref=e133]: Pilot an NGO focused on sustainability, community engagement, and positive impact in Ghana [Term 4]
+                - group "5 / 5" [ref=e134]:
+                  - generic [ref=e135]:
+                    - img "Tetr Team" [ref=e136]
+                    - generic [ref=e138]: Immerse in full time & paid internships at startups, conglomerates & global NGOs [Summers]
+              - button "Next slide" [ref=e139] [cursor=pointer]
+          - generic [ref=e140]:
+            - generic [ref=e141]: Exposure
+            - heading "Cultivate a global perspective through exposure to 7 unique countries" [level=2] [ref=e142]:
+              - text: Cultivate a global perspective through
+              - text: exposure to 7 unique countries
+            - paragraph [ref=e143]: Anchor yourself to ground realities underlying everything, right from bazaars to large conglomerates, across developed and developing countries.
+            - generic [ref=e144]:
+              - generic [ref=e146]:
+                - group "1 / 5" [ref=e147]:
+                  - generic [ref=e148]:
+                    - img [ref=e149]
+                    - generic [ref=e151]: Explore lantern-lit bazaars and gardens from the Ming dynasty. Yu Garden & Old Street, Shanghai
+                - group "2 / 5" [ref=e152]:
+                  - generic [ref=e153]:
+                    - img "Tetr Stadium" [ref=e154]
+                    - generic [ref=e156]: Immerse into the business of Soccer at Flamengo, Brazil's most famous football club
+                - group "3 / 5" [ref=e157]:
+                  - generic [ref=e158]:
+                    - img "Tetr Team" [ref=e159]
+                    - generic [ref=e161]: Explore the business of high fashion at the Milan Fashion Week
+                - group "4 / 5" [ref=e162]:
+                  - generic [ref=e163]:
+                    - img "Tetr Team" [ref=e164]
+                    - generic [ref=e166]: Dissect how business in India unfolds with the leadership of Indian Unicorns, Zomato & PayTM
+                - group "5 / 5" [ref=e167]:
+                  - generic [ref=e168]:
+                    - img "Blackhat" [ref=e169]
+                    - generic [ref=e171]: Delve into hackers' minds at the world's top hackers conference at Black Hat USA.
+              - button "Next slide" [ref=e172] [cursor=pointer]
+          - generic [ref=e173]:
+            - generic [ref=e174]: Values
+            - heading "Go beyond skills - but mindsets & value systems too" [level=2] [ref=e175]:
+              - text: Go beyond skills -
+              - generic [ref=e176]:
+                - text: but mindsets & value
+                - text: systems
+              - text: too
+            - paragraph [ref=e177]: Engage in deliberate inner engineering, manage your psychology and flex your mental muscles, just as much as your business muscles.
+            - generic [ref=e180]:
+              - group "1 / 3" [ref=e181]:
+                - generic [ref=e182]:
+                  - img "Tetr Team" [ref=e183]
+                  - generic [ref=e185]: Learn & practice proven mental models to maximize performance and well being
+              - group "2 / 3" [ref=e186]:
+                - generic [ref=e187]:
+                  - img "Tetr Team Discussion" [ref=e188]
+                  - generic [ref=e190]: Spend mandated time in group reflection therapies & journaling to nurture self development
+              - group "3 / 3" [ref=e191]:
+                - generic [ref=e192]:
+                  - img "Tetr Team Fitness" [ref=e193]
+                  - generic [ref=e195]: From Yoga to Tai Chi find the physical therapy that works the best for you
+    - generic [ref=e198]:
+      - heading "The Academic and Industry Council" [level=2] [ref=e199]
+      - generic [ref=e200]:
+        - generic [ref=e201]:
+          - button "Founding Academic Council" [ref=e202] [cursor=pointer]
+          - button "Academicians" [ref=e203] [cursor=pointer]
+          - button "Industry Experts" [ref=e204] [cursor=pointer]
+          - button "Mentors" [ref=e205] [cursor=pointer]
+        - generic [ref=e208]:
+          - link "Pratham Mittal Mr. Pratham Mittal Founder Founder, Tetr | Masters’ Union | Outgrow" [ref=e209] [cursor=pointer]:
+            - /url: https://www.linkedin.com/in/prathammittal/
+            - generic [ref=e210]:
+              - img "Pratham Mittal" [ref=e211]
+              - generic [ref=e213]: Mr. Pratham Mittal
+            - generic [ref=e214]:
+              - generic [ref=e215]: Founder
+              - generic [ref=e216]: Founder, Tetr | Masters’ Union | Outgrow
+          - link "About Tetr Mr. Tarun Gangwar Co - Founder Co - Founder, Tetr | Director, Master's Union | Former Director, Vedantu" [ref=e217] [cursor=pointer]:
+            - /url: https://www.linkedin.com/in/de-la-faverie-stephane-2b6a194/
+            - generic [ref=e218]:
+              - img "About Tetr" [ref=e219]
+              - generic [ref=e221]: Mr. Tarun Gangwar
+            - generic [ref=e222]:
+              - generic [ref=e223]: Co - Founder
+              - generic [ref=e224]: Co - Founder, Tetr | Director, Master's Union | Former Director, Vedantu
+          - link "About Tetr Dr. Edward Rogers Chief Learning Officer Former Chief Knowledge Officer, NASA" [ref=e225] [cursor=pointer]:
+            - /url: https://www.linkedin.com/in/edwrogers/
+            - generic [ref=e226]:
+              - img "About Tetr" [ref=e227]
+              - generic [ref=e229]: Dr. Edward Rogers
+            - generic [ref=e230]:
+              - generic [ref=e231]: Chief Learning Officer
+              - generic [ref=e232]: Former Chief Knowledge Officer, NASA
+          - link "About Tetr Dr. Daniel Garrett Van Der Vliet Strategic Advisor Executive Director, Cornell University" [ref=e233] [cursor=pointer]:
+            - /url: https://www.linkedin.com/in/dannvdv/
+            - generic [ref=e234]:
+              - img "About Tetr" [ref=e235]
+              - generic [ref=e237]: Dr. Daniel Garrett Van Der Vliet
+            - generic [ref=e238]:
+              - generic [ref=e239]: Strategic Advisor
+              - generic [ref=e240]: Executive Director, Cornell University
+          - link "Tetr Faculty Mr. Manoj Kohli Chief Evangelist Former Country Head, Softbank | Ex-CEO, Bharti Airtel" [ref=e241] [cursor=pointer]:
+            - /url: https://www.linkedin.com/in/manoj-kohli-34948b108/
+            - generic [ref=e242]:
+              - img "Tetr Faculty" [ref=e243]
+              - generic [ref=e245]: Mr. Manoj Kohli
+            - generic [ref=e246]:
+              - generic [ref=e247]: Chief Evangelist
+              - generic [ref=e248]: Former Country Head, Softbank | Ex-CEO, Bharti Airtel
+    - generic [ref=e251]:
+      - heading "A Kaleidoscope of Diversity" [level=2] [ref=e252]
+      - img "student-kaleidoscope-img" [ref=e253]
+    - generic [ref=e255]:
+      - heading "The People Behind Tetr" [level=2] [ref=e256]
+      - generic [ref=e257]:
+        - list [ref=e258]:
+          - listitem [ref=e259]:
+            - generic [ref=e260] [cursor=pointer]: CENTRAL LEADERSHIP
+          - listitem [ref=e262]:
+            - generic [ref=e263] [cursor=pointer]: USA
+          - listitem [ref=e265]:
+            - generic [ref=e266] [cursor=pointer]: EUROPE
+          - listitem [ref=e268]:
+            - generic [ref=e269] [cursor=pointer]: LATAM
+          - listitem [ref=e271]:
+            - generic [ref=e272] [cursor=pointer]: CHINA
+          - listitem [ref=e274]:
+            - generic [ref=e275] [cursor=pointer]: MENA
+        - generic [ref=e277]:
+          - generic [ref=e279]:
+            - group "1 / 15" [ref=e280]:
+              - generic [ref=e282]:
+                - paragraph [ref=e283]: Priyank Jain
+                - paragraph [ref=e284]: Director
+            - group "2 / 15" [ref=e286]:
+              - generic [ref=e288]:
+                - paragraph [ref=e289]: Srishti Gupta
+                - paragraph [ref=e290]: Director
+            - group "3 / 15" [ref=e292]:
+              - generic [ref=e294]:
+                - paragraph [ref=e295]: Cameron A. Batmanghlich
+                - paragraph [ref=e296]: Head of Academics
+            - group "4 / 15" [ref=e298]:
+              - generic [ref=e300]:
+                - paragraph [ref=e301]: Zara Akbari
+                - paragraph [ref=e302]: Regional Head - West USA
+            - group "5 / 15" [ref=e304]:
+              - generic [ref=e306]:
+                - paragraph [ref=e307]: Yuliia Nosach
+                - paragraph [ref=e308]: Regional Head - MENA
+            - group "6 / 15" [ref=e310]:
+              - generic [ref=e312]:
+                - paragraph [ref=e313]: Lucas Ariboni
+                - paragraph [ref=e314]: Regional Manager - LATAM
+            - group "7 / 15" [ref=e316]:
+              - generic [ref=e318]:
+                - paragraph [ref=e319]: Jessica Varghese
+                - paragraph [ref=e320]: Director - Student Experience
+            - group "8 / 15" [ref=e322]:
+              - generic [ref=e324]:
+                - paragraph [ref=e325]: Alessia Annicelli
+                - paragraph [ref=e326]: Regional Manager - Europe
+            - group "9 / 15" [ref=e328]:
+              - generic [ref=e330]:
+                - paragraph [ref=e331]: Neharika Pinto
+                - paragraph [ref=e332]: Director - Marketing
+            - group "10 / 15" [ref=e334]:
+              - generic [ref=e336]:
+                - paragraph [ref=e337]: Eshita Anil
+                - paragraph [ref=e338]: Director - Growth
+            - group "11 / 15" [ref=e340]:
+              - generic [ref=e342]:
+                - paragraph [ref=e343]: Sushmitha Krishnan
+                - paragraph [ref=e344]: Director - University Partnerships
+            - group "12 / 15" [ref=e346]:
+              - generic [ref=e348]:
+                - paragraph [ref=e349]: Dr. Garima Chaklader
+                - paragraph [ref=e350]: Director - Academics
+            - group "13 / 15" [ref=e352]:
+              - generic [ref=e354]:
+                - paragraph [ref=e355]: Umesh Sharma
+                - paragraph [ref=e356]: Head of International Expansion
+            - group "14 / 15" [ref=e358]:
+              - generic [ref=e360]:
+                - paragraph [ref=e361]: Shivam Solanki
+                - paragraph [ref=e362]: Director – Strategic Ops & Delivery
+            - group "15 / 15" [ref=e364]:
+              - generic [ref=e366]:
+                - paragraph [ref=e367]: Abhijith Kumar
+                - paragraph [ref=e368]: Head of Channel Expansion
+          - generic [ref=e373]:
+            - button "Previous slide" [disabled] [ref=e374] [cursor=pointer]:
+              - img "Icon" [ref=e375]
+            - button "Next slide" [ref=e376] [cursor=pointer]:
+              - img "Icon" [ref=e377]
+    - generic [ref=e380]:
+      - generic [ref=e381]:
+        - heading "The Tetr Voice" [level=2] [ref=e382]
+        - link "VIEW MORE Icon" [ref=e384] [cursor=pointer]:
+          - /url: /experiences-at-tetr
+          - text: VIEW MORE
+          - img "Icon" [ref=e385]
+      - generic [ref=e386]:
+        - link [ref=e387] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/maria-regina-rosado-lopez-093825371_being-part-of-tetr-college-of-business-has-activity-7379625278366638080-Cehz?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE9fukEB_0go904h_Kl4YKT00ghqUaWCOb8bIi0
+        - link [ref=e388] [cursor=pointer]:
+          - /url: https://www.linkedin.com/posts/kaylanasywa_its-time-to-leave-my-beloved-country-and-activity-7376621125910372352-YJzN?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE9fukEB_0go904h_Kl4YKT00ghqUaWCOb8
+        - link [ref=e389] [cursor=pointer]:
+          - /url: https://www.linkedin.com/feed/update/urn:li:activity:7308527669325766656?actorCompanyId=100564479&lipi=urn%3Ali%3Apage%3Ad_flagship3_university_admin%3Bsuj9BCRETVSuOuwzuF8F3g%3D%3D
+        - link [ref=e390] [cursor=pointer]:
+          - /url: https://www.linkedin.com/feed/update/urn:li:activity:7322621247811477505/?actorCompanyId=100564479
+    - generic [ref=e391]:
+      - img "Icon" [ref=e392]
+      - img "Icon" [ref=e393]
+      - generic [ref=e394]:
+        - heading "Our Affiliations & Collaboration" [level=2] [ref=e395]
+        - list [ref=e396]:
+          - listitem [ref=e397] [cursor=pointer]: Academic Collaborations
+          - listitem [ref=e398] [cursor=pointer]: Practitioners
+          - listitem [ref=e399] [cursor=pointer]: Accreditation Bodies
+          - listitem [ref=e400] [cursor=pointer]: NGO’s & Communities
+          - listitem [ref=e401] [cursor=pointer]: Government Bodies
+  - generic [ref=e404]:
+    - heading "Connect with the team" [level=2] [ref=e405]
+    - generic [ref=e406]:
+      - generic:
+        - img "About Tetr"
+        - generic [ref=e407]:
+          - generic [ref=e408]:
+            - generic [ref=e410]:
+              - generic [ref=e411]: TETR INC (USA)
+              - text: 121 Stewart St Apt 803,
+              - text: Seattle, WA 98101
+            - generic [ref=e413]:
+              - generic [ref=e414]: TETR (INDIA)
+              - text: 383 Udyog Vihar Phase 3,
+              - text: Gurgaon, Haryana 122008
+            - generic [ref=e416]:
+              - generic [ref=e417]: TETR L.L.C-FZ (UAE)
+              - text: Meydan Grandstand,
+              - text: 6th Floor, Meydan Road,
+              - text: NAD AL SHEBA, Dubai
+            - generic [ref=e419]:
+              - generic [ref=e420]: TETR LIMITED (UK)
+              - text: 3A Station Road, Amersham,
+              - text: Buckinghamshire HP7 0BQ
+          - generic:
+            - generic [ref=e421]:
+              - generic [ref=e422]: Reach Us
+              - paragraph [ref=e424]: "International (Toll-Free):"
+              - paragraph [ref=e425]:
+                - text: "Bachelor's Program:"
+                - link "+1 1833-298-4227" [ref=e426] [cursor=pointer]:
+                  - /url: tel:+118332984227
+              - paragraph [ref=e427]:
+                - text: "Master's Program:"
+                - link "+1 833-651-4749" [ref=e428] [cursor=pointer]:
+                  - /url: tel:+18336514749
+            - generic [ref=e429]:
+              - generic [ref=e430]: Operational Hours
+              - paragraph [ref=e431]: 5 AM UTC - 9 PM UTC
+      - generic [ref=e432]:
+        - generic [ref=e433]:
+          - generic [ref=e435]: For admission-related queries, please contact
+          - generic [ref=e436]:
+            - generic [ref=e437]:
+              - text: "Undergraduate:"
+              - link "studentsupport-ug@tetr.org" [ref=e438] [cursor=pointer]:
+                - /url: mailto:studentsupport-ug@tetr.com
+            - generic [ref=e439]:
+              - text: "Postgraduate:"
+              - link "studentsupport-pg@tetr.com" [ref=e440] [cursor=pointer]:
+                - /url: mailto:studentsupport-pg@tetr.com
+          - generic [ref=e441]:
+            - generic [ref=e442]: For general queries please contact
+            - link "info@tetr.org" [ref=e443] [cursor=pointer]:
+              - /url: mailto:info@tetr.org
+        - generic [ref=e445]:
+          - paragraph [ref=e446]: "Book a Video Consultation with our:"
+          - generic [ref=e447]:
+            - link "Bachelor’s Admissions Counsellor" [ref=e448] [cursor=pointer]:
+              - /url: https://calendly.com/d/ckvz-nfd-5j5/academic-counselor
+              - generic [ref=e449]: Bachelor’s Admissions Counsellor
+            - link "Master’s Admissions Counsellor" [ref=e450] [cursor=pointer]:
+              - /url: https://calendly.com/d/cw6n-mqx-2m7/virtual-meeting-with-academic-counsellor
+              - generic [ref=e451]: Master’s Admissions Counsellor
+  - contentinfo [ref=e452]:
+    - generic [ref=e453]:
+      - generic [ref=e454] [cursor=pointer]:
+        - img [ref=e456]
+        - text: Resources WhatsApp Instagram YouTube Close
+      - generic [ref=e462]:
+        - img "close-icon" [ref=e464] [cursor=pointer]
+        - generic [ref=e465]:
+          - heading "We value your privacy" [level=2] [ref=e466]
+          - generic [ref=e467]:
+            - paragraph [ref=e468]: We use cookies to improve your browsing experience, personalise content, and understand how our website is used. By clicking “Accept all cookies”, you agree to our use of cookies.
+            - paragraph [ref=e469]:
+              - text: You can accept all cookies or reject all. Learn more in our
+              - link "Privacy Policy" [ref=e470] [cursor=pointer]:
+                - /url: /privacy-policy
+              - text: .
+          - generic [ref=e471]:
+            - button "Reject all" [ref=e472] [cursor=pointer]
+            - button "Accept all cookies" [ref=e473] [cursor=pointer]
+      - generic [ref=e474]:
+        - generic [ref=e475]:
+          - link "tetr-footer-brand-image" [ref=e476] [cursor=pointer]:
+            - /url: /
+            - img "tetr-footer-brand-image" [ref=e477]
+          - link "APPLY NOW Icon" [ref=e479] [cursor=pointer]:
+            - /url: /apply-now
+            - text: APPLY NOW
+            - img "Icon" [ref=e480]
+        - generic [ref=e481]:
+          - generic [ref=e482]:
+            - link "About" [ref=e483] [cursor=pointer]:
+              - /url: /about
+            - link "Faculty" [ref=e484] [cursor=pointer]:
+              - /url: /faculty
+            - link "Blog" [ref=e485] [cursor=pointer]:
+              - /url: /blog
+            - link "Events" [ref=e486] [cursor=pointer]:
+              - /url: /events
+          - generic [ref=e487]:
+            - link "Resources" [ref=e488] [cursor=pointer]:
+              - /url: /resources
+            - link "News" [ref=e489] [cursor=pointer]:
+              - /url: /news
+            - link "Reviews" [ref=e490] [cursor=pointer]:
+              - /url: /reviews
+            - link "Career Labs" [ref=e491] [cursor=pointer]:
+              - /url: /careers
+          - generic [ref=e492]:
+            - generic [ref=e493] [cursor=pointer]: Dropshipping Report
+            - generic [ref=e494] [cursor=pointer]: D2C Report
+            - generic [ref=e495] [cursor=pointer]: UG Brochure
+            - generic [ref=e496] [cursor=pointer]: PG Brochure
+          - generic [ref=e497]:
+            - link "Experiences at Tetr" [ref=e498] [cursor=pointer]:
+              - /url: /experiences-at-tetr
+            - link "Kickstarter" [ref=e499] [cursor=pointer]:
+              - /url: /kickstarter
+            - link "Dropshipping" [ref=e500] [cursor=pointer]:
+              - /url: /dropshipping
+        - generic [ref=e501]:
+          - generic [ref=e503]:
+            - paragraph [ref=e504]: QS Gold Winner
+            - paragraph [ref=e505]: Most Innovative Business School of 2025
+          - generic [ref=e506]:
+            - generic [ref=e507]:
+              - link "instagram logo":
+                - /url: https://www.instagram.com/tetr.college/
+                - img "instagram logo"
+              - link "youtube logo":
+                - /url: https://www.youtube.com/@tetrcollege
+                - img "youtube logo"
+              - link "linkedin logo":
+                - /url: https://www.linkedin.com/school/tetr-college-of-business/
+                - img "linkedin logo"
+            - generic [ref=e508]:
+              - text: "Email:"
+              - link "info@tetr.org" [ref=e509] [cursor=pointer]:
+                - /url: mailto:info@tetr.org
+          - generic [ref=e510]:
+            - img [ref=e511]
+            - img [ref=e512]
+    - generic [ref=e516]:
+      - generic [ref=e517]:
+        - link "Contact Us" [ref=e518] [cursor=pointer]:
+          - /url: /contact-us
+        - link "Refund Policy" [ref=e519] [cursor=pointer]:
+          - /url: /refund-policy
+        - link "Privacy Policy" [ref=e520] [cursor=pointer]:
+          - /url: /privacy-policy
+        - link "Terms & Conditions" [ref=e521] [cursor=pointer]:
+          - /url: /terms-conditions
+      - generic [ref=e522]:
+        - generic [ref=e523]: "* Tetr reserves the right to adjust the program location for this term due to prevailing visa restrictions. Participants will be notified accordingly."
+        - generic [ref=e524]: Copyright© 2026 Tetr. All rights reserved.

@@ -1,0 +1,196 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - 'heading "Round 3 Deadline: 20th April 2026" [level=3] [ref=e6]'
+      - link "Apply Now arrow up icon" [ref=e7] [cursor=pointer]:
+        - /url: /apply-now
+        - text: Apply Now
+        - img "arrow up icon" [ref=e8]
+    - banner [ref=e9]:
+      - generic [ref=e11]:
+        - link "tetr-logo" [ref=e12] [cursor=pointer]:
+          - /url: /
+          - img "tetr-logo" [ref=e13]
+        - generic [ref=e14]:
+          - generic [ref=e15]:
+            - button "Programs Programs Icon" [ref=e16] [cursor=pointer]:
+              - generic [ref=e17]: Programs
+              - generic [ref=e18]: Programs
+              - img "Icon" [ref=e19]
+            - link "Faculty Faculty" [ref=e20] [cursor=pointer]:
+              - /url: /faculty
+              - generic [ref=e21]: Faculty
+              - generic [ref=e22]: Faculty
+            - link "Student Life Student Life" [ref=e23] [cursor=pointer]:
+              - /url: /student-life
+              - generic [ref=e24]: Student Life
+              - generic [ref=e25]: Student Life
+            - button "About About Icon" [ref=e26] [cursor=pointer]:
+              - generic [ref=e27]: About
+              - generic [ref=e28]: About
+              - img "Icon" [ref=e29]
+          - generic [ref=e30]:
+            - link "APPLY NOW" [ref=e31] [cursor=pointer]:
+              - /url: /apply-now
+            - link "CONTACT US" [ref=e32] [cursor=pointer]:
+              - /url: /contact-us
+  - generic [ref=e34]:
+    - heading "Connect with the team" [level=1] [ref=e35]
+    - generic [ref=e36]:
+      - generic [ref=e37]:
+        - img "About Tetr" [ref=e38]
+        - generic [ref=e39]:
+          - generic [ref=e40]:
+            - generic [ref=e42]:
+              - generic [ref=e43]: TETR INC (USA)
+              - text: 121 Stewart St Apt 803,
+              - text: Seattle, WA 98101
+            - generic [ref=e45]:
+              - generic [ref=e46]: TETR (INDIA)
+              - text: 383 Udyog Vihar Phase 3,
+              - text: Gurgaon, Haryana 122008
+            - generic [ref=e48]:
+              - generic [ref=e49]: TETR L.L.C-FZ (UAE)
+              - text: Meydan Grandstand,
+              - text: 6th Floor, Meydan Road,
+              - text: NAD AL SHEBA, Dubai
+            - generic [ref=e51]:
+              - generic [ref=e52]: TETR LIMITED (UK)
+              - text: 3A Station Road, Amersham,
+              - text: Buckinghamshire HP7 0BQ
+          - generic [ref=e53]:
+            - generic [ref=e54]:
+              - generic [ref=e55]: Reach Us
+              - paragraph [ref=e57]: "International (Toll-Free):"
+              - paragraph [ref=e58]:
+                - text: "Bachelor's Program:"
+                - link "+1 1833-298-4227" [ref=e59] [cursor=pointer]:
+                  - /url: tel:+118332984227
+              - paragraph [ref=e60]:
+                - text: "Master's Program:"
+                - link "+1 833-651-4749" [ref=e61] [cursor=pointer]:
+                  - /url: tel:+18336514749
+            - generic [ref=e62]:
+              - generic [ref=e63]: Operational Hours
+              - paragraph [ref=e64]: 5 AM UTC - 9 PM UTC
+      - generic [ref=e65]:
+        - generic [ref=e66]:
+          - generic [ref=e67]:
+            - generic [ref=e68]:
+              - text: For admission-related inquiries,
+              - text: "please contact us at:"
+            - link "studentsupport-ug@tetr.org" [ref=e69] [cursor=pointer]:
+              - /url: mailto:studentsupport-ug@tetr.org
+          - generic [ref=e70]:
+            - generic [ref=e71]:
+              - text: For PG admission-related inquiries,
+              - text: "please contact us at:"
+            - link "studentsupport-pg@tetr.com" [ref=e72] [cursor=pointer]:
+              - /url: mailto:studentsupport-pg@tetr.com
+          - generic [ref=e73]:
+            - generic [ref=e74]: "For general inquiries, reach out to:"
+            - link "info@tetr.org" [ref=e75] [cursor=pointer]:
+              - /url: mailto:info@tetr.org
+        - generic [ref=e77]:
+          - paragraph [ref=e78]: "Book a Video Consultation with our:"
+          - generic [ref=e79]:
+            - link "Bachelor’s Admissions Counsellor" [ref=e80] [cursor=pointer]:
+              - /url: https://calendly.com/d/ckvz-nfd-5j5/academic-counselor
+              - generic [ref=e81]: Bachelor’s Admissions Counsellor
+            - link "Master’s Admissions Counsellor" [ref=e82] [cursor=pointer]:
+              - /url: https://calendly.com/d/cw6n-mqx-2m7/virtual-meeting-with-academic-counsellor
+              - generic [ref=e83]: Master’s Admissions Counsellor
+  - contentinfo [ref=e84]:
+    - generic [ref=e85]:
+      - generic [ref=e86] [cursor=pointer]:
+        - img [ref=e88]
+        - text: Resources WhatsApp Instagram YouTube Close
+      - generic [ref=e94]:
+        - img "close-icon" [ref=e96] [cursor=pointer]
+        - generic [ref=e97]:
+          - heading "We value your privacy" [level=2] [ref=e98]
+          - generic [ref=e99]:
+            - paragraph [ref=e100]: We use cookies to improve your browsing experience, personalise content, and understand how our website is used. By clicking “Accept all cookies”, you agree to our use of cookies.
+            - paragraph [ref=e101]:
+              - text: You can accept all cookies or reject all. Learn more in our
+              - link "Privacy Policy" [ref=e102] [cursor=pointer]:
+                - /url: /privacy-policy
+              - text: .
+          - generic [ref=e103]:
+            - button "Reject all" [ref=e104] [cursor=pointer]
+            - button "Accept all cookies" [ref=e105] [cursor=pointer]
+      - generic [ref=e106]:
+        - generic [ref=e107]:
+          - link "tetr-footer-brand-image" [ref=e108] [cursor=pointer]:
+            - /url: /
+            - img "tetr-footer-brand-image" [ref=e109]
+          - link "APPLY NOW Icon" [ref=e111] [cursor=pointer]:
+            - /url: /apply-now
+            - text: APPLY NOW
+            - img "Icon" [ref=e112]
+        - generic [ref=e113]:
+          - generic [ref=e114]:
+            - link "About" [ref=e115] [cursor=pointer]:
+              - /url: /about
+            - link "Faculty" [ref=e116] [cursor=pointer]:
+              - /url: /faculty
+            - link "Blog" [ref=e117] [cursor=pointer]:
+              - /url: /blog
+            - link "Events" [ref=e118] [cursor=pointer]:
+              - /url: /events
+          - generic [ref=e119]:
+            - link "Resources" [ref=e120] [cursor=pointer]:
+              - /url: /resources
+            - link "News" [ref=e121] [cursor=pointer]:
+              - /url: /news
+            - link "Reviews" [ref=e122] [cursor=pointer]:
+              - /url: /reviews
+            - link "Career Labs" [ref=e123] [cursor=pointer]:
+              - /url: /careers
+          - generic [ref=e124]:
+            - generic [ref=e125] [cursor=pointer]: Dropshipping Report
+            - generic [ref=e126] [cursor=pointer]: D2C Report
+            - generic [ref=e127] [cursor=pointer]: UG Brochure
+            - generic [ref=e128] [cursor=pointer]: PG Brochure
+          - generic [ref=e129]:
+            - link "Experiences at Tetr" [ref=e130] [cursor=pointer]:
+              - /url: /experiences-at-tetr
+            - link "Kickstarter" [ref=e131] [cursor=pointer]:
+              - /url: /kickstarter
+            - link "Dropshipping" [ref=e132] [cursor=pointer]:
+              - /url: /dropshipping
+        - generic [ref=e133]:
+          - generic [ref=e135]:
+            - paragraph [ref=e136]: QS Gold Winner
+            - paragraph [ref=e137]: Most Innovative Business School of 2025
+          - generic [ref=e138]:
+            - generic [ref=e139]:
+              - link "instagram logo" [ref=e140] [cursor=pointer]:
+                - /url: https://www.instagram.com/tetr.college/
+                - img "instagram logo" [ref=e141]
+              - link "youtube logo" [ref=e142] [cursor=pointer]:
+                - /url: https://www.youtube.com/@tetrcollege
+                - img "youtube logo" [ref=e143]
+              - link "linkedin logo" [ref=e144] [cursor=pointer]:
+                - /url: https://www.linkedin.com/school/tetr-college-of-business/
+                - img "linkedin logo" [ref=e145]
+            - generic [ref=e146]:
+              - text: "Email:"
+              - link "info@tetr.org" [ref=e147] [cursor=pointer]:
+                - /url: mailto:info@tetr.org
+          - generic [ref=e148]:
+            - img [ref=e149]
+            - img [ref=e150]
+    - generic [ref=e154]:
+      - generic [ref=e155]:
+        - link "Contact Us" [ref=e156] [cursor=pointer]:
+          - /url: /contact-us
+        - link "Refund Policy" [ref=e157] [cursor=pointer]:
+          - /url: /refund-policy
+        - link "Privacy Policy" [ref=e158] [cursor=pointer]:
+          - /url: /privacy-policy
+        - link "Terms & Conditions" [ref=e159] [cursor=pointer]:
+          - /url: /terms-conditions
+      - generic [ref=e160]:
+        - generic [ref=e161]: "* Tetr reserves the right to adjust the program location for this term due to prevailing visa restrictions. Participants will be notified accordingly."
+        - generic [ref=e162]: Copyright© 2026 Tetr. All rights reserved.

@@ -1,0 +1,869 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - 'heading "Round 3 Deadline: 20th April 2026" [level=3] [ref=e6]'
+      - link "Apply Now arrow up icon" [ref=e7] [cursor=pointer]:
+        - /url: /apply-now
+        - text: Apply Now
+        - img "arrow up icon" [ref=e8]
+    - banner [ref=e9]:
+      - generic [ref=e11]:
+        - link "tetr-logo" [ref=e12] [cursor=pointer]:
+          - /url: /
+          - img "tetr-logo" [ref=e13]
+        - generic [ref=e14]:
+          - generic [ref=e15]:
+            - button "Programs Programs Icon" [ref=e16] [cursor=pointer]:
+              - generic [ref=e17]: Programs
+              - generic [ref=e18]: Programs
+              - img "Icon" [ref=e19]
+            - link "Faculty Faculty" [ref=e20] [cursor=pointer]:
+              - /url: /faculty
+              - generic [ref=e21]: Faculty
+              - generic [ref=e22]: Faculty
+            - link "Student Life Student Life" [ref=e23] [cursor=pointer]:
+              - /url: /student-life
+              - generic [ref=e24]: Student Life
+              - generic [ref=e25]: Student Life
+            - button "About About Icon" [ref=e26] [cursor=pointer]:
+              - generic [ref=e27]: About
+              - generic [ref=e28]: About
+              - img "Icon" [ref=e29]
+          - generic [ref=e30]:
+            - link "APPLY NOW" [ref=e31] [cursor=pointer]:
+              - /url: /apply-now
+            - link "CONTACT US" [ref=e32] [cursor=pointer]:
+              - /url: /contact-us
+  - generic [ref=e33]:
+    - main [ref=e34]:
+      - generic [ref=e37]:
+        - generic [ref=e38]:
+          - heading "Join Tetr Where The World Is Your Classroom" [level=2] [ref=e39]:
+            - text: Join Tetr Where The
+            - text: World Is Your Classroom
+          - img "Tetr Programs" [ref=e40]
+        - generic [ref=e43]:
+          - heading "Begin Your Icon Tetr Application" [level=3] [ref=e44]:
+            - text: Begin Your
+            - img "Icon" [ref=e46]
+            - text: Tetr Application
+          - generic [ref=e49]:
+            - textbox "Enter Full Name*" [ref=e50]
+            - textbox "Enter Email Address*" [ref=e51]
+            - generic [ref=e52] [cursor=pointer]:
+              - generic [ref=e53]: What program are you interested in?*
+              - generic:
+                - generic:
+                  - textbox "Search..."
+                - list:
+                  - listitem: What program are you interested in?*
+                  - listitem: Bachelors
+                  - listitem: Masters
+                  - listitem: Gap Year
+            - generic [ref=e54] [cursor=pointer]:
+              - generic [ref=e55]: India
+              - generic:
+                - generic:
+                  - textbox "Search..."
+                - list:
+                  - listitem: Select Country*
+                  - listitem: Afghanistan
+                  - listitem: China (Hong Kong)
+                  - listitem: Albania
+                  - listitem: Algeria
+                  - listitem: Andorra
+                  - listitem: Angola
+                  - listitem: Antigua and Barbuda
+                  - listitem: Argentina
+                  - listitem: Armenia
+                  - listitem: Australia
+                  - listitem: Austria
+                  - listitem: Azerbaijan
+                  - listitem: Bahamas
+                  - listitem: Bahrain
+                  - listitem: Bangladesh
+                  - listitem: Barbados
+                  - listitem: Belarus
+                  - listitem: Belgium
+                  - listitem: Belize
+                  - listitem: Benin
+                  - listitem: Bhutan
+                  - listitem: Bolivia
+                  - listitem: Bosnia and Herzegovina
+                  - listitem: Botswana
+                  - listitem: Brazil
+                  - listitem: Brunei
+                  - listitem: Bulgaria
+                  - listitem: Burkina Faso
+                  - listitem: Burundi
+                  - listitem: Cabo Verde
+                  - listitem: Cambodia
+                  - listitem: Cameroon
+                  - listitem: Canada
+                  - listitem: Central African Republic
+                  - listitem: Chad
+                  - listitem: Chile
+                  - listitem: Colombia
+                  - listitem: Comoros
+                  - listitem: Costa Rica
+                  - listitem: Croatia
+                  - listitem: Cuba
+                  - listitem: Cyprus
+                  - listitem: Czech Republic
+                  - listitem: Democratic Republic of Congo
+                  - listitem: Denmark
+                  - listitem: Djibouti
+                  - listitem: Dominica
+                  - listitem: Dominican Republic
+                  - listitem: Ecuador
+                  - listitem: Egypt
+                  - listitem: El Salvador
+                  - listitem: Equatorial Guinea
+                  - listitem: Eritrea
+                  - listitem: Estonia
+                  - listitem: Eswatini
+                  - listitem: Ethiopia
+                  - listitem: Finland
+                  - listitem: France
+                  - listitem: Gabon
+                  - listitem: Gambia
+                  - listitem: Georgia
+                  - listitem: Germany
+                  - listitem: Ghana
+                  - listitem: Greece
+                  - listitem: Grenada
+                  - listitem: Guatemala
+                  - listitem: Guinea
+                  - listitem: Guinea-Bissau
+                  - listitem: Haiti
+                  - listitem: Honduras
+                  - listitem: Hungary
+                  - listitem: Iceland
+                  - listitem: India
+                  - listitem: Indonesia
+                  - listitem: Iran
+                  - listitem: Iraq
+                  - listitem: Ireland
+                  - listitem: Israel
+                  - listitem: Italy
+                  - listitem: Ivory Coast
+                  - listitem: Jamaica
+                  - listitem: Jordan
+                  - listitem: Kazakhstan
+                  - listitem: Kenya
+                  - listitem: Kosovo
+                  - listitem: Kuwait
+                  - listitem: Laos
+                  - listitem: Latvia
+                  - listitem: Lebanon
+                  - listitem: Lesotho
+                  - listitem: Liberia
+                  - listitem: Libya
+                  - listitem: Liechtenstein
+                  - listitem: Lithuania
+                  - listitem: Luxembourg
+                  - listitem: Madagascar
+                  - listitem: Malawi
+                  - listitem: Malaysia
+                  - listitem: Maldives
+                  - listitem: Mali
+                  - listitem: Malta
+                  - listitem: Mauritania
+                  - listitem: Mauritius
+                  - listitem: Mexico
+                  - listitem: Moldova
+                  - listitem: Monaco
+                  - listitem: Montenegro
+                  - listitem: Morocco
+                  - listitem: Mozambique
+                  - listitem: Myanmar
+                  - listitem: Namibia
+                  - listitem: Nepal
+                  - listitem: Netherlands
+                  - listitem: Nicaragua
+                  - listitem: Niger
+                  - listitem: Nigeria
+                  - listitem: North Macedonia
+                  - listitem: Norway
+                  - listitem: Oman
+                  - listitem: Pakistan
+                  - listitem: Palestine
+                  - listitem: Panama
+                  - listitem: Paraguay
+                  - listitem: Peru
+                  - listitem: Philippines
+                  - listitem: Poland
+                  - listitem: Portugal
+                  - listitem: Qatar
+                  - listitem: Republic of Congo
+                  - listitem: Romania
+                  - listitem: Russia
+                  - listitem: Rwanda
+                  - listitem: Saint Kitts and Nevis
+                  - listitem: Saint Lucia
+                  - listitem: Saint Vincent and the Grenadines
+                  - listitem: San Marino
+                  - listitem: São Tomé and Príncipe
+                  - listitem: Saudi Arabia
+                  - listitem: Senegal
+                  - listitem: Serbia
+                  - listitem: Seychelles
+                  - listitem: Sierra Leone
+                  - listitem: Singapore
+                  - listitem: Slovakia
+                  - listitem: Slovenia
+                  - listitem: Somalia
+                  - listitem: South Africa
+                  - listitem: South Sudan
+                  - listitem: Spain
+                  - listitem: Sri Lanka
+                  - listitem: Sudan
+                  - listitem: Sweden
+                  - listitem: Switzerland
+                  - listitem: Syria
+                  - listitem: China (Macao)
+                  - listitem: Tanzania
+                  - listitem: Thailand
+                  - listitem: Timor-Leste (East Timor)
+                  - listitem: Togo
+                  - listitem: Trinidad and Tobago
+                  - listitem: Tunisia
+                  - listitem: Turkey
+                  - listitem: Uganda
+                  - listitem: Ukraine
+                  - listitem: United Arab Emirates
+                  - listitem: United Kingdom
+                  - listitem: United States
+                  - listitem: Uruguay
+                  - listitem: Vatican City (Holy See)
+                  - listitem: Venezuela
+                  - listitem: Vietnam
+                  - listitem: Yemen
+                  - listitem: Zambia
+                  - listitem: Zimbabwe
+                  - listitem: China
+                  - listitem: Fiji
+                  - listitem: Guyana
+                  - listitem: Japan
+                  - listitem: Kiribati
+                  - listitem: Kyrgyzstan
+                  - listitem: Marshall Islands
+                  - listitem: Micronesia
+                  - listitem: Mongolia
+                  - listitem: Nauru
+                  - listitem: New Zealand
+                  - listitem: North Korea
+                  - listitem: Palau
+                  - listitem: Papua New Guinea
+                  - listitem: Samoa
+                  - listitem: Sao Tome And Principe
+                  - listitem: Solomon Islands
+                  - listitem: South Korea
+                  - listitem: Suriname
+                  - listitem: Tajikistan
+                  - listitem: Tonga
+                  - listitem: Turkmenistan
+                  - listitem: Tuvalu
+                  - listitem: Uzbekistan
+                  - listitem: Vanuatu
+                  - listitem: China (Taiwan)
+            - generic [ref=e56]:
+              - generic [ref=e57] [cursor=pointer]:
+                - generic [ref=e58]: +91 (India)
+                - generic:
+                  - generic:
+                    - textbox "Search..."
+                  - list:
+                    - listitem: Select Code*
+                    - listitem: +93 (Afghanistan)
+                    - listitem: +852 (China (Hong Kong))
+                    - listitem: +355 (Albania)
+                    - listitem: +213 (Algeria)
+                    - listitem: +376 (Andorra)
+                    - listitem: +244 (Angola)
+                    - listitem: +1 (Antigua and Barbuda)
+                    - listitem: +54 (Argentina)
+                    - listitem: +374 (Armenia)
+                    - listitem: +61 (Australia)
+                    - listitem: +43 (Austria)
+                    - listitem: +994 (Azerbaijan)
+                    - listitem: +1 (Bahamas)
+                    - listitem: +973 (Bahrain)
+                    - listitem: +880 (Bangladesh)
+                    - listitem: +1 (Barbados)
+                    - listitem: +375 (Belarus)
+                    - listitem: +32 (Belgium)
+                    - listitem: +501 (Belize)
+                    - listitem: +229 (Benin)
+                    - listitem: +975 (Bhutan)
+                    - listitem: +591 (Bolivia)
+                    - listitem: +387 (Bosnia and Herzegovina)
+                    - listitem: +267 (Botswana)
+                    - listitem: +55 (Brazil)
+                    - listitem: +673 (Brunei)
+                    - listitem: +359 (Bulgaria)
+                    - listitem: +226 (Burkina Faso)
+                    - listitem: +257 (Burundi)
+                    - listitem: +238 (Cabo Verde)
+                    - listitem: +855 (Cambodia)
+                    - listitem: +237 (Cameroon)
+                    - listitem: +1 (Canada)
+                    - listitem: +236 (Central African Republic)
+                    - listitem: +235 (Chad)
+                    - listitem: +56 (Chile)
+                    - listitem: +57 (Colombia)
+                    - listitem: +269 (Comoros)
+                    - listitem: +506 (Costa Rica)
+                    - listitem: +385 (Croatia)
+                    - listitem: +53 (Cuba)
+                    - listitem: +357 (Cyprus)
+                    - listitem: +420 (Czech Republic)
+                    - listitem: +243 (Democratic Republic of Congo)
+                    - listitem: +45 (Denmark)
+                    - listitem: +253 (Djibouti)
+                    - listitem: +1 (Dominica)
+                    - listitem: +1 (Dominican Republic)
+                    - listitem: +593 (Ecuador)
+                    - listitem: +20 (Egypt)
+                    - listitem: +503 (El Salvador)
+                    - listitem: +240 (Equatorial Guinea)
+                    - listitem: +291 (Eritrea)
+                    - listitem: +372 (Estonia)
+                    - listitem: +268 (Eswatini)
+                    - listitem: +251 (Ethiopia)
+                    - listitem: +358 (Finland)
+                    - listitem: +33 (France)
+                    - listitem: +241 (Gabon)
+                    - listitem: +220 (Gambia)
+                    - listitem: +995 (Georgia)
+                    - listitem: +49 (Germany)
+                    - listitem: +233 (Ghana)
+                    - listitem: +30 (Greece)
+                    - listitem: +1 (Grenada)
+                    - listitem: +502 (Guatemala)
+                    - listitem: +224 (Guinea)
+                    - listitem: +245 (Guinea-Bissau)
+                    - listitem: +509 (Haiti)
+                    - listitem: +504 (Honduras)
+                    - listitem: +36 (Hungary)
+                    - listitem: +354 (Iceland)
+                    - listitem: +91 (India)
+                    - listitem: +62 (Indonesia)
+                    - listitem: +98 (Iran)
+                    - listitem: +964 (Iraq)
+                    - listitem: +353 (Ireland)
+                    - listitem: +972 (Israel)
+                    - listitem: +39 (Italy)
+                    - listitem: +225 (Ivory Coast)
+                    - listitem: +1 (Jamaica)
+                    - listitem: +962 (Jordan)
+                    - listitem: +7 (Kazakhstan)
+                    - listitem: +254 (Kenya)
+                    - listitem: +383 (Kosovo)
+                    - listitem: +965 (Kuwait)
+                    - listitem: +856 (Laos)
+                    - listitem: +371 (Latvia)
+                    - listitem: +961 (Lebanon)
+                    - listitem: +266 (Lesotho)
+                    - listitem: +231 (Liberia)
+                    - listitem: +218 (Libya)
+                    - listitem: +423 (Liechtenstein)
+                    - listitem: +370 (Lithuania)
+                    - listitem: +352 (Luxembourg)
+                    - listitem: +261 (Madagascar)
+                    - listitem: +265 (Malawi)
+                    - listitem: +60 (Malaysia)
+                    - listitem: +960 (Maldives)
+                    - listitem: +223 (Mali)
+                    - listitem: +356 (Malta)
+                    - listitem: +222 (Mauritania)
+                    - listitem: +230 (Mauritius)
+                    - listitem: +52 (Mexico)
+                    - listitem: +373 (Moldova)
+                    - listitem: +377 (Monaco)
+                    - listitem: +382 (Montenegro)
+                    - listitem: +212 (Morocco)
+                    - listitem: +258 (Mozambique)
+                    - listitem: +95 (Myanmar)
+                    - listitem: +264 (Namibia)
+                    - listitem: +977 (Nepal)
+                    - listitem: +31 (Netherlands)
+                    - listitem: +505 (Nicaragua)
+                    - listitem: +227 (Niger)
+                    - listitem: +234 (Nigeria)
+                    - listitem: +389 (North Macedonia)
+                    - listitem: +47 (Norway)
+                    - listitem: +968 (Oman)
+                    - listitem: +92 (Pakistan)
+                    - listitem: +970 (Palestine)
+                    - listitem: +507 (Panama)
+                    - listitem: +595 (Paraguay)
+                    - listitem: +51 (Peru)
+                    - listitem: +63 (Philippines)
+                    - listitem: +48 (Poland)
+                    - listitem: +351 (Portugal)
+                    - listitem: +974 (Qatar)
+                    - listitem: +242 (Republic of Congo)
+                    - listitem: +40 (Romania)
+                    - listitem: +7 (Russia)
+                    - listitem: +250 (Rwanda)
+                    - listitem: +1 (Saint Kitts and Nevis)
+                    - listitem: +1 (Saint Lucia)
+                    - listitem: +1 (Saint Vincent and the Grenadines)
+                    - listitem: +378 (San Marino)
+                    - listitem: +239 (São Tomé and Príncipe)
+                    - listitem: +966 (Saudi Arabia)
+                    - listitem: +221 (Senegal)
+                    - listitem: +381 (Serbia)
+                    - listitem: +248 (Seychelles)
+                    - listitem: +232 (Sierra Leone)
+                    - listitem: +65 (Singapore)
+                    - listitem: +421 (Slovakia)
+                    - listitem: +386 (Slovenia)
+                    - listitem: +252 (Somalia)
+                    - listitem: +27 (South Africa)
+                    - listitem: +211 (South Sudan)
+                    - listitem: +34 (Spain)
+                    - listitem: +94 (Sri Lanka)
+                    - listitem: +249 (Sudan)
+                    - listitem: +46 (Sweden)
+                    - listitem: +41 (Switzerland)
+                    - listitem: +963 (Syria)
+                    - listitem: +853 (China (Macao))
+                    - listitem: +255 (Tanzania)
+                    - listitem: +66 (Thailand)
+                    - listitem: +670 (Timor-Leste (East Timor))
+                    - listitem: +228 (Togo)
+                    - listitem: +1 (Trinidad and Tobago)
+                    - listitem: +216 (Tunisia)
+                    - listitem: +90 (Turkey)
+                    - listitem: +256 (Uganda)
+                    - listitem: +380 (Ukraine)
+                    - listitem: +971 (United Arab Emirates)
+                    - listitem: +44 (United Kingdom)
+                    - listitem: +1 (United States)
+                    - listitem: +598 (Uruguay)
+                    - listitem: +379 (Vatican City (Holy See))
+                    - listitem: +58 (Venezuela)
+                    - listitem: +84 (Vietnam)
+                    - listitem: +967 (Yemen)
+                    - listitem: +260 (Zambia)
+                    - listitem: +263 (Zimbabwe)
+                    - listitem: +86 (China)
+                    - listitem: +679 (Fiji)
+                    - listitem: +592 (Guyana)
+                    - listitem: +81 (Japan)
+                    - listitem: +686 (Kiribati)
+                    - listitem: +996 (Kyrgyzstan)
+                    - listitem: +692 (Marshall Islands)
+                    - listitem: +691 (Micronesia)
+                    - listitem: +976 (Mongolia)
+                    - listitem: +674 (Nauru)
+                    - listitem: +64 (New Zealand)
+                    - listitem: +850 (North Korea)
+                    - listitem: +680 (Palau)
+                    - listitem: +675 (Papua New Guinea)
+                    - listitem: +685 (Samoa)
+                    - listitem: +239 (Sao Tome And Principe)
+                    - listitem: +677 (Solomon Islands)
+                    - listitem: +82 (South Korea)
+                    - listitem: +597 (Suriname)
+                    - listitem: +992 (Tajikistan)
+                    - listitem: +676 (Tonga)
+                    - listitem: +993 (Turkmenistan)
+                    - listitem: +688 (Tuvalu)
+                    - listitem: +998 (Uzbekistan)
+                    - listitem: +678 (Vanuatu)
+                    - listitem: +886 (China (Taiwan))
+              - textbox "Enter Mobile No*" [ref=e59]
+            - generic [ref=e60]:
+              - checkbox [ref=e61] [cursor=pointer]
+              - generic [ref=e62]:
+                - text: I authorize Tetr and its affiliates to process my personal data to send me information about programs related to my application, admission, or enrollment through digital channels (including email, phone calls, RCS, SMS, and WhatsApp), in accordance with Tetr’s
+                - link "Privacy" [ref=e63] [cursor=pointer]:
+                  - /url: /privacy-policy
+                - text: and
+                - link "Cookie Policy" [ref=e64] [cursor=pointer]:
+                  - /url: /privacy-policy
+                - text: By submitting my details, I agree to receive communications related to my application, events, and program updates. Message frequency may vary and message and data rates may apply. I may withdraw my consent at any time by replying STOP, UNSUBSCRIBE, or HELP for assistance.
+            - generic [ref=e65]:
+              - button "REGISTER Icon" [ref=e66] [cursor=pointer]:
+                - text: REGISTER
+                - img "Icon" [ref=e67]
+              - paragraph [ref=e68]:
+                - text: Already have an account?
+                - link "Log In" [ref=e69] [cursor=pointer]:
+                  - /url: /login
+    - generic [ref=e71]:
+      - generic [ref=e72]:
+        - img "Icon" [ref=e73]
+        - generic [ref=e74]: Tetr scholarships cover up to 100% of the tuition fees for undergraduate and postgraduate candidates.
+      - generic [ref=e75]:
+        - heading "Apply for our September 2026 batch. Get Started" [level=2] [ref=e76]:
+          - text: Apply for our
+          - text: September 2026 batch.
+          - text: Get Started
+        - img "Icon" [ref=e77]
+        - link "Apply Now Apply Now Icon" [ref=e78] [cursor=pointer]:
+          - /url: "#apply-now"
+          - generic [ref=e79]:
+            - generic [ref=e80]: Apply Now
+            - generic [ref=e81]: Apply Now
+          - img "Icon" [ref=e83]
+      - img "Icon" [ref=e84]
+      - generic [ref=e85]:
+        - paragraph [ref=e86]: A simple 3-step admission process
+        - generic [ref=e88]:
+          - generic [ref=e89]:
+            - generic [ref=e91]: "1"
+            - paragraph [ref=e93]:
+              - text: Fill out the
+              - text: Application form
+          - generic [ref=e94]:
+            - generic [ref=e96]: "2"
+            - paragraph [ref=e98]:
+              - text: Attempt the Tetr Trial,
+              - text: an AI-Powered Aptitude test
+          - generic [ref=e99]:
+            - generic [ref=e101]: "3"
+            - paragraph [ref=e103]:
+              - text: Interview with an
+              - text: Industry Leader to assess fit
+    - option "Select Course" [disabled] [selected]
+    - option "Bachelors"
+    - option "Masters"
+    - generic [ref=e107]:
+      - paragraph [ref=e108]:
+        - text: Take the Mock Tetr Trial
+        - text: to ensure smooth preparation.
+      - button "REGISTER NOW Icon" [ref=e109] [cursor=pointer]:
+        - text: REGISTER NOW
+        - img "Icon" [ref=e110]
+    - generic [ref=e112]:
+      - generic [ref=e113]:
+        - heading "Meet the Tribe" [level=2] [ref=e114]
+        - generic [ref=e115]:
+          - button "Previous slide" [disabled] [ref=e116] [cursor=pointer]:
+            - img "Icon" [ref=e117]
+          - button "Next slide" [ref=e118] [cursor=pointer]:
+            - img "Icon" [ref=e119]
+      - generic [ref=e122]:
+        - group "1 / 18" [ref=e123]:
+          - generic [ref=e124]:
+            - img "Video Thumbnail" [ref=e125]
+            - img "Play Video" [ref=e127] [cursor=pointer]
+        - group "2 / 18" [ref=e128]:
+          - generic [ref=e129]:
+            - img "Video Thumbnail" [ref=e130]
+            - img "Play Video" [ref=e132] [cursor=pointer]
+        - group "3 / 18" [ref=e133]:
+          - generic [ref=e134]:
+            - img "Video Thumbnail" [ref=e135]
+            - img "Play Video" [ref=e137] [cursor=pointer]
+        - group "4 / 18" [ref=e138]:
+          - generic [ref=e139]:
+            - img "Video Thumbnail" [ref=e140]
+            - img "Play Video" [ref=e142] [cursor=pointer]
+        - group "5 / 18" [ref=e143]:
+          - generic [ref=e144]:
+            - img "Video Thumbnail" [ref=e145]
+            - img "Play Video" [ref=e147] [cursor=pointer]
+        - group "6 / 18" [ref=e148]:
+          - generic [ref=e149]:
+            - img "Video Thumbnail" [ref=e150]
+            - img "Play Video" [ref=e152] [cursor=pointer]
+        - group "7 / 18" [ref=e153]:
+          - generic [ref=e154]:
+            - img "Video Thumbnail" [ref=e155]
+            - img "Play Video" [ref=e157] [cursor=pointer]
+        - group "8 / 18" [ref=e158]:
+          - generic [ref=e159]:
+            - img "Video Thumbnail" [ref=e160]
+            - img "Play Video" [ref=e162] [cursor=pointer]
+        - group "9 / 18" [ref=e163]:
+          - generic [ref=e164]:
+            - img "Video Thumbnail" [ref=e165]
+            - img "Play Video" [ref=e167] [cursor=pointer]
+        - group "10 / 18" [ref=e168]:
+          - generic [ref=e169]:
+            - img "Video Thumbnail" [ref=e170]
+            - img "Play Video" [ref=e172] [cursor=pointer]
+        - group "11 / 18" [ref=e173]:
+          - generic [ref=e174]:
+            - img "Video Thumbnail" [ref=e175]
+            - img "Play Video" [ref=e177] [cursor=pointer]
+        - group "12 / 18" [ref=e178]:
+          - generic [ref=e179]:
+            - img "Video Thumbnail" [ref=e180]
+            - img "Play Video" [ref=e182] [cursor=pointer]
+        - group "13 / 18" [ref=e183]:
+          - generic [ref=e184]:
+            - img "Video Thumbnail" [ref=e185]
+            - img "Play Video" [ref=e187] [cursor=pointer]
+        - group "14 / 18" [ref=e188]:
+          - generic [ref=e189]:
+            - img "Video Thumbnail" [ref=e190]
+            - img "Play Video" [ref=e192] [cursor=pointer]
+        - group "15 / 18" [ref=e193]:
+          - generic [ref=e194]:
+            - img "Video Thumbnail" [ref=e195]
+            - img "Play Video" [ref=e197] [cursor=pointer]
+        - group "16 / 18" [ref=e198]:
+          - generic [ref=e199]:
+            - img "Video Thumbnail" [ref=e200]
+            - img "Play Video" [ref=e202] [cursor=pointer]
+        - group "17 / 18" [ref=e203]:
+          - generic [ref=e204]:
+            - img "Video Thumbnail" [ref=e205]
+            - img "Play Video" [ref=e207] [cursor=pointer]
+        - group "18 / 18" [ref=e208]:
+          - generic [ref=e209]:
+            - img "Video Thumbnail" [ref=e210]
+            - img "Play Video" [ref=e212] [cursor=pointer]
+    - generic [ref=e215]:
+      - generic [ref=e216]:
+        - heading "Tetr in the News" [level=2] [ref=e217]
+        - generic [ref=e218]:
+          - button "Previous slide" [disabled] [ref=e219] [cursor=pointer]:
+            - img "Icon" [ref=e220]
+          - button "Next slide" [ref=e221] [cursor=pointer]:
+            - img "Icon" [ref=e222]
+      - generic [ref=e223]:
+        - generic [ref=e224]:
+          - group "1 / 14":
+            - link "Pratham Mittal featured in Forbes India":
+              - /url: https://www.forbesindia.com/article/leadership/i-dont-think-entrepreneurship-is-risky-bschool-founder-pratham-mittal/94127/1
+              - img "Pratham Mittal featured in Forbes India"
+              - img [ref=e226] [cursor=pointer]
+          - group "2 / 14":
+            - 'link "Entrepreneur article: Learn Business by Doing Business Across the Globe"':
+              - /url: https://www.entrepreneur.com/en-in/growth-strategies/learn-business-by-doing-business-across-the-globe-the-next/475529
+              - 'img "Entrepreneur article: Learn Business by Doing Business Across the Globe"'
+              - img [ref=e230] [cursor=pointer]
+          - group "3 / 14":
+            - link "Tetr College global survey featured in Economic Times Education":
+              - /url: https://education.economictimes.indiatimes.com/news/industry/global-survey-by-tetr-college-of-business-unveils-key-gaps-in-business-education-and-growing-importance-of-founder-mode/117388219
+              - img "Tetr College global survey featured in Economic Times Education"
+              - img [ref=e234] [cursor=pointer]
+          - group "4 / 14":
+            - link "Tetr College cross-border business programme featured in Gulf News":
+              - /url: https://gulfnews.com/gn-focus/tetr-college-of-business-introduces-a-cross-border-business-programme-across-7-countries-1.1715840083130
+              - img "Tetr College cross-border business programme featured in Gulf News"
+              - img [ref=e238] [cursor=pointer]
+          - group "5 / 14":
+            - link "Professors from Harvard, MIT, and global CXOs to lead Tetr's undergraduate programme – Khaleej Times feature":
+              - /url: https://www.khaleejtimes.com/kt-network/professors-from-harvard-mit-and-global-cxos-to-spearhead-tetrs-global-undergraduate-programme
+              - img "Professors from Harvard, MIT, and global CXOs to lead Tetr's undergraduate programme – Khaleej Times feature"
+              - img [ref=e242] [cursor=pointer]
+          - group "6 / 14":
+            - link "Tetr College introduces innovative global degree program – The Manila Times article":
+              - /url: https://www.manilatimes.net/2024/05/23/campus-press/tetr-biz-college-introduces-innovative-global-degree-program/1947985
+              - img "Tetr College introduces innovative global degree program – The Manila Times article"
+              - img [ref=e246] [cursor=pointer]
+          - group "7 / 14":
+            - link "Tetr College's global degree program spans seven countries in four years – Daily Wire Asia feature":
+              - /url: https://dailywire.asia/seven-countries-in-four-years-tetr-college-of-business-charts-new-territory-in-learning-with-its-innovative-global-degree-program/
+              - img "Tetr College's global degree program spans seven countries in four years – Daily Wire Asia feature"
+              - img [ref=e250] [cursor=pointer]
+          - group "8 / 14":
+            - link "Tetr College launches $10 million Tetr Under initiative – featured in Entrepreneur":
+              - /url: https://www.entrepreneur.com/en-in/news-and-trends/tetr-college-of-business-launches-usd-10-mn-tetr-under/481541
+              - img "Tetr College launches $10 million Tetr Under initiative – featured in Entrepreneur"
+              - img [ref=e254] [cursor=pointer]
+          - group "9 / 14":
+            - link "Training students through real-world business exposure – Interview with Tetr College Founder in Economic Times":
+              - /url: https://m.economictimes.com/industry/services/education/training-students-through-exposure-to-real-world-businesses-is-important-tetr-college-of-business-founder-pratham-mittal/amp_articleshow/113226365.cms
+              - img "Training students through real-world business exposure – Interview with Tetr College Founder in Economic Times"
+              - img [ref=e258] [cursor=pointer]
+          - group "10 / 14":
+            - link "Tetr College launches fund to support student entrepreneurs – VCCircle article":
+              - /url: https://www.vccircle.com/tetrcollege-launches-fund-to-back-student-entrepreneurs
+              - img "Tetr College launches fund to support student entrepreneurs – VCCircle article"
+              - img [ref=e262] [cursor=pointer]
+          - group "11 / 14":
+            - link "Entrepreneurship Training School Tether Raises $2 Million in Scholarships for Korean Students":
+              - /url: https://magazine.hankyung.com/job-joy/article/202412031032d
+              - img "Entrepreneurship Training School Tether Raises $2 Million in Scholarships for Korean Students"
+              - img [ref=e266] [cursor=pointer]
+          - group "12 / 14":
+            - link "Student shares experience of transformative global education at Tetr College – Indian Express article":
+              - /url: https://indianexpress.com/article/education/study-abroad/life-in-a-foreign-university-roundtable-discussions-masterclass-dubais-tetr-college-transformed-uni-education-for-me-9686006/
+              - img "Student shares experience of transformative global education at Tetr College – Indian Express article"
+              - img [ref=e270] [cursor=pointer]
+          - group "13 / 14":
+            - link "Tetr College of Business introduces a cross-border bachelor's program across seven countries – Wallstreet Online article":
+              - /url: https://www.wallstreet-online.de/nachricht/18115549-tetr-college-of-business-introduces-a-cross-border-bachelors-program-across-seven-countries
+              - img "Tetr College of Business introduces a cross-border bachelor's program across seven countries – Wallstreet Online article"
+              - img [ref=e274] [cursor=pointer]
+          - group "14 / 14" [ref=e277]:
+            - link "Tetr College of Business launches innovative undergraduate programme – Times of India article" [ref=e278] [cursor=pointer]:
+              - /url: https://timesofindia.indiatimes.com/education/tetr-college-of-business-launches-innovative-ug-programme/articleshow/113202934.cms
+              - img "Tetr College of Business launches innovative undergraduate programme – Times of India article" [ref=e279]
+              - img [ref=e281]
+        - link "View More Icon" [ref=e286] [cursor=pointer]:
+          - /url: /news
+          - text: View More
+          - img "Icon" [ref=e287]
+    - generic [ref=e289]:
+      - generic [ref=e290]:
+        - generic [ref=e291]:
+          - heading "Scholarships" [level=2] [ref=e292]
+          - paragraph [ref=e293]:
+            - text: At Tetr, we believe financial barriers should never limit access to exceptional education. To support your journey, we offer 8 merit
+            - text: "-based scholarships that recognize your achievements, ensuring your ambitions are fully realized without the burden of financial"
+            - text: constraints. Scholarships can cover up to 100% of the tuition fee.
+        - img "Icon" [ref=e294]
+      - list [ref=e295]:
+        - listitem [ref=e296] [cursor=pointer]: UNDERGRADUATE
+        - listitem [ref=e297] [cursor=pointer]: POSTGRADUATE
+      - generic [ref=e302]:
+        - generic [ref=e303]:
+          - heading "The Outliers Scholarship" [level=3] [ref=e305] [cursor=pointer]
+          - generic [ref=e309]:
+            - paragraph [ref=e310]: Celebrating exceptional talents beyond academics. If you're leading in fields like dance, space science, or robotics, this scholarship is designed to propel your unique journey forward at Tetr.
+            - list [ref=e311]:
+              - listitem [ref=e312]:
+                - img "Icon" [ref=e313]
+                - paragraph [ref=e314]: "Eligibility Criteria: Recognized in the top 1% in any field."
+        - generic [ref=e315]:
+          - heading "The Community Leaders Scholarship" [level=3] [ref=e317] [cursor=pointer]
+          - generic:
+            - paragraph [ref=e321]: Recognizing emerging leaders of tomorrow. If you've demonstrated exceptional leadership potential in any sphere, Tetr's Leadership Scholarship aims to nurture and develop your innate ability to inspire and lead.
+            - list [ref=e322]:
+              - listitem [ref=e323]:
+                - img "Icon" [ref=e324]
+                - paragraph [ref=e325]: "Eligibility Criteria: Demonstrated exceptional leadership abilities."
+        - generic [ref=e326]:
+          - heading "The Entrepreneur & Innovation Scholarship" [level=3] [ref=e328] [cursor=pointer]
+          - generic:
+            - paragraph [ref=e332]: For the visionaries who dream of launching groundbreaking ventures. This scholarship supports budding entrepreneurs ready to turn their innovative ideas into reality with Tetr's entrepreneurial ecosystem.
+            - list [ref=e333]:
+              - listitem [ref=e334]:
+                - img "Icon" [ref=e335]
+                - paragraph [ref=e336]: "Eligibility Criteria: Aspiring or current entrepreneurs."
+        - generic [ref=e337]:
+          - heading "The SAT Merit Scholarship" [level=3] [ref=e339] [cursor=pointer]
+          - generic:
+            - paragraph [ref=e343]: If your SAT scores place you among the top percentile, Tetr's SAT Scholarship is here to acknowledge your hard work and academic prowess, easing your path to a global business education. Our SAT Designated Institution (DI) Code is 45549. Please use this code to send your official SAT scores directly to us.
+            - list [ref=e344]:
+              - listitem [ref=e345]:
+                - img "Icon" [ref=e346]
+                - paragraph [ref=e347]: "Eligibility Criteria: Top percentile SAT scorers."
+        - generic [ref=e348]:
+          - heading "The Pathfinders Scholarship" [level=3] [ref=e350] [cursor=pointer]
+          - generic:
+            - paragraph [ref=e354]: For the daring souls turning down traditional top-tier offers for the unparalleled experience at Tetr. This scholarship honors your courageous decision to chart a unique educational path with us.
+            - list [ref=e355]:
+              - listitem [ref=e356]:
+                - img "Icon" [ref=e357]
+                - paragraph [ref=e358]: "Eligibility Criteria: Declined offers from a top-tier university in any country to attend Tetr."
+        - generic [ref=e359]:
+          - heading "The Transfer Students Scholarship" [level=3] [ref=e361] [cursor=pointer]
+          - generic:
+            - paragraph [ref=e365]: Embrace a new path with Tetr. Designed for students seeking to pivot their academic journey from their current institution, this scholarship supports your bold move towards a transformative education.
+            - list [ref=e366]:
+              - listitem [ref=e367]:
+                - img "Icon" [ref=e368]
+                - paragraph [ref=e369]: "Eligibility Criteria: Open to students transferring from another institution to join Tetr."
+        - generic [ref=e370]:
+          - heading "The Aspire Grant" [level=3] [ref=e372] [cursor=pointer]
+          - generic:
+            - paragraph [ref=e376]: For those who have faced and overcome financial challenges in pursuit of their education.
+            - list [ref=e377]:
+              - listitem [ref=e378]:
+                - img "Icon" [ref=e379]
+                - generic [ref=e380]: "Eligibility Criteria: Applicants must provide documentation to substantiate their financial needs and a personal statement detailing the challenges they have faced."
+  - contentinfo [ref=e381]:
+    - generic [ref=e382]:
+      - generic [ref=e383] [cursor=pointer]:
+        - img [ref=e385]
+        - text: Resources WhatsApp Instagram YouTube Close
+      - generic [ref=e391]:
+        - img "close-icon" [ref=e393] [cursor=pointer]
+        - generic [ref=e394]:
+          - heading "We value your privacy" [level=2] [ref=e395]
+          - generic [ref=e396]:
+            - paragraph [ref=e397]: We use cookies to improve your browsing experience, personalise content, and understand how our website is used. By clicking “Accept all cookies”, you agree to our use of cookies.
+            - paragraph [ref=e398]:
+              - text: You can accept all cookies or reject all. Learn more in our
+              - link "Privacy Policy" [ref=e399] [cursor=pointer]:
+                - /url: /privacy-policy
+              - text: .
+          - generic [ref=e400]:
+            - button "Reject all" [ref=e401] [cursor=pointer]
+            - button "Accept all cookies" [ref=e402] [cursor=pointer]
+      - generic [ref=e403]:
+        - generic [ref=e404]:
+          - link "tetr-footer-brand-image" [ref=e405] [cursor=pointer]:
+            - /url: /
+            - img "tetr-footer-brand-image" [ref=e406]
+          - link "APPLY NOW Icon" [ref=e408] [cursor=pointer]:
+            - /url: /apply-now
+            - text: APPLY NOW
+            - img "Icon" [ref=e409]
+        - generic [ref=e410]:
+          - generic [ref=e411]:
+            - link "About" [ref=e412] [cursor=pointer]:
+              - /url: /about
+            - link "Faculty" [ref=e413] [cursor=pointer]:
+              - /url: /faculty
+            - link "Blog" [ref=e414] [cursor=pointer]:
+              - /url: /blog
+            - link "Events" [ref=e415] [cursor=pointer]:
+              - /url: /events
+          - generic [ref=e416]:
+            - link "Resources" [ref=e417] [cursor=pointer]:
+              - /url: /resources
+            - link "News" [ref=e418] [cursor=pointer]:
+              - /url: /news
+            - link "Reviews" [ref=e419] [cursor=pointer]:
+              - /url: /reviews
+            - link "Career Labs" [ref=e420] [cursor=pointer]:
+              - /url: /careers
+          - generic [ref=e421]:
+            - generic [ref=e422] [cursor=pointer]: Dropshipping Report
+            - generic [ref=e423] [cursor=pointer]: D2C Report
+            - generic [ref=e424] [cursor=pointer]: UG Brochure
+            - generic [ref=e425] [cursor=pointer]: PG Brochure
+          - generic [ref=e426]:
+            - link "Experiences at Tetr" [ref=e427] [cursor=pointer]:
+              - /url: /experiences-at-tetr
+            - link "Kickstarter" [ref=e428] [cursor=pointer]:
+              - /url: /kickstarter
+            - link "Dropshipping" [ref=e429] [cursor=pointer]:
+              - /url: /dropshipping
+        - generic [ref=e430]:
+          - generic [ref=e432]:
+            - paragraph [ref=e433]: QS Gold Winner
+            - paragraph [ref=e434]: Most Innovative Business School of 2025
+          - generic [ref=e435]:
+            - generic [ref=e436]:
+              - link "instagram logo":
+                - /url: https://www.instagram.com/tetr.college/
+                - img "instagram logo"
+              - link "youtube logo":
+                - /url: https://www.youtube.com/@tetrcollege
+                - img "youtube logo"
+              - link "linkedin logo":
+                - /url: https://www.linkedin.com/school/tetr-college-of-business/
+                - img "linkedin logo"
+            - generic [ref=e437]:
+              - text: "Email:"
+              - link "info@tetr.org" [ref=e438] [cursor=pointer]:
+                - /url: mailto:info@tetr.org
+          - generic [ref=e439]:
+            - img [ref=e440]
+            - img [ref=e441]
+    - generic [ref=e445]:
+      - generic [ref=e446]:
+        - link "Contact Us" [ref=e447] [cursor=pointer]:
+          - /url: /contact-us
+        - link "Refund Policy" [ref=e448] [cursor=pointer]:
+          - /url: /refund-policy
+        - link "Privacy Policy" [ref=e449] [cursor=pointer]:
+          - /url: /privacy-policy
+        - link "Terms & Conditions" [ref=e450] [cursor=pointer]:
+          - /url: /terms-conditions
+      - generic [ref=e451]:
+        - generic [ref=e452]: "* Tetr reserves the right to adjust the program location for this term due to prevailing visa restrictions. Participants will be notified accordingly."
+        - generic [ref=e453]: Copyright© 2026 Tetr. All rights reserved.

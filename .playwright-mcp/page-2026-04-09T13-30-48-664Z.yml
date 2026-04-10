@@ -1,0 +1,1219 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - 'heading "Round 3 Deadline: 20th April 2026" [level=3] [ref=e6]'
+      - link "Apply Now arrow up icon" [ref=e7] [cursor=pointer]:
+        - /url: /apply-now
+        - text: Apply Now
+        - img "arrow up icon" [ref=e8]
+    - banner [ref=e9]:
+      - generic [ref=e11]:
+        - link "tetr-logo" [ref=e12] [cursor=pointer]:
+          - /url: /
+          - img "tetr-logo" [ref=e13]
+        - generic [ref=e14]:
+          - generic [ref=e15]:
+            - button "Programs Programs Icon" [ref=e16] [cursor=pointer]:
+              - generic [ref=e17]: Programs
+              - generic [ref=e18]: Programs
+              - img "Icon" [ref=e19]
+            - link "Faculty Faculty" [ref=e20] [cursor=pointer]:
+              - /url: /faculty
+              - generic [ref=e21]: Faculty
+              - generic [ref=e22]: Faculty
+            - link "Student Life Student Life" [ref=e23] [cursor=pointer]:
+              - /url: /student-life
+              - generic [ref=e24]: Student Life
+              - generic [ref=e25]: Student Life
+            - button "About About Icon" [ref=e26] [cursor=pointer]:
+              - generic [ref=e27]: About
+              - generic [ref=e28]: About
+              - img "Icon" [ref=e29]
+          - generic [ref=e30]:
+            - link "APPLY NOW" [ref=e31] [cursor=pointer]:
+              - /url: /apply-now
+            - link "CONTACT US" [ref=e32] [cursor=pointer]:
+              - /url: /contact-us
+  - main [ref=e33]:
+    - generic [ref=e35]:
+      - heading "A global Gap Year Program that packs adventure, life lessons, and building business across 8 countries" [level=1] [ref=e36]
+      - link "Apply Now Icon" [ref=e38] [cursor=pointer]:
+        - /url: "#gapFormWrapper"
+        - text: Apply Now
+        - img "Icon" [ref=e39]
+    - generic [ref=e41]:
+      - img "Icon" [ref=e42]
+      - img "Icon" [ref=e43]
+      - generic [ref=e46]:
+        - generic [ref=e47]:
+          - generic [ref=e48]: DURATION
+          - generic [ref=e49]: 1 Year
+        - generic [ref=e51]:
+          - generic [ref=e52]: LOCATION
+          - generic [ref=e53]: 8 Countries
+        - generic [ref=e55]:
+          - generic [ref=e56]: ELIGIBILITY
+          - generic [ref=e57]: "Age: 15+"
+        - generic [ref=e59]:
+          - generic [ref=e60]: FORMAT
+          - generic [ref=e61]: Full Time
+        - generic [ref=e63]:
+          - generic [ref=e64]: START DATE
+          - generic [ref=e65]: Sept 2026
+    - generic [ref=e67]:
+      - heading "Dive into the Hands-on Curriculum" [level=2] [ref=e68]
+      - generic [ref=e70]:
+        - img "Tetr China" [ref=e74]
+        - generic [ref=e79]:
+          - generic [ref=e80]:
+            - generic [ref=e82] [cursor=pointer]:
+              - generic [ref=e83]: Term 1
+              - generic [ref=e86]: China
+            - generic [ref=e90]:
+              - generic [ref=e92]:
+                - generic [ref=e93]: Term Project
+                - paragraph [ref=e94]: Launch a Consumer brand in food, clothing, or accessories catering to the suburban audiences in China. Target 5 SKUs, $5,000 in revenue & a margin of 30%.
+              - generic [ref=e95]:
+                - list [ref=e96]:
+                  - listitem [ref=e97] [cursor=pointer]: Courses & Workshops
+                  - listitem [ref=e98] [cursor=pointer]: Business Immersions
+                  - listitem [ref=e99] [cursor=pointer]: Cultural Immersions
+                - list [ref=e101]:
+                  - listitem [ref=e102]:
+                    - img "Star Icon" [ref=e103]
+                    - paragraph [ref=e104]: How to deconstruct a manufacturing ecosystem
+                  - listitem [ref=e105]:
+                    - img "Star Icon" [ref=e106]
+                    - paragraph [ref=e107]: How to evaluate factories
+                  - listitem [ref=e108]:
+                    - img "Star Icon" [ref=e109]
+                    - paragraph [ref=e110]: How to build a pricing & margin model for a physical product
+                  - listitem [ref=e111]:
+                    - img "Star Icon" [ref=e112]
+                    - paragraph [ref=e113]: How to build a global supply chain map
+                  - listitem [ref=e114]:
+                    - img "Star Icon" [ref=e115]
+                    - paragraph [ref=e116]: How to understand the way LLMs & AI actually work
+          - generic [ref=e119] [cursor=pointer]:
+            - generic [ref=e120]: Term 2
+            - generic [ref=e123]: Japan
+          - paragraph [ref=e131]: Winter Break
+          - generic [ref=e134] [cursor=pointer]:
+            - generic [ref=e135]: Term 3
+            - generic [ref=e138]: Europe
+          - generic [ref=e144] [cursor=pointer]:
+            - generic [ref=e145]: Term 4
+            - generic [ref=e148]: Argentina
+          - generic [ref=e154] [cursor=pointer]:
+            - generic [ref=e155]: Term 5
+            - generic [ref=e158]: Dubai
+          - generic [ref=e164] [cursor=pointer]:
+            - generic [ref=e165]: Term 6
+            - generic [ref=e168]: India
+          - generic [ref=e174] [cursor=pointer]:
+            - generic [ref=e175]: Term 7
+            - generic [ref=e178]: Internship
+    - generic [ref=e184]:
+      - heading "Begin Your Tetr Journey" [level=2] [ref=e185]
+      - generic [ref=e190]:
+        - textbox "Enter Full Name*" [ref=e191]
+        - textbox "Enter Email Address*" [ref=e192]
+        - generic [ref=e193]:
+          - combobox [ref=e194]:
+            - option "Select Code*" [disabled] [selected]
+            - option "+93 (Afghanistan)"
+            - option "+358 (Aland Islands)"
+            - option "+355 (Albania)"
+            - option "+213 (Algeria)"
+            - option "+1 (American Samoa)"
+            - option "+376 (Andorra)"
+            - option "+244 (Angola)"
+            - option "+1 (Anguilla)"
+            - option "+672 (Antarctica)"
+            - option "+1 (Antigua and Barbuda)"
+            - option "+54 (Argentina)"
+            - option "+374 (Armenia)"
+            - option "+297 (Aruba)"
+            - option "+61 (Australia)"
+            - option "+43 (Austria)"
+            - option "+994 (Azerbaijan)"
+            - option "+973 (Bahrain)"
+            - option "+880 (Bangladesh)"
+            - option "+1 (Barbados)"
+            - option "+375 (Belarus)"
+            - option "+32 (Belgium)"
+            - option "+501 (Belize)"
+            - option "+229 (Benin)"
+            - option "+1 (Bermuda)"
+            - option "+975 (Bhutan)"
+            - option "+591 (Bolivia)"
+            - option "+599 (Bonaire, Sint Eustatius and Saba)"
+            - option "+387 (Bosnia and Herzegovina)"
+            - option "+267 (Botswana)"
+            - option "+0055 (Bouvet Island)"
+            - option "+55 (Brazil)"
+            - option "+246 (British Indian Ocean Territory)"
+            - option "+673 (Brunei)"
+            - option "+359 (Bulgaria)"
+            - option "+226 (Burkina Faso)"
+            - option "+257 (Burundi)"
+            - option "+855 (Cambodia)"
+            - option "+237 (Cameroon)"
+            - option "+1 (Canada)"
+            - option "+238 (Cape Verde)"
+            - option "+1 (Cayman Islands)"
+            - option "+236 (Central African Republic)"
+            - option "+235 (Chad)"
+            - option "+56 (Chile)"
+            - option "+86 (China)"
+            - option "+61 (Christmas Island)"
+            - option "+61 (Cocos (Keeling) Islands)"
+            - option "+57 (Colombia)"
+            - option "+269 (Comoros)"
+            - option "+242 (Congo)"
+            - option "+682 (Cook Islands)"
+            - option "+506 (Costa Rica)"
+            - option "+385 (Croatia)"
+            - option "+53 (Cuba)"
+            - option "+599 (Curaçao)"
+            - option "+357 (Cyprus)"
+            - option "+420 (Czech Republic)"
+            - option "+243 (Democratic Republic of the Congo)"
+            - option "+45 (Denmark)"
+            - option "+253 (Djibouti)"
+            - option "+1 (Dominica)"
+            - option "+1 (Dominican Republic)"
+            - option "+593 (Ecuador)"
+            - option "+20 (Egypt)"
+            - option "+503 (El Salvador)"
+            - option "+240 (Equatorial Guinea)"
+            - option "+291 (Eritrea)"
+            - option "+372 (Estonia)"
+            - option "+268 (Eswatini)"
+            - option "+251 (Ethiopia)"
+            - option "+500 (Falkland Islands)"
+            - option "+298 (Faroe Islands)"
+            - option "+679 (Fiji Islands)"
+            - option "+358 (Finland)"
+            - option "+33 (France)"
+            - option "+594 (French Guiana)"
+            - option "+689 (French Polynesia)"
+            - option "+262 (French Southern Territories)"
+            - option "+241 (Gabon)"
+            - option "+995 (Georgia)"
+            - option "+49 (Germany)"
+            - option "+233 (Ghana)"
+            - option "+350 (Gibraltar)"
+            - option "+30 (Greece)"
+            - option "+299 (Greenland)"
+            - option "+1 (Grenada)"
+            - option "+590 (Guadeloupe)"
+            - option "+1 (Guam)"
+            - option "+502 (Guatemala)"
+            - option "+44 (Guernsey)"
+            - option "+224 (Guinea)"
+            - option "+245 (Guinea-Bissau)"
+            - option "+592 (Guyana)"
+            - option "+509 (Haiti)"
+            - option "+672 (Heard Island and McDonald Islands)"
+            - option "+504 (Honduras)"
+            - option "+852 (Hong Kong S.A.R.)"
+            - option "+36 (Hungary)"
+            - option "+354 (Iceland)"
+            - option "+91 (India)"
+            - option "+62 (Indonesia)"
+            - option "+98 (Iran)"
+            - option "+964 (Iraq)"
+            - option "+353 (Ireland)"
+            - option "+972 (Israel)"
+            - option "+39 (Italy)"
+            - option "+225 (Ivory Coast)"
+            - option "+1 (Jamaica)"
+            - option "+81 (Japan)"
+            - option "+44 (Jersey)"
+            - option "+962 (Jordan)"
+            - option "+7 (Kazakhstan)"
+            - option "+254 (Kenya)"
+            - option "+686 (Kiribati)"
+            - option "+383 (Kosovo)"
+            - option "+965 (Kuwait)"
+            - option "+996 (Kyrgyzstan)"
+            - option "+856 (Laos)"
+            - option "+371 (Latvia)"
+            - option "+961 (Lebanon)"
+            - option "+266 (Lesotho)"
+            - option "+231 (Liberia)"
+            - option "+218 (Libya)"
+            - option "+423 (Liechtenstein)"
+            - option "+370 (Lithuania)"
+            - option "+352 (Luxembourg)"
+            - option "+853 (Macau S.A.R.)"
+            - option "+261 (Madagascar)"
+            - option "+265 (Malawi)"
+            - option "+60 (Malaysia)"
+            - option "+960 (Maldives)"
+            - option "+223 (Mali)"
+            - option "+356 (Malta)"
+            - option "+44 (Man (Isle of))"
+            - option "+692 (Marshall Islands)"
+            - option "+596 (Martinique)"
+            - option "+222 (Mauritania)"
+            - option "+230 (Mauritius)"
+            - option "+262 (Mayotte)"
+            - option "+52 (Mexico)"
+            - option "+691 (Micronesia)"
+            - option "+373 (Moldova)"
+            - option "+377 (Monaco)"
+            - option "+976 (Mongolia)"
+            - option "+382 (Montenegro)"
+            - option "+1 (Montserrat)"
+            - option "+212 (Morocco)"
+            - option "+258 (Mozambique)"
+            - option "+95 (Myanmar)"
+            - option "+264 (Namibia)"
+            - option "+674 (Nauru)"
+            - option "+977 (Nepal)"
+            - option "+31 (Netherlands)"
+            - option "+687 (New Caledonia)"
+            - option "+64 (New Zealand)"
+            - option "+505 (Nicaragua)"
+            - option "+227 (Niger)"
+            - option "+234 (Nigeria)"
+            - option "+683 (Niue)"
+            - option "+672 (Norfolk Island)"
+            - option "+1 (Northern Mariana Islands)"
+            - option "+850 (North Korea)"
+            - option "+389 (North Macedonia)"
+            - option "+47 (Norway)"
+            - option "+968 (Oman)"
+            - option "+92 (Pakistan)"
+            - option "+680 (Palau)"
+            - option "+970 (Palestinian Territory Occupied)"
+            - option "+507 (Panama)"
+            - option "+675 (Papua New Guinea)"
+            - option "+595 (Paraguay)"
+            - option "+51 (Peru)"
+            - option "+63 (Philippines)"
+            - option "+870 (Pitcairn Island)"
+            - option "+48 (Poland)"
+            - option "+351 (Portugal)"
+            - option "+1 (Puerto Rico)"
+            - option "+974 (Qatar)"
+            - option "+262 (Reunion)"
+            - option "+40 (Romania)"
+            - option "+7 (Russia)"
+            - option "+250 (Rwanda)"
+            - option "+590 (Saint-Barthelemy)"
+            - option "+290 (Saint Helena)"
+            - option "+1 (Saint Kitts and Nevis)"
+            - option "+1 (Saint Lucia)"
+            - option "+590 (Saint-Martin (French part))"
+            - option "+508 (Saint Pierre and Miquelon)"
+            - option "+1 (Saint Vincent and the Grenadines)"
+            - option "+685 (Samoa)"
+            - option "+378 (San Marino)"
+            - option "+239 (Sao Tome and Principe)"
+            - option "+966 (Saudi Arabia)"
+            - option "+221 (Senegal)"
+            - option "+381 (Serbia)"
+            - option "+248 (Seychelles)"
+            - option "+232 (Sierra Leone)"
+            - option "+65 (Singapore)"
+            - option "+1721 (Sint Maarten (Dutch part))"
+            - option "+421 (Slovakia)"
+            - option "+386 (Slovenia)"
+            - option "+677 (Solomon Islands)"
+            - option "+252 (Somalia)"
+            - option "+27 (South Africa)"
+            - option "+500 (South Georgia)"
+            - option "+82 (South Korea)"
+            - option "+211 (South Sudan)"
+            - option "+34 (Spain)"
+            - option "+94 (Sri Lanka)"
+            - option "+249 (Sudan)"
+            - option "+597 (Suriname)"
+            - option "+47 (Svalbard and Jan Mayen Islands)"
+            - option "+46 (Sweden)"
+            - option "+41 (Switzerland)"
+            - option "+963 (Syria)"
+            - option "+886 (Taiwan)"
+            - option "+992 (Tajikistan)"
+            - option "+255 (Tanzania)"
+            - option "+66 (Thailand)"
+            - option "+1 (The Bahamas)"
+            - option "+220 (The Gambia)"
+            - option "+670 (Timor-Leste)"
+            - option "+228 (Togo)"
+            - option "+690 (Tokelau)"
+            - option "+676 (Tonga)"
+            - option "+1 (Trinidad and Tobago)"
+            - option "+216 (Tunisia)"
+            - option "+90 (Turkey)"
+            - option "+993 (Turkmenistan)"
+            - option "+1 (Turks and Caicos Islands)"
+            - option "+688 (Tuvalu)"
+            - option "+256 (Uganda)"
+            - option "+380 (Ukraine)"
+            - option "+971 (United Arab Emirates)"
+            - option "+44 (United Kingdom)"
+            - option "+1 (United States)"
+            - option "+1 (United States Minor Outlying Islands)"
+            - option "+598 (Uruguay)"
+            - option "+998 (Uzbekistan)"
+            - option "+678 (Vanuatu)"
+            - option "+379 (Vatican City State (Holy See))"
+            - option "+58 (Venezuela)"
+            - option "+84 (Vietnam)"
+            - option "+1 (Virgin Islands (British))"
+            - option "+1 (Virgin Islands (US))"
+            - option "+681 (Wallis and Futuna Islands)"
+            - option "+212 (Western Sahara)"
+            - option "+967 (Yemen)"
+            - option "+260 (Zambia)"
+            - option "+263 (Zimbabwe)"
+          - textbox "Please enter at least 7 digits" [ref=e195]:
+            - /placeholder: Enter Mobile No*
+        - combobox [ref=e196]:
+          - option "Select Your Country*" [disabled] [selected]
+          - option "Afghanistan"
+          - option "Aland Islands"
+          - option "Albania"
+          - option "Algeria"
+          - option "American Samoa"
+          - option "Andorra"
+          - option "Angola"
+          - option "Anguilla"
+          - option "Antarctica"
+          - option "Antigua and Barbuda"
+          - option "Argentina"
+          - option "Armenia"
+          - option "Aruba"
+          - option "Australia"
+          - option "Austria"
+          - option "Azerbaijan"
+          - option "Bahrain"
+          - option "Bangladesh"
+          - option "Barbados"
+          - option "Belarus"
+          - option "Belgium"
+          - option "Belize"
+          - option "Benin"
+          - option "Bermuda"
+          - option "Bhutan"
+          - option "Bolivia"
+          - option "Bonaire, Sint Eustatius and Saba"
+          - option "Bosnia and Herzegovina"
+          - option "Botswana"
+          - option "Bouvet Island"
+          - option "Brazil"
+          - option "British Indian Ocean Territory"
+          - option "Brunei"
+          - option "Bulgaria"
+          - option "Burkina Faso"
+          - option "Burundi"
+          - option "Cambodia"
+          - option "Cameroon"
+          - option "Canada"
+          - option "Cape Verde"
+          - option "Cayman Islands"
+          - option "Central African Republic"
+          - option "Chad"
+          - option "Chile"
+          - option "China"
+          - option "Christmas Island"
+          - option "Cocos (Keeling) Islands"
+          - option "Colombia"
+          - option "Comoros"
+          - option "Congo"
+          - option "Cook Islands"
+          - option "Costa Rica"
+          - option "Croatia"
+          - option "Cuba"
+          - option "Curaçao"
+          - option "Cyprus"
+          - option "Czech Republic"
+          - option "Democratic Republic of the Congo"
+          - option "Denmark"
+          - option "Djibouti"
+          - option "Dominica"
+          - option "Dominican Republic"
+          - option "Ecuador"
+          - option "Egypt"
+          - option "El Salvador"
+          - option "Equatorial Guinea"
+          - option "Eritrea"
+          - option "Estonia"
+          - option "Eswatini"
+          - option "Ethiopia"
+          - option "Falkland Islands"
+          - option "Faroe Islands"
+          - option "Fiji Islands"
+          - option "Finland"
+          - option "France"
+          - option "French Guiana"
+          - option "French Polynesia"
+          - option "French Southern Territories"
+          - option "Gabon"
+          - option "Georgia"
+          - option "Germany"
+          - option "Ghana"
+          - option "Gibraltar"
+          - option "Greece"
+          - option "Greenland"
+          - option "Grenada"
+          - option "Guadeloupe"
+          - option "Guam"
+          - option "Guatemala"
+          - option "Guernsey"
+          - option "Guinea"
+          - option "Guinea-Bissau"
+          - option "Guyana"
+          - option "Haiti"
+          - option "Heard Island and McDonald Islands"
+          - option "Honduras"
+          - option "Hong Kong S.A.R."
+          - option "Hungary"
+          - option "Iceland"
+          - option "India"
+          - option "Indonesia"
+          - option "Iran"
+          - option "Iraq"
+          - option "Ireland"
+          - option "Israel"
+          - option "Italy"
+          - option "Ivory Coast"
+          - option "Jamaica"
+          - option "Japan"
+          - option "Jersey"
+          - option "Jordan"
+          - option "Kazakhstan"
+          - option "Kenya"
+          - option "Kiribati"
+          - option "Kosovo"
+          - option "Kuwait"
+          - option "Kyrgyzstan"
+          - option "Laos"
+          - option "Latvia"
+          - option "Lebanon"
+          - option "Lesotho"
+          - option "Liberia"
+          - option "Libya"
+          - option "Liechtenstein"
+          - option "Lithuania"
+          - option "Luxembourg"
+          - option "Macau S.A.R."
+          - option "Madagascar"
+          - option "Malawi"
+          - option "Malaysia"
+          - option "Maldives"
+          - option "Mali"
+          - option "Malta"
+          - option "Man (Isle of)"
+          - option "Marshall Islands"
+          - option "Martinique"
+          - option "Mauritania"
+          - option "Mauritius"
+          - option "Mayotte"
+          - option "Mexico"
+          - option "Micronesia"
+          - option "Moldova"
+          - option "Monaco"
+          - option "Mongolia"
+          - option "Montenegro"
+          - option "Montserrat"
+          - option "Morocco"
+          - option "Mozambique"
+          - option "Myanmar"
+          - option "Namibia"
+          - option "Nauru"
+          - option "Nepal"
+          - option "Netherlands"
+          - option "New Caledonia"
+          - option "New Zealand"
+          - option "Nicaragua"
+          - option "Niger"
+          - option "Nigeria"
+          - option "Niue"
+          - option "Norfolk Island"
+          - option "Northern Mariana Islands"
+          - option "North Korea"
+          - option "North Macedonia"
+          - option "Norway"
+          - option "Oman"
+          - option "Pakistan"
+          - option "Palau"
+          - option "Palestinian Territory Occupied"
+          - option "Panama"
+          - option "Papua New Guinea"
+          - option "Paraguay"
+          - option "Peru"
+          - option "Philippines"
+          - option "Pitcairn Island"
+          - option "Poland"
+          - option "Portugal"
+          - option "Puerto Rico"
+          - option "Qatar"
+          - option "Reunion"
+          - option "Romania"
+          - option "Russia"
+          - option "Rwanda"
+          - option "Saint-Barthelemy"
+          - option "Saint Helena"
+          - option "Saint Kitts and Nevis"
+          - option "Saint Lucia"
+          - option "Saint-Martin (French part)"
+          - option "Saint Pierre and Miquelon"
+          - option "Saint Vincent and the Grenadines"
+          - option "Samoa"
+          - option "San Marino"
+          - option "Sao Tome and Principe"
+          - option "Saudi Arabia"
+          - option "Senegal"
+          - option "Serbia"
+          - option "Seychelles"
+          - option "Sierra Leone"
+          - option "Singapore"
+          - option "Sint Maarten (Dutch part)"
+          - option "Slovakia"
+          - option "Slovenia"
+          - option "Solomon Islands"
+          - option "Somalia"
+          - option "South Africa"
+          - option "South Georgia"
+          - option "South Korea"
+          - option "South Sudan"
+          - option "Spain"
+          - option "Sri Lanka"
+          - option "Sudan"
+          - option "Suriname"
+          - option "Svalbard and Jan Mayen Islands"
+          - option "Sweden"
+          - option "Switzerland"
+          - option "Syria"
+          - option "Taiwan"
+          - option "Tajikistan"
+          - option "Tanzania"
+          - option "Thailand"
+          - option "The Bahamas"
+          - option "The Gambia"
+          - option "Timor-Leste"
+          - option "Togo"
+          - option "Tokelau"
+          - option "Tonga"
+          - option "Trinidad and Tobago"
+          - option "Tunisia"
+          - option "Turkey"
+          - option "Turkmenistan"
+          - option "Turks and Caicos Islands"
+          - option "Tuvalu"
+          - option "Uganda"
+          - option "Ukraine"
+          - option "United Arab Emirates"
+          - option "United Kingdom"
+          - option "United States"
+          - option "United States Minor Outlying Islands"
+          - option "Uruguay"
+          - option "Uzbekistan"
+          - option "Vanuatu"
+          - option "Vatican City State (Holy See)"
+          - option "Venezuela"
+          - option "Vietnam"
+          - option "Virgin Islands (British)"
+          - option "Virgin Islands (US)"
+          - option "Wallis and Futuna Islands"
+          - option "Western Sahara"
+          - option "Yemen"
+          - option "Zambia"
+          - option "Zimbabwe"
+        - combobox [ref=e197]:
+          - option "Annual Household Income (In USD)*" [disabled] [selected]
+          - option "Less than $20000"
+          - option "$20000 - $50000"
+          - option "$50000 - $100000"
+          - option "$100000 - $200000"
+          - option "More than $200000"
+        - generic [ref=e198]:
+          - checkbox [ref=e199] [cursor=pointer]
+          - generic [ref=e200]:
+            - text: I authorize Tetr and its affiliates to process my personal data to send me information about programs related to my application, admission, or enrollment through digital channels (including email, phone calls, RCS, SMS, and WhatsApp), in accordance with Tetr’s
+            - link "Privacy" [ref=e201] [cursor=pointer]:
+              - /url: /privacy-policy
+            - text: and
+            - link "Cookie Policy" [ref=e202] [cursor=pointer]:
+              - /url: /privacy-policy
+            - text: .By submitting my details, I agree to receive communications related to my application, events, and program updates. Message frequency may vary and message and data rates may apply. I may withdraw my consent at any time by replying STOP, UNSUBSCRIBE, or HELP for assistance.
+        - button "SUBMIT Icon" [ref=e204] [cursor=pointer]:
+          - text: SUBMIT
+          - img "Icon" [ref=e205]
+    - generic [ref=e209]:
+      - heading "What’s in it for you?" [level=2] [ref=e211]
+      - generic [ref=e212]:
+        - generic [ref=e213]:
+          - img "Icon" [ref=e214]
+          - generic [ref=e215]:
+            - heading "Think Like a Builder" [level=3] [ref=e216]
+            - list [ref=e217]:
+              - listitem [ref=e218]:
+                - paragraph [ref=e219]: Stop waiting for a roadmap and learn to build one yourself. From product thinking in China to launching a real D2C brand in India, you'll develop the vision, execution, and resilience that separates builders from bystanders.
+        - generic [ref=e220]:
+          - img "Icon" [ref=e221]
+          - generic [ref=e222]:
+            - heading "From Good Ideas to Compelling Arguments" [level=3] [ref=e223]
+            - list [ref=e224]:
+              - listitem [ref=e225]:
+                - paragraph [ref=e226]: The best idea doesn't win. The best-communicated idea does. You'll negotiate live in Dubai's Gold Souk, pitch to panels across six countries, and learn to craft copy, decks, and brand deals that actually move people.
+        - generic [ref=e227]:
+          - img "Icon" [ref=e228]
+          - generic [ref=e229]:
+            - heading "Use AI Like Leverage, Not Hype" [level=3] [ref=e230]
+            - list [ref=e231]:
+              - listitem [ref=e232]:
+                - paragraph [ref=e233]: AI won't replace you, but someone using it will. Across every term you'll learn to wield AI for prompt engineering, content creation, product building, and data-driven decisions, turning weeks of work into hours.
+        - generic [ref=e234]:
+          - img "Icon" [ref=e235]
+          - generic [ref=e236]:
+            - heading "Discover What You’re Actually Built For" [level=3] [ref=e237]
+            - list [ref=e238]:
+              - listitem [ref=e239]:
+                - paragraph [ref=e240]: The most important discovery you'll make is about yourself. Navigate new environments, challenges, and cultures to understand what drives you, where your strengths lie, and what kind of future you actually want to build.
+    - generic [ref=e242]:
+      - generic [ref=e243]:
+        - heading "How to Submit Your Application ?" [level=2] [ref=e244]:
+          - text: How to Submit
+          - text: Your Application ?
+        - img "Icon" [ref=e245]
+        - link "Apply Now Apply Now Icon" [ref=e246] [cursor=pointer]:
+          - /url: "#gapFormWrapper"
+          - generic [ref=e247]:
+            - generic [ref=e248]: Apply Now
+            - generic [ref=e249]: Apply Now
+          - img "Icon" [ref=e251]
+      - generic [ref=e252]:
+        - paragraph [ref=e253]: Follow 4 simple steps of our admissions process.
+        - generic [ref=e255]:
+          - generic [ref=e256]:
+            - generic [ref=e257]: "1"
+            - paragraph [ref=e259]: Complete the application form, including your essay response
+          - generic [ref=e260]:
+            - generic [ref=e261]: "2"
+            - paragraph [ref=e263]: Interview with an industry leader to assess fit
+          - generic [ref=e264]:
+            - generic [ref=e265]: "3"
+            - paragraph [ref=e267]: Receive your offer letter upon successful selection
+          - generic [ref=e268]:
+            - generic [ref=e269]: "4"
+            - paragraph [ref=e271]: Secure your seat by submitting the program fee.
+      - generic [ref=e272]:
+        - img "Icon" [ref=e273]
+        - generic [ref=e274]: "Scholarships & Support: Limited merit and need-based financial aid are available"
+    - generic [ref=e276]:
+      - generic [ref=e277]:
+        - heading "Learning by Doing. In Action." [level=2] [ref=e278]
+        - generic [ref=e279]:
+          - button "Icon" [ref=e280] [cursor=pointer]:
+            - img "Icon" [ref=e281]
+          - button "Icon" [ref=e282] [cursor=pointer]:
+            - img "Icon" [ref=e283]
+      - generic [ref=e284]:
+        - link "Kickstarter Campaigns Founded in Term 3" [ref=e285] [cursor=pointer]:
+          - /url: /kickstarter
+          - heading "Kickstarter Campaigns" [level=3] [ref=e286]
+          - text: Founded in Term 3
+        - generic [ref=e287] [cursor=pointer]:
+          - heading "D2C Companies" [level=3] [ref=e288]
+          - text: Founded in Term 2
+        - generic [ref=e289] [cursor=pointer]:
+          - heading "Dropshipping Companies" [level=3] [ref=e290]
+          - text: Founded in Term 1
+        - generic [ref=e291] [cursor=pointer]:
+          - heading "Creator Fellows" [level=3] [ref=e292]
+          - text: Progress in Term 1
+      - generic [ref=e295]:
+        - group "NaN / 19" [ref=e296]:
+          - generic [ref=e297] [cursor=pointer]:
+            - img "Icon" [ref=e299]
+            - generic [ref=e300]:
+              - generic [ref=e301]: BATCH 2028
+              - paragraph [ref=e302]: Review Cohort 1 Progress
+        - group "NaN / 19" [ref=e303]:
+          - link "8 BILLIONPROJECT @8.billionproject • Apparel Icon" [ref=e304] [cursor=pointer]:
+            - /url: https://www.instagram.com/8.billionproject?igsh=a3g5cjV0aWFxNjdv&utm_source=qr
+            - generic [ref=e306]:
+              - generic [ref=e307]:
+                - heading "8 BILLIONPROJECT" [level=3] [ref=e308]
+                - generic [ref=e309]: "@8.billionproject • Apparel"
+              - img "Icon" [ref=e311]
+        - group "NaN / 19" [ref=e312]:
+          - link "SERVE @serveclub_co • Sports Icon" [ref=e313] [cursor=pointer]:
+            - /url: https://www.instagram.com/serveclub_co?igsh=MXd0eXExOTl5MnNlbA==
+            - generic [ref=e315]:
+              - generic [ref=e316]:
+                - heading "SERVE" [level=3] [ref=e317]
+                - generic [ref=e318]: "@serveclub_co • Sports"
+              - img "Icon" [ref=e320]
+        - group "NaN / 19" [ref=e321]:
+          - link "MAISON&CO @maisonandcoofficial • Accessories Icon" [ref=e322] [cursor=pointer]:
+            - /url: https://www.instagram.com/maisonandcoofficial/?igsh=bHRlcXI5bzJ4b2V1#
+            - generic [ref=e324]:
+              - generic [ref=e325]:
+                - heading "MAISON&CO" [level=3] [ref=e326]
+                - generic [ref=e327]: "@maisonandcoofficial • Accessories"
+              - img "Icon" [ref=e329]
+        - group "NaN / 19" [ref=e330]:
+          - link "KNOTCULTURED @knotcultured • Apparel Icon" [ref=e331] [cursor=pointer]:
+            - /url: https://www.instagram.com/knotcultured/
+            - generic [ref=e333]:
+              - generic [ref=e334]:
+                - heading "KNOTCULTURED" [level=3] [ref=e335]
+                - generic [ref=e336]: "@knotcultured • Apparel"
+              - img "Icon" [ref=e338]
+        - group "NaN / 19" [ref=e339]:
+          - link "NAMASTE NONSENSE @namastenonsenseofficial • Entertainment Icon" [ref=e340] [cursor=pointer]:
+            - /url: https://www.instagram.com/namastenonsenseofficial?igsh=MTVkcDF0eTViMGdheA==
+            - generic [ref=e342]:
+              - generic [ref=e343]:
+                - heading "NAMASTE NONSENSE" [level=3] [ref=e344]
+                - generic [ref=e345]: "@namastenonsenseofficial • Entertainment"
+              - img "Icon" [ref=e347]
+        - group "NaN / 19" [ref=e348]:
+          - link "HERA ASTRA @hera.astra • Accessories / Jewelry Icon" [ref=e349] [cursor=pointer]:
+            - /url: https://www.instagram.com/hera.astra?igsh=b2hzemkyNzEzY3d3&utm_source=qr
+            - generic [ref=e351]:
+              - generic [ref=e352]:
+                - heading "HERA ASTRA" [level=3] [ref=e353]
+                - generic [ref=e354]: "@hera.astra • Accessories / Jewelry"
+              - img "Icon" [ref=e356]
+        - group "NaN / 19" [ref=e357]:
+          - link "MOZAIC @mozaiclife.co • Accessories / Bags Icon" [ref=e358] [cursor=pointer]:
+            - /url: https://www.instagram.com/mozaiclife.co?igsh=MXI3a3QwcGxlZHE2NA==
+            - generic [ref=e360]:
+              - generic [ref=e361]:
+                - heading "MOZAIC" [level=3] [ref=e362]
+                - generic [ref=e363]: "@mozaiclife.co • Accessories / Bags"
+              - img "Icon" [ref=e365]
+        - group "NaN / 19" [ref=e366]:
+          - link "DEAL IT @dealitclub • Entertainment Icon" [ref=e367] [cursor=pointer]:
+            - /url: https://www.instagram.com/dealitclub?igsh=a3l0NXg2Z2toZW8z
+            - generic [ref=e369]:
+              - generic [ref=e370]:
+                - heading "DEAL IT" [level=3] [ref=e371]
+                - generic [ref=e372]: "@dealitclub • Entertainment"
+              - img "Icon" [ref=e374]
+        - group "NaN / 19" [ref=e375]:
+          - link "LUAMI @luami.in • Apparel Icon" [ref=e376] [cursor=pointer]:
+            - /url: https://www.instagram.com/luami.in?igsh=c3ZvOWhoMTQ3eXU0
+            - generic [ref=e378]:
+              - generic [ref=e379]:
+                - heading "LUAMI" [level=3] [ref=e380]
+                - generic [ref=e381]: "@luami.in • Apparel"
+              - img "Icon" [ref=e383]
+        - group "NaN / 19" [ref=e384]:
+          - link "MYCELIAN @mycelian.store • Food / Beverage Icon" [ref=e385] [cursor=pointer]:
+            - /url: https://www.instagram.com/mycelian.store?igsh=a3pvNG01NTJ1OWVy
+            - generic [ref=e387]:
+              - generic [ref=e388]:
+                - heading "MYCELIAN" [level=3] [ref=e389]
+                - generic [ref=e390]: "@mycelian.store • Food / Beverage"
+              - img "Icon" [ref=e392]
+        - group "NaN / 19" [ref=e393]:
+          - link "BELURE @belure.india • Food / Snacks Icon" [ref=e394] [cursor=pointer]:
+            - /url: https://www.instagram.com/belure.india/
+            - generic [ref=e396]:
+              - generic [ref=e397]:
+                - heading "BELURE" [level=3] [ref=e398]
+                - generic [ref=e399]: "@belure.india • Food / Snacks"
+              - img "Icon" [ref=e401]
+        - group "NaN / 19" [ref=e402]:
+          - link "ICEBREAKERS @icebreakers____ • Accessories Icon" [ref=e403] [cursor=pointer]:
+            - /url: https://www.instagram.com/icebreakers____/
+            - generic [ref=e405]:
+              - generic [ref=e406]:
+                - heading "ICEBREAKERS" [level=3] [ref=e407]
+                - generic [ref=e408]: "@icebreakers____ • Accessories"
+              - img "Icon" [ref=e410]
+        - group "NaN / 19" [ref=e411]:
+          - link "COSSMOSS @shop.cosmoss • Food / Supplements Icon" [ref=e412] [cursor=pointer]:
+            - /url: https://www.instagram.com/shop.cosmoss/
+            - generic [ref=e414]:
+              - generic [ref=e415]:
+                - heading "COSSMOSS" [level=3] [ref=e416]
+                - generic [ref=e417]: "@shop.cosmoss • Food / Supplements"
+              - img "Icon" [ref=e419]
+        - group "NaN / 19" [ref=e420]:
+          - link "GYERY @gyeryofficial • Accessories Icon" [ref=e421] [cursor=pointer]:
+            - /url: https://www.instagram.com/gyeryofficial/
+            - generic [ref=e423]:
+              - generic [ref=e424]:
+                - heading "GYERY" [level=3] [ref=e425]
+                - generic [ref=e426]: "@gyeryofficial • Accessories"
+              - img "Icon" [ref=e428]
+        - group "NaN / 19" [ref=e429]:
+          - link "VOIDRA @_voidra_ • Accessories Icon" [ref=e430] [cursor=pointer]:
+            - /url: https://www.instagram.com/_voidra_
+            - generic [ref=e432]:
+              - generic [ref=e433]:
+                - heading "VOIDRA" [level=3] [ref=e434]
+                - generic [ref=e435]: "@_voidra_ • Accessories"
+              - img "Icon" [ref=e437]
+        - group "NaN / 19" [ref=e438]:
+          - link "MUZO @muzo_foods • Food / Snacks Icon" [ref=e439] [cursor=pointer]:
+            - /url: https://www.instagram.com/muzo_foods/
+            - generic [ref=e441]:
+              - generic [ref=e442]:
+                - heading "MUZO" [level=3] [ref=e443]
+                - generic [ref=e444]: "@muzo_foods • Food / Snacks"
+              - img "Icon" [ref=e446]
+        - group "NaN / 19" [ref=e447]:
+          - link "SINNFUL COOKIES @sinnfulcookies • Food / Snacks Icon" [ref=e448] [cursor=pointer]:
+            - /url: ""
+            - generic [ref=e450]:
+              - generic [ref=e451]:
+                - heading "SINNFUL COOKIES" [level=3] [ref=e452]
+                - generic [ref=e453]: "@sinnfulcookies • Food / Snacks"
+              - img "Icon" [ref=e455]
+        - group "NaN / 19" [ref=e456]:
+          - link "SIXOPPA @sixoppa • Apparel (Food) Icon" [ref=e457] [cursor=pointer]:
+            - /url: ""
+            - generic [ref=e459]:
+              - generic [ref=e460]:
+                - heading "SIXOPPA" [level=3] [ref=e461]
+                - generic [ref=e462]: "@sixoppa • Apparel (Food)"
+              - img "Icon" [ref=e464]
+    - generic [ref=e466]:
+      - generic [ref=e468]:
+        - heading "Fee Structure" [level=2] [ref=e469]
+        - generic [ref=e470]: Currency in USD
+      - generic [ref=e472]:
+        - table [ref=e473]:
+          - rowgroup [ref=e474]:
+            - row "Academic Fees (Including Taxes) Yearly Amount (USD)" [ref=e475]:
+              - columnheader "Academic Fees (Including Taxes)" [ref=e476]:
+                - generic [ref=e477]: Academic Fees (Including Taxes)
+              - columnheader "Yearly Amount (USD)" [ref=e478]
+          - rowgroup [ref=e479]:
+            - row "Tuition 30,000" [ref=e480]:
+              - cell "Tuition" [ref=e481]:
+                - generic [ref=e482]: Tuition
+              - cell "30,000" [ref=e483]:
+                - generic [ref=e484]: 30,000
+            - row "Academic Immersions 15,000" [ref=e485]:
+              - cell "Academic Immersions" [ref=e486]:
+                - generic [ref=e487]: Academic Immersions
+              - cell "15,000" [ref=e488]:
+                - generic [ref=e489]: 15,000
+            - row "Business Immersions 7,000" [ref=e490]:
+              - cell "Business Immersions" [ref=e491]:
+                - generic [ref=e492]: Business Immersions
+              - cell "7,000" [ref=e493]:
+                - generic [ref=e494]: 7,000
+            - row "Total Academic Fees 52,000" [ref=e495]:
+              - cell "Total Academic Fees" [ref=e496]:
+                - generic [ref=e497]: Total Academic Fees
+              - cell "52,000" [ref=e498]:
+                - generic [ref=e499]: 52,000
+        - table [ref=e500]:
+          - rowgroup [ref=e501]:
+            - row "Admin Fees (Including Taxes) Yearly Amount (USD)" [ref=e502]:
+              - columnheader "Admin Fees (Including Taxes)" [ref=e503]:
+                - generic [ref=e504]: Admin Fees (Including Taxes)
+              - columnheader "Yearly Amount (USD)" [ref=e505]
+          - rowgroup [ref=e506]:
+            - row "Program Management 3,000" [ref=e507]:
+              - cell "Program Management" [ref=e508]:
+                - generic [ref=e509]: Program Management
+              - cell "3,000" [ref=e510]:
+                - generic [ref=e511]: 3,000
+        - table [ref=e512]:
+          - rowgroup [ref=e513]:
+            - row "Program Fees 55,000" [ref=e514]:
+              - cell "Program Fees" [ref=e515]:
+                - generic [ref=e516]: Program Fees
+              - cell "55,000" [ref=e517]:
+                - generic [ref=e518]: 55,000
+    - generic [ref=e521]:
+      - img "Tetr"
+      - generic [ref=e522]:
+        - generic [ref=e523]:
+          - heading "Living Costs at a Glance" [level=2] [ref=e524]
+          - paragraph [ref=e525]: Planning your finances is an important part of your academic journey. Here's a breakdown of living and immigration costs across the years to help you budget efficiently.
+        - generic [ref=e526]:
+          - generic [ref=e527]:
+            - img "Icon" [ref=e528]
+            - generic [ref=e529]:
+              - heading "Accommodation" [level=3] [ref=e530]
+              - list [ref=e531]:
+                - listitem [ref=e532]:
+                  - paragraph [ref=e533]: "Annual Accommodation Cost: $13,840"
+          - generic [ref=e534]:
+            - img "Icon" [ref=e535]
+            - generic [ref=e536]:
+              - heading "Immigration & Local Services" [level=3] [ref=e537]
+              - list [ref=e538]:
+                - listitem [ref=e539]:
+                  - paragraph [ref=e540]: "Total Immigration Cost: $6,160"
+          - generic [ref=e541]:
+            - img "Icon" [ref=e542]
+            - generic [ref=e543]:
+              - heading "Annual Living Expenses" [level=3] [ref=e544]
+              - list [ref=e545]:
+                - listitem [ref=e546]:
+                  - paragraph [ref=e547]:
+                    - text: "Total:"
+                    - generic [ref=e548]: $20,000
+          - paragraph [ref=e549]: "*The above mentioned costs are indicative, do not account for food and personal preferences. The above mentioned costs are handled by Tetr and collected as part of the fees."
+    - generic [ref=e551]:
+      - generic [ref=e552]:
+        - heading "Empowering Dreams Through Scholarships" [level=2] [ref=e553]
+        - paragraph [ref=e554]:
+          - text: At Tetr, we never let financial hardships stand in the way of quality education.
+          - text: Scholarships will cover up to 100% of the tuition for Gap Year Program.
+      - generic [ref=e555]:
+        - generic [ref=e556]:
+          - img "Tetr Students"
+        - generic [ref=e558]:
+          - generic [ref=e559]:
+            - heading "The Outliers Scholarship" [level=3] [ref=e561] [cursor=pointer]
+            - generic [ref=e565]:
+              - paragraph [ref=e566]: Celebrating exceptional talents beyond academics. If you're leading in fields like dance, space science, or robotics, this scholarship is designed to propel your unique journey forward at Tetr.
+              - list [ref=e567]:
+                - listitem [ref=e568]:
+                  - img "Icon" [ref=e569]
+                  - paragraph [ref=e570]: "Eligibility Criteria: Recognized in the top 1% in any field."
+          - generic [ref=e571]:
+            - heading "The Community Leaders Scholarship" [level=3] [ref=e573] [cursor=pointer]
+            - generic:
+              - paragraph [ref=e577]: Recognizing emerging leaders of tomorrow. If you've demonstrated exceptional leadership potential in any sphere, Tetr's Leadership Scholarship aims to nurture and develop your innate ability to inspire and lead.
+              - list [ref=e578]:
+                - listitem [ref=e579]:
+                  - img "Icon" [ref=e580]
+                  - paragraph [ref=e581]: "Eligibility Criteria: Demonstrated exceptional leadership abilities."
+          - generic [ref=e582]:
+            - heading "The Entrepreneur & Innovation Scholarship" [level=3] [ref=e584] [cursor=pointer]
+            - generic:
+              - paragraph [ref=e588]: For the visionaries who dream of launching groundbreaking ventures. This scholarship supports budding entrepreneurs ready to turn their innovative ideas into reality with Tetr's entrepreneurial ecosystem.
+              - list [ref=e589]:
+                - listitem [ref=e590]:
+                  - img "Icon" [ref=e591]
+                  - paragraph [ref=e592]: "Eligibility Criteria: Aspiring or current entrepreneurs."
+          - generic [ref=e593]:
+            - heading "The SAT Merit Scholarship" [level=3] [ref=e595] [cursor=pointer]
+            - generic:
+              - paragraph [ref=e599]: If your SAT scores place you among the top percentile, Tetr's SAT Scholarship is here to acknowledge your hard work and academic prowess, easing your path to a global business education. Our SAT Designated Institution (DI) Code is 45549. Please use this code to send your official SAT scores directly to us.
+              - list [ref=e600]:
+                - listitem [ref=e601]:
+                  - img "Icon" [ref=e602]
+                  - paragraph [ref=e603]: "Eligibility Criteria: Top percentile SAT scorers."
+          - generic [ref=e604]:
+            - heading "The Pathfinders Scholarship" [level=3] [ref=e606] [cursor=pointer]
+            - generic:
+              - paragraph [ref=e610]: For the daring souls turning down traditional top-tier offers for the unparalleled experience at Tetr. This scholarship honors your courageous decision to chart a unique educational path with us.
+              - list [ref=e611]:
+                - listitem [ref=e612]:
+                  - img "Icon" [ref=e613]
+                  - paragraph [ref=e614]: "Eligibility Criteria: Declined offers from a top-tier university in any country to attend Tetr."
+          - generic [ref=e615]:
+            - heading "The Aspire Grant" [level=3] [ref=e617] [cursor=pointer]
+            - generic:
+              - paragraph [ref=e621]: For those who have faced and overcome financial challenges in pursuit of their education.
+              - list [ref=e622]:
+                - listitem [ref=e623]:
+                  - img "Icon" [ref=e624]
+                  - generic [ref=e625]: "Eligibility Criteria: Applicants must provide documentation to substantiate their financial needs and a personal statement detailing the challenges they have faced."
+    - generic [ref=e628]:
+      - generic [ref=e629]:
+        - heading "Tetr in the News" [level=2] [ref=e630]
+        - generic [ref=e631]:
+          - button "Previous slide" [disabled] [ref=e632] [cursor=pointer]:
+            - img "Icon" [ref=e633]
+          - button "Next slide" [ref=e634] [cursor=pointer]:
+            - img "Icon" [ref=e635]
+      - generic [ref=e636]:
+        - generic [ref=e637]:
+          - group "1 / 14":
+            - link "Pratham Mittal featured in Forbes India":
+              - /url: https://www.forbesindia.com/article/leadership/i-dont-think-entrepreneurship-is-risky-bschool-founder-pratham-mittal/94127/1
+              - img "Pratham Mittal featured in Forbes India"
+              - img [ref=e639] [cursor=pointer]
+          - group "2 / 14":
+            - 'link "Entrepreneur article: Learn Business by Doing Business Across the Globe"':
+              - /url: https://www.entrepreneur.com/en-in/growth-strategies/learn-business-by-doing-business-across-the-globe-the-next/475529
+              - 'img "Entrepreneur article: Learn Business by Doing Business Across the Globe"'
+              - img [ref=e643] [cursor=pointer]
+          - group "3 / 14":
+            - link "Tetr College global survey featured in Economic Times Education":
+              - /url: https://education.economictimes.indiatimes.com/news/industry/global-survey-by-tetr-college-of-business-unveils-key-gaps-in-business-education-and-growing-importance-of-founder-mode/117388219
+              - img "Tetr College global survey featured in Economic Times Education"
+              - img [ref=e647] [cursor=pointer]
+          - group "4 / 14":
+            - link "Tetr College cross-border business programme featured in Gulf News":
+              - /url: https://gulfnews.com/gn-focus/tetr-college-of-business-introduces-a-cross-border-business-programme-across-7-countries-1.1715840083130
+              - img "Tetr College cross-border business programme featured in Gulf News"
+              - img [ref=e651] [cursor=pointer]
+          - group "5 / 14":
+            - link "Professors from Harvard, MIT, and global CXOs to lead Tetr's undergraduate programme – Khaleej Times feature":
+              - /url: https://www.khaleejtimes.com/kt-network/professors-from-harvard-mit-and-global-cxos-to-spearhead-tetrs-global-undergraduate-programme
+              - img "Professors from Harvard, MIT, and global CXOs to lead Tetr's undergraduate programme – Khaleej Times feature"
+              - img [ref=e655] [cursor=pointer]
+          - group "6 / 14":
+            - link "Tetr College introduces innovative global degree program – The Manila Times article":
+              - /url: https://www.manilatimes.net/2024/05/23/campus-press/tetr-biz-college-introduces-innovative-global-degree-program/1947985
+              - img "Tetr College introduces innovative global degree program – The Manila Times article"
+              - img [ref=e659] [cursor=pointer]
+          - group "7 / 14":
+            - link "Tetr College's global degree program spans seven countries in four years – Daily Wire Asia feature":
+              - /url: https://dailywire.asia/seven-countries-in-four-years-tetr-college-of-business-charts-new-territory-in-learning-with-its-innovative-global-degree-program/
+              - img "Tetr College's global degree program spans seven countries in four years – Daily Wire Asia feature"
+              - img [ref=e663] [cursor=pointer]
+          - group "8 / 14":
+            - link "Tetr College launches $10 million Tetr Under initiative – featured in Entrepreneur":
+              - /url: https://www.entrepreneur.com/en-in/news-and-trends/tetr-college-of-business-launches-usd-10-mn-tetr-under/481541
+              - img "Tetr College launches $10 million Tetr Under initiative – featured in Entrepreneur"
+              - img [ref=e667] [cursor=pointer]
+          - group "9 / 14":
+            - link "Training students through real-world business exposure – Interview with Tetr College Founder in Economic Times":
+              - /url: https://m.economictimes.com/industry/services/education/training-students-through-exposure-to-real-world-businesses-is-important-tetr-college-of-business-founder-pratham-mittal/amp_articleshow/113226365.cms
+              - img "Training students through real-world business exposure – Interview with Tetr College Founder in Economic Times"
+              - img [ref=e671] [cursor=pointer]
+          - group "10 / 14":
+            - link "Tetr College launches fund to support student entrepreneurs – VCCircle article":
+              - /url: https://www.vccircle.com/tetrcollege-launches-fund-to-back-student-entrepreneurs
+              - img "Tetr College launches fund to support student entrepreneurs – VCCircle article"
+              - img [ref=e675] [cursor=pointer]
+          - group "11 / 14":
+            - link "Entrepreneurship Training School Tether Raises $2 Million in Scholarships for Korean Students":
+              - /url: https://magazine.hankyung.com/job-joy/article/202412031032d
+              - img "Entrepreneurship Training School Tether Raises $2 Million in Scholarships for Korean Students"
+              - img [ref=e679] [cursor=pointer]
+          - group "12 / 14":
+            - link "Student shares experience of transformative global education at Tetr College – Indian Express article":
+              - /url: https://indianexpress.com/article/education/study-abroad/life-in-a-foreign-university-roundtable-discussions-masterclass-dubais-tetr-college-transformed-uni-education-for-me-9686006/
+              - img "Student shares experience of transformative global education at Tetr College – Indian Express article"
+              - img [ref=e683] [cursor=pointer]
+          - group "13 / 14":
+            - link "Tetr College of Business introduces a cross-border bachelor's program across seven countries – Wallstreet Online article":
+              - /url: https://www.wallstreet-online.de/nachricht/18115549-tetr-college-of-business-introduces-a-cross-border-bachelors-program-across-seven-countries
+              - img "Tetr College of Business introduces a cross-border bachelor's program across seven countries – Wallstreet Online article"
+              - img [ref=e687] [cursor=pointer]
+          - group "14 / 14" [ref=e690]:
+            - link "Tetr College of Business launches innovative undergraduate programme – Times of India article" [ref=e691] [cursor=pointer]:
+              - /url: https://timesofindia.indiatimes.com/education/tetr-college-of-business-launches-innovative-ug-programme/articleshow/113202934.cms
+              - img "Tetr College of Business launches innovative undergraduate programme – Times of India article" [ref=e692]
+              - img [ref=e694]
+        - link "View More Icon" [ref=e699] [cursor=pointer]:
+          - /url: /news
+          - text: View More
+          - img "Icon" [ref=e700]
+    - generic [ref=e702]:
+      - heading "Any Questions?" [level=2] [ref=e704]
+      - generic [ref=e705]:
+        - generic [ref=e706]:
+          - generic [ref=e708] [cursor=pointer]: Do I need to prepare before starting the application process?
+          - paragraph [ref=e713]: No prior preparation is necessary. Our process is thoughtfully crafted to get to know you as an individual and assess your personality holistically.
+        - generic [ref=e716] [cursor=pointer]: What should I include in my application?
+        - generic [ref=e722] [cursor=pointer]: What is the interview like?
+        - generic [ref=e728] [cursor=pointer]: Will I need to arrange my own visas?
+        - generic [ref=e734] [cursor=pointer]: Are there internship or work experience opportunities built into the program?
+        - generic [ref=e740] [cursor=pointer]: Does Tetr offer financial assistance?
+        - generic [ref=e746] [cursor=pointer]: How is student safety managed across 8 countries?
+        - generic [ref=e752] [cursor=pointer]: Who manages my child's day-to-day experience on the ground?
+        - generic [ref=e758] [cursor=pointer]: How does this program strengthen a university application?
+        - generic [ref=e764] [cursor=pointer]: How is this different from just travelling for a year?
+        - generic [ref=e770] [cursor=pointer]: What happens if my child gets into their dream university mid-program?
+        - generic [ref=e776] [cursor=pointer]: Does completing the program come with a formal certificate or credential?
+        - generic [ref=e782] [cursor=pointer]: What does the program fee include?
+        - generic [ref=e788] [cursor=pointer]: What is the refund policy if my child needs to come home early?
+        - generic [ref=e794] [cursor=pointer]: What kind of student is this program designed for?
+    - generic [ref=e798]:
+      - generic [ref=e799]:
+        - generic [ref=e800] [cursor=pointer]:
+          - img [ref=e802]
+          - text: Resources WhatsApp Instagram YouTube Close
+        - generic [ref=e808]:
+          - img "close-icon" [ref=e810] [cursor=pointer]
+          - generic [ref=e811]:
+            - heading "We value your privacy" [level=2] [ref=e812]
+            - generic [ref=e813]:
+              - paragraph [ref=e814]: We use cookies to improve your browsing experience, personalise content, and understand how our website is used. By clicking “Accept all cookies”, you agree to our use of cookies.
+              - paragraph [ref=e815]:
+                - text: You can accept all cookies or reject all. Learn more in our
+                - link "Privacy Policy" [ref=e816] [cursor=pointer]:
+                  - /url: /privacy-policy
+                - text: .
+            - generic [ref=e817]:
+              - button "Reject all" [ref=e818] [cursor=pointer]
+              - button "Accept all cookies" [ref=e819] [cursor=pointer]
+        - generic [ref=e820]:
+          - generic [ref=e821]:
+            - link "tetr-footer-brand-image" [ref=e822] [cursor=pointer]:
+              - /url: /
+              - img "tetr-footer-brand-image" [ref=e823]
+            - link "APPLY NOW Icon" [ref=e825] [cursor=pointer]:
+              - /url: /apply-now
+              - text: APPLY NOW
+              - img "Icon" [ref=e826]
+          - generic [ref=e827]:
+            - generic [ref=e828]:
+              - link "About" [ref=e829] [cursor=pointer]:
+                - /url: /about
+              - link "Faculty" [ref=e830] [cursor=pointer]:
+                - /url: /faculty
+              - link "Blog" [ref=e831] [cursor=pointer]:
+                - /url: /blog
+              - link "Events" [ref=e832] [cursor=pointer]:
+                - /url: /events
+            - generic [ref=e833]:
+              - link "Resources" [ref=e834] [cursor=pointer]:
+                - /url: /resources
+              - link "News" [ref=e835] [cursor=pointer]:
+                - /url: /news
+              - link "Reviews" [ref=e836] [cursor=pointer]:
+                - /url: /reviews
+              - link "Career Labs" [ref=e837] [cursor=pointer]:
+                - /url: /careers
+            - generic [ref=e838]:
+              - generic [ref=e839] [cursor=pointer]: Dropshipping Report
+              - generic [ref=e840] [cursor=pointer]: D2C Report
+              - generic [ref=e841] [cursor=pointer]: UG Brochure
+              - generic [ref=e842] [cursor=pointer]: PG Brochure
+            - generic [ref=e843]:
+              - link "Experiences at Tetr" [ref=e844] [cursor=pointer]:
+                - /url: /experiences-at-tetr
+              - link "Kickstarter" [ref=e845] [cursor=pointer]:
+                - /url: /kickstarter
+              - link "Dropshipping" [ref=e846] [cursor=pointer]:
+                - /url: /dropshipping
+          - generic [ref=e847]:
+            - generic [ref=e849]:
+              - paragraph [ref=e850]: QS Gold Winner
+              - paragraph [ref=e851]: Most Innovative Business School of 2025
+            - generic [ref=e852]:
+              - generic [ref=e853]:
+                - link "instagram logo" [ref=e854] [cursor=pointer]:
+                  - /url: https://www.instagram.com/tetr.college/
+                  - img "instagram logo" [ref=e855]
+                - link "youtube logo" [ref=e856] [cursor=pointer]:
+                  - /url: https://www.youtube.com/@tetrcollege
+                  - img "youtube logo" [ref=e857]
+                - link "linkedin logo" [ref=e858] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/school/tetr-college-of-business/
+                  - img "linkedin logo" [ref=e859]
+              - generic [ref=e860]:
+                - text: "Email:"
+                - link "info@tetr.org" [ref=e861] [cursor=pointer]:
+                  - /url: mailto:info@tetr.org
+            - generic [ref=e862]:
+              - img [ref=e863]
+              - img [ref=e864]
+      - generic [ref=e868]:
+        - generic [ref=e869]:
+          - link "Contact Us" [ref=e870] [cursor=pointer]:
+            - /url: /contact-us
+          - link "Refund Policy" [ref=e871] [cursor=pointer]:
+            - /url: /refund-policy
+          - link "Privacy Policy" [ref=e872] [cursor=pointer]:
+            - /url: /privacy-policy
+          - link "Terms & Conditions" [ref=e873] [cursor=pointer]:
+            - /url: /terms-conditions
+        - generic [ref=e874]:
+          - generic [ref=e875]: "* Tetr reserves the right to adjust the program location for this term due to prevailing visa restrictions. Participants will be notified accordingly."
+          - generic [ref=e876]: Copyright© 2026 Tetr. All rights reserved.

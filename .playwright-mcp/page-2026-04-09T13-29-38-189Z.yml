@@ -1,0 +1,449 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - 'heading "Round 3 Deadline: 20th April 2026" [level=3] [ref=e6]'
+      - link "Apply Now arrow up icon" [ref=e7] [cursor=pointer]:
+        - /url: /apply-now
+        - text: Apply Now
+        - img "arrow up icon" [ref=e8]
+    - banner [ref=e9]:
+      - generic [ref=e11]:
+        - link "tetr-logo" [ref=e12] [cursor=pointer]:
+          - /url: /
+          - img "tetr-logo" [ref=e13]
+        - generic [ref=e14]:
+          - generic [ref=e15]:
+            - button "Programs Programs Icon" [ref=e16] [cursor=pointer]:
+              - generic [ref=e17]: Programs
+              - generic [ref=e18]: Programs
+              - img "Icon" [ref=e19]
+            - link "Faculty Faculty" [ref=e20] [cursor=pointer]:
+              - /url: /faculty
+              - generic [ref=e21]: Faculty
+              - generic [ref=e22]: Faculty
+            - link "Student Life Student Life" [ref=e23] [cursor=pointer]:
+              - /url: /student-life
+              - generic [ref=e24]: Student Life
+              - generic [ref=e25]: Student Life
+            - button "About About Icon" [ref=e26] [cursor=pointer]:
+              - generic [ref=e27]: About
+              - generic [ref=e28]: About
+              - img "Icon" [ref=e29]
+          - generic [ref=e30]:
+            - link "APPLY NOW" [ref=e31] [cursor=pointer]:
+              - /url: /apply-now
+            - link "CONTACT US" [ref=e32] [cursor=pointer]:
+              - /url: /contact-us
+  - generic [ref=e33]:
+    - generic [ref=e34]:
+      - img "Icon" [ref=e35]
+      - generic [ref=e37]:
+        - generic [ref=e38]:
+          - heading "Learn from the finest Minds in business" [level=1] [ref=e39]:
+            - text: Learn from the finest
+            - text: Minds in business
+          - paragraph [ref=e40]: From MDs, CEOs and CTOs of leading unicorns to Ivy League professors, our faculty brings knowledge that blends theory with real-world impact.
+          - link "MEET THE MASTERS Icon" [ref=e42] [cursor=pointer]:
+            - /url: "#meetMasters"
+            - text: MEET THE MASTERS
+            - img "Icon" [ref=e43]
+        - img "Icon" [ref=e47] [cursor=pointer]
+    - generic [ref=e49]:
+      - heading "Faculty that Inspire and Empower" [level=2] [ref=e50]
+      - list [ref=e51]:
+        - listitem [ref=e52] [cursor=pointer]: All
+        - listitem [ref=e53] [cursor=pointer]: Academicians
+        - listitem [ref=e54] [cursor=pointer]: Industry Experts
+      - generic [ref=e57]:
+        - listitem [ref=e58]:
+          - generic [ref=e59]:
+            - img "Mr. Faverie Stephane" [ref=e60]
+            - generic [ref=e62]: Mr. Faverie Stephane
+          - generic [ref=e63]:
+            - generic [ref=e64]: Executive Group President, Estee Lauder
+            - generic [ref=e66]:
+              - generic [ref=e67]: Area of Interest
+              - text: Global Markets and Customer Dynamics
+        - listitem [ref=e68]:
+          - generic [ref=e69]:
+            - img "Dr. Lan Ma" [ref=e70]
+            - generic [ref=e72]: Dr. Lan Ma
+          - generic [ref=e73]:
+            - generic [ref=e74]: Adjunct Professor of Business - New York University
+            - generic [ref=e76]:
+              - generic [ref=e77]: Teaching
+              - text: How to market strategically in the real world
+        - listitem [ref=e78]:
+          - generic [ref=e79]:
+            - img "Dr. Edward Rogers" [ref=e80]
+            - generic [ref=e82]: Dr. Edward Rogers
+          - generic [ref=e83]:
+            - generic [ref=e84]: Former Chief Knowledge Officer, NASA
+            - generic [ref=e86]:
+              - generic [ref=e87]: Teaching
+              - text: How to Manage Complexities
+        - listitem [ref=e88]:
+          - generic [ref=e89]:
+            - img "Dr. Zal Phiroz" [ref=e90]
+            - generic [ref=e92]: Dr. Zal Phiroz
+          - generic [ref=e93]:
+            - generic [ref=e94]: Adjunct Professor, Harvard University
+            - generic [ref=e96]:
+              - generic [ref=e97]: Teaching
+              - text: How companies manage supply chains & how to procure & ship globally
+        - listitem [ref=e98]:
+          - generic [ref=e99]:
+            - img "Mr. Nitin Gaur" [ref=e100]
+            - generic [ref=e102]: Mr. Nitin Gaur
+          - generic [ref=e103]:
+            - generic [ref=e104]: Former Advisory Board Member, Stanford University
+            - generic [ref=e106]:
+              - generic [ref=e107]: Area of Interest
+              - text: How to Innovate in Fintech
+        - listitem [ref=e108]:
+          - generic [ref=e109]:
+            - img "Dr. Daniel Garett Van Der Vliet" [ref=e110]
+            - generic [ref=e112]: Dr. Daniel Garett Van Der Vliet
+          - generic [ref=e113]:
+            - generic [ref=e114]: Executive Director, Cornell University
+            - generic [ref=e116]:
+              - generic [ref=e117]: Area of Interest
+              - text: Leadership & Family Business
+        - listitem [ref=e118]:
+          - generic [ref=e119]:
+            - img "Ms. Kevyn Eva Norton" [ref=e120]
+            - generic [ref=e122]: Ms. Kevyn Eva Norton
+          - generic [ref=e123]:
+            - generic [ref=e124]: Product Lead, Easy Bites App
+            - generic [ref=e126]:
+              - generic [ref=e127]: Area of Interest
+              - text: How to do Product and UX Research
+        - listitem [ref=e128]:
+          - generic [ref=e129]:
+            - img "Dr. Shad Morris" [ref=e130]
+            - generic [ref=e132]: Dr. Shad Morris
+          - generic [ref=e133]:
+            - generic [ref=e134]: Former Faculty Fellow, MIT Sloan
+            - generic [ref=e136]:
+              - generic [ref=e137]: Teaching
+              - text: How to work effectively in teams
+        - listitem [ref=e138]:
+          - generic [ref=e139]:
+            - img "Dr. James Hayton" [ref=e140]
+            - generic [ref=e142]: Dr. James Hayton
+          - generic [ref=e143]:
+            - generic [ref=e144]: Professor, Warwick Business School
+            - generic [ref=e146]:
+              - generic [ref=e147]: Area of Interest
+              - text: Innovation and Entrepreneurship
+        - listitem [ref=e148]:
+          - generic [ref=e149]:
+            - img "Mr. Thomas Kuruvilla" [ref=e150]
+            - generic [ref=e152]: Mr. Thomas Kuruvilla
+          - generic [ref=e153]:
+            - generic [ref=e154]: Managing Partner, Arthur D. Little Middle East
+            - generic [ref=e156]:
+              - generic [ref=e157]: Area of Interest
+              - text: Strategy Development and Operations
+        - listitem [ref=e158]:
+          - generic [ref=e159]:
+            - img "Mr. Manoj Kohli" [ref=e160]
+            - generic [ref=e162]: Mr. Manoj Kohli
+          - generic [ref=e163]:
+            - generic [ref=e164]: Former Country Head, Softbank
+            - generic [ref=e166]:
+              - generic [ref=e167]: Area of Interest
+              - text: Growth and Business Transformation
+        - listitem [ref=e168]:
+          - generic [ref=e169]:
+            - img "Dr. Bhupesh Manoharan" [ref=e170]
+            - generic [ref=e172]: Dr. Bhupesh Manoharan
+          - generic [ref=e173]:
+            - generic [ref=e174]: Associate Professor, Marketing
+            - generic [ref=e176]:
+              - generic [ref=e177]: Teaching
+              - text: How to identify gaps in the market
+        - listitem [ref=e178]:
+          - generic [ref=e179]:
+            - img "Mr. Arjun Vaidya" [ref=e180]
+            - generic [ref=e182]: Mr. Arjun Vaidya
+          - generic [ref=e183]:
+            - generic [ref=e184]: CoFounder - V3 Ventures
+            - generic [ref=e186]:
+              - generic [ref=e187]: Teaching
+              - text: How to leverage marketplaces like Amazon to sell your products
+        - listitem [ref=e188]:
+          - generic [ref=e189]:
+            - img "Dr. Nandini Seth" [ref=e190]
+            - generic [ref=e192]: Dr. Nandini Seth
+          - generic [ref=e193]:
+            - generic [ref=e194]: Associate Professor, Quantitative Techniques
+            - generic [ref=e196]:
+              - generic [ref=e197]: Teaching
+              - text: How to use stats to build a better business
+        - listitem [ref=e198]:
+          - generic [ref=e199]:
+            - img "Mr. Efstathios Polyzos" [ref=e200]
+            - generic [ref=e202]: Mr. Efstathios Polyzos
+          - generic [ref=e203]:
+            - generic [ref=e204]: Associate Professor of Finance, Zayed University
+            - generic [ref=e206]:
+              - generic [ref=e207]: Area of Interest
+              - text: Financial Management and Decision Making
+        - listitem [ref=e208]:
+          - generic [ref=e209]:
+            - img "Dr. Garima Chaklader" [ref=e210]
+            - generic [ref=e212]: Dr. Garima Chaklader
+          - generic [ref=e213]:
+            - generic [ref=e214]: Associate Professor of Economics, Tetr
+            - generic [ref=e216]:
+              - generic [ref=e217]: Area of Interest
+              - text: International Business and Managerial Economics
+    - generic [ref=e220]:
+      - heading "Real" [level=2] [ref=e221]
+      - img [ref=e225]
+    - generic [ref=e279]:
+      - list [ref=e280]:
+        - listitem [ref=e281] [cursor=pointer]: Career Mentors
+        - listitem [ref=e282] [cursor=pointer]: Domain Mentors
+        - listitem [ref=e283] [cursor=pointer]: Startup Coaches
+      - generic [ref=e285]:
+        - generic [ref=e286]:
+          - img "Tetr Career Coach" [ref=e287]
+          - generic [ref=e288]:
+            - heading "Go further with a Career Coach" [level=3] [ref=e289]
+            - list [ref=e290]:
+              - listitem [ref=e291]:
+                - paragraph [ref=e292]: Design a compelling resume and personal pitch
+              - listitem [ref=e293]:
+                - paragraph [ref=e294]: Ace interviews with 100+ top recruiters
+              - listitem [ref=e295]:
+                - paragraph [ref=e296]: Strategize your way to senior management and leadership-level roles
+        - generic [ref=e297]:
+          - img "Tetr Faculty" [ref=e298]
+          - generic [ref=e299]:
+            - heading "Go Deep with Domain Mentors" [level=3] [ref=e300]
+            - list [ref=e301]:
+              - listitem [ref=e302]:
+                - paragraph [ref=e303]: Connect with industry leaders across diverse domains
+              - listitem [ref=e304]:
+                - paragraph [ref=e305]: Develop a distinctive voice and online presence with expert tips
+              - listitem [ref=e306]:
+                - paragraph [ref=e307]: Gain the insights and leadership skills needed to stand out in your chosen domain
+        - generic [ref=e308]:
+          - img "Tetr Faculty" [ref=e309]
+          - generic [ref=e310]:
+            - heading "Start strong with a StartUp Coach" [level=3] [ref=e311]
+            - list [ref=e312]:
+              - listitem [ref=e313]:
+                - paragraph [ref=e314]: Identify business opportunities, create business plans, and develop your go-to market strategy
+              - listitem [ref=e315]:
+                - paragraph [ref=e316]: Network with VCs and angels, and secure $50-$100K seed funding for your startup
+              - listitem [ref=e317]:
+                - paragraph [ref=e318]: Acquire your first 1000 customers, accelerate growth, and establish your market presence
+    - generic [ref=e322]:
+      - heading "Access Real-Time Mentorship from 100+ Experts" [level=2] [ref=e324]:
+        - text: Access Real-Time Mentorship
+        - text: from 100+ Experts
+      - paragraph [ref=e325]: From cybersecurity to generative AI, our mentors span a wide range of industries from across the globe.
+      - list [ref=e326]:
+        - listitem [ref=e327]:
+          - img "Icon"
+          - paragraph [ref=e328]: Whether you're building a startup or exploring jobs, our mentors provide tailored 1:1 mentorship
+        - listitem [ref=e329]:
+          - img "Icon"
+          - paragraph [ref=e330]: Mentors can assist with last-minute assignments, interview prep or even emotional support
+    - generic [ref=e333]:
+      - img "Icon" [ref=e335]
+      - generic [ref=e337]:
+        - heading "Lessons From the Best in the Business" [level=2] [ref=e338]
+        - generic [ref=e340]:
+          - listitem [ref=e341]:
+            - generic [ref=e342]:
+              - img "Mr. Sefa Bicer" [ref=e343]
+              - generic [ref=e345]: Mr. Sefa Bicer
+            - generic [ref=e347]: Regional Sales Manager, Geidea
+          - listitem [ref=e348]:
+            - generic [ref=e349]:
+              - img "Ms. Jinane Abou Mrad" [ref=e350]
+              - generic [ref=e352]: Ms. Jinane Abou Mrad
+            - generic [ref=e354]: Consultant, Choucair Group SAL
+          - listitem [ref=e355]:
+            - generic [ref=e356]:
+              - img "Ms. Jolandi Uys" [ref=e357]
+              - generic [ref=e359]: Ms. Jolandi Uys
+            - generic [ref=e361]: Former Training and Development Specialist, Bloomberg
+          - listitem [ref=e362]:
+            - generic [ref=e363]:
+              - img "Mr. Carl Rodrigues" [ref=e364]
+              - generic [ref=e366]: Mr. Carl Rodrigues
+            - generic [ref=e368]: Founder, CNR Digital
+          - listitem [ref=e369]:
+            - generic [ref=e370]:
+              - img "Mr. Jaap Bastiaansen" [ref=e371]
+              - generic [ref=e373]: Mr. Jaap Bastiaansen
+            - generic [ref=e375]: Partner & COO, Nexus Climate
+          - listitem [ref=e376]:
+            - generic [ref=e377]:
+              - img "Mr. Jason Thomas" [ref=e378]
+              - generic [ref=e380]: Mr. Jason Thomas
+            - generic [ref=e382]: Managing Partner & CFO, RTC global
+          - listitem [ref=e383]:
+            - generic [ref=e384]:
+              - img "Dr. Bart Jaworski" [ref=e385]
+              - generic [ref=e387]: Dr. Bart Jaworski
+            - generic [ref=e389]: Senior Product Manager, The Stepstone Group
+          - listitem [ref=e390]:
+            - generic [ref=e391]:
+              - img "Mr. Manuel Vicente Vivo" [ref=e392]
+              - generic [ref=e394]: Mr. Manuel Vicente Vivo
+            - generic [ref=e396]: Staff Android Engineer, Bumble Inc
+          - listitem [ref=e397]:
+            - generic [ref=e398]:
+              - img "Mr. Patrick Ward" [ref=e399]
+              - generic [ref=e401]: Mr. Patrick Ward
+            - generic [ref=e403]: Vice President of Marketing, Formula.Monks
+          - listitem [ref=e404]:
+            - generic [ref=e405]:
+              - img "Mr. Aditya Bhattacharya" [ref=e406]
+              - generic [ref=e408]: Mr. Aditya Bhattacharya
+            - generic [ref=e410]: Explainable AI Researcher, KU Leuven
+          - listitem [ref=e411]:
+            - generic [ref=e412]:
+              - img "Mr. Haaris Hasnain" [ref=e413]
+              - generic [ref=e415]: Mr. Haaris Hasnain
+            - generic [ref=e417]: Director New Venture, Majid Al Futtaim
+          - listitem [ref=e418]:
+            - generic [ref=e419]:
+              - img "Mr. Peter Ndiforchu" [ref=e420]
+              - generic [ref=e422]: Mr. Peter Ndiforchu
+            - generic [ref=e424]: Data Analyst, RBC Capital Markets
+          - listitem [ref=e425]:
+            - generic [ref=e426]:
+              - img "Mr. Raja Sekhar Thota" [ref=e427]
+              - generic [ref=e429]: Mr. Raja Sekhar Thota
+            - generic [ref=e431]: CTO & Co-Founder, AuditOne GmbH
+          - listitem [ref=e432]:
+            - generic [ref=e433]:
+              - img "Ms. Archana Sinha" [ref=e434]
+              - generic [ref=e436]: Ms. Archana Sinha
+            - generic [ref=e438]: Former Senior Director, Salesforce
+          - listitem [ref=e439]:
+            - generic [ref=e440]:
+              - img "Mr. Sameer Ranjan" [ref=e441]
+              - generic [ref=e443]: Mr. Sameer Ranjan
+            - generic [ref=e445]: Chief Technology Officer and Director, Catenate
+          - listitem [ref=e446]:
+            - generic [ref=e447]:
+              - img "Mr. Vardaan Shekhawat" [ref=e448]
+              - generic [ref=e450]: Mr. Vardaan Shekhawat
+            - generic [ref=e452]: Policy & Public Affairs, ECITB
+          - listitem [ref=e453]:
+            - generic [ref=e454]:
+              - img "Mr. Mohammad Arshad" [ref=e455]
+              - generic [ref=e457]: Mr. Mohammad Arshad
+            - generic [ref=e459]: Mentor, Advisory Council, Harvard Business Review
+          - listitem [ref=e460]:
+            - generic [ref=e461]:
+              - img "Mr. Anishek Kamal" [ref=e462]
+              - generic [ref=e464]: Mr. Anishek Kamal
+            - generic [ref=e466]: Data & AI Architect, Microsoft
+          - listitem [ref=e467]:
+            - generic [ref=e468]:
+              - img "Mr. Vijit Bhati" [ref=e469]
+              - generic [ref=e471]: Mr. Vijit Bhati
+            - generic [ref=e473]: Senior Experience Designer, Electronic Arts
+  - contentinfo [ref=e474]:
+    - generic [ref=e475]:
+      - generic [ref=e476] [cursor=pointer]:
+        - img [ref=e478]
+        - text: Resources WhatsApp Instagram YouTube Close
+      - generic [ref=e484]:
+        - img "close-icon" [ref=e486] [cursor=pointer]
+        - generic [ref=e487]:
+          - heading "We value your privacy" [level=2] [ref=e488]
+          - generic [ref=e489]:
+            - paragraph [ref=e490]: We use cookies to improve your browsing experience, personalise content, and understand how our website is used. By clicking “Accept all cookies”, you agree to our use of cookies.
+            - paragraph [ref=e491]:
+              - text: You can accept all cookies or reject all. Learn more in our
+              - link "Privacy Policy" [ref=e492] [cursor=pointer]:
+                - /url: /privacy-policy
+              - text: .
+          - generic [ref=e493]:
+            - button "Reject all" [ref=e494] [cursor=pointer]
+            - button "Accept all cookies" [ref=e495] [cursor=pointer]
+      - generic [ref=e496]:
+        - generic [ref=e497]:
+          - link "tetr-footer-brand-image" [ref=e498] [cursor=pointer]:
+            - /url: /
+            - img "tetr-footer-brand-image" [ref=e499]
+          - link "APPLY NOW Icon" [ref=e501] [cursor=pointer]:
+            - /url: /apply-now
+            - text: APPLY NOW
+            - img "Icon" [ref=e502]
+        - generic [ref=e503]:
+          - generic [ref=e504]:
+            - link "About" [ref=e505] [cursor=pointer]:
+              - /url: /about
+            - link "Faculty" [ref=e506] [cursor=pointer]:
+              - /url: /faculty
+            - link "Blog" [ref=e507] [cursor=pointer]:
+              - /url: /blog
+            - link "Events" [ref=e508] [cursor=pointer]:
+              - /url: /events
+          - generic [ref=e509]:
+            - link "Resources" [ref=e510] [cursor=pointer]:
+              - /url: /resources
+            - link "News" [ref=e511] [cursor=pointer]:
+              - /url: /news
+            - link "Reviews" [ref=e512] [cursor=pointer]:
+              - /url: /reviews
+            - link "Career Labs" [ref=e513] [cursor=pointer]:
+              - /url: /careers
+          - generic [ref=e514]:
+            - generic [ref=e515] [cursor=pointer]: Dropshipping Report
+            - generic [ref=e516] [cursor=pointer]: D2C Report
+            - generic [ref=e517] [cursor=pointer]: UG Brochure
+            - generic [ref=e518] [cursor=pointer]: PG Brochure
+          - generic [ref=e519]:
+            - link "Experiences at Tetr" [ref=e520] [cursor=pointer]:
+              - /url: /experiences-at-tetr
+            - link "Kickstarter" [ref=e521] [cursor=pointer]:
+              - /url: /kickstarter
+            - link "Dropshipping" [ref=e522] [cursor=pointer]:
+              - /url: /dropshipping
+        - generic [ref=e523]:
+          - generic [ref=e525]:
+            - paragraph [ref=e526]: QS Gold Winner
+            - paragraph [ref=e527]: Most Innovative Business School of 2025
+          - generic [ref=e528]:
+            - generic [ref=e529]:
+              - link "instagram logo" [ref=e530] [cursor=pointer]:
+                - /url: https://www.instagram.com/tetr.college/
+                - img "instagram logo" [ref=e531]
+              - link "youtube logo" [ref=e532] [cursor=pointer]:
+                - /url: https://www.youtube.com/@tetrcollege
+                - img "youtube logo" [ref=e533]
+              - link "linkedin logo" [ref=e534] [cursor=pointer]:
+                - /url: https://www.linkedin.com/school/tetr-college-of-business/
+                - img "linkedin logo" [ref=e535]
+            - generic [ref=e536]:
+              - text: "Email:"
+              - link "info@tetr.org" [ref=e537] [cursor=pointer]:
+                - /url: mailto:info@tetr.org
+          - generic [ref=e538]:
+            - img [ref=e539]
+            - img [ref=e540]
+    - generic [ref=e544]:
+      - generic [ref=e545]:
+        - link "Contact Us" [ref=e546] [cursor=pointer]:
+          - /url: /contact-us
+        - link "Refund Policy" [ref=e547] [cursor=pointer]:
+          - /url: /refund-policy
+        - link "Privacy Policy" [ref=e548] [cursor=pointer]:
+          - /url: /privacy-policy
+        - link "Terms & Conditions" [ref=e549] [cursor=pointer]:
+          - /url: /terms-conditions
+      - generic [ref=e550]:
+        - generic [ref=e551]: "* Tetr reserves the right to adjust the program location for this term due to prevailing visa restrictions. Participants will be notified accordingly."
+        - generic [ref=e552]: Copyright© 2026 Tetr. All rights reserved.

@@ -1,0 +1,352 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - region "Notifications (F8)":
+      - list
+    - region "アラート、警告、更新"
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e6]:
+          - link "Preply" [ref=e7] [cursor=pointer]:
+            - /url: /ja/
+            - img "Preply" [ref=e9]
+          - generic [ref=e30]:
+            - link "講師を探す" [ref=e31] [cursor=pointer]:
+              - /url: https://preply.com/ja/online/japanese-tutors
+              - generic [ref=e32]: 講師を探す
+            - link "企業向けトレーニング" [ref=e33] [cursor=pointer]:
+              - /url: /en/business-language-training?start=logged_out_search
+              - generic [ref=e34]: 企業向けトレーニング
+            - link "講師になる" [ref=e35] [cursor=pointer]:
+              - /url: https://preply.com/ja/teach
+              - generic [ref=e36]: 講師になる
+        - generic [ref=e37]:
+          - button "Select language and currency" [ref=e39] [cursor=pointer]:
+            - generic [ref=e40]:
+              - paragraph [ref=e41]: 日本語, INR
+              - img [ref=e43]:
+                - img [ref=e44]
+          - link "ヘルプ" [ref=e46] [cursor=pointer]:
+            - /url: https://help.preply.com/ja/
+            - img [ref=e47]:
+              - img [ref=e48]
+          - button "ログイン" [ref=e50] [cursor=pointer]:
+            - generic [ref=e51]:
+              - img [ref=e52]:
+                - img [ref=e53]
+              - text: ログイン
+    - generic [ref=e58]:
+      - generic [ref=e61]:
+        - generic [ref=e62]:
+          - generic [ref=e63]:
+            - img "Tomas R." [ref=e65]
+            - paragraph [ref=e66]: Tomas R.
+            - generic [ref=e67]:
+              - generic [ref=e68]:
+                - generic [ref=e69]:
+                  - paragraph [ref=e70]: "4.3"
+                  - img [ref=e71]:
+                    - img [ref=e72]
+                - paragraph [ref=e74]: 2レビュー
+              - img "ES" [ref=e75]
+          - generic [ref=e76]:
+            - generic [ref=e77]:
+              - img "Robert F." [ref=e78]
+              - generic [ref=e81]: 初心者向け
+            - paragraph [ref=e82]: Robert F.
+            - generic [ref=e83]:
+              - generic [ref=e84]:
+                - generic [ref=e85]:
+                  - paragraph [ref=e86]: "4.8"
+                  - img [ref=e87]:
+                    - img [ref=e88]
+                - paragraph [ref=e90]: 34レビュー
+              - img "US" [ref=e91]
+          - generic [ref=e92]:
+            - generic [ref=e93]:
+              - img "Claire S." [ref=e94]
+              - generic [ref=e97]: ビジネスフランス語
+            - paragraph [ref=e98]: Claire S.
+            - generic [ref=e99]:
+              - generic [ref=e100]:
+                - generic [ref=e101]:
+                  - paragraph [ref=e102]: "5"
+                  - img [ref=e103]:
+                    - img [ref=e104]
+                - paragraph [ref=e106]: 43レビュー
+              - img "FR" [ref=e107]
+          - generic [ref=e108]:
+            - img "Giulia K." [ref=e110]
+            - paragraph [ref=e111]: Giulia K.
+            - generic [ref=e112]:
+              - generic [ref=e113]:
+                - generic [ref=e114]:
+                  - paragraph [ref=e115]: "4.9"
+                  - img [ref=e116]:
+                    - img [ref=e117]
+                - paragraph [ref=e119]: 34レビュー
+              - img "IT" [ref=e120]
+        - generic [ref=e121]:
+          - generic [ref=e122]:
+            - img "Tiago C." [ref=e124]
+            - paragraph [ref=e125]: Tiago C.
+            - generic [ref=e126]:
+              - generic [ref=e127]:
+                - generic [ref=e128]:
+                  - paragraph [ref=e129]: "5"
+                  - img [ref=e130]:
+                    - img [ref=e131]
+                - paragraph [ref=e133]: 44レビュー
+              - img "PT" [ref=e134]
+          - generic [ref=e135]:
+            - generic [ref=e136]:
+              - img "Jane M." [ref=e137]
+              - generic [ref=e140]: ネイティブスピーカー
+            - paragraph [ref=e141]: Jane M.
+            - generic [ref=e142]:
+              - generic [ref=e143]:
+                - generic [ref=e144]:
+                  - paragraph [ref=e145]: "4.9"
+                  - img [ref=e146]:
+                    - img [ref=e147]
+                - paragraph [ref=e149]: 67レビュー
+              - img "GB" [ref=e150]
+          - generic [ref=e151]:
+            - img "Andreas G." [ref=e153]
+            - paragraph [ref=e154]: Andreas G.
+            - generic [ref=e155]:
+              - generic [ref=e156]:
+                - generic [ref=e157]:
+                  - paragraph [ref=e158]: "4.5"
+                  - img [ref=e159]:
+                    - img [ref=e160]
+                - paragraph [ref=e162]: 34レビュー
+              - img "DE" [ref=e163]
+      - generic [ref=e166]:
+        - img "Preply" [ref=e169]
+        - generic [ref=e188]:
+          - heading "あなたにぴったりの日本語講師と、マンツーマンで効率よく学ぼう。" [level=1] [ref=e189]
+          - paragraph [ref=e190]: 自分に合ったレベル・予算・スケジュールで学べるオンラインレッスン。
+        - generic [ref=e191]:
+          - generic [ref=e192]:
+            - paragraph [ref=e193]: 何を学びたいですか？
+            - generic [ref=e195] [cursor=pointer]:
+              - textbox [ref=e196]:
+                - /placeholder: 日本語
+                - text: 日本語
+              - button [ref=e197]:
+                - img [ref=e198]
+          - button "講師を探す" [ref=e200] [cursor=pointer]:
+            - generic [ref=e201]:
+              - text: 講師を探す
+              - img [ref=e202]:
+                - img [ref=e203]
+          - button "4,349人の講師を表示する" [ref=e205] [cursor=pointer]:
+            - generic [ref=e206]: 4,349人の講師を表示する
+    - contentinfo [ref=e207]:
+      - generic [ref=e208]:
+        - generic [ref=e209]:
+          - generic [ref=e211]:
+            - heading "プレプリーについて" [level=5] [ref=e212]
+            - list [ref=e213]:
+              - listitem [ref=e214]:
+                - link "初めての方へ" [ref=e216] [cursor=pointer]:
+                  - /url: https://preply.com/ja/about-us
+              - listitem [ref=e217]:
+                - link "ご利用方法" [ref=e219] [cursor=pointer]:
+                  - /url: https://preply.com/ja/how-it-works
+              - listitem [ref=e220]:
+                - link "お客様の声" [ref=e222] [cursor=pointer]:
+                  - /url: https://preply.com/ja/reviews
+              - listitem [ref=e223]:
+                - button "求人情報" [ref=e225] [cursor=pointer]
+              - listitem [ref=e226]:
+                - button "ステータス" [ref=e228] [cursor=pointer]
+              - listitem [ref=e229]:
+                - button "メディアキット" [ref=e231] [cursor=pointer]
+              - listitem [ref=e232]:
+                - button "アフィリエイト提携" [ref=e234] [cursor=pointer]
+          - generic [ref=e236]:
+            - heading "生徒の皆様へ" [level=5] [ref=e237]
+            - list [ref=e238]:
+              - listitem [ref=e239]:
+                - link "プレプリーブログ" [ref=e241] [cursor=pointer]:
+                  - /url: https://preply.com/ja/blog/
+              - listitem [ref=e242]:
+                - link "よくある質問" [ref=e244] [cursor=pointer]:
+                  - /url: https://preply.com/ja/questions
+              - listitem [ref=e245]:
+                - link "学生割引キャンペーン" [ref=e247] [cursor=pointer]:
+                  - /url: https://preply.com/en/student-discount
+              - listitem [ref=e248]:
+                - link "友達を紹介する" [ref=e250] [cursor=pointer]:
+                  - /url: https://preply.com/ja/referral
+              - listitem [ref=e251]:
+                - link "無料英語レベル診断テスト" [ref=e253] [cursor=pointer]:
+                  - /url: https://preply.com/en/language-tests/english
+              - listitem [ref=e254]:
+                - link "無料単語テスト" [ref=e256] [cursor=pointer]:
+                  - /url: https://preply.com/en/learn/english/test-your-vocab
+          - generic [ref=e258]:
+            - heading "講師の皆様へ" [level=5] [ref=e259]
+            - list [ref=e260]:
+              - listitem [ref=e261]:
+                - link "オンライン講師になる" [ref=e263] [cursor=pointer]:
+                  - /url: https://preply.com/ja/teach
+              - listitem [ref=e264]:
+                - link "オンラインで英語を教える" [ref=e266] [cursor=pointer]:
+                  - /url: https://preply.com/ja/online/english-tutoring-jobs
+              - listitem [ref=e267]:
+                - link "オンラインで日本語を教える" [ref=e269] [cursor=pointer]:
+                  - /url: https://preply.com/ja/online/japanese-tutoring-jobs
+              - listitem [ref=e270]:
+                - link "オンラインでフランス語を教える" [ref=e272] [cursor=pointer]:
+                  - /url: https://preply.com/ja/online/french-tutoring-jobs
+              - listitem [ref=e273]:
+                - link "オンラインで日本語を教える" [ref=e275] [cursor=pointer]:
+                  - /url: https://preply.com/ja/online/japanese-tutoring-jobs
+              - listitem [ref=e276]:
+                - link "オンライン家庭教師になる" [ref=e278] [cursor=pointer]:
+                  - /url: https://preply.com/ja/online/tutoring-jobs
+          - generic [ref=e280]:
+            - heading "法人の皆様へ" [level=5] [ref=e281]
+            - list [ref=e282]:
+              - listitem [ref=e283]:
+                - link "法人向け言語トレーニング" [ref=e285] [cursor=pointer]:
+                  - /url: https://preply.com/en/business-language-training
+              - listitem [ref=e286]:
+                - link "法人向け英語レベルテスト" [ref=e288] [cursor=pointer]:
+                  - /url: https://preply.com/ja/english-level-test-for-companies
+        - generic [ref=e289]:
+          - generic [ref=e291]:
+            - heading "サポート" [level=5] [ref=e292]
+            - button "ヘルプが必要でしょうか？" [ref=e294] [cursor=pointer]
+          - generic [ref=e296]:
+            - heading "問い合わせ先" [level=5] [ref=e297]
+            - generic [ref=e298]:
+              - paragraph [ref=e299]:
+                - img [ref=e300]
+                - text: アメリカ
+              - paragraph [ref=e306]: 1309 Beacon Street, Suite 300, Brookline, MA, 02446
+          - generic [ref=e308]:
+            - heading "Preplyのソーシャルメディア" [level=5] [ref=e309]
+            - generic [ref=e310]:
+              - link "Facebook" [ref=e313] [cursor=pointer]:
+                - /url: https://www.facebook.com/preply
+                - img [ref=e314]
+                - text: Facebook
+              - link "Instagram" [ref=e318] [cursor=pointer]:
+                - /url: https://www.instagram.com/preply/
+                - img [ref=e319]
+                - text: Instagram
+              - link "Youtube" [ref=e325] [cursor=pointer]:
+                - /url: https://www.youtube.com/user/preplysite
+                - img [ref=e326]
+                - text: Youtube
+              - link "LinkedIn" [ref=e331] [cursor=pointer]:
+                - /url: https://www.linkedin.com/company/preply/
+                - img [ref=e332]
+                - text: LinkedIn
+              - link "TikTok" [ref=e335] [cursor=pointer]:
+                - /url: https://www.tiktok.com/@preplyglobal
+                - img [ref=e336]
+                - text: TikTok
+      - generic [ref=e340]:
+        - generic [ref=e342]:
+          - heading "言語を学ぼう" [level=5] [ref=e343]
+          - list [ref=e344]:
+            - listitem [ref=e345]:
+              - link "オンラインで英語を学ぶ" [ref=e347] [cursor=pointer]:
+                - /url: https://preply.com/en/learn/english
+            - listitem [ref=e348]:
+              - link "その他の言語を学ぶ" [ref=e350] [cursor=pointer]:
+                - /url: https://preply.com/en/learn
+        - generic [ref=e352]:
+          - heading "マンツーマンプライベートレッスン" [level=5] [ref=e353]
+          - list [ref=e354]:
+            - listitem [ref=e355]:
+              - link "オンライン英会話レッスン" [ref=e357] [cursor=pointer]:
+                - /url: https://preply.com/ja/online/english-tutors
+            - listitem [ref=e358]:
+              - link "オンラインスペイン語レッスン" [ref=e360] [cursor=pointer]:
+                - /url: https://preply.com/ja/online/spanish-tutors
+            - listitem [ref=e361]:
+              - link "オンラインフランス語レッスン" [ref=e363] [cursor=pointer]:
+                - /url: https://preply.com/ja/online/french-tutors
+            - listitem [ref=e364]:
+              - link "オンラインドイツ語レッスン" [ref=e366] [cursor=pointer]:
+                - /url: https://preply.com/ja/online/german-tutors
+            - listitem [ref=e367]:
+              - link "オンライン韓国語レッスン" [ref=e369] [cursor=pointer]:
+                - /url: https://preply.com/ja/online/korean-tutors
+            - listitem [ref=e370]:
+              - link "オンライン数学レッスン" [ref=e372] [cursor=pointer]:
+                - /url: https://preply.com/ja/online/math-tutors
+            - listitem [ref=e373]:
+              - link "オンライン日本語レッスン" [ref=e375] [cursor=pointer]:
+                - /url: https://preply.com/ja/online/japanese-tutors
+            - listitem [ref=e376]:
+              - link "オンライン中国語レッスン" [ref=e378] [cursor=pointer]:
+                - /url: https://preply.com/ja/online/chinese-tutors
+            - listitem [ref=e379]:
+              - link "オンラインロシア語レッスン" [ref=e381] [cursor=pointer]:
+                - /url: https://preply.com/ja/online/russian-tutors
+        - generic [ref=e383]:
+          - heading "お近くのオンラインレッスン" [level=5] [ref=e384]
+          - list [ref=e385]:
+            - listitem [ref=e386]:
+              - link "東京のオンラインレッスン" [ref=e388] [cursor=pointer]:
+                - /url: https://preply.com/ja/tokyo/all-tutors
+            - listitem [ref=e389]:
+              - link "大阪のオンラインレッスン" [ref=e391] [cursor=pointer]:
+                - /url: https://preply.com/ja/osaka/all-tutors
+            - listitem [ref=e392]:
+              - link "横浜のオンラインレッスン" [ref=e394] [cursor=pointer]:
+                - /url: https://preply.com/ja/yokohama/all-tutors
+            - listitem [ref=e395]:
+              - link "名古屋のオンラインレッスン" [ref=e397] [cursor=pointer]:
+                - /url: https://preply.com/ja/nagoya/all-tutors
+            - listitem [ref=e398]:
+              - link "福岡のオンラインレッスン" [ref=e400] [cursor=pointer]:
+                - /url: https://preply.com/ja/fukuoka/all-tutors
+            - listitem [ref=e401]:
+              - link "海外のオンライン家庭教師を探す" [ref=e403] [cursor=pointer]:
+                - /url: https://preply.com/ja/tutors-abroad
+            - listitem [ref=e404]:
+              - link "都市別のオンラインレッスン" [ref=e406] [cursor=pointer]:
+                - /url: https://preply.com/ja/tutors-by-city
+            - listitem [ref=e407]:
+              - link "日本のマンツーマン英会話レッスン" [ref=e409] [cursor=pointer]:
+                - /url: https://preply.com/ja/c/Japan/english-tutors
+            - listitem [ref=e410]:
+              - link "日本のマンツーマン日本語レッスン" [ref=e412] [cursor=pointer]:
+                - /url: https://preply.com/ja/c/Japan/japanese-tutors
+        - generic [ref=e413]:
+          - paragraph [ref=e416]: © 2012-2026 Preply Inc.
+          - generic [ref=e417]:
+            - link "法務センター" [ref=e419] [cursor=pointer]:
+              - /url: /ja/legal
+            - generic [ref=e420]:
+              - text: ·
+              - link "プライバシーポリシー" [ref=e421] [cursor=pointer]:
+                - /url: https://termsofuse.preply.com/terms_of_use/en_PrivacyPolicy.pdf
+            - generic [ref=e422]:
+              - text: ·
+              - link "クッキーポリシー" [ref=e423] [cursor=pointer]:
+                - /url: https://termsofuse.preply.com/terms_of_use/en_CookiePolicy.pdf
+            - generic [ref=e424]:
+              - text: ·
+              - link "法的通知" [ref=e425] [cursor=pointer]:
+                - /url: https://termsofuse.preply.com/terms_of_use/ja_Impressum.pdf
+      - button "Scroll to the top" [ref=e427] [cursor=pointer]:
+        - img [ref=e429]
+    - region "Notifications alt+T"
+    - generic [ref=e432]:
+      - paragraph [ref=e434]:
+        - text: Preplyは、ブラウザーの設定に従ってクッキーを使用します。詳細情報は
+        - link "クッキーポリシー" [ref=e436] [cursor=pointer]:
+          - /url: https://termsofuse.preply.com/terms_of_use/en_CookiePolicy.pdf
+        - text: をご参照ください。
+      - generic "Close" [ref=e438] [cursor=pointer]:
+        - img [ref=e439]:
+          - img [ref=e440]
+  - alert [ref=e442]

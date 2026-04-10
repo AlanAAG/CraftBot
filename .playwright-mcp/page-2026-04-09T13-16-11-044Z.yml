@@ -1,0 +1,413 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - 'heading "Round 3 Deadline: 20th April 2026" [level=3] [ref=e6]'
+      - link "Apply Now arrow up icon" [ref=e7] [cursor=pointer]:
+        - /url: /apply-now
+        - text: Apply Now
+        - img "arrow up icon" [ref=e8]
+    - banner [ref=e9]:
+      - generic [ref=e11]:
+        - link "tetr-logo" [ref=e12] [cursor=pointer]:
+          - /url: /
+          - img "tetr-logo" [ref=e13]
+        - generic [ref=e14]:
+          - generic [ref=e15]:
+            - button "Programs Programs Icon" [ref=e16] [cursor=pointer]:
+              - generic [ref=e17]: Programs
+              - generic [ref=e18]: Programs
+              - img "Icon" [ref=e19]
+            - link "Faculty Faculty" [ref=e20] [cursor=pointer]:
+              - /url: /faculty
+              - generic [ref=e21]: Faculty
+              - generic [ref=e22]: Faculty
+            - link "Student Life Student Life" [ref=e23] [cursor=pointer]:
+              - /url: /student-life
+              - generic [ref=e24]: Student Life
+              - generic [ref=e25]: Student Life
+            - button "About About Icon" [ref=e26] [cursor=pointer]:
+              - generic [ref=e27]: About
+              - generic [ref=e28]: About
+              - img "Icon" [ref=e29]
+          - generic [ref=e30]:
+            - link "APPLY NOW" [ref=e31] [cursor=pointer]:
+              - /url: /apply-now
+            - link "CONTACT US" [ref=e32] [cursor=pointer]:
+              - /url: /contact-us
+  - main [ref=e33]:
+    - generic [ref=e34]:
+      - img "Icon" [ref=e35]
+      - generic [ref=e36]:
+        - heading "Tetr Perspectives" [level=1] [ref=e37]
+        - paragraph [ref=e38]:
+          - text: Dive into insightful business tips, expert strategies, and real-life success stories to fuel your entrepreneurial
+          - text: journey and become a global leader.
+        - generic [ref=e39]:
+          - generic [ref=e40]:
+            - img [ref=e41]
+            - text: Recent Blog posts
+          - generic [ref=e43]:
+            - link "Blog Image Business How Pee Safe Turned an Uncomfortable Problem into a $30M Business Tetr took its tribe inside one of India’s largest feminine hygiene companies, Pee Safe. What they found was not just a successful company but a blueprint for how new markets and industries are built. Author Image Team Tetr April 09, 2026" [ref=e44] [cursor=pointer]:
+              - /url: /blog/how-pee-safe-turned-an-uncomfortable-problem-into-a-30m-business
+              - img "Blog Image" [ref=e46]
+              - generic [ref=e47]:
+                - generic [ref=e49]: Business
+                - heading "How Pee Safe Turned an Uncomfortable Problem into a $30M Business" [level=2] [ref=e50]
+                - paragraph [ref=e51]: Tetr took its tribe inside one of India’s largest feminine hygiene companies, Pee Safe. What they found was not just a successful company but a blueprint for how new markets and industries are built.
+                - generic [ref=e52]:
+                  - generic [ref=e53]:
+                    - img "Author Image" [ref=e54]
+                    - generic [ref=e56]: Team Tetr
+                  - generic [ref=e57]: April 09, 2026
+            - 'link "Blog Image Business Leadership vs. Management: What Really Sets Them Apart Understand the difference between leadership and management, why organizations need both for long-term success, and how to master both. Author Image Team Tetr March 31, 2026" [ref=e58] [cursor=pointer]':
+              - /url: /blog/leadership-vs-management-what-really-sets-them-apart
+              - img "Blog Image" [ref=e60]
+              - generic [ref=e61]:
+                - generic [ref=e63]: Business
+                - 'heading "Leadership vs. Management: What Really Sets Them Apart" [level=2] [ref=e64]'
+                - paragraph [ref=e65]: Understand the difference between leadership and management, why organizations need both for long-term success, and how to master both.
+                - generic [ref=e66]:
+                  - generic [ref=e67]:
+                    - img "Author Image" [ref=e68]
+                    - generic [ref=e70]: Team Tetr
+                  - generic [ref=e71]: March 31, 2026
+            - link "Blog Image Business Understanding the Mindset of Successful Entrepreneurs An exploration of the entrepreneurial mindset, breaking down the defining characteristics of successful founders and how these traits can be developed over time. Author Image Team Tetr March 28, 2026" [ref=e72] [cursor=pointer]:
+              - /url: /blog/understanding-the-mindset-of-successful-entrepreneurs
+              - img "Blog Image" [ref=e74]
+              - generic [ref=e75]:
+                - generic [ref=e77]: Business
+                - heading "Understanding the Mindset of Successful Entrepreneurs" [level=2] [ref=e78]
+                - paragraph [ref=e79]: An exploration of the entrepreneurial mindset, breaking down the defining characteristics of successful founders and how these traits can be developed over time.
+                - generic [ref=e80]:
+                  - generic [ref=e81]:
+                    - img "Author Image" [ref=e82]
+                    - generic [ref=e84]: Team Tetr
+                  - generic [ref=e85]: March 28, 2026
+    - generic [ref=e87]:
+      - heading "All Blogs" [level=2] [ref=e88]
+      - generic [ref=e89]:
+        - generic [ref=e93] [cursor=pointer]: Community Building
+        - generic [ref=e97] [cursor=pointer]: AI
+        - generic [ref=e101] [cursor=pointer]: Strategy
+        - generic [ref=e105] [cursor=pointer]: Student Experience
+        - generic [ref=e109] [cursor=pointer]: Technology
+        - generic [ref=e113] [cursor=pointer]: Global Exposure
+        - generic [ref=e117] [cursor=pointer]: Business
+      - generic [ref=e118]:
+        - link "Business April 09, 2026 How Pee Safe Turned an Uncomfortable Problem into a $30M Business Tetr took its tribe inside one of India’s largest feminine hygiene companies, Pee Safe. What they found was not just a successful company but a blueprint for how new markets and industries are built. Author Image Team Tetr" [ref=e119] [cursor=pointer]:
+          - /url: /blog/how-pee-safe-turned-an-uncomfortable-problem-into-a-30m-business
+          - generic [ref=e120]:
+            - generic [ref=e121]:
+              - generic [ref=e123]: Business
+              - generic [ref=e124]: April 09, 2026
+            - heading "How Pee Safe Turned an Uncomfortable Problem into a $30M Business" [level=3] [ref=e126]
+            - paragraph [ref=e127]: Tetr took its tribe inside one of India’s largest feminine hygiene companies, Pee Safe. What they found was not just a successful company but a blueprint for how new markets and industries are built.
+          - generic [ref=e128]:
+            - img "Author Image" [ref=e129]
+            - generic [ref=e130]: Team Tetr
+        - 'link "Business March 31, 2026 Leadership vs. Management: What Really Sets Them Apart Understand the difference between leadership and management, why organizations need both for long-term success, and how to master both. Author Image Team Tetr" [ref=e131] [cursor=pointer]':
+          - /url: /blog/leadership-vs-management-what-really-sets-them-apart
+          - generic [ref=e132]:
+            - generic [ref=e133]:
+              - generic [ref=e135]: Business
+              - generic [ref=e136]: March 31, 2026
+            - 'heading "Leadership vs. Management: What Really Sets Them Apart" [level=3] [ref=e138]'
+            - paragraph [ref=e139]: Understand the difference between leadership and management, why organizations need both for long-term success, and how to master both.
+          - generic [ref=e140]:
+            - img "Author Image" [ref=e141]
+            - generic [ref=e142]: Team Tetr
+        - link "Business March 28, 2026 Understanding the Mindset of Successful Entrepreneurs An exploration of the entrepreneurial mindset, breaking down the defining characteristics of successful founders and how these traits can be developed over time. Author Image Team Tetr" [ref=e143] [cursor=pointer]:
+          - /url: /blog/understanding-the-mindset-of-successful-entrepreneurs
+          - generic [ref=e144]:
+            - generic [ref=e145]:
+              - generic [ref=e147]: Business
+              - generic [ref=e148]: March 28, 2026
+            - heading "Understanding the Mindset of Successful Entrepreneurs" [level=3] [ref=e150]
+            - paragraph [ref=e151]: An exploration of the entrepreneurial mindset, breaking down the defining characteristics of successful founders and how these traits can be developed over time.
+          - generic [ref=e152]:
+            - img "Author Image" [ref=e153]
+            - generic [ref=e154]: Team Tetr
+        - link "March 26, 2026 What a Creator With 30 Million Subscribers Discovered Inside Tetr TheGrefg has 19 million YouTube subscribers, a Guinness World Record, and co-owns one of Spain's most prominent esports organisations. He is not easy to impress. Author Image Team Tetr" [ref=e155] [cursor=pointer]:
+          - /url: /blog/what-a-creator-with-30-million-subscribers-discovered-inside-tetr
+          - generic [ref=e156]:
+            - generic [ref=e158]: March 26, 2026
+            - heading "What a Creator With 30 Million Subscribers Discovered Inside Tetr" [level=3] [ref=e160]
+            - paragraph [ref=e161]: TheGrefg has 19 million YouTube subscribers, a Guinness World Record, and co-owns one of Spain's most prominent esports organisations. He is not easy to impress.
+          - generic [ref=e162]:
+            - img "Author Image" [ref=e163]
+            - generic [ref=e164]: Team Tetr
+        - link "Student Life March 22, 2026 What Class of 2029 Found in Malacca Beyond the Landmarks Class of 2029 spent a full day exploring Malacca, Malaysia, as part of their term 3 cultural immersion, and what they experienced went well beyond sightseeing. Author Image Team Tetr" [ref=e165] [cursor=pointer]:
+          - /url: /blog/what-class-of-2029-found-in-malacca-beyond-the-landmarks
+          - generic [ref=e166]:
+            - generic [ref=e167]:
+              - generic [ref=e169]: Student Life
+              - generic [ref=e170]: March 22, 2026
+            - heading "What Class of 2029 Found in Malacca Beyond the Landmarks" [level=3] [ref=e172]
+            - paragraph [ref=e173]: Class of 2029 spent a full day exploring Malacca, Malaysia, as part of their term 3 cultural immersion, and what they experienced went well beyond sightseeing.
+          - generic [ref=e174]:
+            - img "Author Image" [ref=e175]
+            - generic [ref=e176]: Team Tetr
+        - link "Technology March 20, 2026 Inside FITT, IIT Delhi - India’s Leading Innovation Ecosystem Tetr students recently spent three days at the Foundation for Innovation and Technology Transfer (FITT) at IIT Delhi, stepping into one of India’s most established innovation ecosystems. Author Image Team Tetr" [ref=e177] [cursor=pointer]:
+          - /url: /blog/inside-indias-leading-innovation-ecosystem
+          - generic [ref=e178]:
+            - generic [ref=e179]:
+              - generic [ref=e181]: Technology
+              - generic [ref=e182]: March 20, 2026
+            - heading "Inside FITT, IIT Delhi - India’s Leading Innovation Ecosystem" [level=3] [ref=e184]
+            - paragraph [ref=e185]: Tetr students recently spent three days at the Foundation for Innovation and Technology Transfer (FITT) at IIT Delhi, stepping into one of India’s most established innovation ecosystems.
+          - generic [ref=e186]:
+            - img "Author Image" [ref=e187]
+            - generic [ref=e188]: Team Tetr
+        - link "March 16, 2026 What a Bead-Making Immersion in Jamestown Taught Us About Cultural Enterprise Recently, Tetr students sat down with one of Ghana's oldest living industries. A bead-making workshop in Jamestown that has been turning recycled glass into cultural artefacts for generations. Author Image Team Tetr" [ref=e189] [cursor=pointer]:
+          - /url: /blog/what-a-bead-making-immersion-in-jamestown-taught-us-about-cultural-enterprise
+          - generic [ref=e190]:
+            - generic [ref=e192]: March 16, 2026
+            - heading "What a Bead-Making Immersion in Jamestown Taught Us About Cultural Enterprise" [level=3] [ref=e194]
+            - paragraph [ref=e195]: Recently, Tetr students sat down with one of Ghana's oldest living industries. A bead-making workshop in Jamestown that has been turning recycled glass into cultural artefacts for generations.
+          - generic [ref=e196]:
+            - img "Author Image" [ref=e197]
+            - generic [ref=e198]: Team Tetr
+        - link "Expansion March 13, 2026 What Coca-Cola's Most Overlooked Facility Says About the Future of Business Most people's mental map of global business is drawn long before they step into a boardroom. It names the same cities, celebrates the same markets, and quietly ignores entire continents that contradict that story. Walking into the Coca-Cola Bottling Compa Author Image Team Tetr" [ref=e199] [cursor=pointer]:
+          - /url: /blog/what-coca-colas-most-overlooked-facility-says-about-the-future-of-business
+          - generic [ref=e200]:
+            - generic [ref=e201]:
+              - generic [ref=e203]: Expansion
+              - generic [ref=e204]: March 13, 2026
+            - heading "What Coca-Cola's Most Overlooked Facility Says About the Future of Business" [level=3] [ref=e206]
+            - paragraph [ref=e207]: Most people's mental map of global business is drawn long before they step into a boardroom. It names the same cities, celebrates the same markets, and quietly ignores entire continents that contradict that story. Walking into the Coca-Cola Bottling Compa
+          - generic [ref=e208]:
+            - img "Author Image" [ref=e209]
+            - generic [ref=e210]: Team Tetr
+        - 'link "Student Experience March 10, 2026 Impact on the Ground: Learning from UNFPA and Social Enterprise Models Sometimes the best way to understand global development isn’t through a lecture or a report. It’s by stepping inside the institutions that are actually doing the work. Author Image Team Tetr" [ref=e211] [cursor=pointer]':
+          - /url: /blog/impact-on-the-ground-learning-from-unfpa-and-social-enterprise-models
+          - generic [ref=e212]:
+            - generic [ref=e213]:
+              - generic [ref=e215]: Student Experience
+              - generic [ref=e216]: March 10, 2026
+            - 'heading "Impact on the Ground: Learning from UNFPA and Social Enterprise Models" [level=3] [ref=e218]'
+            - paragraph [ref=e219]: Sometimes the best way to understand global development isn’t through a lecture or a report. It’s by stepping inside the institutions that are actually doing the work.
+          - generic [ref=e220]:
+            - img "Author Image" [ref=e221]
+            - generic [ref=e222]: Team Tetr
+        - link "Business, Technology March 09, 2026 Meeting the Builders of Africa’s AI Future at MEST During their Ghana immersion, Tetr Tribe visited the headquarters of the Meltwater Entrepreneurial School of Technology (MEST) in Accra, one of Africa's most influential startup ecosystems. Author Image Team Tetr" [ref=e223] [cursor=pointer]:
+          - /url: /blog/meeting-the-builders-of-africas-ai-future-at-mest
+          - generic [ref=e224]:
+            - generic [ref=e225]:
+              - generic [ref=e227]: Business, Technology
+              - generic [ref=e228]: March 09, 2026
+            - heading "Meeting the Builders of Africa’s AI Future at MEST" [level=3] [ref=e230]
+            - paragraph [ref=e231]: During their Ghana immersion, Tetr Tribe visited the headquarters of the Meltwater Entrepreneurial School of Technology (MEST) in Accra, one of Africa's most influential startup ecosystems.
+          - generic [ref=e232]:
+            - img "Author Image" [ref=e233]
+            - generic [ref=e234]: Team Tetr
+        - 'link "Business March 08, 2026 Why Some Companies Endure: A Tetr Fireside Chat with Joe Foster What does it really take to build a business that lasts? At Tetr, students explore this question not just through case studies or theory, but by learning directly from those who have built enduring companies from the ground up. Team Tetr" [ref=e235] [cursor=pointer]':
+          - /url: /blog/why-some-companies-endure-a-tetr-fireside-chat-with-joe-foster
+          - generic [ref=e236]:
+            - generic [ref=e237]:
+              - generic [ref=e239]: Business
+              - generic [ref=e240]: March 08, 2026
+            - 'heading "Why Some Companies Endure: A Tetr Fireside Chat with Joe Foster" [level=3] [ref=e242]'
+            - paragraph [ref=e243]: What does it really take to build a business that lasts? At Tetr, students explore this question not just through case studies or theory, but by learning directly from those who have built enduring companies from the ground up.
+          - generic [ref=e245]: Team Tetr
+        - 'link "AI March 05, 2026 At the Forefront of Applied Intelligence: Tetr’s Visit to Google AI Accra An immersion on how artificial intelligence moves from theory to ecosystem at Google AI. Author Image Team Tetr" [ref=e246] [cursor=pointer]':
+          - /url: /blog/at-the-forefront-of-applied-intelligence-tetrs-visit-to-google-ai-accra
+          - generic [ref=e247]:
+            - generic [ref=e248]:
+              - generic [ref=e250]: AI
+              - generic [ref=e251]: March 05, 2026
+            - 'heading "At the Forefront of Applied Intelligence: Tetr’s Visit to Google AI Accra" [level=3] [ref=e253]'
+            - paragraph [ref=e254]: An immersion on how artificial intelligence moves from theory to ecosystem at Google AI.
+          - generic [ref=e255]:
+            - img "Author Image" [ref=e256]
+            - generic [ref=e257]: Team Tetr
+        - 'link "Business, Technology February 18, 2026 Fixed vs Growth Mindset: What They Mean and Why They Matter Understand the difference between fixed and growth mindset, how they influence day-to-day lives, and whether one’s mindset can be changed. Author Image Team Tetr" [ref=e258] [cursor=pointer]':
+          - /url: /blog/fixed-vs-growth-mindset-what-they-mean-and-why-they-matter
+          - generic [ref=e259]:
+            - generic [ref=e260]:
+              - generic [ref=e262]: Business, Technology
+              - generic [ref=e263]: February 18, 2026
+            - 'heading "Fixed vs Growth Mindset: What They Mean and Why They Matter" [level=3] [ref=e265]'
+            - paragraph [ref=e266]: Understand the difference between fixed and growth mindset, how they influence day-to-day lives, and whether one’s mindset can be changed.
+          - generic [ref=e267]:
+            - img "Author Image" [ref=e268]
+            - generic [ref=e269]: Team Tetr
+        - 'link "Business, Technology January 30, 2026 Learning by Doing in an AI Bachelor’s Degree: What to Expect How hands-on learning shapes the foundation of future-ready artificial intelligence (AI) degree programs. Author Image Team Tetr" [ref=e270] [cursor=pointer]':
+          - /url: /blog/learning-by-doing-in-an-ai-bachelors-degree-what-to-expect
+          - generic [ref=e271]:
+            - generic [ref=e272]:
+              - generic [ref=e274]: Business, Technology
+              - generic [ref=e275]: January 30, 2026
+            - 'heading "Learning by Doing in an AI Bachelor’s Degree: What to Expect" [level=3] [ref=e277]'
+            - paragraph [ref=e278]: How hands-on learning shapes the foundation of future-ready artificial intelligence (AI) degree programs.
+          - generic [ref=e279]:
+            - img "Author Image" [ref=e280]
+            - generic [ref=e281]: Team Tetr
+        - 'link "Business, Technology January 30, 2026 MBA vs. MiM: Basic Differences Every Student Should Know Understand the key differences between an MiM and an MBA to choose the program that best aligns with your academic background and career goals. Author Image Team Tetr" [ref=e282] [cursor=pointer]':
+          - /url: /blog/mba-vs-mim-basic-differences-every-student-should-know
+          - generic [ref=e283]:
+            - generic [ref=e284]:
+              - generic [ref=e286]: Business, Technology
+              - generic [ref=e287]: January 30, 2026
+            - 'heading "MBA vs. MiM: Basic Differences Every Student Should Know" [level=3] [ref=e289]'
+            - paragraph [ref=e290]: Understand the key differences between an MiM and an MBA to choose the program that best aligns with your academic background and career goals.
+          - generic [ref=e291]:
+            - img "Author Image" [ref=e292]
+            - generic [ref=e293]: Team Tetr
+        - 'link "January 21, 2026 Tetr Trial Explained: What It Is and How to Prepare Understanding the Tetr Trial Author Image Team Tetr" [ref=e294] [cursor=pointer]':
+          - /url: /blog/tetr-trial-explained-what-it-is-and-how-to-prepare
+          - generic [ref=e295]:
+            - generic [ref=e297]: January 21, 2026
+            - 'heading "Tetr Trial Explained: What It Is and How to Prepare" [level=3] [ref=e299]'
+            - paragraph [ref=e300]: Understanding the Tetr Trial
+          - generic [ref=e301]:
+            - img "Author Image" [ref=e302]
+            - generic [ref=e303]: Team Tetr
+        - 'link "Business, Technology January 16, 2026 From Day One to Graduation: Inside Tetr’s Bachelor of Management & Technology How Tetr’s Bachelor’s in Management and Technology unfolds across eight semesters. Author Image Team Tetr" [ref=e304] [cursor=pointer]':
+          - /url: /blog/from-day-one-to-graduation-inside-tetrs-bachelor-of-management-technology
+          - generic [ref=e305]:
+            - generic [ref=e306]:
+              - generic [ref=e308]: Business, Technology
+              - generic [ref=e309]: January 16, 2026
+            - 'heading "From Day One to Graduation: Inside Tetr’s Bachelor of Management & Technology" [level=3] [ref=e311]'
+            - paragraph [ref=e312]: How Tetr’s Bachelor’s in Management and Technology unfolds across eight semesters.
+          - generic [ref=e313]:
+            - img "Author Image" [ref=e314]
+            - generic [ref=e315]: Team Tetr
+        - link "Awards December 09, 2025 Tetr Wins the Innovation in Business Education Award at the QS Reimagine Education Awards 2025 A global recognition for Tetr's innovative approach to business education, earning a spot at the QS Reimagine Education Awards 2025. Author Image Team Tetr" [ref=e316] [cursor=pointer]:
+          - /url: /blog/tetr-wins-the-innovation-in-business-education-award-at-the-qs-reimagine-education-awards-2025
+          - generic [ref=e317]:
+            - generic [ref=e318]:
+              - generic [ref=e320]: Awards
+              - generic [ref=e321]: December 09, 2025
+            - heading "Tetr Wins the Innovation in Business Education Award at the QS Reimagine Education Awards 2025" [level=3] [ref=e323]
+            - paragraph [ref=e324]: A global recognition for Tetr's innovative approach to business education, earning a spot at the QS Reimagine Education Awards 2025.
+          - generic [ref=e325]:
+            - img "Author Image" [ref=e326]
+            - generic [ref=e327]: Team Tetr
+        - 'link "Technology November 21, 2025 The Tetr DNA: What Makes Our Master in Management Students Different Learn what makes Tetr students different and why the MiM Tech is one of the most transformative global entrepreneurship programs today. Team Tetr" [ref=e328] [cursor=pointer]':
+          - /url: /blog/the-tetr-dna-what-makes-our-master-in-management-students-different
+          - generic [ref=e329]:
+            - generic [ref=e330]:
+              - generic [ref=e332]: Technology
+              - generic [ref=e333]: November 21, 2025
+            - 'heading "The Tetr DNA: What Makes Our Master in Management Students Different" [level=3] [ref=e335]'
+            - paragraph [ref=e336]: Learn what makes Tetr students different and why the MiM Tech is one of the most transformative global entrepreneurship programs today.
+          - generic [ref=e338]: Team Tetr
+        - link "Global Curriculum November 19, 2025 What It’s Like to Study Business Across Three Countries How global curriculum and real-world exposure prepare students for the future. Author Image Team Tetr" [ref=e339] [cursor=pointer]:
+          - /url: /blog/what-its-like-to-study-business-across-three-countries
+          - generic [ref=e340]:
+            - generic [ref=e341]:
+              - generic [ref=e343]: Global Curriculum
+              - generic [ref=e344]: November 19, 2025
+            - heading "What It’s Like to Study Business Across Three Countries" [level=3] [ref=e346]
+            - paragraph [ref=e347]: How global curriculum and real-world exposure prepare students for the future.
+          - generic [ref=e348]:
+            - img "Author Image" [ref=e349]
+            - generic [ref=e350]: Team Tetr
+        - link "Management & Technology November 12, 2025 Why Tech Literacy Is the New Must-Have for Future Managers? Learn why the future of management belongs to the tech-driven leaders. Author Image Team Tetr" [ref=e351] [cursor=pointer]:
+          - /url: /blog/why-tech-literacy-is-the-new-must-have-for-future-managers
+          - generic [ref=e352]:
+            - generic [ref=e353]:
+              - generic [ref=e355]: Management & Technology
+              - generic [ref=e356]: November 12, 2025
+            - heading "Why Tech Literacy Is the New Must-Have for Future Managers?" [level=3] [ref=e358]
+            - paragraph [ref=e359]: Learn why the future of management belongs to the tech-driven leaders.
+          - generic [ref=e360]:
+            - img "Author Image" [ref=e361]
+            - generic [ref=e362]: Team Tetr
+      - button "Load More" [ref=e364] [cursor=pointer]:
+        - paragraph [ref=e365]: Load More
+  - contentinfo [ref=e366]:
+    - generic [ref=e367]:
+      - generic [ref=e368] [cursor=pointer]:
+        - img [ref=e370]
+        - text: Resources WhatsApp Instagram YouTube Close
+      - generic [ref=e376]:
+        - img "close-icon" [ref=e378] [cursor=pointer]
+        - generic [ref=e379]:
+          - heading "We value your privacy" [level=2] [ref=e380]
+          - generic [ref=e381]:
+            - paragraph [ref=e382]: We use cookies to improve your browsing experience, personalise content, and understand how our website is used. By clicking “Accept all cookies”, you agree to our use of cookies.
+            - paragraph [ref=e383]:
+              - text: You can accept all cookies or reject all. Learn more in our
+              - link "Privacy Policy" [ref=e384] [cursor=pointer]:
+                - /url: /privacy-policy
+              - text: .
+          - generic [ref=e385]:
+            - button "Reject all" [ref=e386] [cursor=pointer]
+            - button "Accept all cookies" [ref=e387] [cursor=pointer]
+      - generic [ref=e388]:
+        - generic [ref=e389]:
+          - link "tetr-footer-brand-image" [ref=e390] [cursor=pointer]:
+            - /url: /
+            - img "tetr-footer-brand-image" [ref=e391]
+          - link "APPLY NOW Icon" [ref=e393] [cursor=pointer]:
+            - /url: /apply-now
+            - text: APPLY NOW
+            - img "Icon" [ref=e394]
+        - generic [ref=e395]:
+          - generic [ref=e396]:
+            - link "About" [ref=e397] [cursor=pointer]:
+              - /url: /about
+            - link "Faculty" [ref=e398] [cursor=pointer]:
+              - /url: /faculty
+            - link "Blog" [ref=e399] [cursor=pointer]:
+              - /url: /blog
+            - link "Events" [ref=e400] [cursor=pointer]:
+              - /url: /events
+          - generic [ref=e401]:
+            - link "Resources" [ref=e402] [cursor=pointer]:
+              - /url: /resources
+            - link "News" [ref=e403] [cursor=pointer]:
+              - /url: /news
+            - link "Reviews" [ref=e404] [cursor=pointer]:
+              - /url: /reviews
+            - link "Career Labs" [ref=e405] [cursor=pointer]:
+              - /url: /careers
+          - generic [ref=e406]:
+            - generic [ref=e407] [cursor=pointer]: Dropshipping Report
+            - generic [ref=e408] [cursor=pointer]: D2C Report
+            - generic [ref=e409] [cursor=pointer]: UG Brochure
+            - generic [ref=e410] [cursor=pointer]: PG Brochure
+          - generic [ref=e411]:
+            - link "Experiences at Tetr" [ref=e412] [cursor=pointer]:
+              - /url: /experiences-at-tetr
+            - link "Kickstarter" [ref=e413] [cursor=pointer]:
+              - /url: /kickstarter
+            - link "Dropshipping" [ref=e414] [cursor=pointer]:
+              - /url: /dropshipping
+        - generic [ref=e415]:
+          - generic [ref=e417]:
+            - paragraph [ref=e418]: QS Gold Winner
+            - paragraph [ref=e419]: Most Innovative Business School of 2025
+          - generic [ref=e420]:
+            - generic [ref=e421]:
+              - link "instagram logo":
+                - /url: https://www.instagram.com/tetr.college/
+                - img "instagram logo"
+              - link "youtube logo":
+                - /url: https://www.youtube.com/@tetrcollege
+                - img "youtube logo"
+              - link "linkedin logo":
+                - /url: https://www.linkedin.com/school/tetr-college-of-business/
+                - img "linkedin logo"
+            - generic [ref=e422]:
+              - text: "Email:"
+              - link "info@tetr.org" [ref=e423] [cursor=pointer]:
+                - /url: mailto:info@tetr.org
+          - generic [ref=e424]:
+            - img [ref=e425]
+            - img [ref=e426]
+    - generic [ref=e430]:
+      - generic [ref=e431]:
+        - link "Contact Us" [ref=e432] [cursor=pointer]:
+          - /url: /contact-us
+        - link "Refund Policy" [ref=e433] [cursor=pointer]:
+          - /url: /refund-policy
+        - link "Privacy Policy" [ref=e434] [cursor=pointer]:
+          - /url: /privacy-policy
+        - link "Terms & Conditions" [ref=e435] [cursor=pointer]:
+          - /url: /terms-conditions
+      - generic [ref=e436]:
+        - generic [ref=e437]: "* Tetr reserves the right to adjust the program location for this term due to prevailing visa restrictions. Participants will be notified accordingly."
+        - generic [ref=e438]: Copyright© 2026 Tetr. All rights reserved.
