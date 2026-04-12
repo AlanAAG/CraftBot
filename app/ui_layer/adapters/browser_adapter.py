@@ -1558,6 +1558,7 @@ A quick Q&A will now begin to understand your objectives to serve you better:"""
                         ],
                         "default": controller.get_step_default(),
                         "provider": getattr(step, "provider", None),
+                        "form_fields": self._get_step_form_fields(step),
                     },
                 },
             })
@@ -1570,6 +1571,27 @@ A quick Q&A will now begin to understand your objectives to serve you better:"""
                     "error": str(e),
                 },
             })
+
+    @staticmethod
+    def _get_step_form_fields(step) -> Optional[list]:
+        """Extract form field definitions from a step, if it supports them."""
+        form_fields = getattr(step, 'get_form_fields', lambda: [])()
+        if not form_fields:
+            return None
+        return [
+            {
+                "name": f.name,
+                "label": f.label,
+                "field_type": f.field_type,
+                "options": [
+                    {"value": o.value, "label": o.label, "description": o.description, "default": o.default}
+                    for o in f.options
+                ],
+                "default": f.default,
+                "placeholder": f.placeholder,
+            }
+            for f in form_fields
+        ]
 
     async def _handle_onboarding_step_submit(self, value: Any) -> None:
         """Submit a value for the current onboarding step."""
@@ -1678,6 +1700,7 @@ A quick Q&A will now begin to understand your objectives to serve you better:"""
                             ],
                             "default": controller.get_step_default(),
                             "provider": getattr(step, "provider", None),
+                            "form_fields": self._get_step_form_fields(step),
                         },
                     },
                 })
