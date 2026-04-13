@@ -510,6 +510,7 @@ export function OnboardingPage() {
           value={textValue}
           onChange={e => setTextValue(e.target.value)}
           placeholder={isApiKey ? 'Enter your API key' : 'Enter a name'}
+          maxLength={isApiKey ? undefined : 20}
           autoFocus
           onKeyDown={e => { if (e.key === 'Enter' && canSubmit) handleSubmit() }}
         />

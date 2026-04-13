@@ -209,7 +209,8 @@ class AgentNameStep:
         return []
 
     def validate(self, value: Any) -> tuple[bool, Optional[str]]:
-        # Optional, any string is valid
+        if value and len(str(value)) > 20:
+            return False, "Agent name must be 20 characters or fewer"
         return True, None
 
     def get_default(self) -> str:
