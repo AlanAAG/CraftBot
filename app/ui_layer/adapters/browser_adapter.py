@@ -955,10 +955,9 @@ A quick Q&A will now begin to understand your objectives to serve you better:"""
         from aiohttp import web, WSMsgType
         import asyncio
 
-        # Simple WebSocket configuration - no heartbeat (client handles reconnect)
         ws = web.WebSocketResponse(
             max_msg_size=100 * 1024 * 1024,
-            timeout=None,  # No timeout - let messages flow naturally
+            heartbeat=30.0,  # Send ping every 30s to keep connection alive
         )
         
         try:
