@@ -34,6 +34,12 @@ SETTINGS_CONFIG_PATH = APP_CONFIG_PATH / "settings.json"
 _settings_cache: Optional[Dict[str, Any]] = None
 
 
+def invalidate_settings_cache() -> None:
+    """Invalidate the settings cache so the next get_settings() call re-reads from disk."""
+    global _settings_cache
+    _settings_cache = None
+
+
 def _get_default_settings() -> Dict[str, Any]:
     """Return default settings structure."""
     return {

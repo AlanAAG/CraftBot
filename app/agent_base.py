@@ -2619,11 +2619,17 @@ class AgentBase:
         automatically to apply changes without restart.
         """
         try:
-            from app.config import PROJECT_ROOT
+            from app.config import PROJECT_ROOT, invalidate_settings_cache
 
             # Initialize settings manager
             settings_path = PROJECT_ROOT / "app" / "config" / "settings.json"
             settings_manager.initialize(settings_path)
+
+            # Invalidate app.config cache when SettingsManager reloads,
+            # so get_api_key() and other getters pick up fresh values.
+            settings_manager.register_reload_callback(
+                lambda new_settings, old_settings: invalidate_settings_cache()
+            )
 
             # Get event loop for async callbacks
             event_loop = asyncio.get_event_loop()
