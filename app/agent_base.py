@@ -1408,12 +1408,16 @@ class AgentBase:
             if pending_platform:
                 trigger_payload["pending_platform"] = pending_platform
 
+            # Determine priority based on task mode:
+            # simple task = 5, complex task = 7
+            task_priority = 5 if self.task_manager.is_simple_task() else 7
+
             # Build and enqueue trigger safely
             try:
                 await self.triggers.put(
                     Trigger(
                         fire_at=fire_at,
-                        priority=5,
+                        priority=task_priority,
                         next_action_description=next_action_desc,
                         session_id=new_session_id,
                         payload=trigger_payload,
@@ -1829,7 +1833,7 @@ class AgentBase:
             await self.triggers.put(
                 Trigger(
                     fire_at=time.time(),
-                    priority=1,
+                    priority=3,
                     next_action_description=(
                         "Please perform action that best suit this user chat "
                         f"you just received{platform_hint}: {chat_content}"
@@ -2505,11 +2509,15 @@ class AgentBase:
                 continue
 
             try:
+                # Determine priority based on task mode: simple=5, complex=7
+                is_simple = getattr(task, 'mode', 'complex') == 'simple'
+                restore_priority = 5 if is_simple else 7
+
                 if task.waiting_for_user_reply:
                     await self.triggers.put(
                         Trigger(
                             fire_at=time.time(),
-                            priority=5,
+                            priority=restore_priority,
                             next_action_description=(
                                 "Waiting for user reply "
                                 "(resumed after restart)"
@@ -2528,7 +2536,7 @@ class AgentBase:
                     await self.triggers.put(
                         Trigger(
                             fire_at=time.time(),
-                            priority=5,
+                            priority=restore_priority,
                             next_action_description=(
                                 "Resume task after agent restart"
                             ),
