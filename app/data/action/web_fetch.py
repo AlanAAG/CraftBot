@@ -3,14 +3,12 @@ from agent_core import action
 @action(
     name="web_fetch",
     description=(
-        "Fetches content from a URL and returns it as cleaned text/markdown. "
+        "Fetches a URL and returns cleaned text/markdown content. "
         "Use web_search first to find URLs, then web_fetch to read them. "
-        "The 'prompt' parameter controls what is returned: "
-        "include 'title' to extract just the page title, "
-        "include 'summary' to get a short preview (~900 chars), "
-        "or describe what you need (e.g., 'find the pricing table') to get a focused preview. "
-        "Content beyond max_content_length is saved to a temp file (returned as content_file) "
-        "— use grep_files or read_file on that path to access the rest. "
+        "Two modes: 'full' (default) returns extracted page content up to max_content_length chars. "
+        "'title' returns only the page title (cheap, no content extraction). "
+        "When content exceeds max_content_length, the full content is saved to a temp file "
+        "and content_file path is returned — use grep_files to search it or read_file with offset/limit to paginate. "
         "HTTP is auto-upgraded to HTTPS (except localhost). Follows up to 10 redirects automatically."
     ),
     mode="CLI",
@@ -22,10 +20,10 @@ from agent_core import action
             "description": "The URL to fetch content from. Must be a valid http(s) URL.",
             "required": True
         },
-        "prompt": {
+        "mode": {
             "type": "string",
-            "example": "Extract the main pricing information",
-            "description": "Describes what information to extract. Use 'title' to get just the page title. Use 'summary' for a short content preview (~900 chars). Otherwise, provide a specific prompt (e.g., 'find the API rate limits') and the response will include a content preview with your prompt for context. Always provide a prompt to keep responses token-efficient."
+            "example": "full",
+            "description": "What to return. 'full' (default): extracted page content up to max_content_length, overflow saved to content_file. 'title': only the page title, no content extraction."
         },
         "timeout": {
             "type": "number",
@@ -35,7 +33,7 @@ from agent_core import action
         "max_content_length": {
             "type": "integer",
             "example": 5000,
-            "description": "Maximum content length in characters returned inline. Content beyond this is saved to content_file for access via read_file/grep_files. Defaults to 5000. Pass 0 to return all content inline (use sparingly — large pages waste tokens)."
+            "description": "Maximum content length in characters returned inline. Content beyond this is saved to content_file — use grep_files to search it or read_file with offset/limit to paginate through it. Defaults to 5000. Pass 0 to return all content inline (use sparingly — large pages waste tokens)."
         },
         "use_jina_fallback": {
             "type": "boolean",
@@ -69,7 +67,7 @@ from agent_core import action
         },
         "content": {
             "type": "string",
-            "description": "The extracted content. Format depends on prompt: title-only, summary preview, or prompt-contextualized preview. If no prompt given, returns full content (up to max_content_length)."
+            "description": "The extracted page content in markdown/text format, up to max_content_length chars. Empty when mode is 'title'."
         },
         "content_length": {
             "type": "integer",
@@ -77,15 +75,15 @@ from agent_core import action
         },
         "total_content_length": {
             "type": "integer",
-            "description": "Total length of the full fetched content (before truncation)."
+            "description": "Total length of the full extracted content before truncation. Compare with content_length to know how much was cut."
         },
         "was_truncated": {
             "type": "boolean",
-            "description": "True if content was truncated to max_content_length."
+            "description": "True if content was truncated to max_content_length. When true, content_file contains the full content — use grep_files to search it or read_file with offset/limit to paginate."
         },
         "content_file": {
             "type": "string",
-            "description": "Absolute path to the full content file when was_truncated is true. Use read_file with offset/limit to paginate, or grep_files to search. Null if content was not truncated."
+            "description": "Absolute path to the full content file when was_truncated is true. Use grep_files(pattern, path=content_file) to search for specific information, or read_file(file_path=content_file, offset=N, limit=M) to paginate. Null if content was not truncated."
         },
         "message": {
             "type": "string",
@@ -95,19 +93,93 @@ from agent_core import action
     requirement=["requests", "beautifulsoup4", "trafilatura", "lxml"],
     test_payload={
         "url": "https://example.com/article",
-        "prompt": "summary",
         "timeout": 20,
         "simulated_mode": True
     }
 )
 def web_fetch(input_data: dict) -> dict:
-    """Fetches content from a URL and returns cleaned text/markdown."""
+    """Fetches a URL and returns cleaned text/markdown content."""
     import re
+    import os
+    import tempfile
     from urllib.parse import urlparse
+    from datetime import datetime, timezone
+
+    # --- Helper functions (must be inside for sandboxed execution) ---
+
+    def make_error(message, err_url='', status_code=0, status_text=''):
+        return {
+            'status': 'error',
+            'status_code': status_code,
+            'status_text': status_text,
+            'url': err_url,
+            'title': '',
+            'content': '',
+            'content_length': 0,
+            'total_content_length': 0,
+            'was_truncated': False,
+            'content_file': None,
+            'message': message
+        }
+
+    def make_result(res_url, title, content, total_content_length,
+                    status_code, status_text,
+                    was_truncated=False, content_file=None, message=''):
+        return {
+            'status': 'success',
+            'status_code': status_code,
+            'status_text': status_text,
+            'url': res_url,
+            'title': title or '',
+            'content': content,
+            'content_length': len(content),
+            'total_content_length': total_content_length,
+            'was_truncated': was_truncated,
+            'content_file': content_file,
+            'message': message
+        }
+
+    def save_content_file(content, file_url, sess_id):
+        save_dir = None
+        if sess_id:
+            try:
+                current = os.path.abspath(__file__)
+                for _ in range(10):
+                    current = os.path.dirname(current)
+                    if os.path.isdir(os.path.join(current, 'agent_file_system')):
+                        save_dir = os.path.join(current, 'agent_file_system', 'workspace', 'tmp', sess_id)
+                        break
+            except Exception:
+                pass
+
+        if not save_dir:
+            save_dir = tempfile.gettempdir()
+
+        os.makedirs(save_dir, exist_ok=True)
+
+        try:
+            domain = urlparse(file_url).hostname or 'unknown'
+            domain = domain.replace('.', '_')
+        except Exception:
+            domain = 'unknown'
+
+        ts = datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S%f')
+        filename = f'web_fetch_{domain}_{ts}.md'
+        file_path = os.path.join(save_dir, filename)
+
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write(f'<!-- Source: {file_url} -->\n\n')
+            f.write(content)
+
+        return file_path
+
+    # --- Main logic ---
 
     simulated_mode = input_data.get('simulated_mode', False)
     url = str(input_data.get('url', '')).strip()
-    prompt = str(input_data.get('prompt', '')).strip() if input_data.get('prompt') else None
+    fetch_mode = str(input_data.get('mode', 'full')).strip().lower()
+    if fetch_mode not in ('full', 'title'):
+        fetch_mode = 'full'
     timeout = float(input_data.get('timeout', 20))
     raw_max = input_data.get('max_content_length')
     try:
@@ -122,7 +194,7 @@ def web_fetch(input_data: dict) -> dict:
 
     # --- Validate URL ---
     if not url:
-        return _make_error('URL is required.')
+        return make_error('URL is required.')
 
     # Auto-upgrade HTTP to HTTPS (except localhost)
     if url.startswith('http://'):
@@ -135,7 +207,7 @@ def web_fetch(input_data: dict) -> dict:
             url = 'https://' + url[7:]
 
     if not re.match(r'^https?://', url, re.I):
-        return _make_error('A valid http(s) URL is required.', url)
+        return make_error('A valid http(s) URL is required.', url)
 
     # --- Simulated mode ---
     if simulated_mode:
@@ -149,23 +221,11 @@ def web_fetch(input_data: dict) -> dict:
             "## Summary\n\n"
             "This is a test page demonstrating the web_fetch action."
         )
-        result_content = mock_content
-        if prompt:
-            result_content = _apply_prompt(prompt, mock_content, 'Test Page Title')
-
-        return {
-            'status': 'success',
-            'status_code': 200,
-            'status_text': 'OK',
-            'url': url,
-            'title': 'Test Page Title',
-            'content': result_content,
-            'content_length': len(result_content),
-            'total_content_length': len(mock_content),
-            'was_truncated': False,
-            'content_file': None,
-            'message': ''
-        }
+        if fetch_mode == 'title':
+            return make_result(url, 'Test Page Title', '', 0, 200, 'OK')
+        return make_result(
+            url, 'Test Page Title', mock_content, len(mock_content), 200, 'OK'
+        )
 
     # --- Fetch the URL ---
     try:
@@ -193,7 +253,7 @@ def web_fetch(input_data: dict) -> dict:
         # Check content type
         content_type = response.headers.get('Content-Type', '')
         if not any(t in content_type for t in ('text/html', 'application/xhtml+xml', 'text/plain')):
-            return _make_error(
+            return make_error(
                 f'Unsupported content-type: {content_type}', final_url,
                 status_code=status_code, status_text=status_text
             )
@@ -210,8 +270,28 @@ def web_fetch(input_data: dict) -> dict:
         encoding = response.encoding or 'utf-8'
         html_text = content_bytes.decode(encoding, errors='replace')
 
-        # === TIER 1: Static Extraction ===
+        # === Extract title (needed for both modes) ===
         title = ''
+        try:
+            meta = trafilatura.metadata.extract_metadata(content_bytes, url=final_url)
+            if meta and getattr(meta, 'title', None):
+                title = meta.title.strip()
+        except Exception:
+            pass
+
+        if not title:
+            try:
+                soup_title = BeautifulSoup(html_text[:5000], 'lxml')
+                if soup_title.title and soup_title.title.string:
+                    title = soup_title.title.string.strip()
+            except Exception:
+                pass
+
+        # === Title mode: return just the title ===
+        if fetch_mode == 'title':
+            return make_result(final_url, title, '', 0, status_code, status_text)
+
+        # === Full mode: extract content ===
         content_md = ''
         min_content_length = 200
 
@@ -223,34 +303,27 @@ def web_fetch(input_data: dict) -> dict:
                 include_tables=True,
                 output_format='markdown'
             ) or ''
-
-            try:
-                meta = trafilatura.metadata.extract_metadata(content_bytes, url=final_url)
-                if meta and getattr(meta, 'title', None):
-                    title = meta.title.strip()
-            except Exception:
-                pass
         except Exception:
             pass
 
         # Fallback to BeautifulSoup
         if not content_md or len(content_md) < min_content_length:
-            soup = BeautifulSoup(html_text, 'lxml')
+            try:
+                soup = BeautifulSoup(html_text, 'lxml')
 
-            if not title and soup.title and soup.title.string:
-                title = soup.title.string.strip()
+                for tag in soup(['script', 'style', 'noscript', 'nav', 'footer', 'header']):
+                    tag.decompose()
 
-            for tag in soup(['script', 'style', 'noscript', 'nav', 'footer', 'header']):
-                tag.decompose()
+                text = soup.get_text('\n')
+                text = re.sub(r'\n\s*\n\s*\n+', '\n\n', text)
+                bs_content = text.strip()
 
-            text = soup.get_text('\n')
-            text = re.sub(r'\n\s*\n\s*\n+', '\n\n', text)
-            bs_content = text.strip()
+                if len(bs_content) > len(content_md or ''):
+                    content_md = bs_content
+            except Exception:
+                pass
 
-            if len(bs_content) > len(content_md or ''):
-                content_md = bs_content
-
-        # === TIER 2: Jina Reader API Fallback ===
+        # === Jina Reader API Fallback ===
         if use_jina_fallback and (not content_md or len(content_md) < min_content_length):
             try:
                 jina_url = f"https://r.jina.ai/{url}"
@@ -265,9 +338,10 @@ def web_fetch(input_data: dict) -> dict:
                     if jina_content and len(jina_content) > min_content_length:
                         content_md = jina_content
 
-                        title_match = re.match(r'^#\s*(.+?)[\n\r]', jina_content)
-                        if title_match and not title:
-                            title = title_match.group(1).strip()
+                        if not title:
+                            title_match = re.match(r'^#\s*(.+?)[\n\r]', jina_content)
+                            if title_match:
+                                title = title_match.group(1).strip()
             except Exception:
                 pass
 
@@ -277,31 +351,20 @@ def web_fetch(input_data: dict) -> dict:
             content_md = content_md.strip()
 
         if not content_md:
-            return _make_result(
+            return make_result(
                 final_url, title, '', 0, status_code, status_text,
-                message='No content could be extracted. Site may require JavaScript rendering or authentication.'
+                message='No content could be extracted. Site may require JavaScript rendering — use browser tools (Playwright) instead.'
             )
 
         total_content_length = len(content_md)
 
-        # === Apply prompt-based extraction ===
-        if prompt:
-            result_content = _apply_prompt(prompt, content_md, title)
-            # Prompt-based results are already compact, no truncation needed
-            return _make_result(
-                final_url, title, result_content, total_content_length,
-                status_code, status_text
-            )
-
-        # === No prompt — return raw content with truncation + file save ===
+        # === Truncation + file save ===
         was_truncated = False
         content_file = None
 
         if not unlimited and total_content_length > max_content_length:
-            # Save full content to temp file
-            content_file = _save_content_file(content_md, final_url, session_id)
+            content_file = save_content_file(content_md, final_url, session_id)
 
-            # Truncate at a sentence boundary
             truncated = content_md[:max_content_length]
             last_period = truncated.rfind('.')
             if last_period > max_content_length * 0.8:
@@ -309,19 +372,24 @@ def web_fetch(input_data: dict) -> dict:
             content_md = truncated
             was_truncated = True
 
-        return _make_result(
+        # === Build message ===
+        message = ''
+        if was_truncated:
+            message = (
+                f'Content truncated to {len(content_md)} chars. '
+                f'Full content ({total_content_length} chars) saved to content_file. '
+                f'Use grep_files(pattern, path=content_file) to search for specific info, '
+                f'or read_file(file_path=content_file, offset=N, limit=M) to paginate.'
+            )
+
+        return make_result(
             final_url, title, content_md, total_content_length,
             status_code, status_text,
             was_truncated=was_truncated, content_file=content_file,
-            message=(
-                f'Content truncated to {len(content_md)} chars. '
-                f'Full content ({total_content_length} chars) saved to content_file. '
-                f'Use read_file or grep_files on that path to access the rest.'
-            ) if was_truncated else ''
+            message=message
         )
 
     except Exception as e:
-        # Extract status code from requests exceptions when possible
         sc, st = 0, ''
         if hasattr(e, 'response') and e.response is not None:
             sc = e.response.status_code
@@ -337,119 +405,4 @@ def web_fetch(input_data: dict) -> dict:
         else:
             msg = f'Fetch failed: {str(e)}'
 
-        return _make_error(msg, url, status_code=sc, status_text=st)
-
-
-def _apply_prompt(prompt, content, title):
-    """Apply prompt-based extraction to content.
-
-    - 'title' in prompt: extract page title
-    - 'summary'/'summarize' in prompt: return ~900 char preview
-    - otherwise: return content preview with prompt context
-    """
-    import re
-    lower_prompt = prompt.lower()
-
-    # Collapse whitespace for compact previews
-    compact = re.sub(r'\s+', ' ', content).strip()
-
-    if 'title' in lower_prompt:
-        if title:
-            return f'Title: {title}'
-        # Fallback: first 600 chars as preview
-        return compact[:600]
-
-    if 'summary' in lower_prompt or 'summarize' in lower_prompt:
-        preview = compact[:900]
-        if title:
-            return f'Title: {title}\n\n{preview}'
-        return preview
-
-    # Custom prompt — return preview with prompt context
-    preview = compact[:900]
-    result = f'Prompt: {prompt}\n\nContent preview:\n{preview}'
-    if title:
-        result = f'Title: {title}\n{result}'
-    return result
-
-
-def _save_content_file(content, url, session_id):
-    """Save full content to a temp file and return the path."""
-    import os
-    import tempfile
-    from datetime import datetime, timezone
-    from urllib.parse import urlparse
-
-    # Determine temp directory
-    # Try to find agent_file_system/workspace/tmp/{session_id} relative to project root
-    temp_dir = None
-    if session_id:
-        try:
-            # Walk up from this file to find the project root (contains agent_file_system/)
-            current = os.path.abspath(__file__)
-            for _ in range(10):
-                current = os.path.dirname(current)
-                candidate = os.path.join(current, 'agent_file_system', 'workspace', 'tmp', session_id)
-                if os.path.isdir(os.path.join(current, 'agent_file_system')):
-                    temp_dir = candidate
-                    break
-        except Exception:
-            pass
-
-    if not temp_dir:
-        temp_dir = tempfile.gettempdir()
-
-    os.makedirs(temp_dir, exist_ok=True)
-
-    # Generate filename from URL domain + timestamp
-    try:
-        domain = urlparse(url).hostname or 'unknown'
-        domain = domain.replace('.', '_')
-    except Exception:
-        domain = 'unknown'
-
-    ts = datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S%f')
-    filename = f'web_fetch_{domain}_{ts}.md'
-    file_path = os.path.join(temp_dir, filename)
-
-    with open(file_path, 'w', encoding='utf-8') as f:
-        f.write(f'<!-- Source: {url} -->\n\n')
-        f.write(content)
-
-    return file_path
-
-
-def _make_result(url, title, content, total_content_length,
-                 status_code, status_text,
-                 was_truncated=False, content_file=None, message=''):
-    """Build a success response."""
-    return {
-        'status': 'success',
-        'status_code': status_code,
-        'status_text': status_text,
-        'url': url,
-        'title': title or '',
-        'content': content,
-        'content_length': len(content),
-        'total_content_length': total_content_length,
-        'was_truncated': was_truncated,
-        'content_file': content_file,
-        'message': message
-    }
-
-
-def _make_error(message, url='', status_code=0, status_text=''):
-    """Build an error response."""
-    return {
-        'status': 'error',
-        'status_code': status_code,
-        'status_text': status_text,
-        'url': url,
-        'title': '',
-        'content': '',
-        'content_length': 0,
-        'total_content_length': 0,
-        'was_truncated': False,
-        'content_file': None,
-        'message': message
-    }
+        return make_error(msg, url, status_code=sc, status_text=st)
