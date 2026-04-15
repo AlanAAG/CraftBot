@@ -13,6 +13,7 @@ interface ChatMessageProps {
     displayName: string,
     fullContent: string
   ) => void
+  onOptionClick?: (value: string, sessionId?: string, messageId?: string) => void
 }
 
 // Parse reply context from message content
@@ -33,8 +34,12 @@ export const ChatMessageItem = memo(function ChatMessageItem({
   onOpenFile,
   onOpenFolder,
   onReply,
+  onOptionClick,
 }: ChatMessageProps) {
   const [isHovered, setIsHovered] = useState(false)
+  const [optionClicked, setOptionClicked] = useState<string | null>(
+    message.optionSelected || null
+  )
 
   // Show reply for ALL agent messages
   const canReply = message.style === 'agent' && onReply
@@ -95,6 +100,26 @@ export const ChatMessageItem = memo(function ChatMessageItem({
           />
         )}
       </div>
+      {/* Options below the bubble, same level as attachments */}
+      {message.options && message.options.length > 0 && (
+        <div className={styles.messageOptions}>
+          {message.options.map((opt) => (
+            <button
+              key={opt.value}
+              className={`${styles.optionButton} ${optionClicked ? styles['optionButton--disabled'] : ''} ${optionClicked === opt.value ? styles['optionButton--selected'] : ''}`}
+              onClick={() => {
+                if (!optionClicked) {
+                  setOptionClicked(opt.value)
+                  onOptionClick?.(opt.value, message.taskSessionId, message.messageId)
+                }
+              }}
+              disabled={!!optionClicked}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      )}
       {message.attachments && message.attachments.length > 0 && (
         <div className={styles.messageAttachments}>
           <AttachmentDisplay

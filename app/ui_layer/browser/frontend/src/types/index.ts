@@ -12,6 +12,12 @@ export interface Attachment {
   url: string
 }
 
+export interface ChatMessageOption {
+  label: string
+  value: string
+  style?: 'primary' | 'danger' | 'default'
+}
+
 export interface ChatMessage {
   sender: string
   content: string
@@ -20,6 +26,8 @@ export interface ChatMessage {
   messageId: string
   attachments?: Attachment[]
   taskSessionId?: string  // Links message to a task session for reply feature
+  options?: ChatMessageOption[]
+  optionSelected?: string  // Value of the option that was selected
 }
 
 // ─────────────────────────────────────────────────────────────────────
@@ -95,6 +103,8 @@ export type WSMessageType =
   // Task control
   | 'task_cancel'
   | 'task_cancel_response'
+  // Option click (interactive buttons in chat)
+  | 'option_click'
   // Onboarding
   | 'onboarding_step'
   | 'onboarding_step_get'

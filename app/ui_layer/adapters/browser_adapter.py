@@ -200,6 +200,17 @@ class BrowserChatComponent(ChatComponentProtocol):
                         )
                         for att in stored.attachments
                     ]
+                options = None
+                if stored.options:
+                    from app.ui_layer.components.types import ChatMessageOption
+                    options = [
+                        ChatMessageOption(
+                            label=o.get("label", ""),
+                            value=o.get("value", ""),
+                            style=o.get("style", "default"),
+                        )
+                        for o in stored.options
+                    ]
                 self._messages.append(ChatMessage(
                     sender=stored.sender,
                     content=stored.content,
@@ -208,6 +219,7 @@ class BrowserChatComponent(ChatComponentProtocol):
                     message_id=stored.message_id,
                     attachments=attachments,
                     task_session_id=stored.task_session_id,
+                    options=options,
                 ))
         except Exception:
             # Storage may not be available, continue without persistence
@@ -233,6 +245,12 @@ class BrowserChatComponent(ChatComponentProtocol):
                         }
                         for att in message.attachments
                     ]
+                options_data = None
+                if message.options:
+                    options_data = [
+                        {"label": o.label, "value": o.value, "style": o.style}
+                        for o in message.options
+                    ]
                 stored = StoredChatMessage(
                     message_id=message.message_id or f"{message.sender}:{message.timestamp}",
                     sender=message.sender,
@@ -241,6 +259,7 @@ class BrowserChatComponent(ChatComponentProtocol):
                     timestamp=message.timestamp,
                     attachments=attachments_data,
                     task_session_id=message.task_session_id,
+                    options=options_data,
                 )
                 self._storage.insert_message(stored)
             except Exception:
@@ -271,6 +290,13 @@ class BrowserChatComponent(ChatComponentProtocol):
         # Include task session ID for reply feature
         if message.task_session_id:
             message_data["taskSessionId"] = message.task_session_id
+
+        # Include options/buttons if present
+        if message.options:
+            message_data["options"] = [
+                {"label": o.label, "value": o.value, "style": o.style}
+                for o in message.options
+            ]
 
         await self._adapter._broadcast({
             "type": "chat_message",
@@ -320,6 +346,17 @@ class BrowserChatComponent(ChatComponentProtocol):
                         )
                         for att in s.attachments
                     ]
+                options = None
+                if s.options:
+                    from app.ui_layer.components.types import ChatMessageOption
+                    options = [
+                        ChatMessageOption(
+                            label=o.get("label", ""),
+                            value=o.get("value", ""),
+                            style=o.get("style", "default"),
+                        )
+                        for o in s.options
+                    ]
                 messages.append(ChatMessage(
                     sender=s.sender,
                     content=s.content,
@@ -327,6 +364,7 @@ class BrowserChatComponent(ChatComponentProtocol):
                     timestamp=s.timestamp,
                     message_id=s.message_id,
                     attachments=attachments,
+                    options=options,
                 ))
             return messages
         except Exception:
@@ -1123,6 +1161,12 @@ A quick Q&A will now begin to understand your objectives to serve you better:"""
         elif msg_type == "task_cancel":
             task_id = data.get("taskId", "")
             await self._handle_task_cancel(task_id)
+
+        elif msg_type == "option_click":
+            value = data.get("value", "")
+            session_id = data.get("sessionId", "")
+            message_id = data.get("messageId", "")
+            await self._handle_option_click(value, session_id, message_id)
 
         # Settings operations
         elif msg_type == "settings_get":
@@ -1978,6 +2022,21 @@ A quick Q&A will now begin to understand your objectives to serve you better:"""
                     "error": str(e),
                 },
             })
+
+    async def _handle_option_click(self, value: str, session_id: str, message_id: str) -> None:
+        """Handle a user clicking an option button in a chat message."""
+        try:
+            # Mark the option as selected in storage
+            if self._chat and self._chat._storage and message_id:
+                try:
+                    self._chat._storage.update_option_selected(message_id, value)
+                except Exception:
+                    pass
+
+            # Route to the controller
+            await self._controller.handle_option_click(value, session_id)
+        except Exception as e:
+            logger.error(f"[OPTION_CLICK] Error handling option click: {e}", exc_info=True)
 
     # ─────────────────────────────────────────────────────────────────────
     # Settings Operation Handlers
@@ -4311,6 +4370,11 @@ A quick Q&A will now begin to understand your objectives to serve you better:"""
                     ]
                 if m.task_session_id:
                     msg_data["taskSessionId"] = m.task_session_id
+                if m.options:
+                    msg_data["options"] = [
+                        {"label": o.label, "value": o.value, "style": o.style}
+                        for o in m.options
+                    ]
                 messages_data.append(msg_data)
 
             await self._broadcast({

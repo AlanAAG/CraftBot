@@ -1268,18 +1268,17 @@ class AgentBase:
 
         # Check action limits
         if (action_count / max_actions) >= 1.0:
-            # Log warning BEFORE cancelling task (stream is removed during cancel)
             if self.event_stream_manager:
                 self.event_stream_manager.log(
                     "warning",
-                    f"Action limit reached: 100% of the maximum actions ({max_actions} actions) has been used. Aborting task.",
-                    display_message=f"Action limit reached: 100% of the maximum ({max_actions} actions) has been used. Aborting task.",
+                    f"Action limit reached: 100% of the maximum actions ({max_actions} actions) has been used. Waiting for user decision.",
+                    display_message=None,
                     task_id=current_task_id,
                 )
                 self.state_manager.bump_event_stream()
-            response = await self.task_manager.mark_task_cancel(reason=f"Task reached the maximum actions allowed limit: {max_actions}")
-            task_cancelled: bool = response
-            return not task_cancelled
+            await self._send_limit_choice_message("action", action_count, max_actions, current_task_id)
+            await self._pause_task_for_limit_choice(current_task_id)
+            return False
         elif (action_count / max_actions) >= 0.8:
             if self.event_stream_manager:
                 self.event_stream_manager.log(
@@ -1295,18 +1294,17 @@ class AgentBase:
 
         # Check token limits
         if (token_count / max_tokens) >= 1.0:
-            # Log warning BEFORE cancelling task (stream is removed during cancel)
             if self.event_stream_manager:
                 self.event_stream_manager.log(
                     "warning",
-                    f"Token limit reached: 100% of the maximum tokens ({max_tokens} tokens) has been used. Aborting task.",
-                    display_message=f"Token limit reached: 100% of the maximum ({max_tokens} tokens) has been used. Aborting task.",
+                    f"Token limit reached: 100% of the maximum tokens ({max_tokens} tokens) has been used. Waiting for user decision.",
+                    display_message=None,
                     task_id=current_task_id,
                 )
                 self.state_manager.bump_event_stream()
-            response = await self.task_manager.mark_task_cancel(reason=f"Task reached the maximum tokens allowed limit: {max_tokens}")
-            task_cancelled: bool = response
-            return not task_cancelled
+            await self._send_limit_choice_message("token", token_count, max_tokens, current_task_id)
+            await self._pause_task_for_limit_choice(current_task_id)
+            return False
         elif (token_count / max_tokens) >= 0.8:
             if self.event_stream_manager:
                 self.event_stream_manager.log(
@@ -1322,6 +1320,160 @@ class AgentBase:
 
         # No limits close or reached
         return True
+
+    async def _send_limit_choice_message(
+        self, limit_type: str, current: int, maximum: int, session_id: str
+    ) -> None:
+        """Send a chat message with Continue/Abort options when a limit is reached."""
+        label = "Action" if limit_type == "action" else "Token"
+        unit = "actions" if limit_type == "action" else "tokens"
+        message = (
+            f"{label} limit reached: {current}/{maximum} {unit} used. "
+            f"Would you like to continue (reset limits) or abort the task?"
+        )
+        logger.info(f"[LIMIT] Sending limit choice message for session {session_id}: {message}")
+
+        # Log to event stream for task context persistence only (display_message=None
+        # to avoid a duplicate chat message from the event watcher).
+        if self.event_stream_manager:
+            try:
+                self.event_stream_manager.log(
+                    "internal",
+                    message,
+                    display_message=None,
+                    task_id=session_id,
+                )
+            except Exception as e:
+                logger.error(f"[LIMIT] Failed to log to event stream: {e}", exc_info=True)
+
+        # Display message with options directly in the chat UI (awaited).
+        # We bypass the event bus (which uses fire-and-forget create_task)
+        # to ensure the message is broadcast before the method returns.
+        if self.ui_controller and self.ui_controller.active_adapter:
+            try:
+                from app.ui_layer.components.types import ChatMessage, ChatMessageOption
+                from app.onboarding import onboarding_manager
+                import time as _time
+                agent_name = onboarding_manager.state.agent_name or "Agent"
+                options = [
+                    ChatMessageOption(label="Continue", value="continue_limit", style="primary"),
+                    ChatMessageOption(label="Abort", value="abort_limit", style="danger"),
+                ]
+                await self.ui_controller.active_adapter.chat_component.append_message(
+                    ChatMessage(
+                        sender=agent_name,
+                        content=message,
+                        style="agent",
+                        timestamp=_time.time(),
+                        task_session_id=session_id,
+                        options=options,
+                    )
+                )
+                logger.info(f"[LIMIT] Options message displayed in chat for session {session_id}")
+            except Exception as e:
+                logger.error(f"[LIMIT] Failed to display options in chat: {e}", exc_info=True)
+        else:
+            logger.warning(f"[LIMIT] No active UI adapter - options message not displayed")
+
+    async def _pause_task_for_limit_choice(self, session_id: str) -> None:
+        """Pause the task and create a long-delay trigger to keep it alive."""
+        logger.info(f"[LIMIT] Pausing task {session_id} for limit choice")
+        task = self.task_manager.tasks.get(session_id) if self.task_manager else None
+        if task:
+            task.waiting_for_user_reply = True
+
+        # Update UI state to "waiting"
+        if self.ui_controller:
+            from app.ui_layer.events import UIEvent, UIEventType
+            self.ui_controller.event_bus.emit(
+                UIEvent(
+                    type=UIEventType.TASK_UPDATE,
+                    data={"task_id": session_id, "status": "waiting"},
+                )
+            )
+            self.ui_controller.event_bus.emit(
+                UIEvent(
+                    type=UIEventType.AGENT_STATE_CHANGED,
+                    data={"state": "waiting", "status_message": "Waiting for user decision..."},
+                )
+            )
+
+        # Create a long-delay trigger so the task stays alive
+        try:
+            await self.triggers.put(
+                Trigger(
+                    fire_at=time.time() + 10800,
+                    priority=5,
+                    next_action_description="Waiting for user decision on limit reached",
+                    session_id=session_id,
+                    payload={"gui_mode": STATE.gui_mode},
+                    waiting_for_reply=True,
+                ),
+                skip_merge=True,
+            )
+        except Exception as e:
+            logger.error(f"[LIMIT] Failed to create pause trigger for {session_id}: {e}", exc_info=True)
+
+    async def handle_limit_continue(self, session_id: str) -> None:
+        """User chose to continue past the limit. Reset counters and resume."""
+        task = self.task_manager.tasks.get(session_id) if self.task_manager else None
+        if not task:
+            logger.warning(f"[LIMIT] Task {session_id} not found for limit continue")
+            return
+
+        # Reset counters
+        STATE.set_agent_property("action_count", 0)
+        STATE.set_agent_property("token_count", 0)
+
+        # Also reset on the StateSession for this session
+        from agent_core.core.state.session import StateSession
+        session = StateSession.get(session_id)
+        if session:
+            session.agent_properties.set("action_count", 0)
+            session.agent_properties.set("token_count", 0)
+
+        # Clear waiting flag
+        task.waiting_for_user_reply = False
+
+        # Log to event stream
+        if self.event_stream_manager:
+            self.event_stream_manager.log(
+                "info",
+                "User chose to continue. Action and token counters have been reset.",
+                display_message=None,
+                task_id=session_id,
+            )
+            self.state_manager.bump_event_stream()
+
+        # Update UI state back to working
+        if self.ui_controller:
+            from app.ui_layer.events import UIEvent, UIEventType
+            self.ui_controller.event_bus.emit(
+                UIEvent(
+                    type=UIEventType.TASK_UPDATE,
+                    data={"task_id": session_id, "status": "running"},
+                )
+            )
+            self.ui_controller.event_bus.emit(
+                UIEvent(
+                    type=UIEventType.AGENT_STATE_CHANGED,
+                    data={"state": "working", "status_message": "Agent is working..."},
+                )
+            )
+
+        # Fire the trigger to resume execution
+        await self.triggers.fire(session_id)
+
+    async def handle_limit_abort(self, session_id: str) -> None:
+        """User chose to abort after reaching limit."""
+        task = self.task_manager.tasks.get(session_id) if self.task_manager else None
+        if task:
+            task.waiting_for_user_reply = False
+        if self.task_manager:
+            await self.task_manager.mark_task_cancel(
+                reason="User chose to abort after reaching limit.",
+                task_id=session_id,
+            )
 
     # ----- Trigger Management -----
 
