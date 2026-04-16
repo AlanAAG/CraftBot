@@ -1149,8 +1149,21 @@ class LLMInterface:
                 "model": self.model,
                 "messages": messages,
                 "temperature": self.temperature,
-                "max_tokens": self.max_tokens,
             }
+
+            # Newer OpenAI models (o1, o3, o4, gpt-5, etc.) require
+            # 'max_completion_tokens' instead of the legacy 'max_tokens' parameter.
+            model_lower = (self.model or "").lower()
+            uses_max_completion_tokens = (
+                model_lower.startswith("o1")
+                or model_lower.startswith("o3")
+                or model_lower.startswith("o4")
+                or model_lower.startswith("gpt-5")
+            )
+            if uses_max_completion_tokens:
+                request_kwargs["max_completion_tokens"] = self.max_tokens
+            else:
+                request_kwargs["max_tokens"] = self.max_tokens
 
             # Always enforce JSON output format
             request_kwargs["response_format"] = {"type": "json_object"}
