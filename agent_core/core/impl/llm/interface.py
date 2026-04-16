@@ -217,11 +217,17 @@ class LLMInterface:
             target_base_url = base_url
 
         try:
-            logger.info(f"[LLM] Reinitializing with provider: {target_provider}")
+            from app.config import get_llm_model as _get_llm_model  # type: ignore[import]
+            target_model = _get_llm_model()
+        except Exception:
+            target_model = None  # app context not available (e.g. agent_core standalone)
+
+        try:
+            logger.info(f"[LLM] Reinitializing with provider: {target_provider}, model: {target_model or 'registry default'}")
             ctx = ModelFactory.create(
                 provider=target_provider,
                 interface=InterfaceType.LLM,
-                model_override=None,
+                model_override=target_model,
                 api_key=target_api_key,
                 base_url=target_base_url,
                 deferred=False,
