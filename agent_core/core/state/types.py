@@ -11,7 +11,7 @@ from typing import Any, Dict, List, NamedTuple, Optional
 import logging
 
 # Default configuration values - can be overridden at runtime
-DEFAULT_MAX_ACTIONS_PER_TASK = 10
+DEFAULT_MAX_ACTIONS_PER_TASK = 5
 DEFAULT_MAX_TOKEN_PER_TASK = 6_000_000
 
 # Use standard logging since loguru may not be available during import

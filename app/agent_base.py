@@ -1276,7 +1276,7 @@ class AgentBase:
                     task_id=current_task_id,
                 )
                 self.state_manager.bump_event_stream()
-            await self._send_limit_choice_message("action", action_count, max_actions, current_task_id)
+            await self._send_limit_choice_message("action", current_task_id)
             await self._pause_task_for_limit_choice(current_task_id)
             return False
         elif (action_count / max_actions) >= 0.8:
@@ -1302,7 +1302,7 @@ class AgentBase:
                     task_id=current_task_id,
                 )
                 self.state_manager.bump_event_stream()
-            await self._send_limit_choice_message("token", token_count, max_tokens, current_task_id)
+            await self._send_limit_choice_message("token", current_task_id)
             await self._pause_task_for_limit_choice(current_task_id)
             return False
         elif (token_count / max_tokens) >= 0.8:
@@ -1322,13 +1322,20 @@ class AgentBase:
         return True
 
     async def _send_limit_choice_message(
-        self, limit_type: str, current: int, maximum: int, session_id: str
+        self, limit_type: str, session_id: str
     ) -> None:
         """Send a chat message with Continue/Abort options when a limit is reached."""
         label = "Action" if limit_type == "action" else "Token"
-        unit = "actions" if limit_type == "action" else "tokens"
+
+        # Include task name so user knows which task hit the limit
+        task_name_suffix = ""
+        if self.task_manager:
+            task = self.task_manager.tasks.get(session_id)
+            if task and task.name:
+                task_name_suffix = f' for task "{task.name}"'
+
         message = (
-            f"{label} limit reached: {current}/{maximum} {unit} used. "
+            f"{label} limit reached{task_name_suffix}. "
             f"Would you like to continue (reset limits) or abort the task?"
         )
         logger.info(f"[LIMIT] Sending limit choice message for session {session_id}: {message}")
@@ -1382,19 +1389,21 @@ class AgentBase:
         if task:
             task.waiting_for_user_reply = True
 
-        # Update UI state to "waiting"
-        if self.ui_controller:
+        # Update UI task status to "paused" - directly await to ensure
+        # the WebSocket broadcast completes before the react loop cleans up.
+        if self.ui_controller and self.ui_controller.active_adapter:
+            try:
+                action_panel = self.ui_controller.active_adapter.action_panel
+                if action_panel:
+                    await action_panel.update_item(session_id, "paused")
+            except Exception as e:
+                logger.error(f"[LIMIT] Failed to update task status to paused: {e}", exc_info=True)
+
             from app.ui_layer.events import UIEvent, UIEventType
             self.ui_controller.event_bus.emit(
                 UIEvent(
-                    type=UIEventType.TASK_UPDATE,
-                    data={"task_id": session_id, "status": "waiting"},
-                )
-            )
-            self.ui_controller.event_bus.emit(
-                UIEvent(
                     type=UIEventType.AGENT_STATE_CHANGED,
-                    data={"state": "waiting", "status_message": "Waiting for user decision..."},
+                    data={"state": "waiting", "status_message": "Paused - waiting for user decision..."},
                 )
             )
 
@@ -1429,19 +1438,18 @@ class AgentBase:
         from agent_core.core.state.session import StateSession
         session = StateSession.get(session_id)
         if session:
-            session.agent_properties.set("action_count", 0)
-            session.agent_properties.set("token_count", 0)
+            session.agent_properties.set_property("action_count", 0)
+            session.agent_properties.set_property("token_count", 0)
 
         # Clear waiting flag
         task.waiting_for_user_reply = False
 
-        # Log to event stream
+        # Log to event stream as system message
+        task_label = f' for task "{task.name}"' if task.name else ""
         if self.event_stream_manager:
+            msg = f"User chose to continue{task_label}. Action and token counters have been reset."
             self.event_stream_manager.log(
-                "info",
-                "User chose to continue. Action and token counters have been reset.",
-                display_message=None,
-                task_id=session_id,
+                "system", msg, display_message=msg, task_id=session_id,
             )
             self.state_manager.bump_event_stream()
 
@@ -1467,8 +1475,18 @@ class AgentBase:
     async def handle_limit_abort(self, session_id: str) -> None:
         """User chose to abort after reaching limit."""
         task = self.task_manager.tasks.get(session_id) if self.task_manager else None
+        task_label = f' for task "{task.name}"' if task and task.name else ""
         if task:
             task.waiting_for_user_reply = False
+
+        # Log system message before cancelling (stream is removed during cancel)
+        if self.event_stream_manager:
+            msg = f"User chose to abort{task_label}. Task has been cancelled."
+            self.event_stream_manager.log(
+                "system", msg, display_message=msg, task_id=session_id,
+            )
+            self.state_manager.bump_event_stream()
+
         if self.task_manager:
             await self.task_manager.mark_task_cancel(
                 reason="User chose to abort after reaching limit.",

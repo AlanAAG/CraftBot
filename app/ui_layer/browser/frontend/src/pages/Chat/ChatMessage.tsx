@@ -1,4 +1,4 @@
-import React, { memo, useState, useMemo } from 'react'
+import React, { memo, useState, useMemo, useRef } from 'react'
 import { Reply } from 'lucide-react'
 import { MarkdownContent, AttachmentDisplay, IconButton } from '../../components/ui'
 import type { ChatMessage as ChatMessageType } from '../../types'
@@ -40,6 +40,7 @@ export const ChatMessageItem = memo(function ChatMessageItem({
   const [optionClicked, setOptionClicked] = useState<string | null>(
     message.optionSelected || null
   )
+  const optionLockedRef = useRef(!!message.optionSelected)
 
   // Show reply for ALL agent messages
   const canReply = message.style === 'agent' && onReply
@@ -87,6 +88,27 @@ export const ChatMessageItem = memo(function ChatMessageItem({
           <div className={styles.messageContent}>
             <MarkdownContent content={userMessage} />
           </div>
+          {message.options && message.options.length > 0 && (
+            <div className={styles.messageOptions}>
+              <span className={styles.optionsPrompt}>Please select a response to continue:</span>
+              {message.options.map((opt, index) => (
+                <button
+                  key={opt.value}
+                  className={`${styles.optionButton} ${optionClicked === opt.value ? styles['optionButton--selected'] : ''} ${optionClicked && optionClicked !== opt.value ? styles['optionButton--disabled'] : ''}`}
+                  onClick={() => {
+                    if (optionLockedRef.current) return
+                    optionLockedRef.current = true
+                    setOptionClicked(opt.value)
+                    onOptionClick?.(opt.value, message.taskSessionId, message.messageId)
+                  }}
+                  disabled={!!optionClicked}
+                >
+                  <span className={styles.optionIndex}>{index + 1}</span>
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
         {/* Reply button - positioned outside the bubble at top-right */}
         {canReply && isHovered && (
@@ -100,26 +122,6 @@ export const ChatMessageItem = memo(function ChatMessageItem({
           />
         )}
       </div>
-      {/* Options below the bubble, same level as attachments */}
-      {message.options && message.options.length > 0 && (
-        <div className={styles.messageOptions}>
-          {message.options.map((opt) => (
-            <button
-              key={opt.value}
-              className={`${styles.optionButton} ${optionClicked ? styles['optionButton--disabled'] : ''} ${optionClicked === opt.value ? styles['optionButton--selected'] : ''}`}
-              onClick={() => {
-                if (!optionClicked) {
-                  setOptionClicked(opt.value)
-                  onOptionClick?.(opt.value, message.taskSessionId, message.messageId)
-                }
-              }}
-              disabled={!!optionClicked}
-            >
-              {opt.label}
-            </button>
-          ))}
-        </div>
-      )}
       {message.attachments && message.attachments.length > 0 && (
         <div className={styles.messageAttachments}>
           <AttachmentDisplay

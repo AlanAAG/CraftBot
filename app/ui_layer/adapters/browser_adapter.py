@@ -220,6 +220,7 @@ class BrowserChatComponent(ChatComponentProtocol):
                     attachments=attachments,
                     task_session_id=stored.task_session_id,
                     options=options,
+                    option_selected=stored.option_selected,
                 ))
         except Exception:
             # Storage may not be available, continue without persistence
@@ -297,6 +298,8 @@ class BrowserChatComponent(ChatComponentProtocol):
                 {"label": o.label, "value": o.value, "style": o.style}
                 for o in message.options
             ]
+        if message.option_selected:
+            message_data["optionSelected"] = message.option_selected
 
         await self._adapter._broadcast({
             "type": "chat_message",
@@ -365,6 +368,7 @@ class BrowserChatComponent(ChatComponentProtocol):
                     message_id=s.message_id,
                     attachments=attachments,
                     options=options,
+                    option_selected=s.option_selected,
                 ))
             return messages
         except Exception:
@@ -2026,12 +2030,18 @@ A quick Q&A will now begin to understand your objectives to serve you better:"""
     async def _handle_option_click(self, value: str, session_id: str, message_id: str) -> None:
         """Handle a user clicking an option button in a chat message."""
         try:
-            # Mark the option as selected in storage
-            if self._chat and self._chat._storage and message_id:
-                try:
-                    self._chat._storage.update_option_selected(message_id, value)
-                except Exception:
-                    pass
+            # Mark the option as selected in storage and in-memory
+            if self._chat and message_id:
+                if self._chat._storage:
+                    try:
+                        self._chat._storage.update_option_selected(message_id, value)
+                    except Exception:
+                        pass
+                # Update in-memory message so refreshes reflect the selection
+                for m in self._chat._messages:
+                    if m.message_id == message_id:
+                        m.option_selected = value
+                        break
 
             # Route to the controller
             await self._controller.handle_option_click(value, session_id)
@@ -4375,6 +4385,8 @@ A quick Q&A will now begin to understand your objectives to serve you better:"""
                         {"label": o.label, "value": o.value, "style": o.style}
                         for o in m.options
                     ]
+                if m.option_selected:
+                    msg_data["optionSelected"] = m.option_selected
                 messages_data.append(msg_data)
 
             await self._broadcast({
@@ -4908,6 +4920,11 @@ A quick Q&A will now begin to understand your objectives to serve you better:"""
                         for att in m.attachments
                     ]} if m.attachments else {}),
                     **({"taskSessionId": m.task_session_id} if m.task_session_id else {}),
+                    **({"options": [
+                        {"label": o.label, "value": o.value, "style": o.style}
+                        for o in m.options
+                    ]} if m.options else {}),
+                    **({"optionSelected": m.option_selected} if m.option_selected else {}),
                 }
                 for m in self._chat.get_messages()
             ],

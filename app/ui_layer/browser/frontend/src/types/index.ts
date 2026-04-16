@@ -34,7 +34,7 @@ export interface ChatMessage {
 // Action/Task Types
 // ─────────────────────────────────────────────────────────────────────
 
-export type ActionStatus = 'running' | 'completed' | 'error' | 'pending' | 'cancelled' | 'waiting'
+export type ActionStatus = 'running' | 'completed' | 'error' | 'pending' | 'cancelled' | 'waiting' | 'paused'
 export type ItemType = 'task' | 'action' | 'reasoning'
 
 export interface ActionItem {
