@@ -267,6 +267,16 @@ class LLMInterface:
             else:
                 self._gemini_cache_manager = None
 
+            # Reset consecutive failure counter — a config change is an explicit
+            # user-initiated retry signal. Without this, a prior run that hit the
+            # failure threshold would continue to abort even with the new config.
+            if self._consecutive_failures > 0:
+                logger.info(
+                    f"[LLM] Resetting consecutive failure counter on reinitialize "
+                    f"(was {self._consecutive_failures})"
+                )
+                self._consecutive_failures = 0
+
             logger.info(f"[LLM] Reinitialized successfully with provider: {self.provider}, model: {self.model}")
             return self._initialized
         except EnvironmentError as e:

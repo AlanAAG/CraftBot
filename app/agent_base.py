@@ -1815,6 +1815,14 @@ class AgentBase:
 
             chat_content = user_input
             logger.info(f"[CHAT RECEIVED] {chat_content}")
+
+            # clear any stuck consecutive-failure state from a prior aborted task so the next
+            # LLM call actually hits the provider instead of short-circuiting.
+            try:
+                self.llm.reset_failure_counter()
+            except Exception as e:
+                logger.debug(f"[CHAT] Could not reset LLM failure counter: {e}")
+
             gui_mode = payload.get("gui_mode")
 
             # Determine platform - use payload's platform if available, otherwise default
