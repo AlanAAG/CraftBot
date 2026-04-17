@@ -242,8 +242,13 @@ class AgentNameStep:
     def validate(self, value: Any) -> tuple[bool, Optional[str]]:
         # Accept legacy string submissions (plain text name) for backward compat.
         if isinstance(value, str):
+            if len(value) > 20:
+                return False, "Agent name must be 20 characters or fewer"
             return True, None
         if isinstance(value, dict):
+            agent_name = value.get("agent_name")
+            if agent_name and len(str(agent_name)) > 20:
+                return False, "Agent name must be 20 characters or fewer"
             picture = value.get("agent_profile_picture")
             if picture not in (None, ""):
                 if not isinstance(picture, str) or picture.lower() not in self.ALLOWED_PICTURE_EXTS:
