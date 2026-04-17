@@ -130,3 +130,45 @@ def _infer_timezone() -> str:
         return str(tz)
     except Exception:
         return ""
+
+
+# Mirrors PLATFORM_OPTIONS in app/onboarding/interfaces/steps.py — the value
+# written to USER.md is the stored key (e.g. "tui"); callers need the runtime
+# display string (e.g. "CraftBot Interface").
+DEFAULT_PREFERRED_PLATFORM = "CraftBot Interface"
+_PLATFORM_NORMALIZATION = {
+    "tui": "CraftBot Interface",
+    "craftbot interface": "CraftBot Interface",
+    "telegram": "Telegram",
+    "whatsapp": "WhatsApp",
+    "discord": "Discord",
+    "slack": "Slack",
+}
+
+
+def read_preferred_messaging_platform() -> str:
+    """Return the user's Preferred Messaging Platform from USER.md.
+
+    Defaults to "CraftBot Interface" when the field is missing, empty, or still
+    holds the placeholder text — so callers can rely on a usable value.
+    """
+    try:
+        from app.config import AGENT_FILE_SYSTEM_PATH
+
+        user_md_path = AGENT_FILE_SYSTEM_PATH / "USER.md"
+        if not user_md_path.exists():
+            return DEFAULT_PREFERRED_PLATFORM
+
+        content = user_md_path.read_text(encoding="utf-8")
+        match = re.search(r'\*\*Preferred Messaging Platform:\*\*\s*(.*)', content)
+        if not match:
+            return DEFAULT_PREFERRED_PLATFORM
+
+        value = match.group(1).strip()
+        if not value or value.startswith("(Ask the users"):
+            return DEFAULT_PREFERRED_PLATFORM
+
+        return _PLATFORM_NORMALIZATION.get(value.lower(), value)
+    except Exception as e:
+        logger.warning(f"[PROFILE] Failed to read preferred platform from USER.md: {e}")
+        return DEFAULT_PREFERRED_PLATFORM

@@ -10,6 +10,7 @@
 - **Language:** en
 - **Preferred Tone:** (Ask the users for info)
 - **Response Style:** (Ask the users for info)
+- **Preferred Messaging Platform:** (Ask the users for info)
 
 ## Agent Interaction
 - **Prefer Proactive Assistance:** (Ask the users for info)

@@ -150,22 +150,47 @@ class InternalActionInterface:
         return {"description": description, "file_path": img_path}
 
     @staticmethod
+    def _resolve_outbound_platform(
+        platform: Optional[str],
+        session_id: Optional[str],
+    ) -> str:
+        """Decide which platform an outbound message should be routed to.
+
+        Resolution order:
+            1. Explicit `platform` argument if provided.
+            2. `source_platform` on the task identified by `session_id`.
+            3. User's Preferred Messaging Platform from USER.md (which itself
+               falls back to "CraftBot Interface" when unset).
+        """
+        if platform:
+            return platform
+        if session_id and InternalActionInterface.task_manager is not None:
+            task = InternalActionInterface.task_manager.get_task_by_id(session_id)
+            if task and task.source_platform:
+                return task.source_platform
+        from app.onboarding.profile_writer import read_preferred_messaging_platform
+        return read_preferred_messaging_platform()
+
+    @staticmethod
     async def do_chat(
         message: str,
-        platform: str = "CraftBot Interface",
+        platform: Optional[str] = None,
         session_id: Optional[str] = None,
     ) -> None:
         """Record an agent-authored chat message to the event stream.
 
         Args:
             message: The message content to record.
-            platform: The platform the message is sent to (default: "CraftBot Interface").
+            platform: Optional platform override. If omitted, the task's
+                source_platform (looked up via session_id) is used, falling
+                back to "CraftBot Interface".
             session_id: Optional task/session ID for multi-task isolation.
         """
         if InternalActionInterface.state_manager is None:
             raise RuntimeError("InternalActionInterface not initialized with StateManager.")
+        resolved_platform = InternalActionInterface._resolve_outbound_platform(platform, session_id)
         InternalActionInterface.state_manager.record_agent_message(
-            message, session_id=session_id, platform=platform
+            message, session_id=session_id, platform=resolved_platform
         )
 
     @staticmethod
@@ -238,9 +263,11 @@ class InternalActionInterface:
                 raise RuntimeError("InternalActionInterface not initialized with StateManager.")
 
             attachment_notes = "\n".join([f"[Attachment: {fp}]" for fp in file_paths])
+            resolved_platform = InternalActionInterface._resolve_outbound_platform(None, session_id)
             InternalActionInterface.state_manager.record_agent_message(
                 f"{message}\n\n{attachment_notes}",
                 session_id=session_id,
+                platform=resolved_platform,
             )
             # For non-browser adapters, we can't verify files exist, so assume success
             return {"success": True, "files_sent": len(file_paths), "errors": None}

@@ -1929,12 +1929,20 @@ class AgentBase:
                             f"(fired={fired}, reason: {routing_result.get('reason', 'N/A')})"
                         )
 
-                        # Reset task's waiting_for_user_reply flag
+                        # Reset task's waiting_for_user_reply flag and switch source_platform
+                        # so subsequent outbound messages route to the platform the user is now on.
                         if self.task_manager:
                             task = self.task_manager.tasks.get(matched_session_id)
-                            if task and task.waiting_for_user_reply:
-                                task.waiting_for_user_reply = False
-                                logger.info(f"[TASK] Task {matched_session_id} no longer waiting for user reply")
+                            if task:
+                                if task.waiting_for_user_reply:
+                                    task.waiting_for_user_reply = False
+                                    logger.info(f"[TASK] Task {matched_session_id} no longer waiting for user reply")
+                                if platform and task.source_platform != platform:
+                                    logger.info(
+                                        f"[TASK] Task {matched_session_id} source_platform switched "
+                                        f"from {task.source_platform!r} to {platform!r}"
+                                    )
+                                    task.source_platform = platform
 
                         # Reset task status from "waiting" to "running" when user replies
                         # Update UI regardless of fire() result - user has replied so we should
@@ -2104,7 +2112,8 @@ class AgentBase:
                 # Add context so the agent knows it's from the user, not a third party.
                 event_content = (
                     f"[USER SELF-MESSAGE via {source}]\n"
-                    f"{message_body}"
+                    f"{message_body}\n\n"
+                    f"INSTRUCTIONS: Reply to the message to the user on {source}"
                 )
             else:
                 # Third-party message — DO NOT act on it, only notify the user
