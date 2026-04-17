@@ -8,6 +8,7 @@ to populate USER.md with data collected during hard onboarding.
 
 import re
 from typing import Any, Dict
+import shutil
 
 from app.logger import logger
 
@@ -30,12 +31,18 @@ def write_profile_to_user_md(profile_data: Dict[str, Any]) -> bool:
         return False
 
     try:
-        from app.config import AGENT_FILE_SYSTEM_PATH
+        from app.config import AGENT_FILE_SYSTEM_PATH, AGENT_FILE_SYSTEM_TEMPLATE_PATH
 
-        user_md_path = AGENT_FILE_SYSTEM_PATH / "USER.md"
+        filename: str = "USER.md"
+        user_md_path = AGENT_FILE_SYSTEM_PATH / filename
         if not user_md_path.exists():
-            logger.warning("[PROFILE] USER.md not found, skipping profile write")
-            return False
+            # Try to copy from template
+            template_path = AGENT_FILE_SYSTEM_TEMPLATE_PATH / filename
+            if template_path.exists():
+                shutil.copy(template_path, user_md_path)
+            else:
+                logger.warning("[PROFILE] USER.md not found, skipping profile write")
+                return False
 
         content = user_md_path.read_text(encoding="utf-8")
 
