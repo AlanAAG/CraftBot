@@ -117,8 +117,8 @@ def _initial_settings() -> tuple:
     """Determine initial provider, API key, and base URL from settings.json.
 
     Returns:
-        Tuple of (provider, api_key, base_url, model, vlm_provider, vlm_model, has_valid_key)
-        where has_valid_key indicates if a working API key was found.
+        Tuple of (provider, api_key, base_url, model, vlm_provider, vlm_model, has_valid_key) where has_valid_key
+        indicates if a working API key was found.
     """
     # Read directly from settings.json
     provider = get_llm_provider()
