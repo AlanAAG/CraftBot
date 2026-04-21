@@ -1,0 +1,138 @@
+from __future__ import annotations
+
+from agent_core import action
+
+
+@action(
+    name="understand_video",
+    description=(
+        "Analyses a video file and returns a narrative summary. "
+        "Uses the Gemini API for native video understanding when a Google API key is configured; "
+        "falls back to keyframe extraction via OpenCV for all other VLM providers."
+    ),
+    mode="CLI",
+    action_sets=["document_processing", "image"],
+    requirement=["google-generativeai"],
+    input_schema={
+        "video_path": {
+            "type": "string",
+            "example": "C:\\Users\\user\\Videos\\meeting.mp4",
+            "description": "Absolute path to the video file (MP4, AVI, MOV supported).",
+        },
+        "query": {
+            "type": "string",
+            "example": "What is being presented on the slides?",
+            "description": "Optional specific question to answer about the video.",
+        },
+        "max_frames": {
+            "type": "integer",
+            "example": 8,
+            "description": "Number of evenly-spaced keyframes to sample on the OpenCV fallback path (default: 8, max recommended: 16).",
+        },
+    },
+    output_schema={
+        "status": {
+            "type": "string",
+            "example": "success",
+            "description": "'success' if analysis completed, 'error' otherwise.",
+        },
+        "summary": {
+            "type": "string",
+            "example": "The video shows a person presenting slides about quarterly sales...",
+            "description": "First 500 characters of the video summary. Full summary saved to file.",
+        },
+        "file_path": {
+            "type": "string",
+            "example": "/workspace/video_summary_20260414_153000.txt",
+            "description": "Absolute path to the .txt file containing the full video summary.",
+        },
+        "file_saved": {
+            "type": "boolean",
+            "example": True,
+            "description": "True if the full summary was saved to disk.",
+        },
+        "message": {
+            "type": "string",
+            "example": "File not found.",
+            "description": "Error message if applicable.",
+        },
+    },
+    test_payload={
+        "video_path": "C:\\Users\\user\\Videos\\sample.mp4",
+        "query": "Summarise the video content.",
+        "max_frames": 8,
+        "simulated_mode": True,
+    },
+)
+def understand_video(input_data: dict) -> dict:
+    import os
+
+    video_path = str(input_data.get("video_path", "")).strip()
+    query = str(input_data.get("query", "")).strip() or None
+    max_frames = int(input_data.get("max_frames", 8))
+    simulated_mode = input_data.get("simulated_mode", False)
+
+    if simulated_mode:
+        return {
+            "status": "success",
+            "summary": "The video shows a simulated presentation with 3 speakers.",
+            "file_path": "/workspace/video_summary_simulated.txt",
+            "file_saved": True,
+            "message": "",
+        }
+
+    if not video_path:
+        return {"status": "error", "summary": "", "file_path": "", "file_saved": False, "message": "video_path is required."}
+
+    if not os.path.isfile(video_path):
+        return {"status": "error", "summary": "", "file_path": "", "file_saved": False, "message": "File not found."}
+
+    from app.config import get_api_key, get_vlm_model
+    api_key = get_api_key("gemini")
+
+    if api_key:
+        try:
+            import time
+            from datetime import datetime
+
+            import google.generativeai as genai
+
+            from app.config import AGENT_WORKSPACE_ROOT
+
+            genai.configure(api_key=api_key)
+
+            video_file = genai.upload_file(path=video_path)
+            while video_file.state.name == "PROCESSING":
+                time.sleep(2)
+                video_file = genai.get_file(video_file.name)
+
+            vlm_model = get_vlm_model() or "gemini-1.5-pro"
+            model = genai.GenerativeModel(vlm_model)
+            prompt = query if query else "Understand and describe the contents of this video."
+            response = model.generate_content([video_file, prompt])
+            genai.delete_file(video_file.name)
+
+            full_text = response.text
+            ts = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+            out_path = os.path.join(AGENT_WORKSPACE_ROOT, f"video_summary_{ts}.txt")
+            with open(out_path, "w", encoding="utf-8") as f:
+                f.write(full_text)
+
+            return {
+                "status": "success",
+                "summary": full_text[:500] + ("..." if len(full_text) > 500 else ""),
+                "file_path": out_path,
+                "file_saved": True,
+                "message": "",
+            }
+        except Exception:
+            pass  # Fall through to VLM keyframe fallback path
+
+    try:
+        import app.internal_action_interface as iai
+        result = iai.InternalActionInterface.understand_video(video_path, query=query, max_frames=max_frames)
+        return {**result, "message": ""}
+    except RuntimeError as e:
+        return {"status": "error", "summary": "", "file_path": "", "file_saved": False, "message": str(e)}
+    except Exception as e:
+        return {"status": "error", "summary": "", "file_path": "", "file_saved": False, "message": str(e)}
